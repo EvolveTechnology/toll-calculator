@@ -19,4 +19,4 @@ You are now the new developer for our city - congratulations!
 Your job is to deliver the code and from now on, you are the responsible go-to-guy for this solution. This is a solution you will have to put your name on. 
 
 ## Instructions
-You can make any modifications or suggestions for modifications that you see fit. Deliver your results via e-mail.
+You can make any modifications or suggestions for modifications that you see fit. Deliver your results via a pull-request or e-mail.
