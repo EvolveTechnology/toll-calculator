@@ -20,3 +20,6 @@ Your job is to deliver the code and from now on, you are the responsible go-to-g
 
 ## Instructions
 You can make any modifications or suggestions for modifications that you see fit. Deliver your results via a pull-request or e-mail.
+
+## Help I dont know C# or Java
+No worries! we accept submissions in other languages as well, why not try it in Go or nodejs.
