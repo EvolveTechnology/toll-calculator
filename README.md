@@ -16,7 +16,7 @@ This is the current draft of requirements:
 The last city-developer quit recently, claiming that this solution is production-ready. 
 You are now the new developer for our city - congratulations! 
 
-Your job is to deliver the code and from now on, you are the responsible go-to-guy for this solution. This is a solution you will have to put your name on. 
+Your job is to deliver the code and from now on, you are the responsible go-to-person for this solution. This is a solution you will have to put your name on. 
 
 ## Instructions
 You can make any modifications or suggestions for modifications that you see fit. Deliver your results via a pull-request or e-mail.
