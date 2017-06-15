@@ -43,7 +43,7 @@ public class TollCalculator
     private bool IsTollFreeVehicle(Vehicle vehicle)
     {
         if (vehicle == null) return false;
-        return Vehicle.IsTollFree();
+        return Vehicle.IsFeeFree();
     }
 
     public int GetTollFee(DateTime date, Vehicle vehicle)
