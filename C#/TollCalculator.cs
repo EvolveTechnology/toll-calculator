@@ -42,9 +42,13 @@ public class TollCalculator
         return totalFee;
     }
 
+    /**
+    * Proxy method to IsFeeFree on Vehicles
+    * @param vehicle The vehicle to be checked for fee exemptions
+    * @return If the vehicle is exempt from fees.
+    */
     private bool IsTollFreeVehicle(Vehicle vehicle)
     {
-        if (vehicle == null) return false;
         return Vehicle.IsFeeFree();
     }
 
@@ -75,12 +79,7 @@ public class TollCalculator
     */
     private Boolean IsTollFreeDate(DateTime date)
     {
-        int year = date.Year;
-        int month = date.Month;
-        int day = date.Day;
-
         if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) return true;
-
         return DateSystem.IsPublicHoliday(date, CountryCode.SE);
 
         /*
