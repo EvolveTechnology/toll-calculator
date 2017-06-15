@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using Nager.Date;
 using TollFeeCalculator;
 
 public class TollCalculator
@@ -65,6 +66,12 @@ public class TollCalculator
         else return 0;
     }
 
+    /**
+    * Determines if a given date is Toll Free
+    * Depends on library from https://github.com/tinohager/Nager.Date
+    * @param date The Date to check
+    * @return true if the Date should result in no toll fees
+    */
     private Boolean IsTollFreeDate(DateTime date)
     {
         int year = date.Year;
@@ -72,6 +79,12 @@ public class TollCalculator
         int day = date.Day;
 
         if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) return true;
+
+        return DateSystem.IsPublicHoliday(date, CountryCode.SE);
+
+        /*
+        Removed in favour of library dependency. If further special cases are needed,
+        system can be modified and replaced.
 
         if (year == 2013)
         {
@@ -88,5 +101,6 @@ public class TollCalculator
             }
         }
         return false;
+        */
     }
 }
