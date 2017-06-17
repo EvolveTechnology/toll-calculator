@@ -79,7 +79,10 @@ public class TollCalculator
     */
     private Boolean IsTollFreeDate(DateTime date)
     {
-        if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) return true;
+        if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+        {
+            return true;
+        }
         return DateSystem.IsPublicHoliday(date, CountryCode.SE);
 
         /*
