@@ -37,29 +37,32 @@ public class TollCalculator
 
     public int GetTollFee(IVehicle vehicle, DateTime[] dates)
     {
-        DateTime intervalStart = dates[0];
-        int totalFee = 0;
-        foreach (DateTime date in dates)
+        if(IsTollFreeVehicle(vehicle))
         {
-            int nextFee = GetTollFee(date, vehicle);
-            int tempFee = GetTollFee(intervalStart, vehicle);
-
-            long diffInMillies = date.Millisecond - intervalStart.Millisecond;
-            long minutes = diffInMillies/1000/60;
-
-            if (minutes <= 60)
-            {
-                if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee >= tempFee) tempFee = nextFee;
-                totalFee += tempFee;
-            }
-            else
-            {
-                totalFee += nextFee;
-            }
+            return 0;
         }
-        if (totalFee > 60) totalFee = 60;
-        return totalFee;
+
+        //Ordered dates with fee-less times removed, since those will be ignored for fee calculation.
+        //From Specification: A vehicle should only be charged once an hour
+        //Important to distinguish this from vehicle only being CHECKED once an hour.
+        var OrderedDates = dates.
+                            OrderBy(e => e).
+                            Where(date => !IsTollFreeDate(date) && GetTollFee(date, vehicle) != 0 );
+        
+        if(OrderedDates.Count() < 1)
+        {
+            return 0;
+        }
+
+        //Tuple documentation: DateTime is previous date, int is accumulated toll fees, using the oldest date possible as seed value so all provided dates will be later.   
+        //Aggregate all fees into a sum, ensuring only one billing at most per hour.
+        return  OrderedDates.Aggregate(
+            new Tuple<DateTime, int>(new DateTime(1, 1, 1), 0),
+            (acc, curr) =>
+                (curr < (acc.Item1 + new TimeSpan(1, 0, 0))) 
+                ? new Tuple<DateTime, int>(curr, acc.Item2)
+                : new Tuple<DateTime, int>(curr, acc.Item2 + GetTollFee(curr, vehicle))
+            ).Item2;
     }
 
     /**
@@ -67,7 +70,7 @@ public class TollCalculator
     * @param vehicle The vehicle to be checked for fee exemptions
     * @return If the vehicle is exempt from fees.
     */
-    private bool IsTollFreeVehicle(IVehicle vehicle)
+        private bool IsTollFreeVehicle(IVehicle vehicle)
     {
         return vehicle.IsFeeFree();
     }
