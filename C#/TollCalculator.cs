@@ -1,9 +1,31 @@
 ﻿using System;
 using System.Globalization;
+using System.Collections.Generic;
+using System.Linq;
+//https://github.com/tinohager/Nager.Date
+using Nager.Date;
 using TollFeeCalculator;
 
 public class TollCalculator
 {
+
+    /**
+     * An array of all fee periods
+    */
+
+    //Still has too much duplication, could be optimised if I sit and think about it more.
+    private List<TollFeePeriod> FeePeriods = new List<TollFeePeriod>( new TollFeePeriod[]
+    {
+        new TollFeePeriod(new TimeSpan(6,0,0), new TimeSpan(6,30,0), 8),
+        new TollFeePeriod(new TimeSpan(6,30,0), new TimeSpan(7,0,0), 13),
+        new TollFeePeriod(new TimeSpan(7,0,0), new TimeSpan(8,0,0), 18),
+        new TollFeePeriod(new TimeSpan(8,0,0), new TimeSpan(8,30,0), 13),
+        new TollFeePeriod(new TimeSpan(8,30,0), new TimeSpan(15,0,0), 8),
+        new TollFeePeriod(new TimeSpan(15,0,0), new TimeSpan(15,30,0), 13),
+        new TollFeePeriod(new TimeSpan(15,30,0), new TimeSpan(17,0,0), 18),
+        new TollFeePeriod(new TimeSpan(17,0,0), new TimeSpan(18,0,0), 13),
+        new TollFeePeriod(new TimeSpan(18,0,0), new TimeSpan(18,30,0), 13)
+    });
 
     /**
      * Calculate the total toll fee for one day
@@ -13,96 +35,74 @@ public class TollCalculator
      * @return - the total toll fee for that day
      */
 
-    public int GetTollFee(Vehicle vehicle, DateTime[] dates)
+    public int GetTollFee(IVehicle vehicle, DateTime[] dates)
     {
-        DateTime intervalStart = dates[0];
-        int totalFee = 0;
-        foreach (DateTime date in dates)
+        if(IsTollFreeVehicle(vehicle))
         {
-            int nextFee = GetTollFee(date, vehicle);
-            int tempFee = GetTollFee(intervalStart, vehicle);
-
-            long diffInMillies = date.Millisecond - intervalStart.Millisecond;
-            long minutes = diffInMillies/1000/60;
-
-            if (minutes <= 60)
-            {
-                if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee >= tempFee) tempFee = nextFee;
-                totalFee += tempFee;
-            }
-            else
-            {
-                totalFee += nextFee;
-            }
+            return 0;
         }
-        if (totalFee > 60) totalFee = 60;
-        return totalFee;
+
+        //Ordered dates with fee-less times removed, since those will be ignored for fee calculation.
+        //From Specification: A vehicle should only be charged once an hour
+        //Important to distinguish this from vehicle only being CHECKED once an hour.
+        var OrderedDates = dates.
+                            OrderBy(e => e).
+                            Where(date => !IsTollFreeDate(date) && GetTollFee(date, vehicle) != 0 );
+        
+        if(OrderedDates.Count() < 1)
+        {
+            return 0;
+        }
+
+        //Tuple documentation: DateTime is previous date, int is accumulated toll fees, using the oldest date possible as seed value so all provided dates will be later.   
+        //Aggregate all fees into a sum, ensuring only one billing at most per hour.
+        return  OrderedDates.Aggregate(
+            new Tuple<DateTime, int>(new DateTime(1, 1, 1), 0),
+            (acc, curr) =>
+                (curr < (acc.Item1 + new TimeSpan(1, 0, 0))) 
+                ? new Tuple<DateTime, int>(curr, acc.Item2)
+                : new Tuple<DateTime, int>(curr, acc.Item2 + GetTollFee(curr, vehicle))
+            ).Item2;
     }
 
-    private bool IsTollFreeVehicle(Vehicle vehicle)
+    /**
+    * Proxy method to IsFeeFree on Vehicles
+    * @param vehicle The vehicle to be checked for fee exemptions
+    * @return If the vehicle is exempt from fees.
+    */
+        private bool IsTollFreeVehicle(IVehicle vehicle)
     {
-        if (vehicle == null) return false;
-        String vehicleType = vehicle.GetVehicleType();
-        return vehicleType.Equals(TollFreeVehicles.Motorbike.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Tractor.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Emergency.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Diplomat.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Foreign.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Military.ToString());
+        return vehicle.IsFeeFree();
     }
 
-    public int GetTollFee(DateTime date, Vehicle vehicle)
+    public int GetTollFee(DateTime date, IVehicle vehicle)
     {
+
         if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
-
-        int hour = date.Hour;
-        int minute = date.Minute;
-
-        if (hour == 6 && minute >= 0 && minute <= 29) return 8;
-        else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
-        else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
-        else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
-        else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
-        else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
-        else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
-        else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
-        else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
-        else return 0;
+        //If no period exists, IE it is after the last billable period of the day, it will catch and return 0.
+        try
+        {
+            var Period = FeePeriods.First(period => period.IsWithinPeriod(date));
+            return Period.TollFee;
+        }
+        catch (InvalidOperationException)
+        {
+            return 0;
+        }
     }
 
+    /**
+    * Determines if a given date is Toll Free
+    * Depends on library from https://github.com/tinohager/Nager.Date
+    * @param date The Date to check
+    * @return true if the Date should result in no toll fees
+    */
     private Boolean IsTollFreeDate(DateTime date)
     {
-        int year = date.Year;
-        int month = date.Month;
-        int day = date.Day;
-
-        if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) return true;
-
-        if (year == 2013)
+        if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
         {
-            if (month == 1 && day == 1 ||
-                month == 3 && (day == 28 || day == 29) ||
-                month == 4 && (day == 1 || day == 30) ||
-                month == 5 && (day == 1 || day == 8 || day == 9) ||
-                month == 6 && (day == 5 || day == 6 || day == 21) ||
-                month == 7 ||
-                month == 11 && day == 1 ||
-                month == 12 && (day == 24 || day == 25 || day == 26 || day == 31))
-            {
-                return true;
-            }
+            return true;
         }
-        return false;
-    }
-
-    private enum TollFreeVehicles
-    {
-        Motorbike = 0,
-        Tractor = 1,
-        Emergency = 2,
-        Diplomat = 3,
-        Foreign = 4,
-        Military = 5
+        return DateSystem.IsPublicHoliday(date, CountryCode.SE);
     }
 }
