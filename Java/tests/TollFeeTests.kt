@@ -40,8 +40,8 @@ internal class TollFeeTests {
 
         ).map {
             DynamicTest.dynamicTest("$it") {
-                val calendar = GregorianCalendar(it.year, it.month, it.day, 7, 5)
-                val fee = calculator.getTollFee(normalCar, calendar.time)
+                val date = it.atTime(7, 5)
+                val fee = calculator.getTollFee(normalCar, date)
                 assertEquals(0, fee)
             }
         }
@@ -85,7 +85,13 @@ internal class TollFeeTests {
         CHRISTMAS_EVE(2013, Calendar.DECEMBER, 24),
         CHRISTMAS_DAY(2013, Calendar.DECEMBER, 25),
         BOXING_DAY(2013, Calendar.DECEMBER, 26),
-        NEW_YEAR_EVE(2013, Calendar.DECEMBER, 31)
+        NEW_YEAR_EVE(2013, Calendar.DECEMBER, 31);
+
+        internal fun atTime(hour: Int, minute: Int): Date {
+            val calendar = GregorianCalendar.getInstance()
+            calendar.set(year, month, day, hour, minute)
+            return calendar.time
+        }
     }
 
     private enum class TimeOfDay(internal val hour: Int, internal val minute: Int) {
