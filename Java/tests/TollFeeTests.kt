@@ -20,25 +20,7 @@ internal class TollFeeTests {
     @TestFactory
     fun tollFreeDates(): List<DynamicTest> {
         val normalCar = Car()
-        return listOf(
-                TollFreeDate.NEW_YEARS_DAY,
-                TollFreeDate.MAUNDY_THURSDAY_13,
-                TollFreeDate.GOOD_FRIDAY_13,
-                TollFreeDate.APRIL_FOOL,
-                TollFreeDate.KINGS_BIRTHDAY,
-                TollFreeDate.LABOUR_DAY,
-                TollFreeDate.ASCENSION_EVE_13,
-                TollFreeDate.ASCENSION_DAY_13,
-                TollFreeDate.NATIONAL_DAY_EVE,
-                TollFreeDate.NATIONAL_DAY,
-                TollFreeDate.JULY,
-                TollFreeDate.HALLOWEEN_13,
-                TollFreeDate.CHRISTMAS_EVE,
-                TollFreeDate.CHRISTMAS_DAY,
-                TollFreeDate.BOXING_DAY,
-                TollFreeDate.NEW_YEAR_EVE
-
-        ).map {
+        return TollFreeDate.values().map {
             DynamicTest.dynamicTest("$it") {
                 val date = it.atTime(7, 5)
                 val fee = calculator.getTollFee(normalCar, date)
