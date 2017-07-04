@@ -37,10 +37,10 @@ public class TollCalculator {
 
     public int getTollFee(final Date date, VehicleType vehicle) {
         if (isTollFreeDate(date) || vehicle.isTollFree()) return 0;
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.setTime(date);
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
+
+        TimeOfDay timeOfDay = new TimeOfDay(date);
+        int hour = timeOfDay.hour;
+        int minute = timeOfDay.minute;
 
         if (hour == 6 && minute >= 0 && minute <= 29) return 8;
         else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
