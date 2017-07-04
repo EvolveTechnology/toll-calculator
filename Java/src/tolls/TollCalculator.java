@@ -24,8 +24,7 @@ public class TollCalculator {
         int totalFee = 0;
         int previousFee = 0;
         for (TimeOfDay timeOfDay : passes) {
-            if (day.isTollFree())
-                continue;
+            if (day.isTollFree()) continue;
 
             int nextFee = timeOfDay.getFee();
             if (nextFee == 0) continue;
