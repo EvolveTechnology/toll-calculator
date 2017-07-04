@@ -43,7 +43,7 @@ public class TollCalculator {
         return minutes <= 60;
     }
 
-    public int getTollFee(final Date date, VehicleType vehicle) {
+    private int getTollFee(final Date date, VehicleType vehicle) {
         if (new CalendarDay(date).isTollFree(date) || vehicle.isTollFree()) return 0;
 
         TimeOfDay timeOfDay = new TimeOfDay(date);
