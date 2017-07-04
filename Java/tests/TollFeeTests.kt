@@ -120,4 +120,5 @@ internal class TollFeeTests {
 
 // fix bugs
 //     _13 -> _17 (different dates for different years)
+//     getTollFee() only work if all dates are same-day - otherwise they should not limit to 60
 // refactor code
