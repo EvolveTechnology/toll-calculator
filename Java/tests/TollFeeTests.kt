@@ -13,7 +13,7 @@ internal class TollFeeTests {
     @Test
     @Disabled(value = "This crashes at the moment")
     fun noFeeIfNever() {
-        val fee = calculator.getTollFee(Car())
+        val fee = calculator.getTollFee(VehicleType.CAR)
         assertEquals(0, fee)
     }
 
@@ -22,20 +22,20 @@ internal class TollFeeTests {
         val offToWork = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.SIX_AM)
         val goingHome = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.THREE_PM)
 
-        val fee = calculator.getTollFee(Car(), offToWork, goingHome)
+        val fee = calculator.getTollFee(VehicleType.CAR, offToWork, goingHome)
         assertEquals(21, fee)
     }
 
     @Test
     fun tollFreeForMotorcycles() {
         val date = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.SEVEN_AM)
-        val fee = calculator.getTollFee(Motorbike(), date)
+        val fee = calculator.getTollFee(VehicleType.MOTORBIKE, date)
         assertEquals(0, fee)
     }
 
     @TestFactory
     fun tollFreeDates(): List<DynamicTest> {
-        val normalCar = Car()
+        val normalCar = VehicleType.CAR
         return TollFreeDate.values().map {
             DynamicTest.dynamicTest("$it") {
                 val date = it.atTime(TimeOfDay.SEVEN_AM)
@@ -47,7 +47,7 @@ internal class TollFeeTests {
 
     @TestFactory
     fun feesAtDifferentTimesOfDay(): List<DynamicTest> {
-        val normalCar = Car()
+        val normalCar = VehicleType.CAR
         return mapOf(
                 TimeOfDay.MIDNIGHT to 0,
                 TimeOfDay.SIX_AM to 8,

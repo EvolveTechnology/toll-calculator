@@ -10,7 +10,7 @@ public class TollCalculator {
      * @param dates   - date and time of all passes on one day
      * @return - the total toll fee for that day
      */
-    public int getTollFee(Vehicle vehicle, Date... dates) {
+    public int getTollFee(VehicleType vehicle, Date... dates) {
         Date intervalStart = dates[0];
         int totalFee = 0;
         for (Date date : dates) {
@@ -33,13 +33,13 @@ public class TollCalculator {
         return totalFee;
     }
 
-    private boolean isTollFreeVehicle(Vehicle vehicle) {
+    private boolean isTollFreeVehicle(VehicleType vehicle) {
         if (vehicle == null) return false;
 
-        return vehicle.getType().isTollFree();
+        return vehicle.isTollFree();
     }
 
-    public int getTollFee(final Date date, Vehicle vehicle) {
+    public int getTollFee(final Date date, VehicleType vehicle) {
         if (isTollFreeDate(date) || isTollFreeVehicle(vehicle)) return 0;
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);
