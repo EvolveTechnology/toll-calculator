@@ -16,13 +16,10 @@ public class TollCalculator {
     }
 
     public int getTollFee() {
-        Date[] dates = tollDates.toArray(new Date[tollDates.size()]);
-        if (dates.length == 0) return 0;
-
         Date startOfTheHour = new Date(0);
         int totalFee = 0;
         int previousFee = 0;
-        for (Date date : dates) {
+        for (Date date : tollDates) {
             int nextFee = getTollFee(date);
             if (nextFee == 0) continue;
 
