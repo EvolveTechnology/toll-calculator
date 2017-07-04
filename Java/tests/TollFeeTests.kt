@@ -19,12 +19,8 @@ internal class TollFeeTests {
 
     @Test
     fun multiplePassesAddUp() {
-        val calendar = GregorianCalendar.getInstance()
-
-        calendar.set(2017, Calendar.MARCH, 3, 6, 5)
-        val offToWork = calendar.time
-        calendar.set(2017, Calendar.MARCH, 3, 15, 5)
-        val goingHome = calendar.time
+        val offToWork = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.SIX_AM)
+        val goingHome = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.THREE_PM)
 
         val fee = calculator.getTollFee(Car(), offToWork, goingHome)
         assertEquals(21, fee)
@@ -32,8 +28,8 @@ internal class TollFeeTests {
 
     @Test
     fun tollFreeForMotorcycles() {
-        val calendar = GregorianCalendar(2017, Calendar.MARCH, 3, 7, 5)
-        val fee = calculator.getTollFee(Motorbike(), calendar.time)
+        val date = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.SEVEN_AM)
+        val fee = calculator.getTollFee(Motorbike(), date)
         assertEquals(0, fee)
     }
 
@@ -64,10 +60,24 @@ internal class TollFeeTests {
                 TimeOfDay.SIX_PM to 8
         ).map {
             DynamicTest.dynamicTest("${it.key}") {
-                val calendar = GregorianCalendar(2017, Calendar.MARCH, 3, it.key.hour, it.key.minute)
-                val fee = calculator.getTollFee(normalCar, calendar.time)
+                val date = PaidDate.ARBITRARY_DATE.atTime(it.key)
+                val fee = calculator.getTollFee(normalCar, date)
                 assertEquals(it.value, fee)
             }
+        }
+    }
+
+    private enum class PaidDate(val year: Int, val month: Int, val day: Int) {
+        ARBITRARY_DATE(2017, Calendar.MARCH, 3);
+
+        fun atTime(hour: Int, minute: Int): Date {
+            val calendar = GregorianCalendar.getInstance()
+            calendar.set(year, month, day, hour, minute)
+            return calendar.time
+        }
+
+        fun atTime(time: TimeOfDay): Date {
+            return atTime(time.hour, time.minute)
         }
     }
 
