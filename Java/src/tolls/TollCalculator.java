@@ -5,12 +5,18 @@ import java.util.concurrent.*;
 
 public class TollCalculator {
     private final VehicleType vehicleType;
+    private final List<Date> tollDates = new ArrayList<>();
 
     public TollCalculator(VehicleType vehicleType) {
         this.vehicleType = vehicleType;
     }
 
-    public int getTollFee(Date... dates) {
+    public void passToll(Date date) {
+        tollDates.add(date);
+    }
+
+    public int getTollFee() {
+        Date[] dates = tollDates.toArray(new Date[tollDates.size()]);
         if (dates.length == 0) return 0;
 
         Date startOfTheHour = new Date(0);
