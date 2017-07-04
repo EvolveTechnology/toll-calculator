@@ -42,7 +42,7 @@ internal class TollFeeTests {
         val normalCar = Car()
         return TollFreeDate.values().map {
             DynamicTest.dynamicTest("$it") {
-                val date = it.atTime(7, 5)
+                val date = it.atTime(TimeOfDay.SEVEN_AM)
                 val fee = calculator.getTollFee(normalCar, date)
                 assertEquals(0, fee)
             }
@@ -89,10 +89,14 @@ internal class TollFeeTests {
         BOXING_DAY(2013, Calendar.DECEMBER, 26),
         NEW_YEAR_EVE(2013, Calendar.DECEMBER, 31);
 
-        internal fun atTime(hour: Int, minute: Int): Date {
+        fun atTime(hour: Int, minute: Int): Date {
             val calendar = GregorianCalendar.getInstance()
             calendar.set(year, month, day, hour, minute)
             return calendar.time
+        }
+
+        fun atTime(time: TimeOfDay): Date {
+            return atTime(time.hour, time.minute)
         }
     }
 
