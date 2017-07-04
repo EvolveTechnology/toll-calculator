@@ -67,21 +67,32 @@ internal class TollFeeTests {
         }
     }
 
-    private enum class PaidDate(val year: Int, val month: Int, val day: Int) {
-        ARBITRARY_DATE(2017, Calendar.MARCH, 3);
-
-        fun atTime(hour: Int, minute: Int): Date {
-            val calendar = GregorianCalendar.getInstance()
-            calendar.set(year, month, day, hour, minute)
-            return calendar.time
-        }
+    private interface TollDate {
+        var year: Int get
+        var month: Int get
+        var day: Int get
 
         fun atTime(time: TimeOfDay): Date {
-            return atTime(time.hour, time.minute)
+            val calendar = GregorianCalendar.getInstance()
+            calendar.set(year, month, day, time.hour, time.minute)
+            return calendar.time
         }
     }
 
-    private enum class TollFreeDate(val year: Int, val month: Int, val day: Int) {
+    // Hmm... These properties can be set. (Don't do that!)
+    // Kotlin doesn't allow `val` to implement `var ... get` (as Swift would).
+    // So the question is does code reuse trump enforced immutability?
+    private enum class PaidDate(
+            override var year: Int,
+            override var month: Int,
+            override var day: Int) : TollDate {
+        ARBITRARY_DATE(2017, Calendar.MARCH, 3);
+    }
+
+    private enum class TollFreeDate(
+            override var year: Int,
+            override var month: Int,
+            override var day: Int) : TollDate {
         NEW_YEARS_DAY(2013, Calendar.JANUARY, 1),
         MAUNDY_THURSDAY_13(2013, Calendar.MARCH, 28),
         GOOD_FRIDAY_13(2013, Calendar.MARCH, 29),
@@ -98,16 +109,6 @@ internal class TollFeeTests {
         CHRISTMAS_DAY(2013, Calendar.DECEMBER, 25),
         BOXING_DAY(2013, Calendar.DECEMBER, 26),
         NEW_YEAR_EVE(2013, Calendar.DECEMBER, 31);
-
-        fun atTime(hour: Int, minute: Int): Date {
-            val calendar = GregorianCalendar.getInstance()
-            calendar.set(year, month, day, hour, minute)
-            return calendar.time
-        }
-
-        fun atTime(time: TimeOfDay): Date {
-            return atTime(time.hour, time.minute)
-        }
     }
 
     private enum class TimeOfDay(internal val hour: Int, internal val minute: Int) {
