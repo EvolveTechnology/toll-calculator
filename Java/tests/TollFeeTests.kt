@@ -17,6 +17,19 @@ internal class TollFeeTests {
         assertEquals(0, fee)
     }
 
+    @Test
+    fun multiplePassesAddUp() {
+        val calendar = GregorianCalendar.getInstance()
+
+        calendar.set(2017, Calendar.MARCH, 3, 6, 5)
+        val offToWork = calendar.time
+        calendar.set(2017, Calendar.MARCH, 3, 15, 5)
+        val goingHome = calendar.time
+
+        val fee = calculator.getTollFee(Car(), offToWork, goingHome)
+        assertEquals(21, fee)
+    }
+
     @TestFactory
     fun tollFreeDates(): List<DynamicTest> {
         val normalCar = Car()
