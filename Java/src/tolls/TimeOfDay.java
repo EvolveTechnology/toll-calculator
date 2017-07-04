@@ -21,30 +21,32 @@ class TimeOfDay {
     }
 
     int getFee() {
-        switch (hour) {
-            case 6:
-                return minute < 30 ? 8 : 13;
-            case 7:
-                return 18;
-            case 8:
-                return minute < 30 ? 13 : 8;
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-                return 8;
-            case 15:
-                return minute < 30 ? 13 : 18;
-            case 16:
-                return 18;
-            case 17:
-                return 13;
-            case 18:
-                return minute < 30 ? 8 : 0;
-            default:
-                return 0;
+        if (isBefore(6, 0)) {
+            return 0;
+        } else if (isBefore(6, 30)) {
+            return 8;
+        } else if (isBefore(7, 0)) {
+            return 13;
+        } else if (isBefore(8, 0)) {
+            return 18;
+        } else if (isBefore(8, 30)) {
+            return 13;
+        } else if (isBefore(15, 0)) {
+            return 8;
+        } else if (isBefore(15, 30)) {
+            return 13;
+        } else if (isBefore(17, 0)) {
+            return 18;
+        } else if (isBefore(18, 0)) {
+            return 13;
+        } else if (isBefore(18, 30)) {
+            return 8;
+        } else {
+            return 0;
         }
+    }
+
+    private boolean isBefore(int hour, int minute) {
+        return this.hour < hour || (this.hour == hour && this.minute < minute);
     }
 }
