@@ -16,11 +16,16 @@ public class TollCalculator {
     }
 
     public int getTollFee() {
+        if (vehicleType.isTollFree()) return 0;
+
         Date startOfTheHour = new Date(0);
         int totalFee = 0;
         int previousFee = 0;
         for (Date date : tollDates) {
-            int nextFee = getTollFee(date);
+            if (new CalendarDay(date).isTollFree())
+                continue;
+
+            int nextFee = new TimeOfDay(date).getFee();
             if (nextFee == 0) continue;
 
             if (isSameHour(startOfTheHour, date)) {
@@ -44,10 +49,4 @@ public class TollCalculator {
         return minutes <= 60;
     }
 
-    private int getTollFee(final Date date) {
-        if (new CalendarDay(date).isTollFree(date) || vehicleType.isTollFree()) return 0;
-
-        TimeOfDay timeOfDay = new TimeOfDay(date);
-        return timeOfDay.getFee();
-    }
 }

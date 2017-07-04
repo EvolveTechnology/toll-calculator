@@ -23,7 +23,7 @@ class CalendarDay {
     }
 
     @NotNull
-    Boolean isTollFree(Date date) {
+    Boolean isTollFree() {
         if (weekday == Calendar.SATURDAY || weekday == Calendar.SUNDAY) return true;
 
         if (year == 2013) {
