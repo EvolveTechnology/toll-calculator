@@ -5,10 +5,12 @@ import java.util.concurrent.*;
 
 public class TollCalculator {
     private final VehicleType vehicleType;
+    private final CalendarDay day;
     private final List<Date> tollDates = new ArrayList<>();
 
-    public TollCalculator(VehicleType vehicleType) {
+    public TollCalculator(VehicleType vehicleType, CalendarDay day) {
         this.vehicleType = vehicleType;
+        this.day = day;
     }
 
     public void passToll(Date date) {
@@ -22,7 +24,7 @@ public class TollCalculator {
         int totalFee = 0;
         int previousFee = 0;
         for (Date date : tollDates) {
-            if (new CalendarDay(date).isTollFree())
+            if (day.isTollFree())
                 continue;
 
             int nextFee = new TimeOfDay(date).getFee();
