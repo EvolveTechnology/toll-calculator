@@ -33,12 +33,12 @@ internal class TollFeeTests {
     }
 
     @Test
-    fun manyPassesInOneHourCostSomeWeirdFee() {
+    fun manyPassesInOneHourCostOnlyOneFee() {
         val fee = calculator.getTollFee(VehicleType.CAR,
                 PaidDate.ARBITRARY_DATE.atTime(6, 6),  //  8 SEK
                 PaidDate.ARBITRARY_DATE.atTime(6, 32), // 13 SEK
                 PaidDate.ARBITRARY_DATE.atTime(7, 3))  // 18 SEK
-        assertEquals(13 - 8 + 18, fee) // must be wrong
+        assertEquals(18, fee)
     }
 
     @Test

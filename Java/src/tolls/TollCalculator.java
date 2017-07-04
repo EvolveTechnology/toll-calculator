@@ -15,26 +15,31 @@ public class TollCalculator {
     public int getTollFee(VehicleType vehicle, Date... dates) {
         if (dates.length == 0) return 0;
 
-        Date intervalStart = dates[0];
+        Date startOfTheHour = dates[0]; // assumed to be sorted
         int totalFee = 0;
+        int previousFee = 0;
         for (Date date : dates) {
             int nextFee = getTollFee(date, vehicle);
-            int tempFee = getTollFee(intervalStart, vehicle);
 
-            TimeUnit timeUnit = TimeUnit.MINUTES;
-            long diffInMillies = date.getTime() - intervalStart.getTime();
-            long minutes = timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
-
-            if (minutes <= 60) {
-                if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee >= tempFee) tempFee = nextFee;
-                totalFee += tempFee;
+            if (isSameHour(startOfTheHour, date)) {
+                if (nextFee >= previousFee)
+                    totalFee += nextFee - previousFee;
+                previousFee = nextFee;
             } else {
+                startOfTheHour = date;
                 totalFee += nextFee;
+                previousFee = 0;
             }
         }
         if (totalFee > 60) totalFee = 60;
         return totalFee;
+    }
+
+    private boolean isSameHour(Date startOfTheHour, Date date) {
+        TimeUnit timeUnit = TimeUnit.MINUTES;
+        long diffInMillies = date.getTime() - startOfTheHour.getTime();
+        long minutes = timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        return minutes <= 60;
     }
 
     public int getTollFee(final Date date, VehicleType vehicle) {
