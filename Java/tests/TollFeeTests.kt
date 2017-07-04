@@ -30,6 +30,13 @@ internal class TollFeeTests {
         assertEquals(21, fee)
     }
 
+    @Test
+    fun tollFreeForMotorcycles() {
+        val calendar = GregorianCalendar(2017, Calendar.MARCH, 3, 7, 5)
+        val fee = calculator.getTollFee(Motorbike(), calendar.time)
+        assertEquals(0, fee)
+    }
+
     @TestFactory
     fun tollFreeDates(): List<DynamicTest> {
         val normalCar = Car()
