@@ -10,46 +10,46 @@ class CalendarDay {
     private final int day;
     private final int weekday;
 
+    private final HolidayCalendar holidayCalendar;
+
     /**
      * @param year  The year
      * @param month One of the Calendar.MONTH_NAME constants
      * @param day   The number of the day in the month
+     * @param holidayCalendar
      */
-    CalendarDay(int year, int month, int day) {
+    CalendarDay(int year, int month, int day, HolidayCalendar holidayCalendar) {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.set(year, month, day);
         this.year = year;
         this.month = month;
         this.day = day;
         this.weekday = calendar.get(Calendar.DAY_OF_WEEK);
+        this.holidayCalendar = holidayCalendar;
     }
 
     boolean isTollFree() {
-        if (weekday == Calendar.SATURDAY || weekday == Calendar.SUNDAY) return true;
+        return isWeekend() ||
+                isFixedHoliday() ||
+                holidayCalendar.isHoliday(year, month, day);
+    }
 
-        if (year == 2013) {
-            if (month == Calendar.JANUARY && day == 1 ||
-                    month == Calendar.MARCH && (day == 28 || day == 29) ||
-                    month == Calendar.APRIL && (day == 1 || day == 30) ||
-                    month == Calendar.MAY && (day == 1 || day == 8 || day == 9) ||
-                    month == Calendar.JUNE && (day == 5 || day == 6 || day == 21) ||
-                    month == Calendar.JULY ||
-                    month == Calendar.NOVEMBER && day == 1 ||
-                    month == Calendar.DECEMBER && (day == 24 || day == 25 || day == 26 || day == 31)) {
-                return true;
-            }
-        } else {
-            if (month == Calendar.JANUARY && day == 1 ||
-                    month == Calendar.MARCH && (day == 28 || day == 29) ||
-                    month == Calendar.APRIL && (day == 1 || day == 13 || day == 14 || day == 30) ||
-                    month == Calendar.MAY && (day == 1 || day == 8 || day == 9 || day == 24 || day == 25) ||
-                    month == Calendar.JUNE && (day == 5 || day == 6 || day == 21) ||
-                    month == Calendar.JULY ||
-                    month == Calendar.NOVEMBER && day == 1 ||
-                    month == Calendar.DECEMBER && (day == 24 || day == 25 || day == 26 || day == 31)) {
-                return true;
-            }
-        }
-        return false;
+    private boolean isWeekend() {
+        return weekday == Calendar.SATURDAY || weekday == Calendar.SUNDAY;
+    }
+
+    private boolean isFixedHoliday() {
+        return month == Calendar.JANUARY && day == 1 ||
+                month == Calendar.APRIL && (day == 1 || day == 30) ||
+                month == Calendar.MAY && day == 1 ||
+                month == Calendar.JUNE && (day == 5 || day == 6) ||
+                month == Calendar.JULY ||
+                month == Calendar.NOVEMBER && day == 1 ||
+                month == Calendar.DECEMBER && (day == 24 || day == 25 || day == 26 || day == 31);
+    }
+
+    @Override
+    public String toString() {
+        return year + "-" + (month + 1) + "-" + day;
     }
 }

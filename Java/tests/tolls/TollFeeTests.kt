@@ -1,6 +1,7 @@
 package tolls
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
@@ -10,7 +11,7 @@ internal class TollFeeTests {
 
     @Test
     fun noFeeIfNeverPassed() {
-        val calculator = TollCalculator(VehicleType.CAR, CalendarDay(2017, Calendar.MARCH, 3))
+        val calculator = TollCalculator(VehicleType.CAR, CalendarDay(2017, Calendar.MARCH, 3, SwedishCalendar()))
         val fee = calculator.tollFee
         assertEquals(0, fee)
     }
@@ -83,7 +84,7 @@ internal class TollFeeTests {
     }
 
     @TestFactory
-    fun tollFreeDates(): List<DynamicTest> {
+    fun tollFreeOnFixedHolidays(): List<DynamicTest> {
         return TollFreeDate.values().map {
             DynamicTest.dynamicTest("$it") {
                 val calculator = TollCalculator(VehicleType.CAR, it.calendarDay)
@@ -93,6 +94,24 @@ internal class TollFeeTests {
                 assertEquals(0, fee)
             }
         }
+    }
+
+    @Test
+    fun tollFreeOnHolidays() {
+        val calculator = TollCalculator(VehicleType.CAR, CalendarDay(2017, Calendar.JUNE, 20, HolidayCalendar { _, _, _ -> true }))
+        calculator.passToll(TimeOfDay(7, 0))
+
+        val fee = calculator.tollFee
+        assertEquals(0, fee)
+    }
+
+    @Test
+    fun notTollFreeOnNormalDays() {
+        val calculator = TollCalculator(VehicleType.CAR, CalendarDay(2017, Calendar.JUNE, 20, HolidayCalendar { _, _, _ -> false }))
+        calculator.passToll(TimeOfDay(7, 0))
+
+        val fee = calculator.tollFee
+        assertNotEquals(0, fee)
     }
 
     @TestFactory
@@ -123,7 +142,7 @@ internal class TollFeeTests {
         var month: Int get
         var day: Int get
 
-        val calendarDay: CalendarDay get() = CalendarDay(year, month, day)
+        val calendarDay: CalendarDay get() = CalendarDay(year, month, day, SwedishCalendar())
     }
 
     // Hmm... These properties can be set. (Don't do that!)
@@ -141,13 +160,9 @@ internal class TollFeeTests {
             override var month: Int,
             override var day: Int) : TollDate {
         NEW_YEARS_DAY(2013, Calendar.JANUARY, 1),
-        MAUNDY_THURSDAY_13(2013, Calendar.MARCH, 28),
-        GOOD_FRIDAY_13(2013, Calendar.MARCH, 29),
         APRIL_FOOL(2013, Calendar.APRIL, 1),
         KINGS_BIRTHDAY(2013, Calendar.APRIL, 30),
         LABOUR_DAY(2013, Calendar.MAY, 1),
-        ASCENSION_EVE_13(2013, Calendar.MAY, 8),
-        ASCENSION_DAY_13(2013, Calendar.MAY, 9),
         NATIONAL_DAY_EVE(2013, Calendar.JUNE, 5),
         NATIONAL_DAY(2013, Calendar.JUNE, 6),
         JULY(2013, Calendar.JULY, 9),
@@ -156,10 +171,6 @@ internal class TollFeeTests {
         CHRISTMAS_DAY(2013, Calendar.DECEMBER, 25),
         BOXING_DAY(2013, Calendar.DECEMBER, 26),
         NEW_YEARS_EVE(2013, Calendar.DECEMBER, 31),
-        MAUNDY_THURSDAY_17(2017, Calendar.APRIL, 13),
-        GOOD_FRIDAY_17(2017, Calendar.APRIL, 14),
-        ASCENSION_EVE_17(2017, Calendar.MAY, 24),
-        ASCENSION_DAY_17(2017, Calendar.MAY, 25),
         SOME_SATURDAY(2017, Calendar.JUNE, 10),
         SOME_SUNDAY(2017, Calendar.JUNE, 11),
     }
