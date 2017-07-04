@@ -4,22 +4,20 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class TollCalculator {
+    private final VehicleType vehicleType;
 
-    /**
-     * Calculate the total toll fee for one day
-     *
-     * @param vehicle - the vehicle
-     * @param dates   - date and time of all passes on one day
-     * @return - the total toll fee for that day
-     */
-    public int getTollFee(VehicleType vehicle, Date... dates) {
+    public TollCalculator(VehicleType vehicleType) {
+        this.vehicleType = vehicleType;
+    }
+
+    public int getTollFee(Date... dates) {
         if (dates.length == 0) return 0;
 
         Date startOfTheHour = new Date(0);
         int totalFee = 0;
         int previousFee = 0;
         for (Date date : dates) {
-            int nextFee = getTollFee(date, vehicle);
+            int nextFee = getTollFee(date);
             if (nextFee == 0) continue;
 
             if (isSameHour(startOfTheHour, date)) {
@@ -43,8 +41,8 @@ public class TollCalculator {
         return minutes <= 60;
     }
 
-    private int getTollFee(final Date date, VehicleType vehicle) {
-        if (new CalendarDay(date).isTollFree(date) || vehicle.isTollFree()) return 0;
+    private int getTollFee(final Date date) {
+        if (new CalendarDay(date).isTollFree(date) || vehicleType.isTollFree()) return 0;
 
         TimeOfDay timeOfDay = new TimeOfDay(date);
         return timeOfDay.getFee();

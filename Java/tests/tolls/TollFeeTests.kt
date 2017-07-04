@@ -7,18 +7,18 @@ import org.junit.jupiter.api.TestFactory
 import java.util.*
 
 internal class TollFeeTests {
-    private val calculator = TollCalculator()
 
     @Test
     fun noFeeIfNeverPassed() {
-        val fee = calculator.getTollFee(VehicleType.CAR)
+        val calculator = TollCalculator(VehicleType.CAR)
+        val fee = calculator.getTollFee()
         assertEquals(0, fee)
     }
 
     @Test
     fun multiplePassesAddUp() {
-
-        val fee = calculator.getTollFee(VehicleType.CAR,
+        val calculator = TollCalculator(VehicleType.CAR)
+        val fee = calculator.getTollFee(
                 PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 0)),  //  8 SEK
                 PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(15, 0))) // 13 SEK
         assertEquals(21, fee)
@@ -26,7 +26,8 @@ internal class TollFeeTests {
 
     @Test
     fun twoPassesInOneHourCostOnlyOneFee() {
-        val fee = calculator.getTollFee(VehicleType.CAR,
+        val calculator = TollCalculator(VehicleType.CAR)
+        val fee = calculator.getTollFee(
                 PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 5)), // 13 SEK
                 PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(7, 4))) // 18 SEK
         assertEquals(18, fee)
@@ -34,7 +35,8 @@ internal class TollFeeTests {
 
     @Test
     fun manyPassesInOneHourCostOnlyOneFee() {
-        val fee = calculator.getTollFee(VehicleType.CAR,
+        val calculator = TollCalculator(VehicleType.CAR)
+        val fee = calculator.getTollFee(
                 PaidDate.ARBITRARY_DATE.atTime(6, 6),  //  8 SEK
                 PaidDate.ARBITRARY_DATE.atTime(6, 32), // 13 SEK
                 PaidDate.ARBITRARY_DATE.atTime(7, 3))  // 18 SEK
@@ -43,7 +45,8 @@ internal class TollFeeTests {
 
     @Test
     fun freePassesAreIgnored() {
-        val fee = calculator.getTollFee(VehicleType.CAR,
+        val calculator = TollCalculator(VehicleType.CAR)
+        val fee = calculator.getTollFee(
                 PaidDate.ARBITRARY_DATE.atTime(5, 56), // free
                 PaidDate.ARBITRARY_DATE.atTime(6, 29), //  8 SEK
                 PaidDate.ARBITRARY_DATE.atTime(7, 10)) // 18 SEK
@@ -52,18 +55,19 @@ internal class TollFeeTests {
 
     @Test
     fun tollFreeForMotorcycles() {
+        val calculator = TollCalculator(VehicleType.MOTORBIKE)
         val date = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(7, 0))
-        val fee = calculator.getTollFee(VehicleType.MOTORBIKE, date)
+        val fee = calculator.getTollFee(date)
         assertEquals(0, fee)
     }
 
     @TestFactory
     fun tollFreeDates(): List<DynamicTest> {
-        val normalCar = VehicleType.CAR
+        val calculator = TollCalculator(VehicleType.CAR)
         return TollFreeDate.values().map {
             DynamicTest.dynamicTest("$it") {
                 val date = it.atTime(TimeOfDay(7, 0))
-                val fee = calculator.getTollFee(normalCar, date)
+                val fee = calculator.getTollFee(date)
                 assertEquals(0, fee)
             }
         }
@@ -71,7 +75,7 @@ internal class TollFeeTests {
 
     @TestFactory
     fun feesAtDifferentTimesOfDay(): List<DynamicTest> {
-        val normalCar = VehicleType.CAR
+        val calculator = TollCalculator(VehicleType.CAR)
         return mapOf(
                 TimeOfDay(0, 0) to 0,
                 TimeOfDay(6, 0) to 8,
@@ -85,7 +89,7 @@ internal class TollFeeTests {
         ).map {
             DynamicTest.dynamicTest("${it.key}") {
                 val date = PaidDate.ARBITRARY_DATE.atTime(it.key)
-                val fee = calculator.getTollFee(normalCar, date)
+                val fee = calculator.getTollFee(date)
                 assertEquals(it.value, fee)
             }
         }
@@ -137,11 +141,14 @@ internal class TollFeeTests {
         CHRISTMAS_DAY(2013, Calendar.DECEMBER, 25),
         BOXING_DAY(2013, Calendar.DECEMBER, 26),
         NEW_YEARS_EVE(2013, Calendar.DECEMBER, 31),
+        //MAUNDY_THURSDAY_17(2017, Calendar.APRIL, 14),
+        //GOOD_FRIDAY_17(2017, Calendar.APRIL, 15),
+        //ASCENSION_EVE_17(2017, Calendar.MAY, 24),
+        //ASCENSION_DAY_17(2017, Calendar.MAY, 25),
         SOME_SATURDAY(2017, Calendar.JUNE, 10),
         SOME_SUNDAY(2017, Calendar.JUNE, 11),
     }
 }
 
 // fix bugs
-//     _13 -> _17 (different dates for different years)
 //     getTollFee() only work if all dates are same-day - otherwise they should not limit to 60
