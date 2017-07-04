@@ -38,8 +38,8 @@ public class TollCalculator {
 
     private boolean isSameHour(Date startOfTheHour, Date date) {
         TimeUnit timeUnit = TimeUnit.MINUTES;
-        long diffInMillies = date.getTime() - startOfTheHour.getTime();
-        long minutes = timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        long diffInMilliseconds = date.getTime() - startOfTheHour.getTime();
+        long minutes = timeUnit.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
         return minutes <= 60;
     }
 
