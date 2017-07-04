@@ -18,8 +18,8 @@ internal class TollFeeTests {
     @Test
     fun multiplePassesAddUp() {
         val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay)
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 0)))  //  8 SEK
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(15, 0))) // 13 SEK
+        calculator.passToll(TimeOfDay(6, 0))  //  8 SEK
+        calculator.passToll(TimeOfDay(15, 0)) // 13 SEK
 
         val fee = calculator.tollFee
         assertEquals(21, fee)
@@ -28,14 +28,14 @@ internal class TollFeeTests {
     @Test
     fun maxesOutAt60SEK() {
         val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay)
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 30)))  // 13 SEK
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(7, 31)))  // 18 SEK
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(8, 32)))  //  8 SEK
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(9, 33)))  //  8 SEK
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(10, 34))) //  8 SEK
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(11, 35))) //  8 SEK
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(12, 36))) //  8 SEK
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(15, 0)))  // 13 SEK
+        calculator.passToll(TimeOfDay(6, 30))  // 13 SEK
+        calculator.passToll(TimeOfDay(7, 31))  // 18 SEK
+        calculator.passToll(TimeOfDay(8, 32))  //  8 SEK
+        calculator.passToll(TimeOfDay(9, 33))  //  8 SEK
+        calculator.passToll(TimeOfDay(10, 34)) //  8 SEK
+        calculator.passToll(TimeOfDay(11, 35)) //  8 SEK
+        calculator.passToll(TimeOfDay(12, 36)) //  8 SEK
+        calculator.passToll(TimeOfDay(15, 0))  // 13 SEK
 
         val fee = calculator.tollFee
         assertEquals(60, fee)
@@ -44,8 +44,8 @@ internal class TollFeeTests {
     @Test
     fun twoPassesInOneHourCostOnlyOneFee() {
         val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay)
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 5)))  // 13 SEK
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(7, 4)))  // 18 SEK
+        calculator.passToll(TimeOfDay(6, 5))  // 13 SEK
+        calculator.passToll(TimeOfDay(7, 4))  // 18 SEK
 
         val fee = calculator.tollFee
         assertEquals(18, fee)
@@ -54,9 +54,9 @@ internal class TollFeeTests {
     @Test
     fun manyPassesInOneHourCostOnlyOneFee() {
         val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay)
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 6)))  //  8 SEK
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 32))) // 13 SEK
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(7, 3)))  // 18 SEK
+        calculator.passToll(TimeOfDay(6, 6))  //  8 SEK
+        calculator.passToll(TimeOfDay(6, 32)) // 13 SEK
+        calculator.passToll(TimeOfDay(7, 3))  // 18 SEK
 
         val fee = calculator.tollFee
         assertEquals(18, fee)
@@ -65,9 +65,9 @@ internal class TollFeeTests {
     @Test
     fun freePassesAreIgnored() {
         val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay)
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(5, 56))) // free
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 29))) //  8 SEK
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(7, 10))) // 18 SEK
+        calculator.passToll(TimeOfDay(5, 56)) // free
+        calculator.passToll(TimeOfDay(6, 29)) //  8 SEK
+        calculator.passToll(TimeOfDay(7, 10)) // 18 SEK
 
         val fee = calculator.tollFee
         assertEquals(18, fee)
@@ -76,7 +76,7 @@ internal class TollFeeTests {
     @Test
     fun tollFreeForMotorcycles() {
         val calculator = TollCalculator(VehicleType.MOTORBIKE, PaidDate.ARBITRARY_DATE.calendarDay)
-        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(7, 0)))
+        calculator.passToll(TimeOfDay(7, 0))
 
         val fee = calculator.getTollFee()
         assertEquals(0, fee)
@@ -87,7 +87,7 @@ internal class TollFeeTests {
         return TollFreeDate.values().map {
             DynamicTest.dynamicTest("$it") {
                 val calculator = TollCalculator(VehicleType.CAR, it.calendarDay)
-                calculator.passToll(it.atTime(TimeOfDay(7, 0)))
+                calculator.passToll(TimeOfDay(7, 0))
 
                 val fee = calculator.getTollFee()
                 assertEquals(0, fee)
@@ -110,7 +110,7 @@ internal class TollFeeTests {
         ).map {
             DynamicTest.dynamicTest("${it.key}") {
                 val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay)
-                calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(it.key))
+                calculator.passToll(it.key)
 
                 val fee = calculator.tollFee
                 assertEquals(it.value, fee)
