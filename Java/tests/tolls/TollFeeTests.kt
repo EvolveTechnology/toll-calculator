@@ -110,7 +110,9 @@ internal class TollFeeTests {
         CHRISTMAS_EVE(2013, Calendar.DECEMBER, 24),
         CHRISTMAS_DAY(2013, Calendar.DECEMBER, 25),
         BOXING_DAY(2013, Calendar.DECEMBER, 26),
-        NEW_YEAR_EVE(2013, Calendar.DECEMBER, 31);
+        NEW_YEAR_EVE(2013, Calendar.DECEMBER, 31),
+        SOME_SATURDAY(2017, Calendar.JUNE, 10),
+        SOME_SUNDAY(2017, Calendar.JUNE, 11),
     }
 
     private enum class TimeOfDay(internal val hour: Int, internal val minute: Int) {
