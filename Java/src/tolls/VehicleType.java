@@ -1,3 +1,5 @@
+package tolls;
+
 enum VehicleType {
     MOTORBIKE("Motorbike", true),
     TRACTOR("Tractor", true),
