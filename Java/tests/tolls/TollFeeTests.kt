@@ -77,7 +77,7 @@ internal class TollFeeTests {
                 TimeOfDay(6, 0) to 8,
                 TimeOfDay(7, 0) to 18,
                 TimeOfDay(8, 0) to 13,
-                TimeOfDay(12, 0) to 0,
+                TimeOfDay(12, 0) to 8,
                 TimeOfDay(15, 0) to 13,
                 TimeOfDay(16, 0) to 18,
                 TimeOfDay(17, 0) to 13,
