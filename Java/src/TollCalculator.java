@@ -33,14 +33,8 @@ public class TollCalculator {
         return totalFee;
     }
 
-    private boolean isTollFreeVehicle(VehicleType vehicle) {
-        if (vehicle == null) return false;
-
-        return vehicle.isTollFree();
-    }
-
     public int getTollFee(final Date date, VehicleType vehicle) {
-        if (isTollFreeDate(date) || isTollFreeVehicle(vehicle)) return 0;
+        if (isTollFreeDate(date) || vehicle.isTollFree()) return 0;
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
