@@ -78,7 +78,7 @@ internal class TollFeeTests {
         val calculator = TollCalculator(VehicleType.MOTORBIKE, PaidDate.ARBITRARY_DATE.calendarDay)
         calculator.passToll(TimeOfDay(7, 0))
 
-        val fee = calculator.getTollFee()
+        val fee = calculator.tollFee
         assertEquals(0, fee)
     }
 
@@ -89,7 +89,7 @@ internal class TollFeeTests {
                 val calculator = TollCalculator(VehicleType.CAR, it.calendarDay)
                 calculator.passToll(TimeOfDay(7, 0))
 
-                val fee = calculator.getTollFee()
+                val fee = calculator.tollFee
                 assertEquals(0, fee)
             }
         }
@@ -122,16 +122,6 @@ internal class TollFeeTests {
         var year: Int get
         var month: Int get
         var day: Int get
-
-        fun atTime(hour: Int, minute: Int): Date {
-            val calendar = GregorianCalendar.getInstance()
-            calendar.set(year, month, day, hour, minute)
-            return calendar.time
-        }
-
-        fun atTime(time: TimeOfDay): Date {
-            return atTime(time.hour, time.minute)
-        }
 
         val calendarDay: CalendarDay get() = CalendarDay(year, month, day)
     }
@@ -174,6 +164,3 @@ internal class TollFeeTests {
         SOME_SUNDAY(2017, Calendar.JUNE, 11),
     }
 }
-
-// fix bugs
-//     getTollFee() only work if all dates are same-day - otherwise they should not limit to 60
