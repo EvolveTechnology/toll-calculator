@@ -5,14 +5,19 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 class TimeOfDay {
-    private final int hour;
-    private final int minute;
+    final int hour;
+    final int minute;
 
     TimeOfDay(Date date) {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);
         this.hour = calendar.get(Calendar.HOUR_OF_DAY);
         this.minute = calendar.get(Calendar.MINUTE);
+    }
+
+    public TimeOfDay(int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
     }
 
     int getFee() {

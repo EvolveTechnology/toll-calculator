@@ -17,8 +17,8 @@ internal class TollFeeTests {
 
     @Test
     fun multiplePassesAddUp() {
-        val offToWork = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.SIX_AM)
-        val goingHome = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.THREE_PM)
+        val offToWork = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 0))
+        val goingHome = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(15, 0))
 
         val fee = calculator.getTollFee(VehicleType.CAR, offToWork, goingHome)
         assertEquals(21, fee)
@@ -27,8 +27,8 @@ internal class TollFeeTests {
     @Test
     fun twoPassesInOneHourCostOnlyOneFee() {
         val fee = calculator.getTollFee(VehicleType.CAR,
-                PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.SIX_AM),
-                PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.SEVEN_AM))
+                PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 5)),
+                PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(7, 4)))
         assertEquals(18, fee)
     }
 
@@ -52,7 +52,7 @@ internal class TollFeeTests {
 
     @Test
     fun tollFreeForMotorcycles() {
-        val date = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.SEVEN_AM)
+        val date = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(7, 0))
         val fee = calculator.getTollFee(VehicleType.MOTORBIKE, date)
         assertEquals(0, fee)
     }
@@ -62,7 +62,7 @@ internal class TollFeeTests {
         val normalCar = VehicleType.CAR
         return TollFreeDate.values().map {
             DynamicTest.dynamicTest("$it") {
-                val date = it.atTime(TimeOfDay.SEVEN_AM)
+                val date = it.atTime(TimeOfDay(7, 0))
                 val fee = calculator.getTollFee(normalCar, date)
                 assertEquals(0, fee)
             }
@@ -73,15 +73,15 @@ internal class TollFeeTests {
     fun feesAtDifferentTimesOfDay(): List<DynamicTest> {
         val normalCar = VehicleType.CAR
         return mapOf(
-                TimeOfDay.MIDNIGHT to 0,
-                TimeOfDay.SIX_AM to 8,
-                TimeOfDay.SEVEN_AM to 18,
-                TimeOfDay.EIGHT_AM to 13,
-                TimeOfDay.NOON to 0,
-                TimeOfDay.THREE_PM to 13,
-                TimeOfDay.FOUR_PM to 18,
-                TimeOfDay.FIVE_PM to 13,
-                TimeOfDay.SIX_PM to 8
+                TimeOfDay(0, 0) to 0,
+                TimeOfDay(6, 0) to 8,
+                TimeOfDay(7, 0) to 18,
+                TimeOfDay(8, 0) to 13,
+                TimeOfDay(12, 0) to 0,
+                TimeOfDay(15, 0) to 13,
+                TimeOfDay(16, 0) to 18,
+                TimeOfDay(17, 0) to 13,
+                TimeOfDay(18, 0) to 8
         ).map {
             DynamicTest.dynamicTest("${it.key}") {
                 val date = PaidDate.ARBITRARY_DATE.atTime(it.key)
@@ -139,12 +139,6 @@ internal class TollFeeTests {
         NEW_YEAR_EVE(2013, Calendar.DECEMBER, 31),
         SOME_SATURDAY(2017, Calendar.JUNE, 10),
         SOME_SUNDAY(2017, Calendar.JUNE, 11),
-    }
-
-    private enum class TimeOfDay(internal val hour: Int, internal val minute: Int) {
-        MIDNIGHT(0, 0), SIX_AM(6, 5), SEVEN_AM(7, 5), EIGHT_AM(8, 5),
-        NOON(12, 0), THREE_PM(15, 5), FOUR_PM(16, 5), FIVE_PM(17, 0),
-        SIX_PM(18, 5)
     }
 }
 
