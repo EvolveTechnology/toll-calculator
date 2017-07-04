@@ -33,6 +33,15 @@ internal class TollFeeTests {
     }
 
     @Test
+    fun manyPassesInOneHourCostSomeWeirdFee() {
+        val fee = calculator.getTollFee(VehicleType.CAR,
+                PaidDate.ARBITRARY_DATE.atTime(6, 6),  //  8 SEK
+                PaidDate.ARBITRARY_DATE.atTime(6, 32), // 13 SEK
+                PaidDate.ARBITRARY_DATE.atTime(7, 3))  // 18 SEK
+        assertEquals(13 - 8 + 18, fee) // must be wrong
+    }
+
+    @Test
     fun tollFreeForMotorcycles() {
         val date = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.SEVEN_AM)
         val fee = calculator.getTollFee(VehicleType.MOTORBIKE, date)
@@ -78,10 +87,14 @@ internal class TollFeeTests {
         var month: Int get
         var day: Int get
 
-        fun atTime(time: TimeOfDay): Date {
+        fun atTime(hour: Int, minute: Int): Date {
             val calendar = GregorianCalendar.getInstance()
-            calendar.set(year, month, day, time.hour, time.minute)
+            calendar.set(year, month, day, hour, minute)
             return calendar.time
+        }
+
+        fun atTime(time: TimeOfDay): Date {
+            return atTime(time.hour, time.minute)
         }
     }
 
