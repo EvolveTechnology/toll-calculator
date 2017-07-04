@@ -15,11 +15,6 @@ class TimeOfDay {
         this.minute = calendar.get(Calendar.MINUTE);
     }
 
-    private TimeOfDay(int hour, int minute) {
-        this.hour = hour;
-        this.minute = minute;
-    }
-
     int getFee() {
         if (hour == 6 && minute >= 0 && minute <= 29) return 8;
         else if (hour == 6 && minute >= 30) return 13;
