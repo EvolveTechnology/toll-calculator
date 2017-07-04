@@ -1,4 +1,3 @@
-
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -36,13 +35,8 @@ public class TollCalculator {
 
     private boolean isTollFreeVehicle(Vehicle vehicle) {
         if (vehicle == null) return false;
-        String vehicleType = vehicle.getType();
-        return vehicleType.equals(TollFreeVehicles.MOTORBIKE.getType()) ||
-                vehicleType.equals(TollFreeVehicles.TRACTOR.getType()) ||
-                vehicleType.equals(TollFreeVehicles.EMERGENCY.getType()) ||
-                vehicleType.equals(TollFreeVehicles.DIPLOMAT.getType()) ||
-                vehicleType.equals(TollFreeVehicles.FOREIGN.getType()) ||
-                vehicleType.equals(TollFreeVehicles.MILITARY.getType());
+
+        return vehicle.getType().isTollFree();
     }
 
     public int getTollFee(final Date date, Vehicle vehicle) {
@@ -88,23 +82,4 @@ public class TollCalculator {
         }
         return false;
     }
-
-    private enum TollFreeVehicles {
-        MOTORBIKE("Motorbike"),
-        TRACTOR("Tractor"),
-        EMERGENCY("Emergency"),
-        DIPLOMAT("Diplomat"),
-        FOREIGN("Foreign"),
-        MILITARY("Military");
-        private final String type;
-
-        TollFreeVehicles(String type) {
-            this.type = type;
-        }
-
-        public String getType() {
-            return type;
-        }
-    }
 }
-

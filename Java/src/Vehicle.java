@@ -1,3 +1,3 @@
 public interface Vehicle {
-  String getType();
+    VehicleType getType();
 }

@@ -1,7 +1,6 @@
-
 public class Car implements Vehicle {
     @Override
-    public String getType() {
-        return "Car";
+    public VehicleType getType() {
+        return VehicleType.CAR;
     }
 }
