@@ -1,52 +1,50 @@
 package tolls;
 
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TollCalculator {
+    private final VehicleType vehicleType;
+    private final CalendarDay day;
+    private final List<TimeOfDay> passes = new ArrayList<>();
 
-    /**
-     * Calculate the total toll fee for one day
-     *
-     * @param vehicle - the vehicle
-     * @param dates   - date and time of all passes on one day
-     * @return - the total toll fee for that day
-     */
-    public int getTollFee(VehicleType vehicle, Date... dates) {
-        if (dates.length == 0) return 0;
+    public TollCalculator(VehicleType vehicleType, CalendarDay day) {
+        this.vehicleType = vehicleType;
+        this.day = day;
+    }
 
-        Date startOfTheHour = new Date(0);
+    public void passToll(TimeOfDay time) {
+        passes.add(time);
+    }
+
+    public int getTollFee() {
+        if (vehicleType.isTollFree()) return 0;
+
+        TimeOfDay startOfTheHour = new TimeOfDay(0, 0);
         int totalFee = 0;
         int previousFee = 0;
-        for (Date date : dates) {
-            int nextFee = getTollFee(date, vehicle);
+        for (TimeOfDay timeOfDay : passes) {
+            if (day.isTollFree())
+                continue;
+
+            int nextFee = timeOfDay.getFee();
             if (nextFee == 0) continue;
 
-            if (isSameHour(startOfTheHour, date)) {
+            if (isSameHour(startOfTheHour, timeOfDay)) {
                 if (nextFee >= previousFee)
                     totalFee += nextFee - previousFee;
                 previousFee = nextFee;
             } else {
-                startOfTheHour = date;
+                startOfTheHour = timeOfDay;
                 totalFee += nextFee;
                 previousFee = nextFee;
             }
         }
-        if (totalFee > 60) totalFee = 60;
-        return totalFee;
+
+        return Math.min(totalFee, 60);
     }
 
-    private boolean isSameHour(Date startOfTheHour, Date date) {
-        TimeUnit timeUnit = TimeUnit.MINUTES;
-        long diffInMilliseconds = date.getTime() - startOfTheHour.getTime();
-        long minutes = timeUnit.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
-        return minutes <= 60;
-    }
-
-    private int getTollFee(final Date date, VehicleType vehicle) {
-        if (new CalendarDay(date).isTollFree(date) || vehicle.isTollFree()) return 0;
-
-        TimeOfDay timeOfDay = new TimeOfDay(date);
-        return timeOfDay.getFee();
+    private boolean isSameHour(TimeOfDay start, TimeOfDay time) {
+        return (time.hour - start.hour) * 60 + time.minute - start.minute <= 60;
     }
 }

@@ -3,7 +3,6 @@ package tolls;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 // I want to call this "Date," but don't want conflicts with java.util.Date
@@ -13,17 +12,17 @@ class CalendarDay {
     final int day;
     final int weekday;
 
-    CalendarDay(Date date) {
+    CalendarDay(int year, int month, int day) {
         Calendar calendar = GregorianCalendar.getInstance();
-        calendar.setTime(date);
-        this.year = calendar.get(Calendar.YEAR);
-        this.month = calendar.get(Calendar.MONTH);
-        this.day = calendar.get(Calendar.DAY_OF_MONTH);
+        calendar.set(year, month, day);
+        this.year = year;
+        this.month = month;
+        this.day = day;
         this.weekday = calendar.get(Calendar.DAY_OF_WEEK);
     }
 
     @NotNull
-    Boolean isTollFree(Date date) {
+    Boolean isTollFree() {
         if (weekday == Calendar.SATURDAY || weekday == Calendar.SUNDAY) return true;
 
         if (year == 2013) {
