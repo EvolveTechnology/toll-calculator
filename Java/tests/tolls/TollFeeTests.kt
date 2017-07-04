@@ -42,6 +42,15 @@ internal class TollFeeTests {
     }
 
     @Test
+    fun freePassesAreIgnored() {
+        val fee = calculator.getTollFee(VehicleType.CAR,
+                PaidDate.ARBITRARY_DATE.atTime(5, 56), // free
+                PaidDate.ARBITRARY_DATE.atTime(6, 29), //  8 SEK
+                PaidDate.ARBITRARY_DATE.atTime(7, 10)) // 18 SEK
+        assertEquals(18, fee)
+    }
+
+    @Test
     fun tollFreeForMotorcycles() {
         val date = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.SEVEN_AM)
         val fee = calculator.getTollFee(VehicleType.MOTORBIKE, date)

@@ -15,11 +15,12 @@ public class TollCalculator {
     public int getTollFee(VehicleType vehicle, Date... dates) {
         if (dates.length == 0) return 0;
 
-        Date startOfTheHour = dates[0]; // assumed to be sorted
+        Date startOfTheHour = new Date(0);
         int totalFee = 0;
         int previousFee = 0;
         for (Date date : dates) {
             int nextFee = getTollFee(date, vehicle);
+            if (nextFee == 0) continue;
 
             if (isSameHour(startOfTheHour, date)) {
                 if (nextFee >= previousFee)
@@ -28,7 +29,7 @@ public class TollCalculator {
             } else {
                 startOfTheHour = date;
                 totalFee += nextFee;
-                previousFee = 0;
+                previousFee = nextFee;
             }
         }
         if (totalFee > 60) totalFee = 60;
