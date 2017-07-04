@@ -1,19 +1,15 @@
 package tolls
 
-import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
-
 import java.util.*
-
-import org.junit.jupiter.api.Assertions.assertEquals
 
 internal class TollFeeTests {
     private val calculator = TollCalculator()
 
     @Test
-    @Disabled(value = "This crashes at the moment")
     fun noFeeIfNever() {
         val fee = calculator.getTollFee(VehicleType.CAR)
         assertEquals(0, fee)
@@ -133,5 +129,3 @@ internal class TollFeeTests {
 // fix bugs
 //     _13 -> _17 (different dates for different years)
 //     getTollFee() only work if all dates are same-day - otherwise they should not limit to 60
-//     Enter no dates and it crashes
-// refactor code
