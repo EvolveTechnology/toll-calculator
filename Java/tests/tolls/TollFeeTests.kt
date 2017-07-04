@@ -29,6 +29,14 @@ internal class TollFeeTests {
     }
 
     @Test
+    fun twoPassesInOneHourCostOnlyOneFee() {
+        val fee = calculator.getTollFee(VehicleType.CAR,
+                PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.SIX_AM),
+                PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.SEVEN_AM))
+        assertEquals(18, fee)
+    }
+
+    @Test
     fun tollFreeForMotorcycles() {
         val date = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay.SEVEN_AM)
         val fee = calculator.getTollFee(VehicleType.MOTORBIKE, date)
