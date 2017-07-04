@@ -132,11 +132,11 @@ internal class TollFeeTests {
         NATIONAL_DAY_EVE(2013, Calendar.JUNE, 5),
         NATIONAL_DAY(2013, Calendar.JUNE, 6),
         JULY(2013, Calendar.JULY, 9),
-        HALLOWEEN_13(2013, Calendar.NOVEMBER, 1),
+        HALLOWEEN(2013, Calendar.NOVEMBER, 1),
         CHRISTMAS_EVE(2013, Calendar.DECEMBER, 24),
         CHRISTMAS_DAY(2013, Calendar.DECEMBER, 25),
         BOXING_DAY(2013, Calendar.DECEMBER, 26),
-        NEW_YEAR_EVE(2013, Calendar.DECEMBER, 31),
+        NEW_YEARS_EVE(2013, Calendar.DECEMBER, 31),
         SOME_SATURDAY(2017, Calendar.JUNE, 10),
         SOME_SUNDAY(2017, Calendar.JUNE, 11),
     }
