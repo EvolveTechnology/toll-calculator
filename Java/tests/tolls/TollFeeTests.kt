@@ -26,6 +26,22 @@ internal class TollFeeTests {
     }
 
     @Test
+    fun maxesOutAt60SEK() {
+        val calculator = TollCalculator(VehicleType.CAR)
+        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 30)))  // 13 SEK
+        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(7, 31)))  // 18 SEK
+        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(8, 32)))  //  8 SEK
+        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(9, 33)))  //  8 SEK
+        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(10, 34))) //  8 SEK
+        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(11, 35))) //  8 SEK
+        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(12, 36))) //  8 SEK
+        calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(15, 0)))  // 13 SEK
+
+        val fee = calculator.tollFee
+        assertEquals(60, fee)
+    }
+
+    @Test
     fun twoPassesInOneHourCostOnlyOneFee() {
         val calculator = TollCalculator(VehicleType.CAR)
         calculator.passToll(PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 5)))  // 13 SEK

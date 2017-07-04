@@ -33,8 +33,8 @@ public class TollCalculator {
                 previousFee = nextFee;
             }
         }
-        if (totalFee > 60) totalFee = 60;
-        return totalFee;
+
+        return Math.min(totalFee, 60);
     }
 
     private boolean isSameHour(Date startOfTheHour, Date date) {
