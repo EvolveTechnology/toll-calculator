@@ -10,25 +10,25 @@ internal class TollFeeTests {
     private val calculator = TollCalculator()
 
     @Test
-    fun noFeeIfNever() {
+    fun noFeeIfNeverPassed() {
         val fee = calculator.getTollFee(VehicleType.CAR)
         assertEquals(0, fee)
     }
 
     @Test
     fun multiplePassesAddUp() {
-        val offToWork = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 0))
-        val goingHome = PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(15, 0))
 
-        val fee = calculator.getTollFee(VehicleType.CAR, offToWork, goingHome)
+        val fee = calculator.getTollFee(VehicleType.CAR,
+                PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 0)),  //  8 SEK
+                PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(15, 0))) // 13 SEK
         assertEquals(21, fee)
     }
 
     @Test
     fun twoPassesInOneHourCostOnlyOneFee() {
         val fee = calculator.getTollFee(VehicleType.CAR,
-                PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 5)),
-                PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(7, 4)))
+                PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(6, 5)), // 13 SEK
+                PaidDate.ARBITRARY_DATE.atTime(TimeOfDay(7, 4))) // 18 SEK
         assertEquals(18, fee)
     }
 
