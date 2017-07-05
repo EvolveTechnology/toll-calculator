@@ -10,28 +10,24 @@ class CalendarDay {
     final int day;
     private final int weekday;
 
-    private final HolidayCalendar holidayCalendar;
-
     /**
      * @param year  The year
      * @param month One of the Calendar.MONTH_NAME constants
      * @param day   The number of the day in the month
-     * @param holidayCalendar
      */
-    CalendarDay(int year, int month, int day, HolidayCalendar holidayCalendar) {
+    CalendarDay(int year, int month, int day) {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.set(year, month, day);
         this.year = year;
         this.month = month;
         this.day = day;
         this.weekday = calendar.get(Calendar.DAY_OF_WEEK);
-        this.holidayCalendar = holidayCalendar;
     }
 
-    boolean isTollFree() {
+    boolean isTollFree(HolidayCalendar holidayCalendar) {
         return isWeekend() ||
                 isFixedHoliday() ||
-                isMovingHoliday();
+                isMovingHoliday(holidayCalendar);
     }
 
     private boolean isWeekend() {
@@ -48,32 +44,24 @@ class CalendarDay {
                 month == Calendar.DECEMBER && (day == 24 || day == 25 || day == 26 || day == 31);
     }
 
-    private boolean isMovingHoliday() {
-        return holidayCalendar.isMidsummerEve(this) ||
-                isDayOrEveOfAscension(this) ||
-                isEasterFriday(this);
-    }
+    private boolean isMovingHoliday(HolidayCalendar holidayCalendar) {
+        if (holidayCalendar.isMidsummerEve(this)) return true;
 
-    private boolean isEasterFriday(CalendarDay date) {
-        // Both Thursday and Friday are toll-free.
-        CalendarDay easterDay = holidayCalendar.easterDay(date.year);
-        return easterDay.month == date.month && (date.day == easterDay.day - 1 || date.day == easterDay.day - 2);
-
-    }
-
-    private boolean isDayOrEveOfAscension(CalendarDay calendarDay) {
-        // Both Wednesday and Thursday are toll-free.
-        CalendarDay ascensionDay = ascensionDay(calendarDay.year);
-        return calendarDay.month == ascensionDay.month && (calendarDay.day == ascensionDay.day || calendarDay.day == ascensionDay.day - 1);
-    }
-
-    private CalendarDay ascensionDay(int year) {
-        // The Ascension of Christ occurs on the Thursday, 40 days after Easter.
         CalendarDay easterDay = holidayCalendar.easterDay(year);
+        // Both Thursday and Friday before Easter are toll-free.
+        if (easterDay.month == month && (day == easterDay.day - 1 || day == easterDay.day - 2)) return true;
 
-        int day = easterDay.day;
+        // The Ascension of Christ occurs on the Thursday, 40 days after Easter.
+        CalendarDay ascensionDay = easterDay.add40Days();
+
+        // Both Wednesday and Thursday of the Ascension are toll-free.
+        return month == ascensionDay.month && (day == ascensionDay.day || day == ascensionDay.day - 1);
+    }
+
+    private CalendarDay add40Days() {
+        int day = this.day;
         int month;
-        if (easterDay.month == Calendar.MARCH) {
+        if (this.month == Calendar.MARCH) {
             day += 9;
             if (day <= 30) {
                 month = Calendar.APRIL;
@@ -90,10 +78,8 @@ class CalendarDay {
                 day -= 31;
             }
         }
-        return new CalendarDay(year, month, day, holidayCalendar);
+        return new CalendarDay(year, month, day);
     }
-
-
 
     @Override
     public String toString() {

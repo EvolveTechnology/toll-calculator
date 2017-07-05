@@ -11,14 +11,14 @@ internal class TollFeeTests {
 
     @Test
     fun noFeeIfNeverPassed() {
-        val calculator = TollCalculator(VehicleType.CAR, CalendarDay(2017, Calendar.MARCH, 3, SwedishCalendar()))
+        val calculator = TollCalculator(VehicleType.CAR, CalendarDay(2017, Calendar.MARCH, 3), SwedishCalendar())
         val fee = calculator.tollFee
         assertEquals(0, fee)
     }
 
     @Test
     fun multiplePassesAddUp() {
-        val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay)
+        val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay, SwedishCalendar())
         calculator.passToll(TimeOfDay(6, 0))  //  8 SEK
         calculator.passToll(TimeOfDay(15, 0)) // 13 SEK
 
@@ -28,7 +28,7 @@ internal class TollFeeTests {
 
     @Test
     fun maxesOutAt60SEK() {
-        val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay)
+        val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay, SwedishCalendar())
         calculator.passToll(TimeOfDay(6, 30))  // 13 SEK
         calculator.passToll(TimeOfDay(7, 31))  // 18 SEK
         calculator.passToll(TimeOfDay(8, 32))  //  8 SEK
@@ -44,7 +44,7 @@ internal class TollFeeTests {
 
     @Test
     fun twoPassesInOneHourCostOnlyOneFee() {
-        val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay)
+        val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay, SwedishCalendar())
         calculator.passToll(TimeOfDay(6, 5))  // 13 SEK
         calculator.passToll(TimeOfDay(7, 4))  // 18 SEK
 
@@ -54,7 +54,7 @@ internal class TollFeeTests {
 
     @Test
     fun manyPassesInOneHourCostOnlyOneFee() {
-        val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay)
+        val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay, SwedishCalendar())
         calculator.passToll(TimeOfDay(6, 6))  //  8 SEK
         calculator.passToll(TimeOfDay(6, 32)) // 13 SEK
         calculator.passToll(TimeOfDay(7, 3))  // 18 SEK
@@ -65,7 +65,7 @@ internal class TollFeeTests {
 
     @Test
     fun freePassesAreIgnored() {
-        val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay)
+        val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay, SwedishCalendar())
         calculator.passToll(TimeOfDay(5, 56)) // free
         calculator.passToll(TimeOfDay(6, 29)) //  8 SEK
         calculator.passToll(TimeOfDay(7, 10)) // 18 SEK
@@ -76,7 +76,7 @@ internal class TollFeeTests {
 
     @Test
     fun tollFreeForMotorcycles() {
-        val calculator = TollCalculator(VehicleType.MOTORBIKE, PaidDate.ARBITRARY_DATE.calendarDay)
+        val calculator = TollCalculator(VehicleType.MOTORBIKE, PaidDate.ARBITRARY_DATE.calendarDay, SwedishCalendar())
         calculator.passToll(TimeOfDay(7, 0))
 
         val fee = calculator.tollFee
@@ -87,7 +87,7 @@ internal class TollFeeTests {
     fun tollFreeOnFixedHolidays(): List<DynamicTest> {
         return TollFreeDate.values().map {
             DynamicTest.dynamicTest("$it") {
-                val calculator = TollCalculator(VehicleType.CAR, it.calendarDay)
+                val calculator = TollCalculator(VehicleType.CAR, it.calendarDay, SwedishCalendar())
                 calculator.passToll(TimeOfDay(7, 0))
 
                 val fee = calculator.tollFee
@@ -98,10 +98,10 @@ internal class TollFeeTests {
 
     @Test
     fun tollFreeOnHolidays() {
-        val calculator = TollCalculator(VehicleType.CAR, CalendarDay(2017, Calendar.JUNE, 20, object : HolidayCalendar {
+        val calculator = TollCalculator(VehicleType.CAR, CalendarDay(2017, Calendar.JUNE, 20), object : HolidayCalendar {
             override fun isMidsummerEve(calendarDay: CalendarDay?) = true
-            override fun easterDay(year: Int) = CalendarDay(2017, Calendar.JUNE, 20, this)
-        }))
+            override fun easterDay(year: Int) = CalendarDay(2017, Calendar.JUNE, 20)
+        })
         calculator.passToll(TimeOfDay(7, 0))
 
         val fee = calculator.tollFee
@@ -110,10 +110,10 @@ internal class TollFeeTests {
 
     @Test
     fun notTollFreeOnNormalDays() {
-        val calculator = TollCalculator(VehicleType.CAR, CalendarDay(2017, Calendar.JUNE, 20, object : HolidayCalendar {
+        val calculator = TollCalculator(VehicleType.CAR, CalendarDay(2017, Calendar.JUNE, 20), object : HolidayCalendar {
             override fun isMidsummerEve(calendarDay: CalendarDay?) = false
-            override fun easterDay(year: Int) = CalendarDay(2017, Calendar.JUNE, 2, this)
-        }))
+            override fun easterDay(year: Int) = CalendarDay(2017, Calendar.JUNE, 2)
+        })
         calculator.passToll(TimeOfDay(7, 0))
 
         val fee = calculator.tollFee
@@ -134,7 +134,7 @@ internal class TollFeeTests {
                 TimeOfDay(18, 0) to 8
         ).map {
             DynamicTest.dynamicTest("${it.key}") {
-                val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay)
+                val calculator = TollCalculator(VehicleType.CAR, PaidDate.ARBITRARY_DATE.calendarDay, SwedishCalendar())
                 calculator.passToll(it.key)
 
                 val fee = calculator.tollFee
@@ -148,7 +148,7 @@ internal class TollFeeTests {
         var month: Int get
         var day: Int get
 
-        val calendarDay: CalendarDay get() = CalendarDay(year, month, day, SwedishCalendar())
+        val calendarDay: CalendarDay get() = CalendarDay(year, month, day)
     }
 
     // Hmm... These properties can be set. (Don't do that!)

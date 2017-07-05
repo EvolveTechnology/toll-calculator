@@ -20,9 +20,9 @@ public class SwedishCalendar implements HolidayCalendar {
             int easterDay = d + e - 9;
             if (easterDay == 26) easterDay = 19;
             if (easterDay == 25 && d == 28 && e == 6) easterDay = 18;
-            return new CalendarDay(year, Calendar.APRIL, easterDay, this);
+            return new CalendarDay(year, Calendar.APRIL, easterDay);
         } else {
-            return new CalendarDay(year, Calendar.MARCH, 22 + d + e, this);
+            return new CalendarDay(year, Calendar.MARCH, 22 + d + e);
         }
     }
 
