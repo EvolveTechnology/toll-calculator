@@ -4,55 +4,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class SwedishCalendar implements HolidayCalendar {
-    public boolean isHoliday(CalendarDay calendarDay) {
-        return isMidsummerEve(calendarDay) ||
-                isDayOrEveOfAscension(calendarDay) ||
-                isEasterFriday(calendarDay);
-    }
-
-    private boolean isEasterFriday(CalendarDay date) {
-        CalendarDay easterDay = easterDay(date.year);
-        return easterDay.month == date.month && (date.day == easterDay.day - 1 || date.day == easterDay.day - 2);
-
-    }
-
-    private boolean isDayOrEveOfAscension(CalendarDay calendarDay) {
-        int year = calendarDay.year;
-        int month = calendarDay.month;
-        int day = calendarDay.day;
-
-        // Both Wednesday and Thursday are toll-free.
-        CalendarDay ascensionDay = ascensionDay(year);
-        return month == ascensionDay.month && (day == ascensionDay.day || day == ascensionDay.day - 1);
-    }
-
-    private CalendarDay ascensionDay(int year) {
-        // The Ascension of Christ occurs on the Thursday, 40 days after Easter.
-        CalendarDay easterDay = easterDay(year);
-
-        int day = easterDay.day;
-        int month;
-        if (easterDay.month == Calendar.MARCH) {
-            day += 9;
-            if (day <= 30) {
-                month = Calendar.APRIL;
-            } else {
-                month = Calendar.MAY;
-                day -= 30;
-            }
-        } else { // April
-            day += 10;
-            if (day <= 31) {
-                month = Calendar.MAY;
-            } else {
-                month = Calendar.JUNE;
-                day -= 31;
-            }
-        }
-        return new CalendarDay(year, month, day, this);
-    }
-
-    private CalendarDay easterDay(int year) {
+    public CalendarDay easterDay(int year) {
         // Easter occurs on the first Sunday after the first full moon
         // after the spring equinox.
         // Algorithm by Carl Friedrich Gauss
@@ -75,18 +27,14 @@ public class SwedishCalendar implements HolidayCalendar {
     }
 
     public boolean isMidsummerEve(CalendarDay calendarDay) {
-        int year = calendarDay.year;
-        int month = calendarDay.month;
-        int day = calendarDay.day;
-
         // According to Wikipedia, Swedish midsummer eve is always
         // celebrated on the Friday that occurs between 19-25 of June.
-        if (month != Calendar.JUNE || day < 19 || day > 25) {
+        if (calendarDay.month != Calendar.JUNE || calendarDay.day < 19 || calendarDay.day > 25) {
             return false;
         }
 
         Calendar calendar = GregorianCalendar.getInstance();
-        calendar.set(year, month, day);
+        calendar.set(calendarDay.year, calendarDay.month, calendarDay.day);
         int weekday = calendar.get(Calendar.DAY_OF_WEEK);
         return weekday == Calendar.FRIDAY;
     }

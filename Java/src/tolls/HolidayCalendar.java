@@ -1,5 +1,6 @@
 package tolls;
 
 public interface HolidayCalendar {
-    boolean isHoliday(CalendarDay calendarDay);
+    CalendarDay easterDay(int year);
+    boolean isMidsummerEve(CalendarDay calendarDay);
 }

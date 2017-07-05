@@ -98,7 +98,10 @@ internal class TollFeeTests {
 
     @Test
     fun tollFreeOnHolidays() {
-        val calculator = TollCalculator(VehicleType.CAR, CalendarDay(2017, Calendar.JUNE, 20, HolidayCalendar { _ -> true }))
+        val calculator = TollCalculator(VehicleType.CAR, CalendarDay(2017, Calendar.JUNE, 20, object : HolidayCalendar {
+            override fun isMidsummerEve(calendarDay: CalendarDay?) = true
+            override fun easterDay(year: Int) = CalendarDay(2017, Calendar.JUNE, 20, this)
+        }))
         calculator.passToll(TimeOfDay(7, 0))
 
         val fee = calculator.tollFee
@@ -107,7 +110,10 @@ internal class TollFeeTests {
 
     @Test
     fun notTollFreeOnNormalDays() {
-        val calculator = TollCalculator(VehicleType.CAR, CalendarDay(2017, Calendar.JUNE, 20, HolidayCalendar { _ -> false }))
+        val calculator = TollCalculator(VehicleType.CAR, CalendarDay(2017, Calendar.JUNE, 20, object : HolidayCalendar {
+            override fun isMidsummerEve(calendarDay: CalendarDay?) = false
+            override fun easterDay(year: Int) = CalendarDay(2017, Calendar.JUNE, 2, this)
+        }))
         calculator.passToll(TimeOfDay(7, 0))
 
         val fee = calculator.tollFee
