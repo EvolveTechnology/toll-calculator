@@ -6,13 +6,11 @@ import java.util.List;
 public class TollCalculator {
     private final VehicleType vehicleType;
     private final CalendarDay day;
-    private final HolidayCalendar holidayCalendar;
     private final List<TimeOfDay> passes = new ArrayList<>();
 
-    public TollCalculator(VehicleType vehicleType, CalendarDay day, HolidayCalendar holidayCalendar) {
+    public TollCalculator(VehicleType vehicleType, CalendarDay day) {
         this.vehicleType = vehicleType;
         this.day = day;
-        this.holidayCalendar = holidayCalendar;
     }
 
     public void passToll(TimeOfDay time) {
@@ -26,7 +24,7 @@ public class TollCalculator {
         int totalFee = 0;
         int previousFee = 0;
         for (TimeOfDay timeOfDay : passes) {
-            if (day.isTollFree(holidayCalendar)) continue;
+            if (day.isTollFree()) continue;
 
             int nextFee = timeOfDay.getFee();
             if (nextFee == 0) continue;

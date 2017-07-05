@@ -5,9 +5,9 @@ import java.util.GregorianCalendar;
 
 // I want to call this "Date," but don't want conflicts with java.util.Date
 class CalendarDay {
-    final int year;
-    final int month; // One of the Calendar.MONTH_NAME constants
-    final int day;
+    private final int year;
+    private final int month; // One of the Calendar.MONTH_NAME constants
+    private final int day;
     private final int weekday;
 
     /**
@@ -24,10 +24,10 @@ class CalendarDay {
         this.weekday = calendar.get(Calendar.DAY_OF_WEEK);
     }
 
-    boolean isTollFree(HolidayCalendar holidayCalendar) {
+    boolean isTollFree() {
         return isWeekend() ||
                 isFixedHoliday() ||
-                isMovingHoliday(holidayCalendar);
+                isMovingHoliday();
     }
 
     private boolean isWeekend() {
@@ -44,18 +44,53 @@ class CalendarDay {
                 month == Calendar.DECEMBER && (day == 24 || day == 25 || day == 26 || day == 31);
     }
 
-    private boolean isMovingHoliday(HolidayCalendar holidayCalendar) {
-        if (holidayCalendar.isMidsummerEve(this)) return true;
+    private boolean isMovingHoliday() {
+        if (isMidsummerEve()) return true;
 
-        CalendarDay easterDay = holidayCalendar.easterDay(year);
+        CalendarDay easterDay = easterDay(year);
         // Both Thursday and Friday before Easter are toll-free.
         if (easterDay.month == month && (day == easterDay.day - 1 || day == easterDay.day - 2)) return true;
 
-        // The Ascension of Christ occurs on the Thursday, 40 days after Easter.
+        // The Ascension of Christ occurs on the Thursday 40 days after Easter Day.
         CalendarDay ascensionDay = easterDay.add40Days();
 
         // Both Wednesday and Thursday of the Ascension are toll-free.
         return month == ascensionDay.month && (day == ascensionDay.day || day == ascensionDay.day - 1);
+    }
+
+    private CalendarDay easterDay(int year) {
+        // Easter occurs on the first Sunday after the first full moon
+        // after the spring equinox.
+        // Algorithm by Carl Friedrich Gauss
+        // https://sv.wikipedia.org/wiki/Påskdagen
+
+        int a = year % 19;
+        int b = year % 4;
+        int c = year % 7;
+        int d = (19 * a + 24) % 30;
+        int e = (2 * b + 4 * c + 6 * d + 5) % 7;
+
+        if (d + e > 9) {
+            int easterDay = d + e - 9;
+            if (easterDay == 26) easterDay = 19;
+            if (easterDay == 25 && d == 28 && e == 6) easterDay = 18;
+            return new CalendarDay(year, Calendar.APRIL, easterDay);
+        } else {
+            return new CalendarDay(year, Calendar.MARCH, 22 + d + e);
+        }
+    }
+
+    private boolean isMidsummerEve() {
+        // According to Wikipedia, Swedish midsummer eve is always
+        // celebrated on the Friday that occurs between 19-25 of June.
+        if (month != Calendar.JUNE || day < 19 || day > 25) {
+            return false;
+        }
+
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.set(year, month, day);
+        int weekday = calendar.get(Calendar.DAY_OF_WEEK);
+        return weekday == Calendar.FRIDAY;
     }
 
     private CalendarDay add40Days() {
