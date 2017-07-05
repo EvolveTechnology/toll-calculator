@@ -5,9 +5,9 @@ import java.util.GregorianCalendar;
 
 // I want to call this "Date," but don't want conflicts with java.util.Date
 class CalendarDay {
-    private final int year;
-    private final int month; // One of the Calendar.MONTH_NAME constants
-    private final int day;
+    final int year;
+    final int month; // One of the Calendar.MONTH_NAME constants
+    final int day;
     private final int weekday;
 
     private final HolidayCalendar holidayCalendar;
@@ -31,7 +31,7 @@ class CalendarDay {
     boolean isTollFree() {
         return isWeekend() ||
                 isFixedHoliday() ||
-                holidayCalendar.isHoliday(year, month, day);
+                isMovingHoliday();
     }
 
     private boolean isWeekend() {
@@ -46,6 +46,10 @@ class CalendarDay {
                 month == Calendar.JULY ||
                 month == Calendar.NOVEMBER && day == 1 ||
                 month == Calendar.DECEMBER && (day == 24 || day == 25 || day == 26 || day == 31);
+    }
+
+    private boolean isMovingHoliday() {
+        return holidayCalendar.isHoliday(this);
     }
 
     @Override

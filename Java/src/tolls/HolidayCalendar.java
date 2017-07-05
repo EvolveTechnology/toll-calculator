@@ -1,5 +1,5 @@
 package tolls;
 
 public interface HolidayCalendar {
-    boolean isHoliday(int year, int month, int day);
+    boolean isHoliday(CalendarDay calendarDay);
 }
