@@ -1,5 +1,7 @@
 package tolls;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -27,7 +29,19 @@ class CalendarDay {
     boolean isTollFree() {
         return isWeekend() ||
                 isFixedHoliday() ||
-                isMovingHoliday();
+                isMidsummerEve() ||
+                isFreeForGoodFriday() ||
+                isFreeForAscensionDay();
+    }
+
+    private boolean isFreeForAscensionDay() {
+        CalendarDay ascensionDay = ascensionDay(year);
+        return month == ascensionDay.month && (day == ascensionDay.day || day == ascensionDay.day - 1);
+    }
+
+    private boolean isFreeForGoodFriday() {
+        CalendarDay easterDay = easterDay(year);
+        return easterDay.month == month && (day == easterDay.day - 1 || day == easterDay.day - 2);
     }
 
     private boolean isWeekend() {
@@ -44,31 +58,48 @@ class CalendarDay {
                 month == Calendar.DECEMBER && (day == 24 || day == 25 || day == 26 || day == 31);
     }
 
-    private boolean isMovingHoliday() {
-        if (isMidsummerEve()) return true;
-
-        CalendarDay easterDay = easterDay(year);
-        // Both Thursday and Friday before Easter are toll-free.
-        if (easterDay.month == month && (day == easterDay.day - 1 || day == easterDay.day - 2)) return true;
-
+    @NotNull
+    private CalendarDay ascensionDay(int year) {
         // The Ascension of Christ occurs on the Thursday 40 days after Easter Day.
-        CalendarDay ascensionDay = easterDay.add40Days();
-
-        // Both Wednesday and Thursday of the Ascension are toll-free.
-        return month == ascensionDay.month && (day == ascensionDay.day || day == ascensionDay.day - 1);
+        return easterDay(year).add40Days();
     }
 
+    @NotNull
+    private CalendarDay add40Days() {
+        int day = this.day;
+        int month;
+        if (this.month == Calendar.MARCH) {
+            day += 9;
+            if (day <= 30) {
+                month = Calendar.APRIL;
+            } else {
+                month = Calendar.MAY;
+                day -= 30;
+            }
+        } else { // April
+            day += 10;
+            if (day <= 31) {
+                month = Calendar.MAY;
+            } else {
+                month = Calendar.JUNE;
+                day -= 31;
+            }
+        }
+        return new CalendarDay(year, month, day);
+    }
+
+    @NotNull
     private CalendarDay easterDay(int year) {
         // Easter occurs on the first Sunday after the first full moon
         // after the spring equinox.
         // Algorithm by Carl Friedrich Gauss
         // https://sv.wikipedia.org/wiki/Påskdagen
 
-        int a = year % 19;
-        int b = year % 4;
-        int c = year % 7;
-        int d = (19 * a + 24) % 30;
-        int e = (2 * b + 4 * c + 6 * d + 5) % 7;
+        final int a = year % 19;
+        final int b = year % 4;
+        final int c = year % 7;
+        final int d = (19 * a + 24) % 30;
+        final int e = (2 * b + 4 * c + 6 * d + 5) % 7;
 
         if (d + e > 9) {
             int easterDay = d + e - 9;
@@ -93,30 +124,8 @@ class CalendarDay {
         return weekday == Calendar.FRIDAY;
     }
 
-    private CalendarDay add40Days() {
-        int day = this.day;
-        int month;
-        if (this.month == Calendar.MARCH) {
-            day += 9;
-            if (day <= 30) {
-                month = Calendar.APRIL;
-            } else {
-                month = Calendar.MAY;
-                day -= 30;
-            }
-        } else { // April
-            day += 10;
-            if (day <= 31) {
-                month = Calendar.MAY;
-            } else {
-                month = Calendar.JUNE;
-                day -= 31;
-            }
-        }
-        return new CalendarDay(year, month, day);
-    }
-
     @Override
+    @NotNull
     public String toString() {
         return year + "-" + (month + 1) + "-" + day;
     }
