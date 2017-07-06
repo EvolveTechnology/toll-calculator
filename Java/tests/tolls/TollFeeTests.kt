@@ -86,9 +86,38 @@ internal class TollFeeTests {
 
     @TestFactory
     fun tollFreeOnFixedHolidays(): List<DynamicTest> {
-        return TollFreeDate.values().map {
-            DynamicTest.dynamicTest("$it") {
-                val calculator = TollCalculator(VehicleType.CAR, it.calendarDay)
+        return mapOf(
+                "New Year's Day, 2013" to CalendarDay(2013, Calendar.JANUARY, 1),
+                "April 1, 2013" to CalendarDay(2013, Calendar.APRIL, 1),
+                "King's birthday, 2013" to CalendarDay(2013, Calendar.APRIL, 30),
+                "Labour Day 2013" to CalendarDay(2013, Calendar.MAY, 1),
+                "Day before national day, 2013" to CalendarDay(2013, Calendar.JUNE, 5),
+                "National day, 2013" to CalendarDay(2013, Calendar.JUNE, 6),
+                "Arbitrary day in July, 2013" to CalendarDay(2013, Calendar.JULY, 9),
+                "Halloween, 2013" to CalendarDay(2013, Calendar.NOVEMBER, 1),
+                "Christmas Eve, 2013" to CalendarDay(2013, Calendar.DECEMBER, 24),
+                "Christmas Day, 2013" to CalendarDay(2013, Calendar.DECEMBER, 25),
+                "Boxing Day, 2013" to CalendarDay(2013, Calendar.DECEMBER, 26),
+                "New Rear's Eve, 2013" to CalendarDay(2013, Calendar.DECEMBER, 31),
+
+                "New Year's Day, 2017" to CalendarDay(2017, Calendar.JANUARY, 1),
+                "April 1, 2017" to CalendarDay(2017, Calendar.APRIL, 1),
+                "King's birthday, 2017" to CalendarDay(2017, Calendar.APRIL, 30),
+                "Labour Day 2017" to CalendarDay(2017, Calendar.MAY, 1),
+                "Day before national day, 2017" to CalendarDay(2017, Calendar.JUNE, 5),
+                "National day, 2017" to CalendarDay(2017, Calendar.JUNE, 6),
+                "Arbitrary day in July, 2017" to CalendarDay(2017, Calendar.JULY, 9),
+                "Halloween, 2017" to CalendarDay(2017, Calendar.NOVEMBER, 1),
+                "Christmas Eve, 2017" to CalendarDay(2017, Calendar.DECEMBER, 24),
+                "Christmas Day, 2017" to CalendarDay(2017, Calendar.DECEMBER, 25),
+                "Boxing Day, 2017" to CalendarDay(2017, Calendar.DECEMBER, 26),
+                "New Rear's Eve, 2017" to CalendarDay(2017, Calendar.DECEMBER, 31),
+
+                "Arbitrary Saturday" to CalendarDay(2017, Calendar.JUNE, 10),
+                "Arbitrary Sunday" to CalendarDay(2017, Calendar.JUNE, 11)
+        ).map {
+            DynamicTest.dynamicTest(it.key) {
+                val calculator = TollCalculator(VehicleType.CAR, it.value)
                 calculator.passToll(TimeOfDay(7, 0))
 
                 val fee = calculator.tollFee
@@ -149,36 +178,5 @@ internal class TollFeeTests {
                 assertEquals(it.value, fee)
             }
         }
-    }
-
-    private interface TollDate {
-        var year: Int get
-        var month: Int get
-        var day: Int get
-
-        val calendarDay: CalendarDay get() = CalendarDay(year, month, day)
-    }
-
-    // Hmm... These properties can be set. (Don't do that!)
-    // Kotlin doesn't allow `val` to implement `var ... get` (as Swift would).
-    // So the question is does code reuse trump enforced immutability?
-    private enum class TollFreeDate(
-            override var year: Int,
-            override var month: Int,
-            override var day: Int) : TollDate {
-        NEW_YEARS_DAY(2013, Calendar.JANUARY, 1),
-        APRIL_FOOL(2013, Calendar.APRIL, 1),
-        KINGS_BIRTHDAY(2013, Calendar.APRIL, 30),
-        LABOUR_DAY(2013, Calendar.MAY, 1),
-        NATIONAL_DAY_EVE(2013, Calendar.JUNE, 5),
-        NATIONAL_DAY(2013, Calendar.JUNE, 6),
-        JULY(2013, Calendar.JULY, 9),
-        HALLOWEEN(2013, Calendar.NOVEMBER, 1),
-        CHRISTMAS_EVE(2013, Calendar.DECEMBER, 24),
-        CHRISTMAS_DAY(2013, Calendar.DECEMBER, 25),
-        BOXING_DAY(2013, Calendar.DECEMBER, 26),
-        NEW_YEARS_EVE(2013, Calendar.DECEMBER, 31),
-        SOME_SATURDAY(2017, Calendar.JUNE, 10),
-        SOME_SUNDAY(2017, Calendar.JUNE, 11),
     }
 }
