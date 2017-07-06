@@ -100,13 +100,13 @@ internal class TollFeeTests {
     fun tollFreeOnHolidays(): List<DynamicTest> {
         return mapOf(
                 "Midsummer's Eve 2017" to CalendarDay(2017, Calendar.APRIL, 23),
-                "Day of the Ascension 2017" to CalendarDay(2017, Calendar.MAY, 25),
                 "Eve of Ascension 2017" to CalendarDay(2017, Calendar.MAY, 24),
-                "Day of the Ascension 2022" to CalendarDay(2022, Calendar.MAY, 26),
-                "Eve of Ascension 2022" to CalendarDay(2022, Calendar.MAY, 25),
-                "Maundy Thursday 2022" to CalendarDay(2022, Calendar.APRIL, 15),
-                "Good Friday 2022" to CalendarDay(2022, Calendar.APRIL, 16),
-                "Good Friday 2099" to CalendarDay(2099, Calendar.APRIL, 11)
+                "Day of the Ascension 2017" to CalendarDay(2017, Calendar.MAY, 25),
+                "Maundy Thursday 2021" to CalendarDay(2021, Calendar.APRIL, 2),
+                "Good Friday 2021" to CalendarDay(2021, Calendar.APRIL, 3),
+                "Good Friday 2099" to CalendarDay(2099, Calendar.APRIL, 11),
+                "Eve of Ascension 2021" to CalendarDay(2021, Calendar.MAY, 12),
+                "Day of the Ascension 2021" to CalendarDay(2021, Calendar.MAY, 13)
         ).map {
             DynamicTest.dynamicTest(it.key) {
                 val calculator = TollCalculator(VehicleType.CAR, it.value)
