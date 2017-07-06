@@ -188,6 +188,3 @@ internal class TollFeeTests {
         SOME_SUNDAY(2017, Calendar.JUNE, 11),
     }
 }
-
-// Add tests for Easter matching dates on Wikipedia
-// Add tests for add40?
