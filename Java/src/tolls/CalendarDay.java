@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-// I want to call this "Date," but don't want conflicts with java.util.Date
 class CalendarDay {
     private final int year;
     private final int month; // One of the Calendar.MONTH_NAME constants
@@ -61,31 +60,17 @@ class CalendarDay {
     @NotNull
     private CalendarDay ascensionDay(int year) {
         // The Ascension of Christ occurs on the Thursday 40 days after Easter Day.
-        return easterDay(year).add40Days();
+        return easterDay(year).add39Days();
     }
 
     @NotNull
-    private CalendarDay add40Days() {
-        int day = this.day;
-        int month;
-        if (this.month == Calendar.MARCH) {
-            day += 9;
-            if (day <= 30) {
-                month = Calendar.APRIL;
-            } else {
-                month = Calendar.MAY;
-                day -= 30;
-            }
-        } else { // April
-            day += 10;
-            if (day <= 31) {
-                month = Calendar.MAY;
-            } else {
-                month = Calendar.JUNE;
-                day -= 31;
-            }
-        }
-        return new CalendarDay(year, month, day);
+    private CalendarDay add39Days() {
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.set(year, month, day);
+        calendar.add(Calendar.DAY_OF_MONTH, 39);
+        return new CalendarDay(year,
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
     }
 
     @NotNull
