@@ -1,16 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Toll_Calculator.Enums;
+using Toll_Calculator.Interfaces;
 
-namespace TollFeeCalculator
+namespace Toll_Calculator.Models.Vehicles
 {
-    public class Car : Vehicle
+    public class Car : IVehicle
     {
-        public String GetVehicleType()
+        public bool IsTollFree()
         {
-            return "Car";
+            return false;
+        }
+
+        VehicleType IVehicle.GetVehicleType()
+        {
+            return VehicleType.Car;
         }
     }
 }

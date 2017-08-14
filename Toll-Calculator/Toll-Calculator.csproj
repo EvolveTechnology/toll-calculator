@@ -40,9 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\VehicleType.cs" />
     <Compile Include="Models\Vehicles\Car.cs" />
     <Compile Include="Models\Vehicles\Motorbike.cs" />
-    <Compile Include="Models\Vehicles\Vehicle.cs" />
+    <Compile Include="Interfaces\IVehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TollCalculator.cs" />
   </ItemGroup>
