@@ -1,8 +1,13 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DateLibrary;
+using Toll_Calculator;
+using Toll_Calculator.Helpers;
+using Toll_Calculator.Models.Vehicles;
 
 namespace CalculatorTests
 {
@@ -10,7 +15,7 @@ namespace CalculatorTests
     public class DateTests
     {
         [TestMethod]
-        public void TestDates()
+        public void ValidDates()
         {
             var dates = new Dictionary<bool, DateTime>
             {
@@ -20,7 +25,7 @@ namespace CalculatorTests
 
             foreach (var date in dates)
             {
-                TestHolidays(date.Key,date.Value);
+                TestHolidays(date.Key, date.Value);
             }
         }
 
@@ -29,12 +34,51 @@ namespace CalculatorTests
         {
             if (value)
             {
-                Assert.IsTrue(DateLibrary.HolidayProvider.IsHoliday(date));
+                Assert.IsTrue(HolidayProvider.IsHoliday(date));
             }
             else
             {
-                Assert.IsFalse(DateLibrary.HolidayProvider.IsHoliday(date));
+                Assert.IsFalse(HolidayProvider.IsHoliday(date));
             }
+        }
+
+        [TestMethod]
+        public void ValidPeriods()
+        {
+            var fees = TollCalculator.GetFeePeriods();
+
+            var dates = new[]
+            {
+                new DateTime(2018,11,03, 13,45,00),
+                new DateTime(2017,08,17, 13,45,00),
+                new DateTime(2017,08,17, 15,45,00),
+                new DateTime(2017,08,17, 17,15,00),
+                new DateTime(2017,08,17, 14,40,00),
+                new DateTime(2017,08,17, 21,05,00),
+                new DateTime(2017,08,19, 13,05,00)
+            };
+            var eligibleDates = TollHelper.GetEligibleDates(dates, fees).ToList();
+            Assert.IsTrue(eligibleDates.Count == 4);
+        }
+
+
+        [TestMethod]
+        public void TestGetTollFee()
+        {
+            var fees = TollCalculator.GetFeePeriods();
+            var dates = new[]
+            {
+                new DateTime(2018,11,03, 13,45,00),
+                new DateTime(2017,08,17, 15,20,00),
+                new DateTime(2017,08,17, 15,45,00),
+                new DateTime(2017,08,17, 17,15,00),
+                new DateTime(2017,08,17, 14,40,00),
+                new DateTime(2017,08,17, 17,05,00),
+                new DateTime(2017,08,18, 13,05,00)
+            };
+            var tollcalculator = new TollCalculator();
+            var fee = tollcalculator.GetTollFee(new Car(), dates);
+            Assert.IsTrue(fee == 47);
         }
     }
 }
