@@ -15,6 +15,7 @@ namespace CalculatorTests
     public class DateTests
     {
         [TestMethod]
+        [TestCategory("Date test")]
         public void ValidDates()
         {
             var dates = new Dictionary<bool, DateTime>
@@ -43,9 +44,10 @@ namespace CalculatorTests
         }
 
         [TestMethod]
+        [TestCategory("Date test")]
         public void ValidPeriods()
         {
-            var fees = TollCalculator.GetFeePeriods();
+            var fees = TollHelper.GetFeePeriods();
 
             var dates = new[]
             {
@@ -59,26 +61,6 @@ namespace CalculatorTests
             };
             var eligibleDates = TollHelper.GetEligibleDates(dates, fees).ToList();
             Assert.IsTrue(eligibleDates.Count == 4);
-        }
-
-
-        [TestMethod]
-        public void TestGetTollFee()
-        {
-            var fees = TollCalculator.GetFeePeriods();
-            var dates = new[]
-            {
-                new DateTime(2018,11,03, 13,45,00),
-                new DateTime(2017,08,17, 15,20,00),
-                new DateTime(2017,08,17, 15,45,00),
-                new DateTime(2017,08,17, 17,15,00),
-                new DateTime(2017,08,17, 14,40,00),
-                new DateTime(2017,08,17, 17,05,00),
-                new DateTime(2017,08,18, 13,05,00)
-            };
-            var tollcalculator = new TollCalculator();
-            var fee = tollcalculator.GetTollFee(new Car(), dates);
-            Assert.IsTrue(fee == 47);
-        }
+        }  
     }
 }
