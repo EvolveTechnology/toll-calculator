@@ -41,8 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\VehicleType.cs" />
-    <Compile Include="Helpers\DateAndHourComparer.cs" />
-    <Compile Include="Helpers\DateComparer.cs" />
+    <Compile Include="CustomComparators\DateAndHourComparer.cs" />
+    <Compile Include="CustomComparators\DateComparer.cs" />
     <Compile Include="Helpers\TollHelper.cs" />
     <Compile Include="Models\DailySum.cs" />
     <Compile Include="Models\EligibleDate.cs" />

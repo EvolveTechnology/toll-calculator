@@ -45,25 +45,23 @@ namespace DateLibrary
 
         }
 
-        //Function is taken from nager but is refactored for ease of read and optimization
+        //Function is taken from nager but is refactored for ease of readability and optimization
         private static DateTime GetEaster(int year)
         {
-            int g = year % 19;
-            int c = year / 100;
-            int h = h = (c - (int)(c / 4) - (int)((8 * c + 13) / 25)
+            var g = year % 19;
+            var c = year / 100;
+            int h = h = (c - c / 4 - (int)((8 * c + 13) / 25)
                                                 + 19 * g + 15) % 30;
-            int i = h - (int)(h / 28) * (1 - (int)(h / 28) *
+            var i = h - (int)(h / 28) * (1 - (int)(h / 28) *
                         (int)(29 / (h + 1)) * (int)((21 - g) / 11));
 
             var day = i - ((year + (int)(year / 4) +
                           i + 2 - c + (int)(c / 4)) % 7) + 28;
             var month = 3;
 
-            if (day > 31)
-            {
-                month++;
-                day -= 31;
-            }
+            if (day <= 31) return new DateTime(year, month, day);
+            month++;
+            day -= 31;
             return new DateTime(year, month, day);
         }
 

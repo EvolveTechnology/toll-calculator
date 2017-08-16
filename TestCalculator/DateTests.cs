@@ -30,8 +30,7 @@ namespace CalculatorTests
             }
         }
 
-        [TestMethod]
-        public void TestHolidays(bool value, DateTime date)
+        private void TestHolidays(bool value, DateTime date)
         {
             if (value)
             {

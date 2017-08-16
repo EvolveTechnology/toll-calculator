@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Toll_Calculator;
-using Toll_Calculator.Helpers;
 using Toll_Calculator.Models;
 using Toll_Calculator.Models.Vehicles;
 
@@ -16,9 +15,8 @@ namespace TestCalculator
     {
         [TestMethod]
         [TestCategory("Toll test")]
-        public void TestGetTollFee()
+        public void GetTollFee()
         {
-            var fees = TollHelper.GetFeePeriods();
             var dates = new[]
             {
                 new DateTime(2018,11,03, 13,45,00),
@@ -38,7 +36,6 @@ namespace TestCalculator
         [TestCategory("Toll test")]
         public void TollFreeVehicle()
         {
-            var fees = TollHelper.GetFeePeriods();
             var dates = new[]
             {
                 new DateTime(2018,11,03, 13,45,00),
