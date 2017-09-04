@@ -21,7 +21,7 @@ class TollCalculator {
     if (isFreeVehicle(whitelist)(vehicle)) {
       return 0
     }
-    // group dates by day
+    // group dates by day and calc fee
     const days = groupBy(toDate, dates)
     const feePerDay = values(days).map(this.calcFee.bind(this))
 
@@ -32,19 +32,19 @@ class TollCalculator {
 
   calcFee(dates = []) {
     const { fees, whitelist } = this.config
-    // find cost in time matrix
-    function lookupFee(date) {
-      assert(date instanceof Date, "Invalid date")
-      const cell = fees.matrix.find(withinTime(date))
-      return cell ? fees.cost[cell[1]] : 0
-    }
-
     const fee = dates
       .filter(not(sameHour))
       .filter(not(isFreeDay(whitelist)))
       .filter(not(isFreeDate(whitelist)))
       .map(lookupFee)
       .reduce(sum, 0)
+
+    // find cost in time matrix
+    function lookupFee(date) {
+      assert(date instanceof Date, "Invalid date")
+      const cell = fees.matrix.find(withinTime(date))
+      return cell ? fees.cost[cell[1]] : 0
+    }
 
     return fee
   }
