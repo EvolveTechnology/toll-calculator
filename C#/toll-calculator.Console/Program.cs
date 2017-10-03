@@ -11,9 +11,8 @@ using TollCalculator.Gothenburg;
 
 namespace TollCalculator.Console
 {
-    class Program
+    public class Program
     {
-        private static int NumberOfIterations = 1000;
         private static Microsoft.Extensions.Logging.ILogger Logger { get; set; }
 
         static void Main(string[] args)
@@ -72,6 +71,9 @@ namespace TollCalculator.Console
             };
         }
 
+        /// <summary>
+        /// Setup Microsoft.Extensions.Logging with NLog provider (pre-release for .NET 2.0)
+        /// </summary>
         private static void SetupLogger()
         {
             var config = new LoggingConfiguration();
