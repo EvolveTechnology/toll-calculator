@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using TollFeeCalculator.Contracts.Vehicle;
+﻿using TollFeeCalculator.Contracts.Vehicle;
 using TollFeeCalculator.Contracts.VehicleType;
 
 namespace TollFeeCalculator.Entities
@@ -13,12 +11,5 @@ namespace TollFeeCalculator.Entities
 		{
 			return VehicleType.ToString();
 		}
-
-		public bool IsVehicleTollFree(VehicleType vehicleType)
-		{
-			return TollFreeVehicleTypes.Contains(vehicleType);
-		}
-
-		public IEnumerable<VehicleType> TollFreeVehicleTypes { get; set; }
 	}
 }

@@ -39,12 +39,14 @@ namespace TollFeeCalculator.Contracts.Taxation
 		/// </summary>
 		/// <remarks>-1 means no single charge rule</remarks>
 		int SingleChargeRuleMinutes { get; }
+
 		/// <summary>
 		/// Calculates the total fee for the given
 		/// list of passages
 		/// </summary>
+		/// <param name="vehicle">The vehicle object</param>
 		/// <param name="passages">List of passages</param>
 		/// <returns>Total fee for passages</returns>
-		float FeeForPassages(IEnumerable<DateTime> passages);
+		float FeeForPassages(Vehicle.IVehicle vehicle, IEnumerable<DateTime> passages);
 	}
 }

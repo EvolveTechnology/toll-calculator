@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F87FA348-4611-41EE-B7A7-FAA81DE34C0E}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>TollFeeCalculator.Console</RootNamespace>
-    <AssemblyName>TollFeeCalculator.Console</AssemblyName>
+    <ProjectGuid>{BA125EFE-1DD8-4E14-AD19-3E6918918A61}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TollFeeCalculator.Stockholm</RootNamespace>
+    <AssemblyName>TollFeeCalculator.Stockholm</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,11 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Taxation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <ProjectReference Include="..\TollFeeCalculator.Contracts\TollFeeCalculator.Contracts.csproj">
+      <Project>{20205cce-57a9-447b-826a-6b1478c47368}</Project>
+      <Name>TollFeeCalculator.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TollFeeCalculator.Sweden\TollFeeCalculator.Sweden.csproj">
+      <Project>{a0916aea-5cee-4139-94df-87e9572036ac}</Project>
+      <Name>TollFeeCalculator.Sweden</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -48,7 +48,13 @@
       <Project>{20205cce-57a9-447b-826a-6b1478c47368}</Project>
       <Name>TollFeeCalculator.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TollFeeCalculator.Sweden\TollFeeCalculator.Sweden.csproj">
+      <Project>{a0916aea-5cee-4139-94df-87e9572036ac}</Project>
+      <Name>TollFeeCalculator.Sweden</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

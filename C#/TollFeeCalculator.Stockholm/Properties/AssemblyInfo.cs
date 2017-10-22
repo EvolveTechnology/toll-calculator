@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("toll-calculator.console")]
+[assembly: AssemblyTitle("TollFeeCalculator.Gothenburg")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("toll-calculator.console")]
+[assembly: AssemblyProduct("TollFeeCalculator.Gothenburg")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f87fa348-4611-41ee-b7a7-faa81de34c0e")]
+[assembly: Guid("6d92b218-6c2c-4eef-bfe2-9b857c08a4dd")]
 
 // Version information for an assembly consists of the following four values:
 //

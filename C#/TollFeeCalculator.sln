@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TollFeeCalculator.Console", "TollFeeCalculator.Console\TollFeeCalculator.Console.csproj", "{F87FA348-4611-41EE-B7A7-FAA81DE34C0E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TollFeeCalculator.Contracts", "TollFeeCalculator.Contracts\TollFeeCalculator.Contracts.csproj", "{20205CCE-57A9-447B-826A-6B1478C47368}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TollFeeCalculator.Gothenburg", "TollFeeCalculator.Gothenburg\TollFeeCalculator.Gothenburg.csproj", "{6D92B218-6C2C-4EEF-BFE2-9B857C08A4DD}"
@@ -13,16 +11,28 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TollFeeCalculator.Sweden", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TollFeeCalculator.Entities", "TollFeeCalculator.Entities\TollFeeCalculator.Entities.csproj", "{8BDA5F65-B0B7-46F1-B8A9-0CE3AA572C72}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts", "Contracts", "{DE3C5B3D-A2E0-435A-9D61-DE3AB15D051C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Implementation", "Implementation", "{AED67AFE-AB1E-423B-BA4D-9ECEE4410A5A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{FC1D97F5-CE89-49C1-AFF6-3D70D8F5F190}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TollFeeCalculator.Stockholm", "TollFeeCalculator.Stockholm\TollFeeCalculator.Stockholm.csproj", "{BA125EFE-1DD8-4E14-AD19-3E6918918A61}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9F377CE8-19D8-425F-8A31-62018E191934}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TollFeeCalculator.Sweden.Tests", "TollFeeCalculator.Sweden.Tests\TollFeeCalculator.Sweden.Tests.csproj", "{DADFF72E-ED0A-4E3C-AED8-918E3360A70E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TollFeeCalculator.Gothenburg.Tests", "TollFeeCalculator.Gothenburg.Tests\TollFeeCalculator.Gothenburg.Tests.csproj", "{E262333A-C468-44A6-92C5-410A8A2A296D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TollFeeCalculator.Stockholm.Tests", "TollFeeCalculator.Stockholm.Tests\TollFeeCalculator.Stockholm.Tests.csproj", "{7218A29D-058E-4724-8F1F-CD1BFA11BAF5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F87FA348-4611-41EE-B7A7-FAA81DE34C0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F87FA348-4611-41EE-B7A7-FAA81DE34C0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F87FA348-4611-41EE-B7A7-FAA81DE34C0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F87FA348-4611-41EE-B7A7-FAA81DE34C0E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{20205CCE-57A9-447B-826A-6B1478C47368}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{20205CCE-57A9-447B-826A-6B1478C47368}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20205CCE-57A9-447B-826A-6B1478C47368}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,9 +49,35 @@ Global
 		{8BDA5F65-B0B7-46F1-B8A9-0CE3AA572C72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BDA5F65-B0B7-46F1-B8A9-0CE3AA572C72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BDA5F65-B0B7-46F1-B8A9-0CE3AA572C72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA125EFE-1DD8-4E14-AD19-3E6918918A61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA125EFE-1DD8-4E14-AD19-3E6918918A61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA125EFE-1DD8-4E14-AD19-3E6918918A61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA125EFE-1DD8-4E14-AD19-3E6918918A61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DADFF72E-ED0A-4E3C-AED8-918E3360A70E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DADFF72E-ED0A-4E3C-AED8-918E3360A70E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DADFF72E-ED0A-4E3C-AED8-918E3360A70E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DADFF72E-ED0A-4E3C-AED8-918E3360A70E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E262333A-C468-44A6-92C5-410A8A2A296D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E262333A-C468-44A6-92C5-410A8A2A296D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E262333A-C468-44A6-92C5-410A8A2A296D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E262333A-C468-44A6-92C5-410A8A2A296D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7218A29D-058E-4724-8F1F-CD1BFA11BAF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7218A29D-058E-4724-8F1F-CD1BFA11BAF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7218A29D-058E-4724-8F1F-CD1BFA11BAF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7218A29D-058E-4724-8F1F-CD1BFA11BAF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{20205CCE-57A9-447B-826A-6B1478C47368} = {DE3C5B3D-A2E0-435A-9D61-DE3AB15D051C}
+		{6D92B218-6C2C-4EEF-BFE2-9B857C08A4DD} = {AED67AFE-AB1E-423B-BA4D-9ECEE4410A5A}
+		{A0916AEA-5CEE-4139-94DF-87E9572036AC} = {AED67AFE-AB1E-423B-BA4D-9ECEE4410A5A}
+		{8BDA5F65-B0B7-46F1-B8A9-0CE3AA572C72} = {FC1D97F5-CE89-49C1-AFF6-3D70D8F5F190}
+		{BA125EFE-1DD8-4E14-AD19-3E6918918A61} = {AED67AFE-AB1E-423B-BA4D-9ECEE4410A5A}
+		{DADFF72E-ED0A-4E3C-AED8-918E3360A70E} = {9F377CE8-19D8-425F-8A31-62018E191934}
+		{E262333A-C468-44A6-92C5-410A8A2A296D} = {9F377CE8-19D8-425F-8A31-62018E191934}
+		{7218A29D-058E-4724-8F1F-CD1BFA11BAF5} = {9F377CE8-19D8-425F-8A31-62018E191934}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1B1A8D3C-F2FD-4879-B589-88D4B79DFC35}

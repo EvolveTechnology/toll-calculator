@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TollFeeCalculator.Contracts.Taxation;
 using TollFeeCalculator.Contracts.TaxationTimespan;
+using TollFeeCalculator.Contracts.Vehicle;
 using TollFeeCalculator.Contracts.VehicleType;
 
 namespace TollFeeCalculator.Sweden
@@ -34,7 +35,7 @@ namespace TollFeeCalculator.Sweden
 
 		public float MaxDailyFee { get; } = 0.0f;
 		public int SingleChargeRuleMinutes { get; } = -1;
-		public float FeeForPassages(IEnumerable<DateTime> passages)
+		public float FeeForPassages(IVehicle vehicle, IEnumerable<DateTime> passages)
 		{
 			throw new NotImplementedException("Implemented in city specific class.");
 		}

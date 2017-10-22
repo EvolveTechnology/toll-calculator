@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Configuration;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using TollFeeCalculator.Contracts.Calendar;
 using TollFeeCalculator.Entities;
 
@@ -19,6 +21,8 @@ namespace TollFeeCalculator.Sweden
 		public Calendar()
 		{
 			_client.BaseAddress = new Uri(_apiBaseAddress);
+			_client.DefaultRequestHeaders.Accept.Clear();
+			_client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 		}
 
 		public bool IsDateTollFree(DateTime date)
@@ -26,19 +30,17 @@ namespace TollFeeCalculator.Sweden
 			//Saturdays, Sundays and whole July are toll free
 			return date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday || date.Month == 7 ||
 				//Public holidays are toll free
-				!string.IsNullOrWhiteSpace(GetDayAsync(_apiPathAndQuery + date.ToString("yyyyMd")).Result.Helgdag) ||
+				!string.IsNullOrWhiteSpace(GetDayAsync(_apiPathAndQuery + date.ToString("yyyyMMdd")).Result.Helgdag) ||
 				//Days before public holiday are toll free
-				!string.IsNullOrWhiteSpace(GetDayAsync(_apiPathAndQuery + date.AddDays(1).ToString("yyyyMd")).Result.Helgdag);
+				!string.IsNullOrWhiteSpace(GetDayAsync(_apiPathAndQuery + date.AddDays(1).ToString("yyyyMMdd")).Result.Helgdag);
 		}
 
 		private async Task<Day> GetDayAsync(string path)
 		{
-			Day day = null;
 			HttpResponseMessage response = await _client.GetAsync(path);
-			if (response.IsSuccessStatusCode)
-			{
-				day = await response.Content.ReadAsAsync<Day>();
-			}
+			if (!response.IsSuccessStatusCode) return null;
+			var responseString = await response.Content.ReadAsStringAsync();
+			var day = JsonConvert.DeserializeObject<Day>(responseString);
 			return day;
 		}
 	}
