@@ -18,6 +18,6 @@ namespace TollFeeCalculator.Contracts.TaxationTimespan
 		/// <summary>
 		/// Cost of the timespan
 		/// </summary>
-		public float TimespanFee { get; set; }
+		public int TimespanFee { get; set; }
 	}
 }

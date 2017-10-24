@@ -28,11 +28,11 @@ namespace TollFeeCalculator.Contracts.Taxation
 		/// </summary>
 		/// <param name="dateTime">The timestamp to check</param>
 		/// <returns>The calculated fee</returns>
-		float TimeSpanFee(DateTime dateTime);
+		int TimeSpanFee(DateTime dateTime);
 		/// <summary>
 		/// Maximum daity fee for passages
 		/// </summary>
-		float MaxDailyFee { get; }
+		int MaxDailyFee { get; }
 		/// <summary>
 		/// Number of minutes within those the most expensive
 		/// fee is applied
@@ -47,6 +47,6 @@ namespace TollFeeCalculator.Contracts.Taxation
 		/// <param name="vehicle">The vehicle object</param>
 		/// <param name="passages">List of passages</param>
 		/// <returns>Total fee for passages</returns>
-		float FeeForPassages(Vehicle.IVehicle vehicle, IEnumerable<DateTime> passages);
+		int FeeForPassages(Vehicle.IVehicle vehicle, IEnumerable<DateTime> passages);
 	}
 }

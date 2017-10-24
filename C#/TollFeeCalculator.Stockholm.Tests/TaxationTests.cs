@@ -27,7 +27,7 @@ namespace TollFeeCalculator.Stockholm.Tests
 				VehicleType = VehicleType.Military
 			};
 
-			Assert.AreEqual(0.0f, _taxation.FeeForPassages(militaryVehicle, new List<DateTime>()));
+			Assert.AreEqual(0, _taxation.FeeForPassages(militaryVehicle, new List<DateTime>()));
 		}
 
 		[TestMethod]
@@ -47,7 +47,7 @@ namespace TollFeeCalculator.Stockholm.Tests
 				new DateTime(2017,10,20,15,5,0)
 			};
 
-			Assert.AreEqual(105.0f, _taxation.FeeForPassages(vehicle, passages));
+			Assert.AreEqual(105, _taxation.FeeForPassages(vehicle, passages));
 		}
 
 		[TestMethod]
@@ -61,7 +61,22 @@ namespace TollFeeCalculator.Stockholm.Tests
 				new DateTime(2017,10,20,7,15,0)
 			};
 
-			Assert.AreEqual(75.0f, _taxation.FeeForPassages(vehicle, passages));
+			Assert.AreEqual(75, _taxation.FeeForPassages(vehicle, passages));
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void ExceptionIfPassagesOfDifferentDates()
+		{
+			var vehicle = new Vehicle { VehicleType = VehicleType.Car };
+			var passages = new List<DateTime>
+			{
+				new DateTime(2017,10,20,7,0,0),
+				new DateTime(2017,10,20,7,10,0),
+				new DateTime(2017,10,21,7,15,0)
+			};
+
+			var fee = _taxation.FeeForPassages(vehicle, passages);
 		}
 	}
 }

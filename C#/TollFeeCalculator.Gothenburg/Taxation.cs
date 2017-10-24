@@ -24,81 +24,91 @@ namespace TollFeeCalculator.Gothenburg
 			{
 				TimespanStart = new TimeSpan(6,0,0),
 				TimespanEnd = new TimeSpan(6,30,0),
-				TimespanFee = 9.0f
+				TimespanFee = 9
 			},
 			new TaxationTimespan
 			{
 				TimespanStart = new TimeSpan(6,30,0),
 				TimespanEnd = new TimeSpan(7,0,0),
-				TimespanFee = 16.0f
+				TimespanFee = 16
 			},
 			new TaxationTimespan
 			{
 				TimespanStart = new TimeSpan(7,0,0),
 				TimespanEnd = new TimeSpan(8,0,0),
-				TimespanFee = 22.0f
+				TimespanFee = 22
 			},
 			new TaxationTimespan
 			{
 				TimespanStart = new TimeSpan(8,0,0),
 				TimespanEnd = new TimeSpan(8,30,0),
-				TimespanFee = 16.0f
+				TimespanFee = 16
 			},
 			new TaxationTimespan
 			{
 				TimespanStart = new TimeSpan(8,30,0),
 				TimespanEnd = new TimeSpan(15,0,0),
-				TimespanFee = 9.0f
+				TimespanFee = 9
 			},
 			new TaxationTimespan
 			{
 				TimespanStart = new TimeSpan(15,00,0),
 				TimespanEnd = new TimeSpan(15,30,0),
-				TimespanFee = 16.0f
+				TimespanFee = 16
 			},
 			new TaxationTimespan
 			{
 				TimespanStart = new TimeSpan(15,30,0),
 				TimespanEnd = new TimeSpan(17,0,0),
-				TimespanFee = 22.0f
+				TimespanFee = 22
 			},
 			new TaxationTimespan
 			{
 				TimespanStart = new TimeSpan(17,0,0),
 				TimespanEnd = new TimeSpan(18,0,0),
-				TimespanFee = 16.0f
+				TimespanFee = 16
 			},
 			new TaxationTimespan
 			{
 				TimespanStart = new TimeSpan(18,0,0),
 				TimespanEnd = new TimeSpan(18,30,0),
-				TimespanFee = 9.0f
+				TimespanFee = 9
 			}
 		};
-		public new float TimeSpanFee(DateTime dateTime)
+		public new int TimeSpanFee(DateTime dateTime)
 		{
-			if (_calendar.IsDateTollFree(dateTime.Date)) return 0.0f;
+			if (_calendar.IsDateTollFree(dateTime.Date)) return 0;
 			var timespan = dateTime.TimeOfDay;
 			var fee = from taxation in TaxationTimespans
 					  where taxation.TimespanStart <= timespan && taxation.TimespanEnd > timespan
 					  select taxation.TimespanFee;
-			var enumerable = fee as float[] ?? fee.ToArray();
-			return enumerable.Any() ? enumerable.SingleOrDefault() : 0.0f;
+			var enumerable = fee as int[] ?? fee.ToArray();
+			return enumerable.Any() ? enumerable.SingleOrDefault() : 0;
 		}
 
-		public new float MaxDailyFee { get; } = 60.0f;
+		public new int MaxDailyFee { get; } = 60;
 		public new int SingleChargeRuleMinutes { get; } = 60;
-		public new float FeeForPassages(IVehicle vehicle, IEnumerable<DateTime> passages)
+		public new int FeeForPassages(IVehicle vehicle, IEnumerable<DateTime> passages)
 		{
-			if (IsVehicleTollFree(vehicle.VehicleType)) return 0.0f;
+			// If toll free vehicle return 0
+			if (IsVehicleTollFree(vehicle.VehicleType)) return 0;
+			// If no passages return 0
+			var passagesArray = passages as DateTime[] ?? passages.ToArray();
+			if (!passagesArray.Any()) return 0;
+
+			var passagesSorted = passagesArray.OrderBy(time => time).ToList();
+			if (passagesSorted.First().Date != passagesSorted.Last().Date)
+			{
+				throw new ArgumentException("Passages should be of the same day");
+			}
+
 			var firstPassageWithinXMinutes = DateTime.MinValue;
-			var previousPassageFee = 0.0f;
+			var previousPassageFee = 0;
 			var firstPassage = true;
-			var totalFee = 0.0f;
-			var maxOfPassagesWithinXMinutes = 0.0f;
-			var dateTimes = passages as DateTime[] ?? passages.ToArray();
-			var lastPassage = dateTimes.Last();
-			foreach (var passage in dateTimes.OrderBy(time => time))
+			var totalFee = 0;
+			var maxOfPassagesWithinXMinutes = 0;
+			var lastPassage = passagesSorted.Last();
+			foreach (var passage in passagesSorted)
 			{
 				var fee = TimeSpanFee(passage);
 				if (firstPassage)
