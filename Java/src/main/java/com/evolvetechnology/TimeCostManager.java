@@ -1,18 +1,18 @@
 package com.evolvetechnology;
 
 import java.time.LocalTime;
+import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
- * This class represents linear intervals during a day with associated costs
+ * This class manages linear intervals during a day with associated costs
  * <p>
  * I.e: 6:00 - 7:00 = 8
  * 7:00 - 9:30 = 10
  * 9:30 - 14:30 = 21
  */
-public class CostIntervals {
-  private List<CostInterval> costIntervals = new LinkedList<>();
+public class TimeCostManager {
+  private Collection<CostInterval> costIntervals = new LinkedList<>();
 
   /**
    * Method to find interval for time and associated cost
@@ -22,20 +22,25 @@ public class CostIntervals {
    */
   public int getCostFor(LocalTime localTime) {
     for (CostInterval costInterval : costIntervals) {
-      if (isTimeInInterval(localTime, costInterval.start, costInterval.end)) {
-        return costInterval.cost;
+      if (isInTimeInterval(localTime, costInterval.getStart(), costInterval.getEnd())) {
+        return costInterval.getCost();
       }
     }
     return 0;
   }
 
-  private boolean isTimeInInterval(LocalTime localTime, LocalTime start, LocalTime end) {
-    return localTime.compareTo(start) >= 0 && localTime.compareTo(end) < 0;
+  public void addAll(Collection<CostInterval> costIntervals) {
+    this.costIntervals.addAll(costIntervals);
   }
 
-  public void add(LocalTime start, LocalTime end, int cost) {
+
+  public void addIntervalCost(LocalTime start, LocalTime end, int cost) {
     verifyInterval(start, end);
     costIntervals.add(new CostInterval(start, end, cost));
+  }
+
+  private boolean isInTimeInterval(LocalTime localTime, LocalTime start, LocalTime end) {
+    return localTime.compareTo(start) >= 0 && localTime.compareTo(end) < 0;
   }
 
   private void verifyInterval(LocalTime start, LocalTime end) {
@@ -51,9 +56,9 @@ public class CostIntervals {
 
   private void verifyNoOverlappingIntervals(LocalTime start, LocalTime end) {
     for (CostInterval costInterval : costIntervals) {
-      if (isOverLapping(start, end, costInterval.start, costInterval.end)) {
+      if (isOverLapping(start, end, costInterval.getStart(), costInterval.getEnd())) {
         throw new IllegalArgumentException("Overlapping interval (" + start + " -- " + end + ") with existing (" +
-                costInterval.start + " -- " + costInterval.end + ")");
+                costInterval.getStart() + " -- " + costInterval.getEnd() + ")");
       }
     }
   }
@@ -62,18 +67,6 @@ public class CostIntervals {
     boolean endIsOverlapping = start1.compareTo(start2) < 0 && end1.compareTo(start2) > 0;
     boolean startIsOverlapping = start1.compareTo(end2) < 0 && end1.compareTo(end2) > 0;
     return endIsOverlapping || startIsOverlapping;
-  }
-
-  private static class CostInterval {
-    private final LocalTime start;
-    private final LocalTime end;
-    private final int cost;
-
-    CostInterval(LocalTime start, LocalTime end, int cost) {
-      this.start = start;
-      this.end = end;
-      this.cost = cost;
-    }
   }
 
 }
