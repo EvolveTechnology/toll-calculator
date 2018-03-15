@@ -1,9 +1,8 @@
 package com.evolvetechnology.vehicle;
 
-public class Car implements Vehicle {
-
+public class Military implements Vehicle {
   @Override
   public boolean isTollFree() {
-    return false;
+    return true;
   }
 }
