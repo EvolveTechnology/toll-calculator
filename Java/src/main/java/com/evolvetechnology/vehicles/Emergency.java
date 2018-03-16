@@ -1,4 +1,4 @@
-package com.evolvetechnology.vehicle;
+package com.evolvetechnology.vehicles;
 
 public class Emergency implements Vehicle {
   @Override

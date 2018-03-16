@@ -1,4 +1,4 @@
-package com.evolvetechnology.vehicle;
+package com.evolvetechnology.vehicles;
 
 @FunctionalInterface
 public interface Vehicle {

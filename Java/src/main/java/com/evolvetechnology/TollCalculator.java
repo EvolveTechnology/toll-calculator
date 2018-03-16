@@ -1,6 +1,7 @@
 package com.evolvetechnology;
 
-import com.evolvetechnology.vehicle.Vehicle;
+import com.evolvetechnology.timecost_calculation.TimeCostCalculator;
+import com.evolvetechnology.vehicles.Vehicle;
 
 import java.time.*;
 import java.time.temporal.ChronoUnit;

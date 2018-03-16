@@ -1,6 +1,13 @@
 package com.evolvetechnology;
 
-import com.evolvetechnology.vehicle.*;
+import com.evolvetechnology.datematchers.FreeDateMatcherAggregator;
+import com.evolvetechnology.datematchers.FreeHolidayMatcher;
+import com.evolvetechnology.datematchers.FreeMonthMatcher;
+import com.evolvetechnology.datematchers.FreeWeekDayMatcher;
+import com.evolvetechnology.timecost_calculation.CostInterval;
+import com.evolvetechnology.timecost_calculation.IntervalTimeCostCalculator;
+import com.evolvetechnology.timecost_calculation.TimeCostCalculator;
+import com.evolvetechnology.vehicles.*;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.junit.Before;

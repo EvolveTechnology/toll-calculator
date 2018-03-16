@@ -1,4 +1,4 @@
-package com.evolvetechnology;
+package com.evolvetechnology.timecost_calculation;
 
 import org.junit.Test;
 
