@@ -6,10 +6,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class UnchargedWeekdayPredicate implements Predicate<LocalDateTime> {
+public class FreeWeekDayMatcher implements Predicate<LocalDateTime> {
+
   private Set<DayOfWeek> tollFreeWeekDays = new HashSet<>();
 
-  public UnchargedWeekdayPredicate(Set<DayOfWeek> tollFreeWeekDays) {
+  public FreeWeekDayMatcher(Set<DayOfWeek> tollFreeWeekDays) {
     this.tollFreeWeekDays.addAll(tollFreeWeekDays);
   }
 
@@ -21,6 +22,5 @@ public class UnchargedWeekdayPredicate implements Predicate<LocalDateTime> {
   private boolean isTollFreeWeekDay(DayOfWeek dayOfWeek) {
     return tollFreeWeekDays.contains(dayOfWeek);
   }
-
 
 }

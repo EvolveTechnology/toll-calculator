@@ -3,6 +3,7 @@ package com.evolvetechnology;
 import java.time.LocalTime;
 
 public class CostInterval {
+
   private final LocalTime start;
   private final LocalTime end;
   private final int cost;
@@ -24,4 +25,5 @@ public class CostInterval {
   public int getCost() {
     return cost;
   }
+
 }

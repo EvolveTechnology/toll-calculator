@@ -4,48 +4,57 @@ import com.evolvetechnology.vehicle.Vehicle;
 
 import java.time.*;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.function.Predicate;
 
 public class TollCalculator {
 
-  final private Predicate<LocalDateTime> isDateFreeOfCharge;
+  final private Predicate<LocalDateTime> freeDateMatcher;
   final private TimeCostCalculator timeCostCalculator;
 
-  public TollCalculator(Predicate<LocalDateTime> isDateFreeOfCharge,
+  public TollCalculator(Predicate<LocalDateTime> freeDateMatcher,
                         TimeCostCalculator timeCostCalculator) {
     this.timeCostCalculator = timeCostCalculator;
-    this.isDateFreeOfCharge = isDateFreeOfCharge;
+    this.freeDateMatcher = freeDateMatcher;
   }
 
   public int getTollFee(Vehicle vehicle, LocalDateTime... dates) {
-    LocalDateTime intervalStart = dates[0];
+    if (dates.length == 0) return 0;
 
     int totalFee = 0;
-    for (LocalDateTime date : dates) {
-      int nextFee = getTollFee(vehicle, date);
-      int tempFee = getTollFee(vehicle, intervalStart);
+    int intervalCost = 0;
 
-      long minutes = intervalStart.until(date, ChronoUnit.MINUTES);
+    LocalDateTime intervalStart = dates[0];
+    Iterator<LocalDateTime> iterator = Arrays.asList(dates).iterator();
 
-      if (minutes <= 60) {
-        if (totalFee > 0) continue;
-        if (nextFee >= tempFee) tempFee = nextFee;
-        totalFee += tempFee;
+    while (iterator.hasNext()) {
+      LocalDateTime time = iterator.next();
+      int currentTollFee = getTollFee(vehicle, time);
+      if (hourHasPassed(intervalStart, time)) {
+        intervalStart = time;
+        totalFee += intervalCost;
+        intervalCost = currentTollFee;
       } else {
-        totalFee += nextFee;
+        intervalCost = Math.max(intervalCost, currentTollFee);
       }
+      if (!iterator.hasNext()) totalFee += intervalCost;
     }
-    if (totalFee > 60) totalFee = 60;
-    return totalFee;
+
+    return Math.min(totalFee, 60);
+  }
+
+  private boolean hourHasPassed(LocalDateTime start, LocalDateTime time) {
+    return start.until(time, ChronoUnit.MINUTES) > 60;
   }
 
   public int getTollFee(Vehicle vehicle, LocalDateTime date) {
-    if (shouldNotBeCharged(vehicle, date)) return 0;
+    if (vehicleShouldNotBeCharged(vehicle, date)) return 0;
     return timeCostCalculator.getCostFor(date.toLocalTime());
   }
 
-  private boolean shouldNotBeCharged(Vehicle vehicle, LocalDateTime date) {
-    return isDateFreeOfCharge.test(date) || vehicle.isTollFree();
+  private boolean vehicleShouldNotBeCharged(Vehicle vehicle, LocalDateTime date) {
+    return vehicle.isTollFree() || freeDateMatcher.test(date);
   }
 
 }

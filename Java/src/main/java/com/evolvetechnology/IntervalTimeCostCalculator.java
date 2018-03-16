@@ -14,10 +14,10 @@ import java.util.LinkedList;
  * 9:30 - 14:30 = 21
  */
 public class IntervalTimeCostCalculator implements TimeCostCalculator {
+
   private Collection<CostInterval> costIntervals = new LinkedList<>();
 
-  private IntervalTimeCostCalculator() {
-  }
+  private IntervalTimeCostCalculator() { }
 
   public static IntervalTimeCostCalculator create() {
     return new IntervalTimeCostCalculator();
@@ -35,6 +35,7 @@ public class IntervalTimeCostCalculator implements TimeCostCalculator {
     return this;
   }
 
+  @Override
   public int getCostFor(LocalTime localTime) {
     for (CostInterval costInterval : costIntervals) {
       if (isInTimeInterval(localTime, costInterval.getStart(), costInterval.getEnd())) {
@@ -44,13 +45,13 @@ public class IntervalTimeCostCalculator implements TimeCostCalculator {
     return 0;
   }
 
+  private boolean isInTimeInterval(LocalTime localTime, LocalTime start, LocalTime end) {
+    return localTime.compareTo(start) >= 0 && localTime.compareTo(end) < 0;
+  }
+
   private void addIntervalCost(LocalTime start, LocalTime end, int cost) {
     verifyInterval(start, end);
     costIntervals.add(new CostInterval(start, end, cost));
-  }
-
-  private boolean isInTimeInterval(LocalTime localTime, LocalTime start, LocalTime end) {
-    return localTime.compareTo(start) >= 0 && localTime.compareTo(end) < 0;
   }
 
   private void verifyInterval(LocalTime start, LocalTime end) {

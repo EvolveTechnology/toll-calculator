@@ -41,20 +41,19 @@ public class TollCalculatorTest {
           LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(18, 0))
   );
 
-  private static TimeCostCalculator ALWAYS_CHARGING_TIME_COST_CALCULATOR = date -> 1000;
   private TimeCostCalculator timeCostCalculator;
 
-  private UnchargedPredicateAggregator unchargedPredicateAggregator;
+  private FreeDateMatcherAggregator freeDateMatcherAggregator;
 
   @Before
   public void setUp() throws Exception {
     timeCostCalculator = IntervalTimeCostCalculator.create()
             .withCostIntervals(createCostIntervals());
 
-    unchargedPredicateAggregator = new UnchargedPredicateAggregator(
-            new UnchargedHolidayPredicate(createTollFreeDays()),
-            new UnchargedMonthPredicate(createTollFreeMonths()),
-            new UnchargedWeekdayPredicate(createTollFreeWeekDays())
+    freeDateMatcherAggregator = new FreeDateMatcherAggregator(
+            new FreeHolidayMatcher(createTollFreeDays()),
+            new FreeMonthMatcher(createTollFreeMonths()),
+            new FreeWeekDayMatcher(createTollFreeWeekDays())
     );
   }
 
@@ -133,15 +132,42 @@ public class TollCalculatorTest {
 
   @Test
   public void vehicleShouldOnlyBeChargedOnceAnHour() {
-    TollCalculator tollCalculator = new TollCalculator(date -> false, timeCostCalculator);
 
-    int cost = tollCalculator.getTollFee(NON_FREE_VEHICLE, MORNING_RUSH_HOUR, MORNING_RUSH_HOUR.plusMinutes(20));
-    assertEquals(RUSH_HOUR_COST, cost);
+    TimeCostCalculator testCalculator = IntervalTimeCostCalculator.create()
+            .withCostInterval(LocalTime.of(7, 0), LocalTime.of(7, 30), 1)
+            .withCostInterval(LocalTime.of(7, 30), LocalTime.of(8, 0), 2)
+            .withCostInterval(LocalTime.of(8, 0), LocalTime.of(9, 0), 4)
+            .withCostInterval(LocalTime.of(9, 0), LocalTime.of(10, 0), 5);
+    TollCalculator tollCalculator = new TollCalculator(date -> false, testCalculator);
+
+    int costTenMin = tollCalculator.getTollFee(NON_FREE_VEHICLE,
+            LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 0)),   // 1
+            LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 10)));
+    assertEquals(1, costTenMin);
+
+    int costHalfHour = tollCalculator.getTollFee(NON_FREE_VEHICLE,
+            LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 0)),
+            LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 30))); // 2
+    assertEquals(2, costHalfHour);
+
+    int costHour = tollCalculator.getTollFee(NON_FREE_VEHICLE,
+            LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 0)),
+            LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 30)),
+            LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(8, 0)));  // 4
+    assertEquals(4, costHour);
+
+    int costTwoHours = tollCalculator.getTollFee(NON_FREE_VEHICLE,
+            LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 0)),
+            LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 30)),
+            LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(8, 0)),   // 4
+            LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(8, 30)),
+            LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(9, 0)));  // 5
+    assertEquals(9, costTwoHours);
   }
 
   @Test
   public void someVehiclesAreTollFree() {
-    TollCalculator tollCalculator = new TollCalculator(date -> false, ALWAYS_CHARGING_TIME_COST_CALCULATOR);
+    TollCalculator tollCalculator = new TollCalculator(date -> false, date -> 1000);
 
     LocalDateTime[] allHours = ALL_HOURS.toArray(new LocalDateTime[ALL_HOURS.size()]);
     int allFreeVehiclesCost = tollCalculator.getTollFee(new Military(), allHours) +
@@ -154,7 +180,7 @@ public class TollCalculatorTest {
 
   @Test
   public void weekendsAndHolidaysAreTollFree() {
-    TollCalculator tollCalculator = new TollCalculator(unchargedPredicateAggregator, ALWAYS_CHARGING_TIME_COST_CALCULATOR);
+    TollCalculator tollCalculator = new TollCalculator(freeDateMatcherAggregator, date -> 1000);
 
     LocalDateTime newYearsEve = LocalDateTime.of(2018, 12, 31, 0, 0);
     LocalDateTime saturday = LocalDateTime.of(2018, Month.MARCH, 17, 0, 0);
