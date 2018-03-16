@@ -39,15 +39,20 @@ public class TollCalculatorTest {
           LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(18, 0))
   );
 
-  private TollCalculator tollCalculator;
+  private static TimeCostCalculator ALWAYS_CHARGING_TIME_COST_CALCULATOR = date -> 1000;
+  private TimeCostCalculator timeCostCalculator;
+
+  private UnchargedTimeResolver unchargedTimeResolver;
 
   @Before
   public void setUp() throws Exception {
-    tollCalculator = new TollCalculator();
-    tollCalculator.addCostIntervals(createCostIntervals());
-    tollCalculator.addTollFreeDates(createTollFreeDays());
-    tollCalculator.addTollFreeMonths(createTollFreeMonths());
-    tollCalculator.addTollFreeWeekDays(createTollFreeWeekDays());
+    timeCostCalculator = IntervalTimeCostCalculator.create()
+            .withCostIntervals(createCostIntervals());
+
+    unchargedTimeResolver = UnchargedHolidayWeekDayAndMonthResolver.create()
+            .withTollFreeHolidays(createTollFreeDays())
+            .withTollFreeMonths(createTollFreeMonths())
+            .withTollFreeWeekDays(createTollFreeWeekDays());
   }
 
   private Collection<CostInterval> createCostIntervals() {
@@ -91,6 +96,8 @@ public class TollCalculatorTest {
 
   @Test
   public void feesDifferBetween8And18() {
+    TollCalculator tollCalculator = new TollCalculator(date -> false, timeCostCalculator);
+
     List<Integer> costsForDay = ALL_HOURS.stream()
             .map(hour -> tollCalculator.getTollFee(NON_FREE_VEHICLE, hour))
             .collect(Collectors.toList());
@@ -99,6 +106,8 @@ public class TollCalculatorTest {
 
   @Test
   public void rushHourYieldHighestFee() {
+    TollCalculator tollCalculator = new TollCalculator(date -> false, timeCostCalculator);
+
     for (LocalDateTime hour : ALL_HOURS) {
       if (!isRushHour(hour)) {
         assertThat(tollCalculator.getTollFee(NON_FREE_VEHICLE, hour), is(lessThan(RUSH_HOUR_COST)));
@@ -112,6 +121,8 @@ public class TollCalculatorTest {
 
   @Test
   public void maximumFeeIs60() {
+    TollCalculator tollCalculator = new TollCalculator(date -> false, timeCostCalculator);
+
     LocalDateTime[] allHours = ALL_HOURS.toArray(new LocalDateTime[ALL_HOURS.size()]);
     int costForAllHours = tollCalculator.getTollFee(NON_FREE_VEHICLE, allHours);
     assertEquals(60, costForAllHours);
@@ -119,12 +130,16 @@ public class TollCalculatorTest {
 
   @Test
   public void vehicleShouldOnlyBeChargedOnceAnHour() {
+    TollCalculator tollCalculator = new TollCalculator(date -> false, timeCostCalculator);
+
     int cost = tollCalculator.getTollFee(NON_FREE_VEHICLE, MORNING_RUSH_HOUR, MORNING_RUSH_HOUR.plusMinutes(20));
     assertEquals(RUSH_HOUR_COST, cost);
   }
 
   @Test
   public void someVehiclesAreTollFree() {
+    TollCalculator tollCalculator = new TollCalculator(date -> false, ALWAYS_CHARGING_TIME_COST_CALCULATOR);
+
     LocalDateTime[] allHours = ALL_HOURS.toArray(new LocalDateTime[ALL_HOURS.size()]);
     int allFreeVehiclesCost = tollCalculator.getTollFee(new Military(), allHours) +
             tollCalculator.getTollFee(new Tractor(), allHours) +
@@ -136,6 +151,8 @@ public class TollCalculatorTest {
 
   @Test
   public void weekendsAndHolidaysAreTollFree() {
+    TollCalculator tollCalculator = new TollCalculator(unchargedTimeResolver, ALWAYS_CHARGING_TIME_COST_CALCULATOR);
+
     LocalDateTime newYearsEve = LocalDateTime.of(2018, 12, 31, 0, 0);
     LocalDateTime saturday = LocalDateTime.of(2018, Month.MARCH, 17, 0, 0);
     LocalDateTime sunday = LocalDateTime.of(2018, Month.MARCH, 18, 0, 0);

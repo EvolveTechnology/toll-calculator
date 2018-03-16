@@ -5,21 +5,36 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * This class manages linear intervals during a day with associated costs
+ * This TimeCostCalculator implementation manages linear intervals during a day with associated costs
  * <p>
- * I.e: 6:00 - 7:00 = 8
+ * Example:
+ * <p>
+ * 6:00 - 7:00 = 8
  * 7:00 - 9:30 = 10
  * 9:30 - 14:30 = 21
  */
-public class TimeCostManager {
+public class IntervalTimeCostCalculator implements TimeCostCalculator {
   private Collection<CostInterval> costIntervals = new LinkedList<>();
 
-  /**
-   * Method to find interval for time and associated cost
-   *
-   * @param localTime
-   * @return cost for interval
-   */
+  private IntervalTimeCostCalculator() {
+  }
+
+  public static IntervalTimeCostCalculator create() {
+    return new IntervalTimeCostCalculator();
+  }
+
+  public IntervalTimeCostCalculator withCostIntervals(Collection<CostInterval> costIntervals) {
+    costIntervals.forEach(costInterval ->
+            addIntervalCost(costInterval.getStart(), costInterval.getEnd(), costInterval.getCost())
+    );
+    return this;
+  }
+
+  public IntervalTimeCostCalculator withCostInterval(LocalTime start, LocalTime end, int cost) {
+    addIntervalCost(start, end, cost);
+    return this;
+  }
+
   public int getCostFor(LocalTime localTime) {
     for (CostInterval costInterval : costIntervals) {
       if (isInTimeInterval(localTime, costInterval.getStart(), costInterval.getEnd())) {
@@ -29,12 +44,7 @@ public class TimeCostManager {
     return 0;
   }
 
-  public void addAll(Collection<CostInterval> costIntervals) {
-    this.costIntervals.addAll(costIntervals);
-  }
-
-
-  public void addIntervalCost(LocalTime start, LocalTime end, int cost) {
+  private void addIntervalCost(LocalTime start, LocalTime end, int cost) {
     verifyInterval(start, end);
     costIntervals.add(new CostInterval(start, end, cost));
   }
