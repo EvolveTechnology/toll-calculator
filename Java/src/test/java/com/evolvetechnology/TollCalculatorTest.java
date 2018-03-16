@@ -2,12 +2,14 @@ package com.evolvetechnology;
 
 import com.evolvetechnology.vehicle.*;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.everyItem;
@@ -42,17 +44,18 @@ public class TollCalculatorTest {
   private static TimeCostCalculator ALWAYS_CHARGING_TIME_COST_CALCULATOR = date -> 1000;
   private TimeCostCalculator timeCostCalculator;
 
-  private UnchargedTimeResolver unchargedTimeResolver;
+  private UnchargedPredicateAggregator unchargedPredicateAggregator;
 
   @Before
   public void setUp() throws Exception {
     timeCostCalculator = IntervalTimeCostCalculator.create()
             .withCostIntervals(createCostIntervals());
 
-    unchargedTimeResolver = UnchargedHolidayWeekDayAndMonthResolver.create()
-            .withTollFreeHolidays(createTollFreeDays())
-            .withTollFreeMonths(createTollFreeMonths())
-            .withTollFreeWeekDays(createTollFreeWeekDays());
+    unchargedPredicateAggregator = new UnchargedPredicateAggregator(
+            new UnchargedHolidayPredicate(createTollFreeDays()),
+            new UnchargedMonthPredicate(createTollFreeMonths()),
+            new UnchargedWeekdayPredicate(createTollFreeWeekDays())
+    );
   }
 
   private Collection<CostInterval> createCostIntervals() {
@@ -68,8 +71,8 @@ public class TollCalculatorTest {
             new CostInterval(LocalTime.of(18, 0), LocalTime.of(18, 30), 8));
   }
 
-  private Collection<LocalDate> createTollFreeDays() {
-    return ImmutableList.of(
+  private Set<LocalDate> createTollFreeDays() {
+    return ImmutableSet.of(
             LocalDate.of(0, Month.JANUARY, 1),
             LocalDate.of(0, Month.APRIL, 1),
             LocalDate.of(0, Month.APRIL, 30),
@@ -86,12 +89,12 @@ public class TollCalculatorTest {
             LocalDate.of(0, Month.DECEMBER, 31));
   }
 
-  private Collection<LocalDate> createTollFreeMonths() {
-    return ImmutableList.of(LocalDate.of(2013, Month.JULY, 1));
+  private Set<LocalDate> createTollFreeMonths() {
+    return ImmutableSet.of(LocalDate.of(2013, Month.JULY, 1));
   }
 
-  private Collection<DayOfWeek> createTollFreeWeekDays() {
-    return ImmutableList.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
+  private Set<DayOfWeek> createTollFreeWeekDays() {
+    return ImmutableSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
   }
 
   @Test
@@ -151,7 +154,7 @@ public class TollCalculatorTest {
 
   @Test
   public void weekendsAndHolidaysAreTollFree() {
-    TollCalculator tollCalculator = new TollCalculator(unchargedTimeResolver, ALWAYS_CHARGING_TIME_COST_CALCULATOR);
+    TollCalculator tollCalculator = new TollCalculator(unchargedPredicateAggregator, ALWAYS_CHARGING_TIME_COST_CALCULATOR);
 
     LocalDateTime newYearsEve = LocalDateTime.of(2018, 12, 31, 0, 0);
     LocalDateTime saturday = LocalDateTime.of(2018, Month.MARCH, 17, 0, 0);

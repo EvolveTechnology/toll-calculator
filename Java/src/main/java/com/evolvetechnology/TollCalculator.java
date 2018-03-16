@@ -4,16 +4,17 @@ import com.evolvetechnology.vehicle.Vehicle;
 
 import java.time.*;
 import java.time.temporal.ChronoUnit;
+import java.util.function.Predicate;
 
 public class TollCalculator {
 
-  final private UnchargedTimeResolver unchargedTimeResolver;
+  final private Predicate<LocalDateTime> isDateFreeOfCharge;
   final private TimeCostCalculator timeCostCalculator;
 
-  public TollCalculator(UnchargedTimeResolver unchargedTimeResolver,
+  public TollCalculator(Predicate<LocalDateTime> isDateFreeOfCharge,
                         TimeCostCalculator timeCostCalculator) {
     this.timeCostCalculator = timeCostCalculator;
-    this.unchargedTimeResolver = unchargedTimeResolver;
+    this.isDateFreeOfCharge = isDateFreeOfCharge;
   }
 
   public int getTollFee(Vehicle vehicle, LocalDateTime... dates) {
@@ -38,13 +39,13 @@ public class TollCalculator {
     return totalFee;
   }
 
-  public int getTollFee(Vehicle vehicle, final LocalDateTime date) {
-    if (shouldBeUncharged(vehicle, date)) return 0;
+  public int getTollFee(Vehicle vehicle, LocalDateTime date) {
+    if (shouldNotBeCharged(vehicle, date)) return 0;
     return timeCostCalculator.getCostFor(date.toLocalTime());
   }
 
-  private boolean shouldBeUncharged(Vehicle vehicle, LocalDateTime date) {
-    return unchargedTimeResolver.isTollFreeDate(date) || vehicle.isTollFree();
+  private boolean shouldNotBeCharged(Vehicle vehicle, LocalDateTime date) {
+    return isDateFreeOfCharge.test(date) || vehicle.isTollFree();
   }
 
 }
