@@ -11,7 +11,7 @@ public class TimeCostCalculatorTest {
 
   @Test
   public void getCostFor() {
-    Function<LocalTime, Integer> timeCostCalculator = IntervalTimeCostCalculator.create()
+    Function<LocalTime, Integer> timeCostCalculator = IntervalTimeCostFunction.create()
             .withCostInterval(LocalTime.of(8, 0), LocalTime.of(9, 0), 1)
             .withCostInterval(LocalTime.of(9, 0), LocalTime.of(9, 29), 2)
             .withCostInterval(LocalTime.of(10, 0), LocalTime.of(11, 0), 3);
@@ -35,13 +35,13 @@ public class TimeCostCalculatorTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void givenAnIllegalTimeInterval() {
-    IntervalTimeCostCalculator.create()
+    IntervalTimeCostFunction.create()
             .withCostInterval(LocalTime.of(8, 0), LocalTime.of(7, 0), 0);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void givenTwoOverlappingTimeIntervals() {
-    IntervalTimeCostCalculator.create()
+    IntervalTimeCostFunction.create()
             .withCostInterval(LocalTime.of(7, 0), LocalTime.of(8, 0), 0)
             .withCostInterval(LocalTime.of(7, 30), LocalTime.of(8, 30), 0);
   }

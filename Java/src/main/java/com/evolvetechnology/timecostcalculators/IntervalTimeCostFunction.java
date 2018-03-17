@@ -14,24 +14,24 @@ import java.util.function.Function;
  * 7:00 - 9:30 = 10
  * 9:30 - 14:30 = 21
  */
-public class IntervalTimeCostCalculator implements Function<LocalTime, Integer> {
+public class IntervalTimeCostFunction implements Function<LocalTime, Integer> {
 
   private Collection<CostInterval> costIntervals = new LinkedList<>();
 
-  private IntervalTimeCostCalculator() { }
+  private IntervalTimeCostFunction() { }
 
-  public static IntervalTimeCostCalculator create() {
-    return new IntervalTimeCostCalculator();
+  public static IntervalTimeCostFunction create() {
+    return new IntervalTimeCostFunction();
   }
 
-  public IntervalTimeCostCalculator withCostIntervals(Collection<CostInterval> costIntervals) {
+  public IntervalTimeCostFunction withCostIntervals(Collection<CostInterval> costIntervals) {
     costIntervals.forEach(costInterval ->
             addIntervalCost(costInterval.getStart(), costInterval.getEnd(), costInterval.getCost())
     );
     return this;
   }
 
-  public IntervalTimeCostCalculator withCostInterval(LocalTime start, LocalTime end, int cost) {
+  public IntervalTimeCostFunction withCostInterval(LocalTime start, LocalTime end, int cost) {
     addIntervalCost(start, end, cost);
     return this;
   }

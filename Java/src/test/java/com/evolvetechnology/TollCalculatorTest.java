@@ -5,7 +5,7 @@ import com.evolvetechnology.datematchers.FreeHolidayMatcher;
 import com.evolvetechnology.datematchers.FreeMonthMatcher;
 import com.evolvetechnology.datematchers.FreeWeekDayMatcher;
 import com.evolvetechnology.timecostcalculators.CostInterval;
-import com.evolvetechnology.timecostcalculators.IntervalTimeCostCalculator;
+import com.evolvetechnology.timecostcalculators.IntervalTimeCostFunction;
 import com.evolvetechnology.vehicles.*;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -53,7 +53,7 @@ public class TollCalculatorTest {
 
   @Before
   public void setUp() {
-    timeCostCalculator = IntervalTimeCostCalculator.create()
+    timeCostCalculator = IntervalTimeCostFunction.create()
             .withCostIntervals(createCostIntervals());
 
     freeDateMatcherAggregator = new FreeDateMatcherAggregator(
@@ -141,7 +141,7 @@ public class TollCalculatorTest {
   @Test
   public void vehicleShouldOnlyBeChargedOnceAnHour() {
 
-    Function<LocalTime, Integer> testCalculator = IntervalTimeCostCalculator.create()
+    Function<LocalTime, Integer> testCalculator = IntervalTimeCostFunction.create()
             .withCostInterval(LocalTime.of(7, 0), LocalTime.of(7, 30), 1)
             .withCostInterval(LocalTime.of(7, 30), LocalTime.of(8, 0), 2)
             .withCostInterval(LocalTime.of(8, 0), LocalTime.of(9, 0), 4)
