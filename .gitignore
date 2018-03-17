@@ -1,0 +1,4 @@
+*.DS_Store
+Java/.idea/
+Java/out/
+Java/.gradle/
