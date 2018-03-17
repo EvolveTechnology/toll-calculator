@@ -108,7 +108,7 @@ public class TollCalculatorTest {
     TollCalculator tollCalculator = new TollCalculator(date -> false, timeCostCalculator);
 
     List<Integer> costsForDay = ALL_HOURS.stream()
-            .map(hour -> tollCalculator.getTollFee(NON_FREE_VEHICLE, hour))
+            .map(hour -> tollCalculator.calculateToll(NON_FREE_VEHICLE, hour))
             .collect(Collectors.toList());
     assertThat(costsForDay, everyItem(is(both(greaterThanOrEqualTo(8)).and(lessThanOrEqualTo(18)))));
   }
@@ -119,7 +119,7 @@ public class TollCalculatorTest {
 
     for (LocalDateTime hour : ALL_HOURS) {
       if (!isRushHour(hour)) {
-        assertThat(tollCalculator.getTollFee(NON_FREE_VEHICLE, hour), is(lessThan(RUSH_HOUR_COST)));
+        assertThat(tollCalculator.calculateToll(NON_FREE_VEHICLE, hour), is(lessThan(RUSH_HOUR_COST)));
       }
     }
   }
@@ -133,7 +133,7 @@ public class TollCalculatorTest {
     TollCalculator tollCalculator = new TollCalculator(date -> false, timeCostCalculator);
 
     LocalDateTime[] allHours = ALL_HOURS.toArray(new LocalDateTime[ALL_HOURS.size()]);
-    int costForAllHours = tollCalculator.getTollFee(NON_FREE_VEHICLE, allHours);
+    int costForAllHours = tollCalculator.calculate(NON_FREE_VEHICLE, allHours);
     assertEquals(60, costForAllHours);
   }
 
@@ -147,23 +147,23 @@ public class TollCalculatorTest {
             .withCostInterval(LocalTime.of(9, 0), LocalTime.of(10, 0), 5);
     TollCalculator tollCalculator = new TollCalculator(date -> false, testCalculator);
 
-    int costTenMin = tollCalculator.getTollFee(NON_FREE_VEHICLE,
+    int costTenMin = tollCalculator.calculate(NON_FREE_VEHICLE,
             LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 0)),   // 1
             LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 10)));
     assertEquals(1, costTenMin);
 
-    int costHalfHour = tollCalculator.getTollFee(NON_FREE_VEHICLE,
+    int costHalfHour = tollCalculator.calculate(NON_FREE_VEHICLE,
             LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 0)),
             LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 30))); // 2
     assertEquals(2, costHalfHour);
 
-    int costHour = tollCalculator.getTollFee(NON_FREE_VEHICLE,
+    int costHour = tollCalculator.calculate(NON_FREE_VEHICLE,
             LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 0)),
             LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 30)),
             LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(8, 0)));  // 4
     assertEquals(4, costHour);
 
-    int costTwoHours = tollCalculator.getTollFee(NON_FREE_VEHICLE,
+    int costTwoHours = tollCalculator.calculate(NON_FREE_VEHICLE,
             LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 0)),
             LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 30)),
             LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(8, 0)),   // 4
@@ -177,11 +177,11 @@ public class TollCalculatorTest {
     TollCalculator tollCalculator = new TollCalculator(date -> false, date -> 1000);
 
     LocalDateTime[] allHours = ALL_HOURS.toArray(new LocalDateTime[ALL_HOURS.size()]);
-    int allFreeVehiclesCost = tollCalculator.getTollFee(new Military(), allHours) +
-            tollCalculator.getTollFee(new Tractor(), allHours) +
-            tollCalculator.getTollFee(new Foreign(), allHours) +
-            tollCalculator.getTollFee(new Emergency(), allHours) +
-            tollCalculator.getTollFee(new Diplomat(), allHours);
+    int allFreeVehiclesCost = tollCalculator.calculate(new Military(), allHours) +
+            tollCalculator.calculate(new Tractor(), allHours) +
+            tollCalculator.calculate(new Foreign(), allHours) +
+            tollCalculator.calculate(new Emergency(), allHours) +
+            tollCalculator.calculate(new Diplomat(), allHours);
     assertEquals(0, allFreeVehiclesCost);
   }
 
@@ -192,7 +192,7 @@ public class TollCalculatorTest {
     LocalDateTime newYearsEve = LocalDateTime.of(2018, 12, 31, 0, 0);
     LocalDateTime saturday = LocalDateTime.of(2018, Month.MARCH, 17, 0, 0);
     LocalDateTime sunday = LocalDateTime.of(2018, Month.MARCH, 18, 0, 0);
-    int costForWeekendAndHoliday = tollCalculator.getTollFee(NON_FREE_VEHICLE, newYearsEve, saturday, sunday);
+    int costForWeekendAndHoliday = tollCalculator.calculate(NON_FREE_VEHICLE, newYearsEve, saturday, sunday);
     assertEquals(0, costForWeekendAndHoliday);
   }
 

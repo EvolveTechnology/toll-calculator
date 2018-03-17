@@ -38,15 +38,16 @@ public class IntervalTimeCostCalculator implements TimeCostCalculator {
   @Override
   public int getCostFor(LocalTime localTime) {
     for (CostInterval costInterval : costIntervals) {
-      if (isInTimeInterval(localTime, costInterval.getStart(), costInterval.getEnd())) {
+      if (isInTimeInterval(localTime, costInterval)) {
         return costInterval.getCost();
       }
     }
     return 0;
   }
 
-  private boolean isInTimeInterval(LocalTime localTime, LocalTime start, LocalTime end) {
-    return localTime.compareTo(start) >= 0 && localTime.compareTo(end) < 0;
+  private boolean isInTimeInterval(LocalTime localTime, CostInterval costInterval) {
+    return localTime.compareTo(costInterval.getStart()) >= 0 &&
+            localTime.compareTo(costInterval.getEnd()) < 0;
   }
 
   private void addIntervalCost(LocalTime start, LocalTime end, int cost) {

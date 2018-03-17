@@ -9,53 +9,46 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.function.Predicate;
 
-public class TollCalculator {
-
-  final private Predicate<LocalDateTime> freeDateMatcher;
-  final private TimeCostCalculator timeCostCalculator;
+public class TollCalculator extends TollCalculationStrategy {
 
   public TollCalculator(Predicate<LocalDateTime> freeDateMatcher,
                         TimeCostCalculator timeCostCalculator) {
-    this.timeCostCalculator = timeCostCalculator;
-    this.freeDateMatcher = freeDateMatcher;
+    super(freeDateMatcher, timeCostCalculator);
   }
 
-  public int getTollFee(Vehicle vehicle, LocalDateTime... dates) {
+  public int calculate(Vehicle vehicle, LocalDateTime... dates) {
     if (dates.length == 0) return 0;
 
     int totalFee = 0;
     int intervalCost = 0;
-
     LocalDateTime intervalStart = dates[0];
     Iterator<LocalDateTime> iterator = Arrays.asList(dates).iterator();
 
     while (iterator.hasNext()) {
       LocalDateTime time = iterator.next();
-      int currentTollFee = getTollFee(vehicle, time);
+      int currentTollFee = calculateToll(vehicle, time);
       if (hourHasPassed(intervalStart, time)) {
         intervalStart = time;
         totalFee += intervalCost;
         intervalCost = currentTollFee;
       } else {
-        intervalCost = Math.max(intervalCost, currentTollFee);
+        intervalCost = getMaxTollFee(intervalCost, currentTollFee);
       }
       if (!iterator.hasNext()) totalFee += intervalCost;
     }
+    return trimTo60(totalFee);
+  }
 
-    return Math.min(totalFee, 60);
+  private int trimTo60(int fee) {
+    return Math.min(fee, 60);
+  }
+
+  private int getMaxTollFee(int intervalCost, int currentTollFee) {
+    return Math.max(intervalCost, currentTollFee);
   }
 
   private boolean hourHasPassed(LocalDateTime start, LocalDateTime time) {
     return start.until(time, ChronoUnit.MINUTES) > 60;
-  }
-
-  public int getTollFee(Vehicle vehicle, LocalDateTime date) {
-    if (vehicleShouldNotBeCharged(vehicle, date)) return 0;
-    return timeCostCalculator.getCostFor(date.toLocalTime());
-  }
-
-  private boolean vehicleShouldNotBeCharged(Vehicle vehicle, LocalDateTime date) {
-    return vehicle.isTollFree() || freeDateMatcher.test(date);
   }
 
 }

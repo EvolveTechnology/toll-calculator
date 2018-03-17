@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class FreeHolidayMatcher implements Predicate<LocalDateTime> {
 
   private Set<LocalDate> holidays = new HashSet<>();
-  private static int ANY_YEAR = 1;
+  private static final int ANY_YEAR = 1;
 
   public FreeHolidayMatcher(Set<LocalDate> holidays) {
     Collection<LocalDate> zeroYearResetLocalDates = holidays.stream()
