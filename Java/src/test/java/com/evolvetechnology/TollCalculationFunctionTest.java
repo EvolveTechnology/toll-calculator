@@ -24,7 +24,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-public class TollCalculatorTest {
+public class TollCalculationFunctionTest {
 
   private final static LocalDate NON_FREE_REGULAR_DAY = LocalDate.of(2018, Month.MARCH, 12);
   private static final Vehicle NON_FREE_VEHICLE = new Car();
@@ -105,21 +105,22 @@ public class TollCalculatorTest {
 
   @Test
   public void feesDifferBetween8And18() {
-    TollCalculator tollCalculator = new TollCalculator(date -> false, timeCostCalculator);
+    TollCalculationFunction<Vehicle> tollCalculationFunction = new TollCalculationFunction<>(date -> false, timeCostCalculator);
+    TollCalculator<Vehicle> tollCalculator = new TollIsPaidOnceAnHour<>(tollCalculationFunction);
 
     List<Integer> costsForDay = ALL_HOURS.stream()
-            .map(hour -> tollCalculator.calculateToll(NON_FREE_VEHICLE, hour))
+            .map(hour -> tollCalculator.calculate(NON_FREE_VEHICLE, hour))
             .collect(Collectors.toList());
     assertThat(costsForDay, everyItem(is(both(greaterThanOrEqualTo(8)).and(lessThanOrEqualTo(18)))));
   }
 
   @Test
   public void rushHourYieldHighestFee() {
-    TollCalculator tollCalculator = new TollCalculator(date -> false, timeCostCalculator);
+    TollCalculationFunction<Vehicle> tollCalculationFunction = new TollCalculationFunction<>(date -> false, timeCostCalculator);
 
     for (LocalDateTime hour : ALL_HOURS) {
       if (!isRushHour(hour)) {
-        assertThat(tollCalculator.calculateToll(NON_FREE_VEHICLE, hour), is(lessThan(RUSH_HOUR_COST)));
+        assertThat(tollCalculationFunction.apply(NON_FREE_VEHICLE, hour), is(lessThan(RUSH_HOUR_COST)));
       }
     }
   }
@@ -130,7 +131,8 @@ public class TollCalculatorTest {
 
   @Test
   public void maximumFeeIs60() {
-    TollCalculator tollCalculator = new TollCalculator(date -> false, timeCostCalculator);
+    TollCalculationFunction<Vehicle> tollCalculationFunction = new TollCalculationFunction<>(date -> false, timeCostCalculator);
+    TollCalculator<Vehicle> tollCalculator = new TollIsPaidOnceAnHour<>(tollCalculationFunction);
 
     LocalDateTime[] allHours = ALL_HOURS.toArray(new LocalDateTime[ALL_HOURS.size()]);
     int costForAllHours = tollCalculator.calculate(NON_FREE_VEHICLE, allHours);
@@ -145,7 +147,8 @@ public class TollCalculatorTest {
             .withCostInterval(LocalTime.of(7, 30), LocalTime.of(8, 0), 2)
             .withCostInterval(LocalTime.of(8, 0), LocalTime.of(9, 0), 4)
             .withCostInterval(LocalTime.of(9, 0), LocalTime.of(10, 0), 5);
-    TollCalculator tollCalculator = new TollCalculator(date -> false, testCalculator);
+    TollCalculationFunction<Vehicle> tollCalculationFunction = new TollCalculationFunction<>(date -> false, testCalculator);
+    TollCalculator<Vehicle> tollCalculator = new TollIsPaidOnceAnHour<Vehicle>(tollCalculationFunction);
 
     int costTenMin = tollCalculator.calculate(NON_FREE_VEHICLE,
             LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(7, 0)),   // 1
@@ -174,7 +177,8 @@ public class TollCalculatorTest {
 
   @Test
   public void someVehiclesAreTollFree() {
-    TollCalculator tollCalculator = new TollCalculator(date -> false, date -> 1000);
+    TollCalculationFunction<Vehicle> tollCalculationFunction = new TollCalculationFunction<>(date -> false, date -> 1000);
+    TollCalculator<Vehicle> tollCalculator = new TollIsPaidOnceAnHour<>(tollCalculationFunction);
 
     LocalDateTime[] allHours = ALL_HOURS.toArray(new LocalDateTime[ALL_HOURS.size()]);
     int allFreeVehiclesCost = tollCalculator.calculate(new Military(), allHours) +
@@ -187,7 +191,8 @@ public class TollCalculatorTest {
 
   @Test
   public void weekendsAndHolidaysAreTollFree() {
-    TollCalculator tollCalculator = new TollCalculator(freeDateMatcherAggregator, date -> 1000);
+    TollCalculationFunction<Vehicle> tollCalculationFunction = new TollCalculationFunction<>(freeDateMatcherAggregator, date -> 1000);
+    TollCalculator<Vehicle> tollCalculator = new TollIsPaidOnceAnHour<>(tollCalculationFunction);
 
     LocalDateTime newYearsEve = LocalDateTime.of(2018, 12, 31, 0, 0);
     LocalDateTime saturday = LocalDateTime.of(2018, Month.MARCH, 17, 0, 0);
