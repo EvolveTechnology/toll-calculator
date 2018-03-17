@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public class TimeCostCalculatorTest {
 
   @Test
-  public void getCostFor() throws Exception {
+  public void getCostFor() {
     TimeCostCalculator timeCostCalculator = IntervalTimeCostCalculator.create()
             .withCostInterval(LocalTime.of(8, 0), LocalTime.of(9, 0), 1)
             .withCostInterval(LocalTime.of(9, 0), LocalTime.of(9, 29), 2)

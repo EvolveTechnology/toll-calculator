@@ -5,6 +5,6 @@ import com.evolvetechnology.vehicles.Vehicle;
 import java.time.LocalDateTime;
 
 @FunctionalInterface
-public interface TollCalculator<V extends Vehicle> {
-  int calculate(V vehicle, LocalDateTime... dates);
+public interface TollCalculator {
+  int calculate(Vehicle vehicle, LocalDateTime... dates);
 }

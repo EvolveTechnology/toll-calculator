@@ -6,17 +6,18 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.function.BiFunction;
 
-public class TollIsPaidOnceAnHour<V extends Vehicle> implements TollCalculator<V> {
+public class TollIsPaidOnceAnHour implements TollCalculator {
 
-  private final TollCalculationFunction<V> tollCalculationFunction;
+  private final BiFunction<Vehicle, LocalDateTime, Integer> costCalculation;
 
-  public TollIsPaidOnceAnHour(TollCalculationFunction<V> tollCalculationFunction) {
-    this.tollCalculationFunction = tollCalculationFunction;
+  public TollIsPaidOnceAnHour(BiFunction<Vehicle, LocalDateTime, Integer> costCalculation) {
+    this.costCalculation = costCalculation;
   }
 
   @Override
-  public int calculate(V vehicle, LocalDateTime... dates) {
+  public int calculate(Vehicle vehicle, LocalDateTime... dates) {
     if (dates.length == 0) return 0;
 
     int totalFee = 0;
@@ -26,7 +27,7 @@ public class TollIsPaidOnceAnHour<V extends Vehicle> implements TollCalculator<V
 
     while (iterator.hasNext()) {
       LocalDateTime time = iterator.next();
-      int currentTollFee = tollCalculationFunction.apply(vehicle, time);
+      int currentTollFee = costCalculation.apply(vehicle, time);
       if (hourHasPassed(intervalStart, time)) {
         intervalStart = time;
         totalFee += intervalCost;

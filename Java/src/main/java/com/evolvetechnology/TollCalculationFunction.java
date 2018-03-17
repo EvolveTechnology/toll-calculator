@@ -7,7 +7,7 @@ import java.time.*;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
-public class TollCalculationFunction<V extends Vehicle> implements BiFunction<V, LocalDateTime, Integer> {
+public class TollCalculationFunction implements BiFunction<Vehicle, LocalDateTime, Integer> {
 
   private final Predicate<LocalDateTime> freeDateMatcher;
   private final TimeCostCalculator timeCostCalculator;
@@ -19,12 +19,12 @@ public class TollCalculationFunction<V extends Vehicle> implements BiFunction<V,
   }
 
   @Override
-  public Integer apply(V vehicle, LocalDateTime date) {
+  public Integer apply(Vehicle vehicle, LocalDateTime date) {
     if (vehicleShouldNotBeCharged(vehicle, date)) return 0;
     return timeCostCalculator.getCostFor(date.toLocalTime());
   }
 
-  private boolean vehicleShouldNotBeCharged(V vehicle, LocalDateTime date) {
+  private boolean vehicleShouldNotBeCharged(Vehicle vehicle, LocalDateTime date) {
     return vehicle.isTollFree() || freeDateMatcher.test(date);
   }
 
