@@ -1,4 +1,4 @@
-package com.evolvetechnology.timecost_calculation;
+package com.evolvetechnology.timecostcalculators;
 
 import java.time.LocalTime;
 

@@ -4,9 +4,8 @@ import com.evolvetechnology.datematchers.FreeDateMatcherAggregator;
 import com.evolvetechnology.datematchers.FreeHolidayMatcher;
 import com.evolvetechnology.datematchers.FreeMonthMatcher;
 import com.evolvetechnology.datematchers.FreeWeekDayMatcher;
-import com.evolvetechnology.timecost_calculation.CostInterval;
-import com.evolvetechnology.timecost_calculation.IntervalTimeCostCalculator;
-import com.evolvetechnology.timecost_calculation.TimeCostCalculator;
+import com.evolvetechnology.timecostcalculators.CostInterval;
+import com.evolvetechnology.timecostcalculators.IntervalTimeCostCalculator;
 import com.evolvetechnology.vehicles.*;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -17,6 +16,7 @@ import java.time.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.everyItem;
@@ -48,7 +48,7 @@ public class TollCalculatorTest {
           LocalDateTime.of(NON_FREE_REGULAR_DAY, LocalTime.of(18, 0))
   );
 
-  private TimeCostCalculator timeCostCalculator;
+  private Function<LocalTime, Integer> timeCostCalculator;
   private FreeDateMatcherAggregator freeDateMatcherAggregator;
 
   @Before
@@ -141,7 +141,7 @@ public class TollCalculatorTest {
   @Test
   public void vehicleShouldOnlyBeChargedOnceAnHour() {
 
-    TimeCostCalculator testCalculator = IntervalTimeCostCalculator.create()
+    Function<LocalTime, Integer> testCalculator = IntervalTimeCostCalculator.create()
             .withCostInterval(LocalTime.of(7, 0), LocalTime.of(7, 30), 1)
             .withCostInterval(LocalTime.of(7, 30), LocalTime.of(8, 0), 2)
             .withCostInterval(LocalTime.of(8, 0), LocalTime.of(9, 0), 4)

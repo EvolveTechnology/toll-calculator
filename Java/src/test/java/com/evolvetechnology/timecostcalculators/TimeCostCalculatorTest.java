@@ -1,8 +1,9 @@
-package com.evolvetechnology.timecost_calculation;
+package com.evolvetechnology.timecostcalculators;
 
 import org.junit.Test;
 
 import java.time.LocalTime;
+import java.util.function.Function;
 
 import static org.junit.Assert.*;
 
@@ -10,24 +11,24 @@ public class TimeCostCalculatorTest {
 
   @Test
   public void getCostFor() {
-    TimeCostCalculator timeCostCalculator = IntervalTimeCostCalculator.create()
+    Function<LocalTime, Integer> timeCostCalculator = IntervalTimeCostCalculator.create()
             .withCostInterval(LocalTime.of(8, 0), LocalTime.of(9, 0), 1)
             .withCostInterval(LocalTime.of(9, 0), LocalTime.of(9, 29), 2)
             .withCostInterval(LocalTime.of(10, 0), LocalTime.of(11, 0), 3);
 
-    int eightThirty = timeCostCalculator.getCostFor(LocalTime.of(8, 30));
+    int eightThirty = timeCostCalculator.apply(LocalTime.of(8, 30));
     assertEquals(1, eightThirty);
 
-    int nineAClock = timeCostCalculator.getCostFor(LocalTime.of(9, 0));
+    int nineAClock = timeCostCalculator.apply(LocalTime.of(9, 0));
     assertEquals(2, nineAClock);
 
-    int nineFourtyFive = timeCostCalculator.getCostFor(LocalTime.of(9, 45));
+    int nineFourtyFive = timeCostCalculator.apply(LocalTime.of(9, 45));
     assertEquals(0, nineFourtyFive);
 
-    int tenAClock = timeCostCalculator.getCostFor(LocalTime.of(10, 0));
+    int tenAClock = timeCostCalculator.apply(LocalTime.of(10, 0));
     assertEquals(3, tenAClock);
 
-    int elevenAClock = timeCostCalculator.getCostFor(LocalTime.of(11, 0));
+    int elevenAClock = timeCostCalculator.apply(LocalTime.of(11, 0));
     assertEquals(0, elevenAClock);
 
   }

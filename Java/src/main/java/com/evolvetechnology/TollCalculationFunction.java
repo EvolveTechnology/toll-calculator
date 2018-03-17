@@ -1,19 +1,19 @@
 package com.evolvetechnology;
 
-import com.evolvetechnology.timecost_calculation.TimeCostCalculator;
 import com.evolvetechnology.vehicles.Vehicle;
 
 import java.time.*;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class TollCalculationFunction implements BiFunction<Vehicle, LocalDateTime, Integer> {
 
   private final Predicate<LocalDateTime> freeDateMatcher;
-  private final TimeCostCalculator timeCostCalculator;
+  private final Function<LocalTime, Integer> timeCostCalculator;
 
   public TollCalculationFunction(Predicate<LocalDateTime> freeDateMatcher,
-                                 TimeCostCalculator timeCostCalculator) {
+                                 Function<LocalTime, Integer> timeCostCalculator) {
     this.freeDateMatcher = freeDateMatcher;
     this.timeCostCalculator = timeCostCalculator;
   }
@@ -21,7 +21,7 @@ public class TollCalculationFunction implements BiFunction<Vehicle, LocalDateTim
   @Override
   public Integer apply(Vehicle vehicle, LocalDateTime date) {
     if (vehicleShouldNotBeCharged(vehicle, date)) return 0;
-    return timeCostCalculator.getCostFor(date.toLocalTime());
+    return timeCostCalculator.apply(date.toLocalTime());
   }
 
   private boolean vehicleShouldNotBeCharged(Vehicle vehicle, LocalDateTime date) {

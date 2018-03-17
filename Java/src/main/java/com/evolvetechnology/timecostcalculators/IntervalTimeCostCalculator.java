@@ -1,8 +1,9 @@
-package com.evolvetechnology.timecost_calculation;
+package com.evolvetechnology.timecostcalculators;
 
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.function.Function;
 
 /**
  * This TimeCostCalculator implementation manages linear intervals during a day with associated costs
@@ -13,7 +14,7 @@ import java.util.LinkedList;
  * 7:00 - 9:30 = 10
  * 9:30 - 14:30 = 21
  */
-public class IntervalTimeCostCalculator implements TimeCostCalculator {
+public class IntervalTimeCostCalculator implements Function<LocalTime, Integer> {
 
   private Collection<CostInterval> costIntervals = new LinkedList<>();
 
@@ -36,7 +37,7 @@ public class IntervalTimeCostCalculator implements TimeCostCalculator {
   }
 
   @Override
-  public int getCostFor(LocalTime localTime) {
+  public Integer apply(LocalTime localTime) {
     for (CostInterval costInterval : costIntervals) {
       if (isInTimeInterval(localTime, costInterval)) {
         return costInterval.getCost();

@@ -10,10 +10,10 @@ import java.util.function.BiFunction;
 
 public class TollIsPaidOnceAnHour implements TollCalculator {
 
-  private final BiFunction<Vehicle, LocalDateTime, Integer> costCalculation;
+  private final BiFunction<Vehicle, LocalDateTime, Integer> calculation;
 
   public TollIsPaidOnceAnHour(BiFunction<Vehicle, LocalDateTime, Integer> costCalculation) {
-    this.costCalculation = costCalculation;
+    this.calculation = costCalculation;
   }
 
   @Override
@@ -27,7 +27,7 @@ public class TollIsPaidOnceAnHour implements TollCalculator {
 
     while (iterator.hasNext()) {
       LocalDateTime time = iterator.next();
-      int currentTollFee = costCalculation.apply(vehicle, time);
+      int currentTollFee = calculation.apply(vehicle, time);
       if (hourHasPassed(intervalStart, time)) {
         intervalStart = time;
         totalFee += intervalCost;
