@@ -43,15 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IDateTollPolicy.cs" />
-    <Compile Include="IFeePolicy.cs" />
+    <Compile Include="Policies\IDateTollPolicy.cs" />
+    <Compile Include="Policies\IFeePolicy.cs" />
     <Compile Include="SimpleTollCalculator.cs" />
-    <Compile Include="StandardDateTollPolicy.cs" />
-    <Compile Include="StandardFeePolicy.cs" />
+    <Compile Include="Policies\StandardDateTollPolicy.cs" />
+    <Compile Include="Policies\StandardFeePolicy.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Vehicles\Car.cs" />
     <Compile Include="Holidays\IHolidayChecker.cs" />
-    <Compile Include="StandardVehicleTollPolicy.cs" />
+    <Compile Include="Policies\StandardVehicleTollPolicy.cs" />
     <Compile Include="Vehicles\DiplomaticVehicle.cs" />
     <Compile Include="Vehicles\EmergencyVehicle.cs" />
     <Compile Include="Vehicles\ForeignVehicle.cs" />
@@ -59,7 +59,7 @@
     <Compile Include="Vehicles\Tractor.cs" />
     <Compile Include="Vehicles\IVehicle.cs" />
     <Compile Include="ITollCalculator.cs" />
-    <Compile Include="IVehicleTollPolicy.cs" />
+    <Compile Include="Policies\IVehicleTollPolicy.cs" />
     <Compile Include="Vehicles\Motorbike.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

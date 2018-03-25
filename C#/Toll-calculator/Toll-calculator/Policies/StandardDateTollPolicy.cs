@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Toll_calculator.Holidays;
 
-namespace Toll_calculator {
+namespace Toll_calculator.Policies {
     public class StandardDateTollPolicy : IDateTollPolicy {
 
         private IHolidayChecker holidayChecker;

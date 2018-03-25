@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Toll_calculator {
+namespace Toll_calculator.Policies {
 
-    public interface IDateTollPolicy {
+    public interface IFeePolicy {
 
-        bool IsTollable(DateTime date);
+        int GetFee(DateTime time);
 
     }
 }

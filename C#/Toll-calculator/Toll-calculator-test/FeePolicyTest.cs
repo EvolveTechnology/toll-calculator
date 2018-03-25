@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Toll_calculator;
+using Toll_calculator.Policies;
 
 namespace Toll_calculator_test {
 

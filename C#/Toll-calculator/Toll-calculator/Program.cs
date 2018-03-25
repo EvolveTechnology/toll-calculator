@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Toll_calculator.Holidays;
 using Toll_calculator.Vehicles;
+using Toll_calculator.Policies;
 
 namespace Toll_calculator {
     class Program {

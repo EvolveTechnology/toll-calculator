@@ -5,7 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Toll_calculator.Vehicles;
 
-namespace Toll_calculator {
+namespace Toll_calculator.Policies {
+
+    /**
+     * The visitor component in the visitor patterns used for checking
+     * if a vehicle is tollable.
+     */
     public class StandardVehicleTollPolicy : IVehicleTollPolicy {
 
         /**

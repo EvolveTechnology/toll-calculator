@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Toll_calculator.Vehicles;
+using Toll_calculator.Policies;
 
 namespace Toll_calculator {
 
@@ -46,7 +47,7 @@ namespace Toll_calculator {
 
             /**
              * We know that times only contains timestamps of a single date, so
-             * we can only check if the first element has a tollable date.
+             * we can only check if the first element is a tollable date.
              */
             if (times.Length == 0 || !DateTollPolicy.IsTollable(times[0])) {
                 return 0;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Toll_calculator {
+namespace Toll_calculator.Policies {
     public class StandardFeePolicy : IFeePolicy {
 
         private readonly DateTime LOW_MORNING = new DateTime(1, 1, 1, 6, 0, 0);

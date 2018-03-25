@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Toll_calculator;
 using Toll_calculator.Holidays;
 using Toll_calculator.Vehicles;
+using Toll_calculator.Policies;
 using System.Linq;
 
 namespace Toll_calculator_test {

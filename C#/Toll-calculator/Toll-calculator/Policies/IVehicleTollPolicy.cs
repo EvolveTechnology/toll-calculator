@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Toll_calculator.Vehicles;
 
-namespace Toll_calculator {
+namespace Toll_calculator.Policies {
     public interface IVehicleTollPolicy {
 
         bool IsTollable(IVehicle vehicle);
