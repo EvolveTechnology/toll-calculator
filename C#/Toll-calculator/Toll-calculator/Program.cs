@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Toll_calculator.Holidays;
+using Toll_calculator.Vehicles;
 
 namespace Toll_calculator {
     class Program {
         static void Main(string[] args) {
-            IHolidayChecker holidayChecker = new Sweden2018HolidayChecker();
-            Console.WriteLine("test...");
+            IVehicleTollPolicy vehicleTollPolicy = new StandardVehicleTollPolicy();
+            IVehicle car = new Car();
+            IVehicle motorbike = new Motorbike();
+            IVehicle tractor = new Tractor();
+            Console.WriteLine(car.IsTollable(vehicleTollPolicy));
             Console.ReadLine();
-            Console.WriteLine(holidayChecker.IsHoliday(new DateTime(2017, 1, 1)));
+            Console.WriteLine(motorbike.IsTollable(vehicleTollPolicy));
             Console.ReadLine();
-            Console.WriteLine(holidayChecker.IsHoliday(new DateTime(2015, 1, 2)));
-            Console.ReadLine();
-            Console.WriteLine(holidayChecker.IsHoliday(new DateTime(2018, 11, 3)));
+            Console.WriteLine(tractor.IsTollable(vehicleTollPolicy));
             Console.ReadLine();
         }
     }
