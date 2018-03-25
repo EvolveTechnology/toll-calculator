@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Toll_calculator {
+namespace Toll_calculator.Holidays {
 
     /**
      * A holiday checker for fixed data holidays in Sweden such
