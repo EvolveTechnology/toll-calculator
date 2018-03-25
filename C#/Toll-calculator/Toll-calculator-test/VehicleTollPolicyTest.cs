@@ -21,7 +21,7 @@ namespace Toll_calculator_test {
         }
 
         [TestMethod]
-        public void TestStandardPolicy() {
+        public void TestStandardVehiclePolicy() {
             IVehicle car = new Car();
             Assert.IsTrue(car.IsTollable(standardVehicleTollPolicy));
 

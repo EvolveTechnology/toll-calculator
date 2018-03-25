@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Toll_calculator {
-    public class StandardTollFeePolicy : ITollFeePolicy {
+    public class StandardFeePolicy : IFeePolicy {
 
         private readonly DateTime LOW_MORNING = new DateTime(1, 1, 1, 6, 0, 0);
         private readonly DateTime MEDIUM_MORNING = new DateTime(1, 1, 1, 6, 30, 0);

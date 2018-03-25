@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Toll_calculator {
 
-    interface ITollFeePolicy {
+    public interface IFeePolicy {
 
         int GetFee(DateTime time);
 

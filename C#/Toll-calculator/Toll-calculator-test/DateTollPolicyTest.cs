@@ -24,7 +24,7 @@ namespace Toll_calculator_test {
         }
 
         [TestMethod]
-        public void TestStandardPolicy() {
+        public void TestStandardDatePolicy() {
             Assert.IsFalse(datePolicy.IsTollable(new DateTime(2018, 3, 25)));
             Assert.IsTrue(datePolicy.IsTollable(new DateTime(2018, 3, 26)));
             Assert.IsFalse(datePolicy.IsTollable(new DateTime(2018, 7, 21)));

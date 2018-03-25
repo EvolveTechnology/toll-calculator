@@ -55,7 +55,7 @@
     <Compile Include="DateTollPolicyTest.cs" />
     <Compile Include="HolidaysCheckerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TollFeePolicyTest.cs" />
+    <Compile Include="FeePolicyTest.cs" />
     <Compile Include="VehicleTollPolicyTest.cs" />
   </ItemGroup>
   <ItemGroup>

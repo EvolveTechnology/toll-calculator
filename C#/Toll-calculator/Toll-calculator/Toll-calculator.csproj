@@ -44,9 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IDateTollPolicy.cs" />
-    <Compile Include="ITollFeePolicy.cs" />
+    <Compile Include="IFeePolicy.cs" />
+    <Compile Include="SimpleTollCalculator.cs" />
     <Compile Include="StandardDateTollPolicy.cs" />
-    <Compile Include="StandardTollFeePolicy.cs" />
+    <Compile Include="StandardFeePolicy.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Vehicles\Car.cs" />
     <Compile Include="Holidays\IHolidayChecker.cs" />

@@ -9,7 +9,7 @@ namespace Toll_calculator {
 
     interface ITollCalculator {
 
-        int GetToolFee(IVehicle vehicle, DateTime[] dates);
+        int GetTollFee(IVehicle vehicle, DateTime[] dates);
 
     }
 }
