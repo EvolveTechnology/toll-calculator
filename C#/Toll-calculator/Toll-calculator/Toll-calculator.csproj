@@ -43,18 +43,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Car.cs" />
-    <Compile Include="IHolidayChecker.cs" />
+    <Compile Include="Vehicles\Car.cs" />
+    <Compile Include="Holidays\IHolidayChecker.cs" />
     <Compile Include="StandardVehicleTollPolicy.cs" />
-    <Compile Include="Tractor.cs" />
-    <Compile Include="IVehicle.cs" />
+    <Compile Include="Vehicles\DiplomaticVehicle.cs" />
+    <Compile Include="Vehicles\EmergencyVehicle.cs" />
+    <Compile Include="Vehicles\ForeignVehicle.cs" />
+    <Compile Include="Vehicles\MilitaryVehicle.cs" />
+    <Compile Include="Vehicles\Tractor.cs" />
+    <Compile Include="Vehicles\IVehicle.cs" />
     <Compile Include="ITollCalculator.cs" />
     <Compile Include="IVehicleTollPolicy.cs" />
-    <Compile Include="Motorbike.cs" />
+    <Compile Include="Vehicles\Motorbike.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sweden2018HolidayChecker.cs" />
-    <Compile Include="SwedenHolidayChecker.cs" />
+    <Compile Include="Holidays\Sweden2018HolidayChecker.cs" />
+    <Compile Include="Holidays\SwedenHolidayChecker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

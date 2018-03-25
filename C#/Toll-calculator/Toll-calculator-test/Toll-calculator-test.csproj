@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="HolidaysCheckerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VehicleTollPolicyTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toll-calculator\Toll-calculator.csproj">

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using Toll_calculator.Vehicles;
 
 namespace Toll_calculator {
-    class StandardVehicleTollPolicy : IVehicleTollPolicy {
+    public class StandardVehicleTollPolicy : IVehicleTollPolicy {
 
         /**
          * Default fallback for unspecified vehicle types.
          */
         public bool IsTollable(IVehicle vehicle) {
-            return true;
+            return false;
         }
 
         public bool IsTollable(Car car) {
@@ -23,6 +23,18 @@ namespace Toll_calculator {
         }
 
         public bool IsTollable(Tractor tractor) {
+            return false;
+        }
+
+        public bool IsTollable(MilitaryVehicle militaryVehicle) {
+            return false;
+        }
+
+        public bool IsTollable(EmergencyVehicle emergencyVehicle) {
+            return false;
+        }
+
+        public bool IsTollable(DiplomaticVehicle diplomaticVehicle) {
             return false;
         }
 

@@ -38,5 +38,6 @@ namespace Toll_calculator_test {
         public void TestInvalidDate() {
             holidayChecker.IsHoliday(new DateTime(2018, 2, 29));
         }
+
     }
 }

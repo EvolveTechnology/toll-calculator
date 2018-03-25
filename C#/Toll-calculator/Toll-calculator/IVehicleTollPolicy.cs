@@ -16,5 +16,11 @@ namespace Toll_calculator {
 
         bool IsTollable(Tractor tractor);
 
+        bool IsTollable(MilitaryVehicle militaryVehicle);
+
+        bool IsTollable(EmergencyVehicle emergencyVehicle);
+
+        bool IsTollable(DiplomaticVehicle diplomaticVehicle);
+
     }
 }
