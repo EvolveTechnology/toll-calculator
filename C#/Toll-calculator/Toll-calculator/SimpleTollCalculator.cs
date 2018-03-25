@@ -26,14 +26,17 @@ namespace Toll_calculator {
         public int GetTollFee(IVehicle vehicle, DateTime[] times) {
             int totalFee = 0;
 
+            if(!vehicle.IsTollable(VehicleTollPolicy)) {
+                return 0;
+            }
+
             /**
              * Groups times based on their date, and calculate the fee for each day.
              */
             DateTime[] dates = times.Select(time => time.Date).Distinct().ToArray();
             foreach (DateTime date in dates) {
                 DateTime[] timesOfDate = times.Where(time => time.Date.Equals(date.Date)).ToArray();
-                int dailyFee = GetDailyTollFee(vehicle, timesOfDate);
-                totalFee += dailyFee;
+                totalFee += GetDailyTollFee(vehicle, timesOfDate);
             }
             return totalFee;
         }
@@ -42,11 +45,19 @@ namespace Toll_calculator {
             int totalFee = 0;
             DateTime lastFeeTime = DateTime.MinValue;
 
+            /**
+             * We know that times only contains timestamps of a single date, so
+             * we can only check if the first element has a tollable date.
+             */
+            if (times.Length == 0 || !DateTollPolicy.IsTollable(times[0])) {
+                return 0;
+            }
+
             times = times.OrderBy(time => time).ToArray();
             foreach(DateTime time in times) {
                 int timeSinceLastFee = Utils.TimeBetweenTimestampsInMinutes(lastFeeTime, time);
                 if (timeSinceLastFee >= MIN_FEE_FREQUENCY_IN_MINUTES) {
-                    totalFee += GetSingleTollFee(vehicle, time);
+                    totalFee += FeePolicy.GetFee(time);
                     lastFeeTime = time;
                 }
                 if(totalFee >= MAX_DAILY_FEE) {
@@ -55,13 +66,6 @@ namespace Toll_calculator {
             }
 
             return Math.Min(MAX_DAILY_FEE, totalFee);
-        }
-
-        private int GetSingleTollFee(IVehicle vehicle, DateTime time) {
-            if(!DateTollPolicy.IsTollable(time) || !vehicle.IsTollable(VehicleTollPolicy)) {
-                return 0;
-            }
-            return FeePolicy.GetFee(time);
         }
 
     }
