@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDateTollPolicy.cs" />
+    <Compile Include="StandardDateTollPolicy.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="Vehicles\Car.cs" />
     <Compile Include="Holidays\IHolidayChecker.cs" />
     <Compile Include="StandardVehicleTollPolicy.cs" />
