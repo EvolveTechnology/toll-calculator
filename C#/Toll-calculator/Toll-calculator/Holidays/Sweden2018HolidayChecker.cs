@@ -23,7 +23,7 @@ namespace Toll_calculator.Holidays {
 
         public override bool IsHoliday(DateTime date) {
             foreach (DateTime holiday in holidays) {
-                if (date.Equals(holiday)) {
+                if (date.Date.Equals(holiday.Date)) {
                     return true;
                 }
             }

@@ -7,7 +7,7 @@ using Toll_calculator.Vehicles;
 
 namespace Toll_calculator {
 
-    interface ITollCalculator {
+    public interface ITollCalculator {
 
         int GetTollFee(IVehicle vehicle, DateTime[] dates);
 
