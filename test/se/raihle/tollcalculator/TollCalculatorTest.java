@@ -161,6 +161,16 @@ class TollCalculatorTest {
 	}
 
 	@Test
+	void cars_pass_for_free_on_weekends() {
+		TollCalculator unit = new TollCalculator();
+
+		Calendar startOfDay = weekendAt(0, 0);
+		Calendar endOfDay = weekendAt(24, 0);
+
+		checkFeeBetween(unit, REGULAR_CAR, FREE_RATE, startOfDay, endOfDay);
+	}
+
+	@Test
 	void motorbikes_pass_for_free() {
 		TollCalculator unit = new TollCalculator();
 
@@ -196,10 +206,14 @@ class TollCalculatorTest {
 	 * Creates a calendar representing a regular day (always the same) at the given hour and minute
 	 */
 	private Calendar regularDayAt(int hour, int minute) {
-		Calendar result = Calendar.getInstance();
-		result.clear();
-		result.set(2018, Calendar.APRIL, 9, hour, minute);
-		return result;
+		return calendarAt(2018, Calendar.APRIL, 9, hour, minute);
+	}
+
+	/**
+	 * Creates a calendar representing a day on the weekend (always the same) at the given hour and minute
+	 */
+	private Calendar weekendAt(int hour, int minute) {
+		return calendarAt(2018, Calendar.APRIL, 7, hour, minute);
 	}
 
 	private Calendar calendarAt(int year, int month, int dayOfMonth, int hour, int minute) {
