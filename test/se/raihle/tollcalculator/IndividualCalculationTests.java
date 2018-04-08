@@ -5,8 +5,9 @@ import org.junit.jupiter.api.Test;
 import java.util.Calendar;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static se.raihle.tollcalculator.test.CalendarBuilder.*;
 
-class TollCalculatorTest {
+class IndividualCalculationTests {
 	private static final Vehicle REGULAR_CAR = new Car();
 
 	private static final int FREE_RATE = 0;
@@ -200,27 +201,6 @@ class TollCalculatorTest {
 			assertEquals(expectedFee, fee, errorAt(timeOfPassing));
 			timeOfPassing.add(Calendar.MINUTE, 1);
 		}
-	}
-
-	/**
-	 * Creates a calendar representing a regular day (always the same) at the given hour and minute
-	 */
-	private Calendar regularDayAt(int hour, int minute) {
-		return calendarAt(2018, Calendar.APRIL, 9, hour, minute);
-	}
-
-	/**
-	 * Creates a calendar representing a day on the weekend (always the same) at the given hour and minute
-	 */
-	private Calendar weekendAt(int hour, int minute) {
-		return calendarAt(2018, Calendar.APRIL, 7, hour, minute);
-	}
-
-	private Calendar calendarAt(int year, int month, int dayOfMonth, int hour, int minute) {
-		Calendar result = Calendar.getInstance();
-		result.clear();
-		result.set(year, month, dayOfMonth, hour, minute);
-		return result;
 	}
 
 	/**
