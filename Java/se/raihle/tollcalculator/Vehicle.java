@@ -1,5 +1,7 @@
 package se.raihle.tollcalculator;
 
+import java.util.Calendar;
+
 public interface Vehicle {
-	public String getType();
+	int getTollAt(Calendar timeOfPassing);
 }
