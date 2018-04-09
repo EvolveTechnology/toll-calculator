@@ -1,27 +1,38 @@
 package se.raihle.tollcalculator;
 
+import se.raihle.tollcalculator.schedule.Schedule;
+import se.raihle.tollcalculator.schedule.ScheduleBuilder;
+
+import java.time.LocalTime;
 import java.util.Calendar;
 
 public class Car implements Vehicle {
+
+	private static final Schedule schedule;
+
+	static {
+		schedule = ScheduleBuilder
+				.start(0)
+				.next(LocalTime.of(6, 0), 8)
+				.next(LocalTime.of(6, 30), 13)
+				.next(LocalTime.of(7, 0), 18)
+				.next(LocalTime.of(8, 0), 13)
+				.next(LocalTime.of(8, 30), 8)
+				.next(LocalTime.of(15, 0), 13)
+				.next(LocalTime.of(15, 30), 18)
+				.next(LocalTime.of(17, 0), 13)
+				.next(LocalTime.of(18, 0), 8)
+				.next(LocalTime.of(18, 30), 0)
+				.finish();
+	}
+
 	@Override
 	public int getTollAt(Calendar timeOfPassing) {
 		if (isTollFreeDate(timeOfPassing)) {
 			return 0;
 		}
 
-		int hour = timeOfPassing.get(Calendar.HOUR_OF_DAY);
-		int minute = timeOfPassing.get(Calendar.MINUTE);
-
-		if (hour == 6 && minute >= 0 && minute <= 29) return 8;
-		else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
-		else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
-		else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
-		else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
-		else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
-		else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
-		else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
-		else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
-		else return 0;
+		return Car.schedule.getFeeAt(LocalTime.of(timeOfPassing.get(Calendar.HOUR_OF_DAY), timeOfPassing.get(Calendar.MINUTE)));
 	}
 
 	private Boolean isTollFreeDate(Calendar timeOfPassing) {

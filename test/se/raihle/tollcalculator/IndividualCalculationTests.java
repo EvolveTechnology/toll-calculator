@@ -66,12 +66,7 @@ class IndividualCalculationTests {
 		checkFeeBetween(unit, REGULAR_CAR, MEDIUM_RATE, eight, eightThirty);
 	}
 
-	/*
-	 * TODO: This test identifies a bug that occurs between 8:30 and 15:00,
-	 * which allows cars to pass for free during the first half of each hour.
-	 */
 	@Test
-	@Disabled("Known issue")
 	void car_pays_low_rate_between_eight_thirty_and_fifteen() {
 		TollCalculator unit = new TollCalculator();
 
