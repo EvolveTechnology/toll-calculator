@@ -183,11 +183,12 @@ class IndividualCalculationTests {
 
 	/**
 	 * Checks the fee for every minute between the two given points, asserting that it is equal to the expected fee
-	 * @param unit the calculator being tested
-	 * @param passer the vehicle passing
-	 * @param expectedFee the expected result
+	 *
+	 * @param unit           the calculator being tested
+	 * @param passer         the vehicle passing
+	 * @param expectedFee    the expected result
 	 * @param startInclusive the first time to check
-	 * @param endExclusive the first time to not check (after the start time)
+	 * @param endExclusive   the first time to not check (after the start time)
 	 */
 	private void checkFeeBetween(TollCalculator unit, Vehicle passer, int expectedFee, Calendar startInclusive, Calendar endExclusive) {
 		if (!endExclusive.after(startInclusive)) {
@@ -196,7 +197,7 @@ class IndividualCalculationTests {
 
 		Calendar timeOfPassing = Calendar.getInstance();
 		timeOfPassing.setTime(startInclusive.getTime());
-		while(timeOfPassing.before(endExclusive)) {
+		while (timeOfPassing.before(endExclusive)) {
 			int fee = unit.getTollFee(timeOfPassing.getTime(), passer);
 			assertEquals(expectedFee, fee, errorAt(timeOfPassing));
 			timeOfPassing.add(Calendar.MINUTE, 1);
