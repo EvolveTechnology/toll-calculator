@@ -21,6 +21,11 @@ public class TollCalculator {
 
 		Date[] sortedDates = Arrays.copyOf(dates, dates.length);
 		Arrays.sort(sortedDates);
+		LocalDateTime firstPassing = dateToLocalDateTime(sortedDates[0]);
+		LocalDateTime lastPassing = dateToLocalDateTime(sortedDates[sortedDates.length - 1]);
+		if (!firstPassing.toLocalDate().isEqual(lastPassing.toLocalDate())) {
+			throw new IllegalArgumentException("All passings must be on the same day, arguments spanned from " + firstPassing + " to " + lastPassing);
+		}
 
 		Intervals intervals = arrangeIntervals(sortedDates);
 

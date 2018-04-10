@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static se.raihle.tollcalculator.test.CalendarBuilder.regularDayAt;
 
 class CombinedCalculationTests {
@@ -83,17 +84,11 @@ class CombinedCalculationTests {
 		assertEquals(DAILY_RATE, fee);
 	}
 
-	/*
-	 * TODO: Identifies unintuitive behavior (though it is consistent with the specification)
-	 * (getTollFee only handles passings during a single day)
-	 */
 	@Test
-	@Disabled("Known issue")
-	void car_passing_once_per_hour_for_two_days_is_billed_double_the_daily_rate() {
+	void calculating_tolls_for_two_days_at_once_throws_an_IllegalArgumentException() {
 		List<Calendar> timesOfPassing = CalendarStream.takeAsList(48, regularDayAt(0, 30), Calendar.HOUR_OF_DAY, 1);
 
-		int fee = unit.getTollFee(REGULAR_CAR, calendarsToDates(timesOfPassing));
-		assertEquals(DAILY_RATE * 2, fee);
+		assertThrows(IllegalArgumentException.class, () -> unit.getTollFee(REGULAR_CAR, calendarsToDates(timesOfPassing)));
 	}
 
 
