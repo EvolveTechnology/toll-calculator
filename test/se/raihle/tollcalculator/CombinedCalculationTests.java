@@ -37,11 +37,7 @@ class CombinedCalculationTests {
 		});
 	}
 
-	/*
-	 * TODO: Identifies a bug when a car is charged multiple times if it passes more than twice per hour
-	 */
 	@Test
-	@Disabled("Known issue")
 	void car_passing_three_times_within_an_hour_is_only_charged_the_highest_rate() {
 		CalendarStream.from(regularDayAt(0, 0), Calendar.MINUTE, 15).limit(4 * 24).forEach(startingPoint -> {
 			List<Calendar> timesOfPassing = CalendarStream.takeAsList(3, startingPoint, Calendar.MINUTE, 20);
@@ -52,13 +48,7 @@ class CombinedCalculationTests {
 		});
 	}
 
-
-	/*
-	 * TODO: Identifies a bug where a car is charged multiple times if it passes twice in an hour after the first hour
-	 * (A different facet of the issue identified in car_passing_three_times_within_an_hour_is_only_charged_the_highest_rate)
-	 */
 	@Test
-	@Disabled("Known issue")
 	void car_passing_twice_per_hour_for_two_hours_is_charged_the_sum_of_higher_rates_for_each_hour() {
 		CalendarStream.from(regularDayAt(0, 0), Calendar.MINUTE, 15).limit(4 * 24).forEach(startingPoint -> {
 			List<Calendar> timesOfPassing = CalendarStream.takeAsList(4, startingPoint, Calendar.MINUTE, 30);
@@ -71,12 +61,7 @@ class CombinedCalculationTests {
 		});
 	}
 
-	/*
-	 * TODO: Identifies unspecified behavior where TollCalculator assumes that times of passing are sorted
-	 * Will also be tripped up by the bug identified in car_passing_twice_per_hour_for_two_hours_is_charged_the_sum_of_higher_rates_for_each_hour
-	 */
 	@Test
-	@Disabled("Known issue")
 	void car_passing_twice_per_hour_for_two_hours_is_charged_the_sum_of_higher_rates_for_each_hour_if_times_are_out_of_order() {
 		CalendarStream.from(regularDayAt(0, 0), Calendar.MINUTE, 15).limit(4 * 24).forEach(startingPoint -> {
 			List<Calendar> timesOfPassing = CalendarStream.takeAsList(4, startingPoint, Calendar.MINUTE, 30);
@@ -119,7 +104,7 @@ class CombinedCalculationTests {
 		return timesOfPassing.stream()
 				.mapToInt(time -> unit.getTollFee(time.getTime(), passer))
 				.max()
-				.getAsInt();
+				.orElse(0);
 	}
 
 	/**
@@ -150,7 +135,7 @@ class CombinedCalculationTests {
 	/**
 	 * Converts a List of Calendars to an array of Dates
 	 */
-	private Date[] calendarsToDates(List<Calendar> calendars) {
+	private static Date[] calendarsToDates(List<Calendar> calendars) {
 		return calendars.stream().map(Calendar::getTime).collect(Collectors.toList()).toArray(new Date[calendars.size()]);
 	}
 

@@ -4,12 +4,9 @@ import se.raihle.tollcalculator.schedule.FeeScheduleBuilder;
 import se.raihle.tollcalculator.schedule.FeeSchedule;
 import se.raihle.tollcalculator.schedule.HolidaySchedule;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.Month;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 public class Car implements Vehicle {
@@ -59,18 +56,20 @@ public class Car implements Vehicle {
 	}
 
 	@Override
-	public int getTollAt(Calendar timeOfPassing) {
-		if (isTollFreeDate(timeOfPassing)) {
+	public int getTollAt(LocalDateTime timeOfPassing) {
+		if (isTollFreeDate(timeOfPassing.toLocalDate())) {
 			return 0;
 		}
 
-		return Car.FEE_SCHEDULE.getFeeAt(LocalTime.of(timeOfPassing.get(Calendar.HOUR_OF_DAY), timeOfPassing.get(Calendar.MINUTE)));
+		return Car.FEE_SCHEDULE.getFeeAt(timeOfPassing.toLocalTime());
 	}
 
-	private Boolean isTollFreeDate(Calendar timeOfPassing) {
-		int dayOfWeek = timeOfPassing.get(Calendar.DAY_OF_WEEK);
-		if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) return true;
+	private Boolean isTollFreeDate(LocalDate dateOfPassing) {
+		DayOfWeek dayOfWeek = dateOfPassing.getDayOfWeek();
+		if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
+			return true;
+		}
 
-		return HOLIDAY_SCHEDULE.isHoliday(timeOfPassing);
+		return Car.HOLIDAY_SCHEDULE.isHoliday(dateOfPassing);
 	}
 }

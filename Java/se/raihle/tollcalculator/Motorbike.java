@@ -1,10 +1,10 @@
 package se.raihle.tollcalculator;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 
 public class Motorbike implements Vehicle {
 	@Override
-	public int getTollAt(Calendar timeOfPassing) {
+	public int getTollAt(LocalDateTime timeOfPassing) {
 		return 0;
 	}
 }
