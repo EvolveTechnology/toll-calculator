@@ -5,12 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Collects the fees at different times of a single day. Create Schedules using a {@link ScheduleBuilder}.
+ * Collects the fees at different times of a single day. Create Schedules using a {@link FeeScheduleBuilder}.
  */
-public class Schedule {
+public class FeeSchedule {
 	private final List<Part> parts;
 
-	Schedule(List<Part> parts) {
+	FeeSchedule(List<Part> parts) {
 		this.parts = Collections.unmodifiableList(parts);
 	}
 
@@ -25,5 +25,17 @@ public class Schedule {
 
 	private boolean partCoversTime(Part part, LocalTime time) {
 		return !part.fromInclusive.isAfter(time) && part.untilExclusive.isAfter(time);
+	}
+
+	static class Part {
+		final LocalTime fromInclusive;
+		final LocalTime untilExclusive;
+		final int fee;
+
+		Part(LocalTime fromInclusive, LocalTime untilExclusive, int fee) {
+			this.fromInclusive = fromInclusive;
+			this.untilExclusive = untilExclusive;
+			this.fee = fee;
+		}
 	}
 }
