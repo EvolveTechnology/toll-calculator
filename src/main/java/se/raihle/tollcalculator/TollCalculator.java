@@ -11,10 +11,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("WeakerAccess")
 public class TollCalculator {
 
 	private final HolidaySchedule holidaySchedule;
-	private int dailyMaximum;
+	private final int dailyMaximum;
 
 	/**
 	 * Create a new TollCalculator with the given settings
