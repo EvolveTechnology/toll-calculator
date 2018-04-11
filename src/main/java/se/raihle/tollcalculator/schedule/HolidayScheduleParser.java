@@ -1,7 +1,5 @@
 package se.raihle.tollcalculator.schedule;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,7 +12,7 @@ import java.util.Scanner;
  */
 public class HolidayScheduleParser {
 
-	public static final String DELIMITER = "\\s+";
+	private static final String DELIMITER = "\\s+";
 
 	public static HolidaySchedule fromString(String dates) {
 		Scanner scanner = new Scanner(dates).useDelimiter(DELIMITER);
