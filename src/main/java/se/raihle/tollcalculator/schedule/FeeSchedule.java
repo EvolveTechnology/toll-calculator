@@ -5,7 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Collects the fees at different times of a single day. Create Schedules using a {@link FeeScheduleBuilder}.
+ * Collects the fees at different times of a single day.
+ * Create Schedules using a {@link FeeScheduleBuilder}, or read them from files with a {@link FeeScheduleParser}.
  */
 public class FeeSchedule {
 	public static final FeeSchedule FREE = FeeScheduleBuilder.start(0).finish();

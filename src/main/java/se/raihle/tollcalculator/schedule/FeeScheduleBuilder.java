@@ -5,10 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class FeeScheduleBuilder {
-	public static FeeScheduleBuilder start(int feeFromMidnight) {
-		return new FeeScheduleBuilder(feeFromMidnight);
-	}
-
 	private final List<FeeSchedule.Part> parts;
 	private int currentFee;
 	private LocalTime currentStart;
@@ -19,6 +15,10 @@ public class FeeScheduleBuilder {
 		currentFee = feeFromMidnight;
 		currentStart = LocalTime.MIN;
 		finished = false;
+	}
+
+	public static FeeScheduleBuilder start(int feeFromMidnight) {
+		return new FeeScheduleBuilder(feeFromMidnight);
 	}
 
 	public FeeScheduleBuilder next(LocalTime time, int fee) {

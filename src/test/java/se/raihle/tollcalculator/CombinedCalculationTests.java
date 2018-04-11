@@ -116,6 +116,7 @@ class CombinedCalculationTests {
 
 	/**
 	 * Most tests are not concerned with cases when the vehicle passes on multiple days, so we want to filter those out
+	 *
 	 * @param timesofpassing times of passing sorted from first to last
 	 */
 	private boolean timesAreOnSameDay(List<LocalDateTime> timesofpassing) {
@@ -124,14 +125,14 @@ class CombinedCalculationTests {
 		return first.equals(last);
 	}
 
-	private static LocalDateTime regularDayAt(int hour, int minute) {
-		return LocalDateTime.of(2018, Month.APRIL, 9, hour, minute);
-	}
-
 	/**
 	 * Builds an error message out of the given LocalDateTime object
 	 */
 	private String errorAt(LocalDateTime passing) {
 		return "Wrong fee given for sequence starting at " + passing;
+	}
+
+	private static LocalDateTime regularDayAt(int hour, int minute) {
+		return LocalDateTime.of(2018, Month.APRIL, 9, hour, minute);
 	}
 }

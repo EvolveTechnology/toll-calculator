@@ -16,6 +16,12 @@ public class TollCalculator {
 	private final HolidaySchedule holidaySchedule;
 	private int dailyMaximum;
 
+	/**
+	 * Create a new TollCalculator with the given settings
+	 *
+	 * @param dailyMaximum    the maximum toll a vehicle can pay for one day
+	 * @param holidaySchedule a schedule of toll-free weekdays (weekends are always toll-free)
+	 */
 	public TollCalculator(int dailyMaximum, HolidaySchedule holidaySchedule) {
 		this.dailyMaximum = dailyMaximum;
 		this.holidaySchedule = holidaySchedule;
@@ -56,7 +62,9 @@ public class TollCalculator {
 		if (isTollFreeDay(passing)) {
 			return 0;
 		}
-		return vehicle.getTollAt(passing.toLocalTime());
+		int uncappedFee = vehicle.getTollAt(passing.toLocalTime());
+
+		return capAtDailyMaximum(uncappedFee);
 	}
 
 	private boolean isTollFreeDay(LocalDateTime passing) {

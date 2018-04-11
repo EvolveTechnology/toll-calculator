@@ -178,17 +178,18 @@ class IndividualCalculationTests {
 		}
 	}
 
+	/**
+	 * Builds an error message out of the given LocalDateTime object
+	 */
+	private String errorAt(LocalDateTime passing) {
+		return "Wrong fee given for " + passing;
+	}
+
 	private static LocalDateTime regularDayAt(int hour, int minute) {
 		return LocalDateTime.of(2018, Month.APRIL, 9, hour, minute);
 	}
 
 	private static LocalDateTime weekendAt(int hour, int minute) {
 		return LocalDateTime.of(2018, Month.APRIL, 7, hour, minute);
-	}
-	/**
-	 * Builds an error message out of the given LocalDateTime object
-	 */
-	private String errorAt(LocalDateTime passing) {
-		return "Wrong fee given for " + passing;
 	}
 }
