@@ -6,7 +6,7 @@ import java.time.LocalTime;
 
 public class DefaultVehicle implements Vehicle {
 
-	private FeeSchedule feeSchedule;
+	private final FeeSchedule feeSchedule;
 
 	public DefaultVehicle(FeeSchedule feeSchedule) {
 		this.feeSchedule = feeSchedule;

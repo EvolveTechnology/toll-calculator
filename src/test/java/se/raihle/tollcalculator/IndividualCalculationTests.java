@@ -2,8 +2,7 @@ package se.raihle.tollcalculator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import se.raihle.tollcalculator.schedule.HolidaySchedule;
-import se.raihle.tollcalculator.schedule.HolidayScheduleParser;
+import se.raihle.tollcalculator.schedule.*;
 import se.raihle.tollcalculator.test.CalendarBuilder;
 
 import java.util.Calendar;
@@ -17,11 +16,16 @@ class IndividualCalculationTests {
 	private static final int HIGH_RATE = 18;
 
 	private TollCalculator unit;
+	private Vehicle car;
+	private Vehicle motorbike;
 
 	@BeforeEach
 	void setup() {
+		FeeSchedule fees = FeeScheduleParser.fromInputStream(getClass().getResourceAsStream("/regular-fees.txt"));
 		HolidaySchedule holidays = HolidayScheduleParser.fromInputStream(this.getClass().getResourceAsStream("/2018-holidays.txt"));
 		unit = new TollCalculator(holidays);
+		car = new DefaultVehicle(fees);
+		motorbike = new DefaultVehicle(FeeSchedule.FREE);
 	}
 
 	@Test
@@ -29,7 +33,7 @@ class IndividualCalculationTests {
 		Calendar startOfDay = CalendarBuilder.regularDayAt(0, 0);
 		Calendar six = CalendarBuilder.regularDayAt(6, 0);
 
-		checkFeeBetween(unit, Vehicles.CAR, FREE_RATE, startOfDay, six);
+		checkFeeBetween(unit, car, FREE_RATE, startOfDay, six);
 	}
 
 	@Test
@@ -37,7 +41,7 @@ class IndividualCalculationTests {
 		Calendar six = CalendarBuilder.regularDayAt(6, 0);
 		Calendar sixThirty = CalendarBuilder.regularDayAt(6, 30);
 
-		checkFeeBetween(unit, Vehicles.CAR, LOW_RATE, six, sixThirty);
+		checkFeeBetween(unit, car, LOW_RATE, six, sixThirty);
 	}
 
 	@Test
@@ -45,7 +49,7 @@ class IndividualCalculationTests {
 		Calendar sixThirty = CalendarBuilder.regularDayAt(6, 30);
 		Calendar seven = CalendarBuilder.regularDayAt(7, 0);
 
-		checkFeeBetween(unit, Vehicles.CAR, MEDIUM_RATE, sixThirty, seven);
+		checkFeeBetween(unit, car, MEDIUM_RATE, sixThirty, seven);
 	}
 
 	@Test
@@ -53,7 +57,7 @@ class IndividualCalculationTests {
 		Calendar seven = CalendarBuilder.regularDayAt(7, 0);
 		Calendar eight = CalendarBuilder.regularDayAt(8, 0);
 
-		checkFeeBetween(unit, Vehicles.CAR, HIGH_RATE, seven, eight);
+		checkFeeBetween(unit, car, HIGH_RATE, seven, eight);
 	}
 
 	@Test
@@ -61,7 +65,7 @@ class IndividualCalculationTests {
 		Calendar eight = CalendarBuilder.regularDayAt(8, 0);
 		Calendar eightThirty = CalendarBuilder.regularDayAt(8, 30);
 
-		checkFeeBetween(unit, Vehicles.CAR, MEDIUM_RATE, eight, eightThirty);
+		checkFeeBetween(unit, car, MEDIUM_RATE, eight, eightThirty);
 	}
 
 	@Test
@@ -69,7 +73,7 @@ class IndividualCalculationTests {
 		Calendar eightThirty = CalendarBuilder.regularDayAt(8, 30);
 		Calendar fifteen = CalendarBuilder.regularDayAt(15, 0);
 
-		checkFeeBetween(unit, Vehicles.CAR, LOW_RATE, eightThirty, fifteen);
+		checkFeeBetween(unit, car, LOW_RATE, eightThirty, fifteen);
 	}
 
 	@Test
@@ -77,7 +81,7 @@ class IndividualCalculationTests {
 		Calendar fifteen = CalendarBuilder.regularDayAt(15, 0);
 		Calendar fifteenThirty = CalendarBuilder.regularDayAt(15, 30);
 
-		checkFeeBetween(unit, Vehicles.CAR, MEDIUM_RATE, fifteen, fifteenThirty);
+		checkFeeBetween(unit, car, MEDIUM_RATE, fifteen, fifteenThirty);
 	}
 
 	@Test
@@ -85,7 +89,7 @@ class IndividualCalculationTests {
 		Calendar fifteenThirty = CalendarBuilder.regularDayAt(15, 30);
 		Calendar seventeen = CalendarBuilder.regularDayAt(17, 0);
 
-		checkFeeBetween(unit, Vehicles.CAR, HIGH_RATE, fifteenThirty, seventeen);
+		checkFeeBetween(unit, car, HIGH_RATE, fifteenThirty, seventeen);
 	}
 
 	@Test
@@ -93,7 +97,7 @@ class IndividualCalculationTests {
 		Calendar seventeen = CalendarBuilder.regularDayAt(17, 0);
 		Calendar eighteen = CalendarBuilder.regularDayAt(18, 0);
 
-		checkFeeBetween(unit, Vehicles.CAR, MEDIUM_RATE, seventeen, eighteen);
+		checkFeeBetween(unit, car, MEDIUM_RATE, seventeen, eighteen);
 	}
 
 	@Test
@@ -101,7 +105,7 @@ class IndividualCalculationTests {
 		Calendar eighteen = CalendarBuilder.regularDayAt(18, 0);
 		Calendar eighteenThirty = CalendarBuilder.regularDayAt(18, 30);
 
-		checkFeeBetween(unit, Vehicles.CAR, LOW_RATE, eighteen, eighteenThirty);
+		checkFeeBetween(unit, car, LOW_RATE, eighteen, eighteenThirty);
 	}
 
 	@Test
@@ -109,7 +113,7 @@ class IndividualCalculationTests {
 		Calendar eighteenThirty = CalendarBuilder.regularDayAt(18, 30);
 		Calendar endOfDay = CalendarBuilder.regularDayAt(24, 0);
 
-		checkFeeBetween(unit, Vehicles.CAR, FREE_RATE, eighteenThirty, endOfDay);
+		checkFeeBetween(unit, car, FREE_RATE, eighteenThirty, endOfDay);
 	}
 
 	@Test
@@ -117,7 +121,7 @@ class IndividualCalculationTests {
 		Calendar startOfDay = CalendarBuilder.calendarAt(2018, Calendar.JANUARY, 1, 0, 0);
 		Calendar endOfDay = CalendarBuilder.calendarAt(2018, Calendar.JANUARY, 1, 24, 0);
 
-		checkFeeBetween(unit, Vehicles.CAR, FREE_RATE, startOfDay, endOfDay);
+		checkFeeBetween(unit, car, FREE_RATE, startOfDay, endOfDay);
 	}
 
 	@Test
@@ -125,12 +129,12 @@ class IndividualCalculationTests {
 		Calendar startOfDay2018 = CalendarBuilder.calendarAt(2018, Calendar.APRIL, 2, 0, 0);
 		Calendar endOfDay2018 = CalendarBuilder.calendarAt(2018, Calendar.APRIL, 2, 24, 0);
 
-		checkFeeBetween(unit, Vehicles.CAR, FREE_RATE, startOfDay2018, endOfDay2018);
+		checkFeeBetween(unit, car, FREE_RATE, startOfDay2018, endOfDay2018);
 
 		Calendar startOfDay2019 = CalendarBuilder.calendarAt(2018, Calendar.APRIL, 22, 0, 0);
 		Calendar endOfDay2019 = CalendarBuilder.calendarAt(2018, Calendar.APRIL, 22, 24, 0);
 
-		checkFeeBetween(unit, Vehicles.CAR, FREE_RATE, startOfDay2019, endOfDay2019);
+		checkFeeBetween(unit, car, FREE_RATE, startOfDay2019, endOfDay2019);
 	}
 
 	@Test
@@ -138,7 +142,7 @@ class IndividualCalculationTests {
 		Calendar startOfDay = CalendarBuilder.weekendAt(0, 0);
 		Calendar endOfDay = CalendarBuilder.weekendAt(24, 0);
 
-		checkFeeBetween(unit, Vehicles.CAR, FREE_RATE, startOfDay, endOfDay);
+		checkFeeBetween(unit, car, FREE_RATE, startOfDay, endOfDay);
 	}
 
 	@Test
@@ -146,7 +150,7 @@ class IndividualCalculationTests {
 		Calendar startOfYear = CalendarBuilder.calendarAt(2018, Calendar.JANUARY, 1, 0, 0);
 		Calendar startOfNextYear = CalendarBuilder.calendarAt(2019, Calendar.JANUARY, 1, 0, 0);
 
-		checkFeeBetween(unit, Vehicles.MOTORBIKE, FREE_RATE, startOfYear, startOfNextYear);
+		checkFeeBetween(unit, motorbike, FREE_RATE, startOfYear, startOfNextYear);
 	}
 
 	/**
