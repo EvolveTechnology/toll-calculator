@@ -1,12 +1,15 @@
 package se.raihle.tollcalculator;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import se.raihle.tollcalculator.schedule.HolidaySchedule;
+import se.raihle.tollcalculator.schedule.HolidayScheduleParser;
+import se.raihle.tollcalculator.test.CalendarBuilder;
 
 import java.util.Calendar;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static se.raihle.tollcalculator.test.CalendarBuilder.*;
 
 class IndividualCalculationTests {
 	private static final Vehicle REGULAR_CAR = new Car();
@@ -16,166 +19,135 @@ class IndividualCalculationTests {
 	private static final int MEDIUM_RATE = 13;
 	private static final int HIGH_RATE = 18;
 
+	private TollCalculator unit;
+
+	@BeforeEach
+	void setup() {
+		HolidaySchedule holidays = HolidayScheduleParser.fromInputStream(this.getClass().getResourceAsStream("/2018-holidays.txt"));
+		unit = new TollCalculator(holidays);
+	}
+
 	@Test
 	void car_pays_nothing_for_passing_before_six() {
-		TollCalculator unit = new TollCalculator();
-
-		Calendar startOfDay = regularDayAt(0, 0);
-		Calendar six = regularDayAt(6, 0);
+		Calendar startOfDay = CalendarBuilder.regularDayAt(0, 0);
+		Calendar six = CalendarBuilder.regularDayAt(6, 0);
 
 		checkFeeBetween(unit, REGULAR_CAR, FREE_RATE, startOfDay, six);
 	}
 
 	@Test
 	void car_pays_low_rate_between_six_and_six_thirty() {
-		TollCalculator unit = new TollCalculator();
-
-		Calendar six = regularDayAt(6, 0);
-		Calendar sixThirty = regularDayAt(6, 30);
+		Calendar six = CalendarBuilder.regularDayAt(6, 0);
+		Calendar sixThirty = CalendarBuilder.regularDayAt(6, 30);
 
 		checkFeeBetween(unit, REGULAR_CAR, LOW_RATE, six, sixThirty);
 	}
 
 	@Test
 	void car_pays_medium_rate_between_six_thirty_and_seven() {
-		TollCalculator unit = new TollCalculator();
-
-		Calendar sixThirty = regularDayAt(6, 30);
-		Calendar seven = regularDayAt(7, 0);
+		Calendar sixThirty = CalendarBuilder.regularDayAt(6, 30);
+		Calendar seven = CalendarBuilder.regularDayAt(7, 0);
 
 		checkFeeBetween(unit, REGULAR_CAR, MEDIUM_RATE, sixThirty, seven);
 	}
 
 	@Test
 	void car_pays_high_rate_between_seven_and_eight() {
-		TollCalculator unit = new TollCalculator();
-
-		Calendar seven = regularDayAt(7, 0);
-		Calendar eight = regularDayAt(8, 0);
+		Calendar seven = CalendarBuilder.regularDayAt(7, 0);
+		Calendar eight = CalendarBuilder.regularDayAt(8, 0);
 
 		checkFeeBetween(unit, REGULAR_CAR, HIGH_RATE, seven, eight);
 	}
 
 	@Test
 	void car_pays_medium_rate_between_eight_and_eight_thirty() {
-		TollCalculator unit = new TollCalculator();
-
-		Calendar eight = regularDayAt(8, 0);
-		Calendar eightThirty = regularDayAt(8, 30);
+		Calendar eight = CalendarBuilder.regularDayAt(8, 0);
+		Calendar eightThirty = CalendarBuilder.regularDayAt(8, 30);
 
 		checkFeeBetween(unit, REGULAR_CAR, MEDIUM_RATE, eight, eightThirty);
 	}
 
 	@Test
 	void car_pays_low_rate_between_eight_thirty_and_fifteen() {
-		TollCalculator unit = new TollCalculator();
-
-		Calendar eightThirty = regularDayAt(8, 30);
-		Calendar fifteen = regularDayAt(15, 0);
+		Calendar eightThirty = CalendarBuilder.regularDayAt(8, 30);
+		Calendar fifteen = CalendarBuilder.regularDayAt(15, 0);
 
 		checkFeeBetween(unit, REGULAR_CAR, LOW_RATE, eightThirty, fifteen);
 	}
 
 	@Test
 	void car_pays_medium_rate_between_fifteen_and_fifteen_thirty() {
-		TollCalculator unit = new TollCalculator();
-
-		Calendar fifteen = regularDayAt(15, 0);
-		Calendar fifteenThirty = regularDayAt(15, 30);
+		Calendar fifteen = CalendarBuilder.regularDayAt(15, 0);
+		Calendar fifteenThirty = CalendarBuilder.regularDayAt(15, 30);
 
 		checkFeeBetween(unit, REGULAR_CAR, MEDIUM_RATE, fifteen, fifteenThirty);
 	}
 
 	@Test
 	void car_pays_high_rate_between_fifteen_thirty_and_seventeen() {
-		TollCalculator unit = new TollCalculator();
-
-		Calendar fifteenThirty = regularDayAt(15, 30);
-		Calendar seventeen = regularDayAt(17, 0);
+		Calendar fifteenThirty = CalendarBuilder.regularDayAt(15, 30);
+		Calendar seventeen = CalendarBuilder.regularDayAt(17, 0);
 
 		checkFeeBetween(unit, REGULAR_CAR, HIGH_RATE, fifteenThirty, seventeen);
 	}
 
 	@Test
 	void car_pays_medium_rate_between_seventeen_and_eighteen() {
-		TollCalculator unit = new TollCalculator();
-
-		Calendar seventeen = regularDayAt(17, 0);
-		Calendar eighteen = regularDayAt(18, 0);
+		Calendar seventeen = CalendarBuilder.regularDayAt(17, 0);
+		Calendar eighteen = CalendarBuilder.regularDayAt(18, 0);
 
 		checkFeeBetween(unit, REGULAR_CAR, MEDIUM_RATE, seventeen, eighteen);
 	}
 
 	@Test
 	void car_pays_low_rate_between_eighteen_and_eighteen_thirty() {
-		TollCalculator unit = new TollCalculator();
-
-		Calendar eighteen = regularDayAt(18, 0);
-		Calendar eighteenThirty = regularDayAt(18, 30);
+		Calendar eighteen = CalendarBuilder.regularDayAt(18, 0);
+		Calendar eighteenThirty = CalendarBuilder.regularDayAt(18, 30);
 
 		checkFeeBetween(unit, REGULAR_CAR, LOW_RATE, eighteen, eighteenThirty);
 	}
 
 	@Test
 	void car_pays_nothing_after_eighteen_thirty() {
-		TollCalculator unit = new TollCalculator();
-
-		Calendar eighteenThirty = regularDayAt(18, 30);
-		Calendar endOfDay = regularDayAt(24, 0);
+		Calendar eighteenThirty = CalendarBuilder.regularDayAt(18, 30);
+		Calendar endOfDay = CalendarBuilder.regularDayAt(24, 0);
 
 		checkFeeBetween(unit, REGULAR_CAR, FREE_RATE, eighteenThirty, endOfDay);
 	}
 
-	/*
-	 * TODO: This test identifies a bug where only holidays during 2013 are identified
-	 */
 	@Test
-	@Disabled("Known issue")
 	void cars_pass_for_free_on_new_years_day_even_when_it_is_a_weekday() {
-		TollCalculator unit = new TollCalculator();
-
-		Calendar startOfDay = calendarAt(2018, Calendar.JANUARY, 1, 0, 0);
-		Calendar endOfDay = calendarAt(2018, Calendar.JANUARY, 1, 24, 0);
+		Calendar startOfDay = CalendarBuilder.calendarAt(2018, Calendar.JANUARY, 1, 0, 0);
+		Calendar endOfDay = CalendarBuilder.calendarAt(2018, Calendar.JANUARY, 1, 24, 0);
 
 		checkFeeBetween(unit, REGULAR_CAR, FREE_RATE, startOfDay, endOfDay);
 	}
 
-	/*
-	 * TODO: This test identifies a bug where only holidays during 2013 are identified,
-	 * and requires some sophisticated logic (or more likely configurable holidays) to solve
-	 */
 	@Test
-	@Disabled("Known issue")
 	void cars_pass_for_free_on_easter_monday() {
-		TollCalculator unit = new TollCalculator();
-
-		Calendar startOfDay2018 = calendarAt(2018, Calendar.APRIL, 2, 0, 0);
-		Calendar endOfDay2018 = calendarAt(2018, Calendar.APRIL, 2, 24, 0);
+		Calendar startOfDay2018 = CalendarBuilder.calendarAt(2018, Calendar.APRIL, 2, 0, 0);
+		Calendar endOfDay2018 = CalendarBuilder.calendarAt(2018, Calendar.APRIL, 2, 24, 0);
 
 		checkFeeBetween(unit, REGULAR_CAR, FREE_RATE, startOfDay2018, endOfDay2018);
 
-		Calendar startOfDay2019 = calendarAt(2018, Calendar.APRIL, 22, 0, 0);
-		Calendar endOfDay2019 = calendarAt(2018, Calendar.APRIL, 22, 24, 0);
+		Calendar startOfDay2019 = CalendarBuilder.calendarAt(2018, Calendar.APRIL, 22, 0, 0);
+		Calendar endOfDay2019 = CalendarBuilder.calendarAt(2018, Calendar.APRIL, 22, 24, 0);
 
 		checkFeeBetween(unit, REGULAR_CAR, FREE_RATE, startOfDay2019, endOfDay2019);
 	}
 
 	@Test
 	void cars_pass_for_free_on_weekends() {
-		TollCalculator unit = new TollCalculator();
-
-		Calendar startOfDay = weekendAt(0, 0);
-		Calendar endOfDay = weekendAt(24, 0);
+		Calendar startOfDay = CalendarBuilder.weekendAt(0, 0);
+		Calendar endOfDay = CalendarBuilder.weekendAt(24, 0);
 
 		checkFeeBetween(unit, REGULAR_CAR, FREE_RATE, startOfDay, endOfDay);
 	}
 
 	@Test
 	void motorbikes_pass_for_free() {
-		TollCalculator unit = new TollCalculator();
-
-		Calendar startOfYear = calendarAt(2018, Calendar.JANUARY, 1, 0, 0);
-		Calendar startOfNextYear = calendarAt(2019, Calendar.JANUARY, 1, 0, 0);
+		Calendar startOfYear = CalendarBuilder.calendarAt(2018, Calendar.JANUARY, 1, 0, 0);
+		Calendar startOfNextYear = CalendarBuilder.calendarAt(2019, Calendar.JANUARY, 1, 0, 0);
 
 		checkFeeBetween(unit, new Motorbike(), FREE_RATE, startOfYear, startOfNextYear);
 	}

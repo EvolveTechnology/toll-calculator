@@ -1,8 +1,10 @@
 package se.raihle.tollcalculator;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import se.raihle.tollcalculator.schedule.HolidaySchedule;
+import se.raihle.tollcalculator.schedule.HolidayScheduleParser;
+import se.raihle.tollcalculator.test.CalendarBuilder;
 import se.raihle.tollcalculator.test.CalendarStream;
 
 import java.util.Calendar;
@@ -13,7 +15,6 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static se.raihle.tollcalculator.test.CalendarBuilder.regularDayAt;
 
 class CombinedCalculationTests {
 	private static final Vehicle REGULAR_CAR = new Car();
@@ -24,12 +25,13 @@ class CombinedCalculationTests {
 
 	@BeforeEach
 	void setup() {
-		unit = new TollCalculator();
+		HolidaySchedule holidays = HolidayScheduleParser.fromInputStream(this.getClass().getResourceAsStream("/2018-holidays.txt"));
+		unit = new TollCalculator(holidays);
 	}
 
 	@Test
 	void car_passing_two_times_within_an_hour_is_only_charged_the_higher_rate() {
-		CalendarStream.from(regularDayAt(0, 0), Calendar.MINUTE, 15).limit(4 * 24).forEach(startingPoint -> {
+		CalendarStream.from(CalendarBuilder.regularDayAt(0, 0), Calendar.MINUTE, 15).limit(4 * 24).forEach(startingPoint -> {
 			List<Calendar> timesOfPassing = CalendarStream.takeAsList(2, startingPoint, Calendar.MINUTE, 30);
 			if (timesAreOnSameDay(timesOfPassing)) {
 				int expectedFee = highestFeeAmong(timesOfPassing, REGULAR_CAR);
@@ -40,7 +42,7 @@ class CombinedCalculationTests {
 
 	@Test
 	void car_passing_three_times_within_an_hour_is_only_charged_the_highest_rate() {
-		CalendarStream.from(regularDayAt(0, 0), Calendar.MINUTE, 15).limit(4 * 24).forEach(startingPoint -> {
+		CalendarStream.from(CalendarBuilder.regularDayAt(0, 0), Calendar.MINUTE, 15).limit(4 * 24).forEach(startingPoint -> {
 			List<Calendar> timesOfPassing = CalendarStream.takeAsList(3, startingPoint, Calendar.MINUTE, 20);
 			if (timesAreOnSameDay(timesOfPassing)) {
 				int expectedFee = highestFeeAmong(timesOfPassing, REGULAR_CAR);
@@ -51,7 +53,7 @@ class CombinedCalculationTests {
 
 	@Test
 	void car_passing_twice_per_hour_for_two_hours_is_charged_the_sum_of_higher_rates_for_each_hour() {
-		CalendarStream.from(regularDayAt(0, 0), Calendar.MINUTE, 15).limit(4 * 24).forEach(startingPoint -> {
+		CalendarStream.from(CalendarBuilder.regularDayAt(0, 0), Calendar.MINUTE, 15).limit(4 * 24).forEach(startingPoint -> {
 			List<Calendar> timesOfPassing = CalendarStream.takeAsList(4, startingPoint, Calendar.MINUTE, 30);
 			List<Calendar> passingsInFirstHour = timesOfPassing.subList(0, 2);
 			List<Calendar> passingsInSecondHour = timesOfPassing.subList(2, 4);
@@ -64,7 +66,7 @@ class CombinedCalculationTests {
 
 	@Test
 	void car_passing_twice_per_hour_for_two_hours_is_charged_the_sum_of_higher_rates_for_each_hour_if_times_are_out_of_order() {
-		CalendarStream.from(regularDayAt(0, 0), Calendar.MINUTE, 15).limit(4 * 24).forEach(startingPoint -> {
+		CalendarStream.from(CalendarBuilder.regularDayAt(0, 0), Calendar.MINUTE, 15).limit(4 * 24).forEach(startingPoint -> {
 			List<Calendar> timesOfPassing = CalendarStream.takeAsList(4, startingPoint, Calendar.MINUTE, 30);
 			List<Calendar> passingsInFirstHour = timesOfPassing.subList(0, 2);
 			List<Calendar> passingsInSecondHour = timesOfPassing.subList(2, 4);
@@ -78,7 +80,7 @@ class CombinedCalculationTests {
 
 	@Test
 	void car_passing_once_per_hour_for_a_day_is_only_billed_the_daily_rate() {
-		List<Calendar> timesOfPassing = CalendarStream.takeAsList(24, regularDayAt(0, 30), Calendar.HOUR_OF_DAY, 1);
+		List<Calendar> timesOfPassing = CalendarStream.takeAsList(24, CalendarBuilder.regularDayAt(0, 30), Calendar.HOUR_OF_DAY, 1);
 
 		int fee = unit.getTollFee(REGULAR_CAR, calendarsToDates(timesOfPassing));
 		assertEquals(DAILY_RATE, fee);
@@ -86,7 +88,7 @@ class CombinedCalculationTests {
 
 	@Test
 	void calculating_tolls_for_two_days_at_once_throws_an_IllegalArgumentException() {
-		List<Calendar> timesOfPassing = CalendarStream.takeAsList(48, regularDayAt(0, 30), Calendar.HOUR_OF_DAY, 1);
+		List<Calendar> timesOfPassing = CalendarStream.takeAsList(48, CalendarBuilder.regularDayAt(0, 30), Calendar.HOUR_OF_DAY, 1);
 
 		assertThrows(IllegalArgumentException.class, () -> unit.getTollFee(REGULAR_CAR, calendarsToDates(timesOfPassing)));
 	}
