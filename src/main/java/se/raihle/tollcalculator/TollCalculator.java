@@ -2,52 +2,74 @@ package se.raihle.tollcalculator;
 
 import se.raihle.tollcalculator.schedule.HolidaySchedule;
 
-import java.time.*;
-import java.util.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class TollCalculator {
 
 	private final HolidaySchedule holidaySchedule;
+	private int dailyMaximum;
 
-	public TollCalculator(HolidaySchedule holidaySchedule) {
+	public TollCalculator(int dailyMaximum, HolidaySchedule holidaySchedule) {
+		this.dailyMaximum = dailyMaximum;
 		this.holidaySchedule = holidaySchedule;
 	}
 
 	/**
 	 * Calculate the total toll fee for one day
 	 *
-	 * @param vehicle - the vehicle
-	 * @param dates   - date and time of all passings on one day
+	 * @param vehicle  - the vehicle
+	 * @param passings - date and time of all passings on one day
 	 * @return - the total toll fee for that day
 	 */
-	public int getTollFee(Vehicle vehicle, Date... dates) {
-		if (dates.length == 0) {
+	public int getTollFee(Vehicle vehicle, List<LocalDateTime> passings) {
+		if (passings.isEmpty()) {
 			return 0;
 		}
 
-		List<LocalDateTime> passings = toLocalDateTimes(dates);
+		// We will be sorting our list, and don't want to affect the passed parameter
+		passings = new ArrayList<>(passings);
+
 		passings.sort(Comparator.naturalOrder());
 		assertPassingsAreOnSameDay(passings);
 		passings.removeIf(this::isTollFreeDay);
 		Intervals intervals = arrangeInOneHourIntervals(passings);
+		int uncappedFee = intervals.totalFeeFor(vehicle);
 
-		return Math.min(intervals.totalFeeFor(vehicle), 60);
+		return capAtDailyMaximum(uncappedFee);
 	}
 
 	/**
 	 * Calculate the fee for an individual passing.
 	 *
-	 * @param date the time of passing
+	 * @param passing the date and time of passing
 	 * @param vehicle the vehicle
 	 * @return the fee for the passing, assuming no other passings in the previous hour
 	 */
-	public int getTollFee(final Date date, Vehicle vehicle) {
-		LocalDateTime passing = toLocalDateTime(date);
+	public int getTollFee(Vehicle vehicle, final LocalDateTime passing) {
 		if (isTollFreeDay(passing)) {
 			return 0;
 		}
 		return vehicle.getTollAt(passing.toLocalTime());
+	}
+
+	private boolean isTollFreeDay(LocalDateTime passing) {
+		LocalDate dayOfPassing = passing.toLocalDate();
+		return isHoliday(dayOfPassing) || isWeekend(dayOfPassing);
+	}
+
+	private boolean isHoliday(LocalDate passing) {
+		return holidaySchedule.isHoliday(passing);
+	}
+
+	private int capAtDailyMaximum(int fee) {
+		return Math.min(fee, dailyMaximum);
 	}
 
 	/**
@@ -59,15 +81,6 @@ public class TollCalculator {
 		if (!firstPassing.toLocalDate().isEqual(lastPassing.toLocalDate())) {
 			throw new IllegalArgumentException("All passings must be on the same day, arguments spanned from " + firstPassing + " to " + lastPassing);
 		}
-	}
-
-	private boolean isTollFreeDay(LocalDateTime passing) {
-		LocalDate dayOfPassing = passing.toLocalDate();
-		return isHoliday(dayOfPassing) || isWeekend(dayOfPassing);
-	}
-
-	private boolean isHoliday(LocalDate passing) {
-		return holidaySchedule.isHoliday(passing);
 	}
 
 	private static boolean isWeekend(LocalDate passing) {
@@ -85,14 +98,6 @@ public class TollCalculator {
 
 	private static List<LocalTime> toLocalTimes(List<LocalDateTime> passings) {
 		return passings.stream().map(LocalDateTime::toLocalTime).collect(Collectors.toList());
-	}
-
-	private static List<LocalDateTime> toLocalDateTimes(Date[] sortedDates) {
-		return Arrays.stream(sortedDates).map(TollCalculator::toLocalDateTime).collect(Collectors.toList());
-	}
-
-	private static LocalDateTime toLocalDateTime(Date date) {
-		return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
 	}
 
 	/**
