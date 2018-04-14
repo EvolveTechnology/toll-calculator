@@ -40,10 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Car.cs" />
-    <Compile Include="Motorbike.cs" />
+    <Compile Include="Vehicles\Car.cs" />
+    <Compile Include="Vehicles\Diplomat.cs" />
+    <Compile Include="Vehicles\Emergency.cs" />
+    <Compile Include="Vehicles\Foreign.cs" />
+    <Compile Include="Vehicles\Military.cs" />
+    <Compile Include="Vehicles\Motorbike.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TollCalculator.cs" />
+    <Compile Include="Vehicles\Tractor.cs" />
     <Compile Include="Vehicle.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
