@@ -14,7 +14,7 @@ namespace TollFeeCalculatorTests
             var feePeriod = new TollFeeTimePeriod(7, 0, 8, 29, 18);
             bool expected = true;
 
-            bool actual = feePeriod.IsInTimePeriod(hour, minute);
+            bool actual = feePeriod.Contains(hour, minute);
 
             Assert.AreEqual(expected, actual);
         }
@@ -27,7 +27,7 @@ namespace TollFeeCalculatorTests
             var feePeriod = new TollFeeTimePeriod(6, 30, 6, 59, 10);
             bool expected = false;
 
-            bool actual = feePeriod.IsInTimePeriod(hour, minute);
+            bool actual = feePeriod.Contains(hour, minute);
 
             Assert.AreEqual(expected, actual);
         }

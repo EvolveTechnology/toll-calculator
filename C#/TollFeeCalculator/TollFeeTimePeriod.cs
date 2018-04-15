@@ -22,7 +22,7 @@
             TollFee = tollFee;
         }
 
-        public bool IsInTimePeriod(int hour, int minute)
+        public bool Contains(int hour, int minute)
         {
             if (hour >= _startHour && hour <= _endHour 
                 && minute >= _startMinute && minute <= _endMinute)
