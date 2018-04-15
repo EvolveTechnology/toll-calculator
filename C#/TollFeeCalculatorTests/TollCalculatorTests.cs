@@ -71,5 +71,75 @@ namespace TollFeeCalculatorTests
 
             Assert.AreEqual(expected, tollFee);
         }
+
+        [TestMethod]
+        public void GetTollFees_ZeroDates()
+        {
+            var tollCalculator = new TollCalculator();
+            var dates = new DateTime[]{ };
+            var vehicle = new Car();
+            int expected = 0;
+
+            int actual = tollCalculator.GetTollFee(vehicle, dates);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetTollFees_OneDate()
+        {
+            var tollCalculator = new TollCalculator();
+            var dates = new DateTime[] 
+            {
+                new DateTime(2018, 1, 2, 8, 15, 0) // 13 kr
+            };
+            var vehicle = new Car();
+            int expected = 13;
+
+            int actual = tollCalculator.GetTollFee(vehicle, dates);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetTollFees_MultipleDates()
+        {
+            var tollCalculator = new TollCalculator();
+            var dates = new DateTime[]
+            {
+                new DateTime(2018, 1, 2, 8, 15, 0), // 13 kr
+                new DateTime(2018, 1, 2, 10, 20, 0), // 8 kr
+                new DateTime(2018, 1, 2, 15, 50, 0) // 18 kr
+
+            };
+            var vehicle = new Car();
+            int expected = 39;
+
+            int actual = tollCalculator.GetTollFee(vehicle, dates);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetTollFees_MaxFee()
+        {
+            var tollCalculator = new TollCalculator();
+            var dates = new DateTime[]
+            {
+                new DateTime(2018, 1, 2, 8, 15, 0), // 13 kr
+                new DateTime(2018, 1, 2, 10, 20, 0), // 8 kr
+                new DateTime(2018, 1, 2, 15, 50, 0), // 18 kr
+                new DateTime(2018, 1, 2, 17, 12, 0), // 13 kr
+                new DateTime(2018, 1, 2, 17, 47, 0), // 13 kr
+                new DateTime(2018, 1, 2, 18, 22, 0), // 13 kr
+
+            };
+            var vehicle = new Car();
+            int expected = 60;
+
+            int actual = tollCalculator.GetTollFee(vehicle, dates);
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
