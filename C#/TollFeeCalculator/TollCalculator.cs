@@ -21,8 +21,12 @@ public class TollCalculator
     /// <returns>The total toll fee for that day</returns>
     public int GetTollFee(Vehicle vehicle, DateTime[] dates)
     {
+        if (dates == null || dates.Length == 0)
+            return 0;
+
         DateTime intervalStart = dates[0];
         int totalFee = 0;
+
         foreach (DateTime date in dates)
         {
             int nextFee = GetTollFee(date, vehicle);
