@@ -5,6 +5,9 @@ using TollFeeCalculator;
 
 public class TollCalculator
 {
+    private const int CHARGE_ONCE_PER_MINUTES = 60;
+    private const int MAXIMUM_FEE_PER_DAY = 60;
+
     private List<TollFeeTimePeriod> _timePeriods;
 
     public TollCalculator()
@@ -36,7 +39,7 @@ public class TollCalculator
             TimeSpan span = date - intervalStart;
             double minutes = span.TotalMinutes;
 
-            if (minutes <= 60)
+            if (minutes <= CHARGE_ONCE_PER_MINUTES)
             {
                 if (totalFee > 0) totalFee -= tempFee;
                 if (nextFee >= tempFee) tempFee = nextFee;
@@ -47,7 +50,10 @@ public class TollCalculator
                 totalFee += nextFee;
             }
         }
-        if (totalFee > 60) totalFee = 60;
+
+        if (totalFee > MAXIMUM_FEE_PER_DAY)
+            totalFee = MAXIMUM_FEE_PER_DAY;
+
         return totalFee;
     }
 
