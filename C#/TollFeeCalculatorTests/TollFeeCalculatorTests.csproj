@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="TollCalculatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TollFeeTimePeriodTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
