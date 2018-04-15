@@ -27,8 +27,11 @@
         /// </summary>
         public bool SpansOver(int hour, int minute)
         {
-            if (hour >= _startHour && hour <= _endHour 
-                && minute >= _startMinute && minute <= _endMinute)
+            if (hour > _startHour && hour < _endHour)
+                return true;
+            else if (hour == _startHour && minute >= _startMinute && minute <= _endMinute)
+                return true;
+            else if (hour == _endHour && minute <= _endMinute)
                 return true;
 
             return false;
