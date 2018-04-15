@@ -46,6 +46,9 @@ public class TollCalculator
         return totalFee;
     }
 
+    /// <summary>
+    /// Get the toll fee for a specific date and vehicle.
+    /// </summary>
     public int GetTollFee(DateTime date, Vehicle vehicle)
     {
         if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
@@ -84,9 +87,6 @@ public class TollCalculator
         return vehicle.IsTollFree();
     }
 
-    /// <summary>
-    /// Returns true if the current date is toll free (i.e. weekends, holidays and july)
-    /// </summary>
     private Boolean IsTollFreeDate(DateTime date)
     {
         if (date.DayOfWeek == DayOfWeek.Saturday 
