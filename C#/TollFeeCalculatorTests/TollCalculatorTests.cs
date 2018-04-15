@@ -45,5 +45,31 @@ namespace TollFeeCalculatorTests
 
             Assert.AreEqual(expected, tollFee);
         }
+
+        [TestMethod]
+        public void GetTollFee_Holiday()
+        {
+            var tollCalculator = new TollCalculator();
+            var date = new DateTime(2018, 5, 1, 7, 35, 0); // first of may is a holiday
+            var vehicle = new Car();
+            int expected = 0;
+
+            int tollFee = tollCalculator.GetTollFee(date, vehicle);
+
+            Assert.AreEqual(expected, tollFee);
+        }
+
+        [TestMethod]
+        public void GetTollFee_July()
+        {
+            var tollCalculator = new TollCalculator();
+            var date = new DateTime(2018, 7, 4, 7, 35, 0); // july is toll free
+            var vehicle = new Car();
+            int expected = 0;
+
+            int tollFee = tollCalculator.GetTollFee(date, vehicle);
+
+            Assert.AreEqual(expected, tollFee);
+        }
     }
 }
