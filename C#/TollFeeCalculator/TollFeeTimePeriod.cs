@@ -22,7 +22,10 @@
             TollFee = tollFee;
         }
 
-        public bool Contains(int hour, int minute)
+        /// <summary>
+        /// Returns true if the current time period spans over the given hour and minute.
+        /// </summary>
+        public bool SpansOver(int hour, int minute)
         {
             if (hour >= _startHour && hour <= _endHour 
                 && minute >= _startMinute && minute <= _endMinute)

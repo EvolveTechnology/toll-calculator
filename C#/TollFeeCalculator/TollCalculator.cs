@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Nager.Date;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using TollFeeCalculator;
-using Nager.Date;
 
 public class TollCalculator
 {
@@ -12,16 +11,14 @@ public class TollCalculator
     {
         _timePeriods = new List<TollFeeTimePeriod>();
         CreateTollFeeTimePeriods();
-    }    
+    }
 
-    /**
-     * Calculate the total toll fee for one day
-     *
-     * @param vehicle - the vehicle
-     * @param dates   - date and time of all passes on one day
-     * @return - the total toll fee for that day
-     */
-
+    /// <summary>
+    /// Calculate the total toll fee for one day.
+    /// </summary>
+    /// <param name="vehicle">The Vehicle</param>
+    /// <param name="dates">Date and time of all passes on one day</param>
+    /// <returns>The total toll fee for that day</returns>
     public int GetTollFee(Vehicle vehicle, DateTime[] dates)
     {
         DateTime intervalStart = dates[0];
@@ -53,14 +50,11 @@ public class TollCalculator
     {
         if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
 
-        int hour = date.Hour;
-        int minute = date.Minute;
-
         int fee = 0;
 
         foreach (TollFeeTimePeriod period in _timePeriods)
         {
-            if (period.Contains(hour, minute))
+            if (period.SpansOver(date.Hour, date.Minute))
             {
                 fee = period.TollFee;
                 break;
@@ -90,6 +84,9 @@ public class TollCalculator
         return vehicle.IsTollFree();
     }
 
+    /// <summary>
+    /// Returns true if the current date is toll free (i.e. weekends, holidays and july)
+    /// </summary>
     private Boolean IsTollFreeDate(DateTime date)
     {
         if (date.DayOfWeek == DayOfWeek.Saturday 
