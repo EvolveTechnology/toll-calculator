@@ -6,11 +6,13 @@ namespace TollFeeCalculatorTests
 {
     [TestClass]
     public class TollCalculatorTests
-    {    
+    {
+        private IDateService _dateService = new DateService();
+
         [TestMethod]
         public void GetTollFee_NoFreeDate_NoFreeVehicle()
         {
-            var tollCalculator = new TollCalculator();
+            var tollCalculator = new TollCalculator(_dateService);
             var date = new DateTime(2018, 01, 02, 7, 35, 0);
             var vehicle = new Car();
             int expected = 18;
@@ -23,7 +25,7 @@ namespace TollFeeCalculatorTests
         [TestMethod]
         public void GetTollFee_FreeDate_NoFreeVehicle()
         {
-            var tollCalculator = new TollCalculator();
+            var tollCalculator = new TollCalculator(_dateService);
             var date = new DateTime(2018, 1, 6, 7, 35, 0); // weekend
             var vehicle = new Car();
             int expected = 0;
@@ -36,7 +38,7 @@ namespace TollFeeCalculatorTests
         [TestMethod]
         public void GetTollFee_NoFreeDate_FreeVehicle()
         {
-            var tollCalculator = new TollCalculator();
+            var tollCalculator = new TollCalculator(_dateService);
             var date = new DateTime(2018, 01, 02, 7, 35, 0);
             var vehicle = new Motorbike();
             int expected = 0;
@@ -49,7 +51,7 @@ namespace TollFeeCalculatorTests
         [TestMethod]
         public void GetTollFee_Holiday()
         {
-            var tollCalculator = new TollCalculator();
+            var tollCalculator = new TollCalculator(_dateService);
             var date = new DateTime(2018, 5, 1, 7, 35, 0); // first of may is a holiday
             var vehicle = new Car();
             int expected = 0;
@@ -62,7 +64,7 @@ namespace TollFeeCalculatorTests
         [TestMethod]
         public void GetTollFee_July()
         {
-            var tollCalculator = new TollCalculator();
+            var tollCalculator = new TollCalculator(_dateService);
             var date = new DateTime(2018, 7, 4, 7, 35, 0); // july is toll free
             var vehicle = new Car();
             int expected = 0;
@@ -75,7 +77,7 @@ namespace TollFeeCalculatorTests
         [TestMethod]
         public void GetTollFees_ZeroDates()
         {
-            var tollCalculator = new TollCalculator();
+            var tollCalculator = new TollCalculator(_dateService);
             var dates = new DateTime[]{ };
             var vehicle = new Car();
             int expected = 0;
@@ -88,7 +90,7 @@ namespace TollFeeCalculatorTests
         [TestMethod]
         public void GetTollFees_OneDate()
         {
-            var tollCalculator = new TollCalculator();
+            var tollCalculator = new TollCalculator(_dateService);
             var dates = new DateTime[] 
             {
                 new DateTime(2018, 1, 2, 8, 15, 0) // 13 kr
@@ -104,7 +106,7 @@ namespace TollFeeCalculatorTests
         [TestMethod]
         public void GetTollFees_MultipleDates()
         {
-            var tollCalculator = new TollCalculator();
+            var tollCalculator = new TollCalculator(_dateService);
             var dates = new DateTime[]
             {
                 new DateTime(2018, 1, 2, 8, 15, 0), // 13 kr
@@ -123,7 +125,7 @@ namespace TollFeeCalculatorTests
         [TestMethod]
         public void GetTollFees_MaxFee()
         {
-            var tollCalculator = new TollCalculator();
+            var tollCalculator = new TollCalculator(_dateService);
             var dates = new DateTime[]
             {
                 new DateTime(2018, 1, 2, 8, 15, 0), // 13 kr

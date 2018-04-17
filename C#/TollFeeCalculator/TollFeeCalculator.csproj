@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\DateService.cs" />
+    <Compile Include="Services\IDateService.cs" />
     <Compile Include="TollFeeTimePeriod.cs" />
     <Compile Include="Vehicles\Car.cs" />
     <Compile Include="Vehicles\Diplomat.cs" />

@@ -1,17 +1,20 @@
-﻿using Nager.Date;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using TollFeeCalculator;
 
 public class TollCalculator
 {
+    private readonly IDateService _dateService;
+
     private const int CHARGE_ONCE_PER_MINUTES = 60;
     private const int MAXIMUM_FEE_PER_DAY = 60;
 
-    private List<TollFeeTimePeriod> _timePeriods;
+    private List<TollFeeTimePeriod> _timePeriods;    
 
-    public TollCalculator()
+    public TollCalculator(IDateService dateService)
     {
+        _dateService = dateService;
+
         _timePeriods = new List<TollFeeTimePeriod>();
         CreateTollFeeTimePeriods();
     }
@@ -62,7 +65,7 @@ public class TollCalculator
     /// </summary>
     public int GetTollFee(DateTime date, Vehicle vehicle)
     {
-        if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
+        if (_dateService.IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
 
         int fee = 0;
 
@@ -78,6 +81,9 @@ public class TollCalculator
         return fee;
     }
 
+    /// <summary>
+    /// This should be some sort of configurable data, e.g. database or similar
+    /// </summary>
     private void CreateTollFeeTimePeriods()
     {
         _timePeriods.Add(new TollFeeTimePeriod(6, 0, 6, 29, 8)); // 06:00 - 06:29, 8 kr
@@ -96,18 +102,5 @@ public class TollCalculator
         if (vehicle == null) return false;
 
         return vehicle.IsTollFree();
-    }
-
-    private Boolean IsTollFreeDate(DateTime date)
-    {
-        if (date.DayOfWeek == DayOfWeek.Saturday 
-         || date.DayOfWeek == DayOfWeek.Sunday 
-         || DateSystem.IsPublicHoliday(date, CountryCode.SE)
-         || date.Month == 7) // july is free
-        {
-            return true;
-        }
-
-        return false;
     }
 }
