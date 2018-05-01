@@ -1,6 +1,12 @@
-﻿using System;
-using System.Globalization;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using TollFeeCalculator;
+using TollFeeCalculator.Converters;
+using TollFeeCalculator.Enums;
+using TollFeeCalculator.Models;
 
 public class TollCalculator
 {
@@ -12,63 +18,82 @@ public class TollCalculator
      * @param dates   - date and time of all passes on one day
      * @return - the total toll fee for that day
      */
+    private IEnumerable<FreeDatesModel> freeDates;
+    private IEnumerable<VehicleTypeEnum> freeVehicles;
+    private IEnumerable<TimeDateFeeModel> feeTimes;
 
-    public int GetTollFee(Vehicle vehicle, DateTime[] dates)
+     public TollCalculator()
     {
-        DateTime intervalStart = dates[0];
-        int totalFee = 0;
-        foreach (DateTime date in dates)
+        var configuration = GetConfiguration();
+        freeDates = configuration.FreeDates;
+        freeVehicles = configuration.FreeVehicles;
+        feeTimes = configuration.FeeTimes;
+    }
+
+    private TollFeeConfigurationModel GetConfiguration()
+    {
+        var settings = new JsonSerializerSettings()
         {
-            int nextFee = GetTollFee(date, vehicle);
-            int tempFee = GetTollFee(intervalStart, vehicle);
-
-            long diffInMillies = date.Millisecond - intervalStart.Millisecond;
-            long minutes = diffInMillies/1000/60;
-
-            if (minutes <= 60)
-            {
-                if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee >= tempFee) tempFee = nextFee;
-                totalFee += tempFee;
-            }
-            else
-            {
-                totalFee += nextFee;
-            }
+            Converters = new List<JsonConverter> { new FeeTimeConverter() },
+            Formatting = Formatting.Indented
+        };
+        using (StreamReader reader = new StreamReader("Configuration.json"))
+        {
+            string json = reader.ReadToEnd();
+            TollFeeConfigurationModel configuration = JsonConvert.DeserializeObject<TollFeeConfigurationModel>(json, settings);
+            return configuration;
         }
-        if (totalFee > 60) totalFee = 60;
+    }
+
+    public int GetTollFee(IVehicle vehicle, DateTime[] dates)
+    {
+        if (dates == null || !dates.Any())
+        {
+            return 0;
+        }
+        var totalFee = 0;
+        var days = dates.GroupBy(x => x.DayOfYear);
+        foreach (var day in days)
+        {
+            DateTime intervalStart = day.ElementAt(0);
+            int dayFee = GetTollFee(intervalStart, vehicle);
+            foreach (var date in day.Skip(1))
+            {
+
+                int currentFee = GetTollFee(date, vehicle);
+                var diff = date - intervalStart;
+                if (diff.TotalMinutes > 60)
+                {
+                    intervalStart = date;
+                    dayFee += currentFee;
+                }
+
+            }
+
+            if (dayFee > 60) dayFee = 60;
+            totalFee += dayFee;
+        }
         return totalFee;
     }
 
-    private bool IsTollFreeVehicle(Vehicle vehicle)
+    private bool IsTollFreeVehicle(IVehicle vehicle)
     {
         if (vehicle == null) return false;
-        String vehicleType = vehicle.GetVehicleType();
-        return vehicleType.Equals(TollFreeVehicles.Motorbike.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Tractor.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Emergency.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Diplomat.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Foreign.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Military.ToString());
+        return freeVehicles.Any(x => x == vehicle.GetVehicleType());
     }
 
-    public int GetTollFee(DateTime date, Vehicle vehicle)
+    public int GetTollFee(DateTime date, IVehicle vehicle)
     {
         if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
 
         int hour = date.Hour;
         int minute = date.Minute;
+        int fee = 0;
 
-        if (hour == 6 && minute >= 0 && minute <= 29) return 8;
-        else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
-        else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
-        else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
-        else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
-        else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
-        else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
-        else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
-        else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
-        else return 0;
+        var feeTime = feeTimes.FirstOrDefault(x => x.IsInTimeSpan(date));
+        fee = feeTime != null ? feeTime.Fee : 0;
+
+        return fee;
     }
 
     private Boolean IsTollFreeDate(DateTime date)
@@ -79,30 +104,7 @@ public class TollCalculator
 
         if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) return true;
 
-        if (year == 2013)
-        {
-            if (month == 1 && day == 1 ||
-                month == 3 && (day == 28 || day == 29) ||
-                month == 4 && (day == 1 || day == 30) ||
-                month == 5 && (day == 1 || day == 8 || day == 9) ||
-                month == 6 && (day == 5 || day == 6 || day == 21) ||
-                month == 7 ||
-                month == 11 && day == 1 ||
-                month == 12 && (day == 24 || day == 25 || day == 26 || day == 31))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+        return freeDates.Any(x => x.Year == year && x.Dates.Any(y => y.Month == month && (y.Days == null || y.Days.Contains(day))));
 
-    private enum TollFreeVehicles
-    {
-        Motorbike = 0,
-        Tractor = 1,
-        Emergency = 2,
-        Diplomat = 3,
-        Foreign = 4,
-        Military = 5
     }
 }

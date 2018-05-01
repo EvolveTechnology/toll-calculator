@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TollFeeCalculator.Enums;
 
 namespace TollFeeCalculator
 {
-    public class Car : Vehicle
+    public class Car : IVehicle
     {
-        public String GetVehicleType()
+        public VehicleTypeEnum GetVehicleType()
         {
-            return "Car";
+            return VehicleTypeEnum.Car;
         }
     }
 }
