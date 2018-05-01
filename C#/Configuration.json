@@ -1,0 +1,96 @@
+﻿{
+    "FreeDates": [
+        {
+            "Year": 2013,
+            "Dates": [
+                {
+                    "Month": 1,
+                    "Days": [ 1 ]
+                },
+                {
+                    "Month": 3,
+                    "Days": [ 28, 29 ]
+                },
+                {
+                    "Month": 4,
+                    "Days": [ 1, 30 ]
+                },
+                {
+                    "Month": 5,
+                    "Days": [ 1, 8, 9 ]
+                },
+                {
+                    "Month": 6,
+                    "Days": [ 5, 6, 21 ]
+                },
+                {
+                    "Month": 7
+                },
+                {
+                    "Month": 11,
+                    "Days": [ 1 ]
+                },
+                {
+                    "Month": 12,
+                    "Days": [ 24, 25, 26, 31 ]
+                }
+            ]
+        }
+    ],
+    "FreeVehicles": [
+        "Motorbike",
+        "Tractor",
+        "Emergency",
+        "Diplomat",
+        "Foreign",
+        "Military"
+    ],
+    "FeeTimes": [
+        {
+            "From": "06:00",
+            "To": "06:29",
+            "Fee": 8
+        },
+        {
+            "From": "06:30",
+            "To": "06:59",
+            "Fee": 13
+        },
+        {
+            "From": "07:00",
+            "To": "07:59",
+            "Fee": 18
+        },
+        {
+            "From": "08:00",
+            "To": "08:29",
+            "Fee": 13
+        },
+        {
+            "From": "08:00",
+            "To": "14:59",
+            "MinuteOffset": 30,
+            "Fee": 8
+        },
+        {
+            "From": "15:00",
+            "To": "15:29",
+            "Fee": 13
+        },
+        {
+            "From": "15:30",
+            "To": "16:59",
+            "Fee": 18
+        },
+        {
+            "From": "17:00",
+            "To": "17:59",
+            "Fee": 13
+        },
+        {
+            "From": "18:00",
+            "To": "18:29",
+            "Fee": 8
+        }
+    ]
+}
