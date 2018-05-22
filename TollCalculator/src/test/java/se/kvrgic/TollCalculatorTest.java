@@ -2,7 +2,12 @@ package se.kvrgic;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -12,13 +17,36 @@ public class TollCalculatorTest {
     @Test public void getTollFeeHappyCase() throws Exception {
         assertEquals("Toll fee of whatever", 18, getTollForDates("20130205 07:14"));
     }
-    @Test public void getTollFee_twoPassingsConsecutiveDays() throws Exception {
-        assertEquals("Toll fee double.", 36, getTollForDates("20130205 07:14", "20130206 07:14"));
-    }
     @Test public void getTollFee_twoPassingsClose() throws Exception {
-        assertEquals("Toll fee of whatever", 18, getTollForDates("20130205 07:14", "20130205 07:24"));
+        assertEquals("Toll fee simple", 18, getTollForDates("20130205 07:14", "20130205 07:24"));
     }
-
+    @Test public void getTollFee_maxesOut() throws Exception {
+        assertEquals("Toll fee double.", 60, getTollForDates("20130205 07:07", 
+                                                             "20130205 08:08", 
+                                                             "20130205 09:09", 
+                                                             "20130205 14:14", 
+                                                             "20130205 15:15", 
+                                                             "20130205 16:16", 
+                                                             "20130205 17:17"));
+    }
+    @Test public void getTollFee_choosesTheMoreExpensiveOne_lowToHigh() throws Exception {
+        assertEquals("Toll fee", 13, getTollForDates("20130205 06:29", "20130205 06:31"));
+    }
+    @Test public void getTollFee_choosesTheMoreExpensiveOne_lowToHighToHigher() throws Exception {
+        assertEquals("Toll fee", 18, getTollForDates("20130205 06:29", 
+                                                     "20130205 06:31", 
+                                                     "20130205 07:01"));
+    }
+    @Test public void getTollFee_choosesTheMoreExpensiveOne_highToLow() throws Exception {
+        assertEquals("Toll fee", 13, getTollForDates("20130205 17:59", "20130205 18:01"));
+    }
+    @Test public void getTollFee_choosesTheMoreExpensiveOne_multiperiod() throws Exception {
+        assertEquals("Toll fee", 13+18, getTollForDates("20130205 06:29", 
+                                                        "20130205 06:31", 
+                                                        "20130205 15:29", 
+                                                        "20130205 15:31"));
+    }
+    
     
     @Test public void getTollFee_0545() throws Exception {
         assertEquals("Ingen tull", 0, getTollForDates("20130205 05:45"));;
@@ -94,17 +122,19 @@ public class TollCalculatorTest {
     }
     
 
-    private Date getDate(String date) throws ParseException {
+    private Date getDate(String date) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd HH:mm");
-        return dateFormatter.parse(date);
+        try {
+            return dateFormatter.parse(date);
+        } catch (ParseException e) {
+            System.err.println("Kunde inte parse:a " + date);
+            return null;
+        }
     }
     
-    private int getTollForDates(String ... dates)  throws ParseException {
+    private int getTollForDates(String ... dateStrings)  throws ParseException {
         TollCalculator tollCalculator = new TollCalculator();
-        int toll = 0;
-        for(String date : dates) {
-            toll += tollCalculator.getTollFee(new Car(), getDate(date));
-        }
-        return toll;
+        List<Date> dates = Arrays.asList(dateStrings).stream().map(dateString -> getDate(dateString)).collect(Collectors.toList());
+        return tollCalculator.getTollFee(new Car(), dates.toArray(new Date[dates.size()]));
     }
 }
