@@ -169,6 +169,9 @@ public class TollCalculatorTest {
                      "20130101,20130328,20130329,20130401,20130430,20130501,20130508,20130509,20130605,20130606,20130621,20130701,20130702,20130703,20130704,20130705,20130708,20130709,20130710,20130711,20130712,20130715,20130716,20130717,20130718,20130719,20130722,20130723,20130724,20130725,20130726,20130729,20130730,20130731,20131101,20131224,20131225,20131226,20131231", 
                      tollFreeDates);
     }
+    @Test public void getTollFee_RedDate20140101() {
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(Vehicle.CAR, getDate("20140101 06:00")));
+    }
     
     @Test public void getTollFee_Saturday() {
         assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(Vehicle.CAR, getDate("20130209 06:00")));

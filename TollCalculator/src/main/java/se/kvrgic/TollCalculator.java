@@ -1,5 +1,10 @@
 package se.kvrgic;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -9,6 +14,8 @@ public class TollCalculator {
 
     private static final int MAXFEE = 60;
     private static final SimpleDateFormat TIMEFORMAT = new SimpleDateFormat("HH:mm");
+    private static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("yyyyMMdd");
+    private static final String PROPFILENAME = "properties/reddates.properties";
     private List<Vehicle> tolledVehicles = Arrays.asList(Vehicle.CAR);
     
   /**
@@ -74,26 +81,36 @@ public class TollCalculator {
     private Boolean isTollFreeDate(Date date) {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-  
+
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) return true;
-  
-        if (year == 2013) {
-            if (month == Calendar.JANUARY && day == 1 ||
-                month == Calendar.MARCH && (day == 28 || day == 29) ||
-                month == Calendar.APRIL && (day == 1 || day == 30) ||
-                month == Calendar.MAY && (day == 1 || day == 8 || day == 9) ||
-                month == Calendar.JUNE && (day == 5 || day == 6 || day == 21) ||
-                month == Calendar.JULY ||
-                month == Calendar.NOVEMBER && day == 1 ||
-                month == Calendar.DECEMBER && (day == 24 || day == 25 || day == 26 || day == 31)) {
-                return true;
+
+        return getRedDates().contains(DATEFORMAT.format(date));
+    }
+
+    // Naivt. Riktigt implementation beror på hur det deployas..
+    private List<String> getRedDates() {
+        List<String> redDates = new LinkedList<>();
+        List<String> lines;
+        try {
+            lines = Files.readAllLines(Paths.get(PROPFILENAME));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+        
+        for(String line : lines) {
+            String[] dates = line.split(",");
+            for(String date : dates) {
+                try {
+                    DATEFORMAT.parse(date);
+                    redDates.add(date);
+                } catch (ParseException e) {
+                    System.err.println("Kunde inte parse:a " + date + " vid läsning från " + PROPFILENAME + ". Formatet borde vara " + DATEFORMAT.toPattern());
+                }
             }
         }
-        return false;
+        return redDates;
     }
   
 }
