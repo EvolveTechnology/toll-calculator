@@ -131,25 +131,25 @@ public class TollCalculatorTest {
     
 
     @Test public void getTollFee_Car() {
-        assertEquals("Tull", 8, new TollCalculator().getTollFee(new Car(), getDate("20130205 06:00")));
+        assertEquals("Tull", 8, new TollCalculator().getTollFee(Vehicle.CAR, getDate("20130205 06:00")));
     }
     @Test public void getTollFee_Motorbike() {
-        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(new Motorbike(), getDate("20130205 06:00")));
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(Vehicle.MOTORBIKE, getDate("20130205 06:00")));
     }
     @Test public void getTollFee_Tractor() {
-        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(getVehicle("Tractor"), getDate("20130205 06:00")));
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(Vehicle.TRACTOR, getDate("20130205 06:00")));
     }
     @Test public void getTollFee_Emergency() {
-        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(getVehicle("Emergency"), getDate("20130205 06:00")));
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(Vehicle.EMERGENCY, getDate("20130205 06:00")));
     }
     @Test public void getTollFee_Diplomat() {
-        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(getVehicle("Diplomat"), getDate("20130205 06:00")));
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(Vehicle.DIPLOMAT, getDate("20130205 06:00")));
     }
     @Test public void getTollFee_Foreign() {
-        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(getVehicle("Foreign"), getDate("20130205 06:00")));
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(Vehicle.FOREIGN, getDate("20130205 06:00")));
     }
     @Test public void getTollFee_Military() {
-        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(getVehicle("Military"), getDate("20130205 06:00")));
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(Vehicle.MILITARY, getDate("20130205 06:00")));
     }
     
 
@@ -172,10 +172,10 @@ public class TollCalculatorTest {
     }
     
     @Test public void getTollFee_Saturday() {
-        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(new Car(), getDate("20130209 06:00")));
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(Vehicle.CAR, getDate("20130209 06:00")));
     }
     @Test public void getTollFee_Sunday() {
-        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(new Car(), getDate("20130210 06:00")));
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(Vehicle.CAR, getDate("20130210 06:00")));
     }
     
     
@@ -192,15 +192,6 @@ public class TollCalculatorTest {
     private int getTollForDates(String ... dateStrings) {
         TollCalculator tollCalculator = new TollCalculator();
         List<Date> dates = Arrays.asList(dateStrings).stream().map(dateString -> getDate(dateString)).collect(Collectors.toList());
-        return tollCalculator.getTollFee(new Car(), dates.toArray(new Date[dates.size()]));
-    }
-    
-    private static Vehicle getVehicle(String type) {
-        return new Vehicle() {
-            @Override
-            public String getType() {
-                return type;
-            }
-        };
+        return tollCalculator.getTollFee(Vehicle.CAR, dates.toArray(new Date[dates.size()]));
     }
 }
