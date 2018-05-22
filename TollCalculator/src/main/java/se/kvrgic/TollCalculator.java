@@ -1,11 +1,14 @@
 package se.kvrgic;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.*;
 
 public class TollCalculator {
 
     private static final int MAXFEE = 60;
+    private static final SimpleDateFormat TIMEFORMAT = new SimpleDateFormat("HH:mm");
     private List<Vehicle> tolledVehicles = Arrays.asList(Vehicle.CAR);
     
   /**
@@ -43,21 +46,29 @@ public class TollCalculator {
   
     public int getTollFee(final Date date, Vehicle vehicle) {
           if (isTollFreeDate(date) || isTollFreeVehicle(vehicle)) return 0;
-          Calendar calendar = GregorianCalendar.getInstance();
-          calendar.setTime(date);
-          int hour = calendar.get(Calendar.HOUR_OF_DAY);
-          int minute = calendar.get(Calendar.MINUTE);
+          String time = TIMEFORMAT.format(date);
   
-          if (hour == 6 && minute >= 0 && minute <= 29) return 8;
-          else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
-          else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
-          else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
-          else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
-          else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
-          else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
-          else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
-          else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
+          if      (isBetween(time, "06:00", "06:29")) return  8;
+          else if (isBetween(time, "06:30", "06:59")) return 13;
+          else if (isBetween(time, "07:00", "07:59")) return 18;
+          else if (isBetween(time, "08:00", "08:29")) return 13;
+          else if (isBetween(time, "08:30", "14:59")) return  8;
+          else if (isBetween(time, "15:00", "15:29")) return 13;
+          else if (isBetween(time, "15:30", "16:59")) return 18;
+          else if (isBetween(time, "17:00", "17:59")) return 13;
+          else if (isBetween(time, "18:00", "18:29")) return  8;
           else return 0;
+    }
+    
+    /**
+     * @param time - formated with TIMEFORMAT
+     * @param leftInclusive
+     * @param righInclusive
+     * @return
+     */
+    private static boolean isBetween(String time, String leftInclusive, String rightInclusive) {
+        return time.compareTo(leftInclusive)  >= 0 && 
+               time.compareTo(rightInclusive) <= 0;
     }
   
     private Boolean isTollFreeDate(Date date) {
