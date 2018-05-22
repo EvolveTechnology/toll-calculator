@@ -1,12 +1,10 @@
 package se.kvrgic;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -47,14 +45,13 @@ public class TollCalculator {
     }
 
     private boolean isTollFreeVehicle(Vehicle vehicle) {
-        if(vehicle == null) return false;
         return !tolledVehicles.contains(vehicle);
     }
   
     public int getTollFee(final Date date, Vehicle vehicle) {
           if (isTollFreeDate(date) || isTollFreeVehicle(vehicle)) return 0;
+
           String time = TIMEFORMAT.format(date);
-  
           if      (isBetween(time, "06:00", "06:29")) return  8;
           else if (isBetween(time, "06:30", "06:59")) return 13;
           else if (isBetween(time, "07:00", "07:59")) return 18;

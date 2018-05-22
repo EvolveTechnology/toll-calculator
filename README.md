@@ -11,6 +11,7 @@ This is the current draft of requirements:
 * A vehicle should only be charged once an hour
 * Some vehicle types are fee-free
 * Weekends and holidays are fee-free
+* Toll free dates are configured in TollCalculator/properties/reddates.properties
 
 ## Your assignment
 The last city-developer quit recently, claiming that this solution is production-ready. 
