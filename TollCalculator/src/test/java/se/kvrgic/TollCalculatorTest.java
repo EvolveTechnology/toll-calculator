@@ -25,6 +25,9 @@ public class TollCalculatorTest {
     @Test public void getTollFee_twoPassingsClose() throws Exception {
         assertEquals("Toll fee simple", 18, getTollForDates("20130205 07:14", "20130205 07:24"));
     }
+    @Test public void getTollFee_twoPassingsSpaced() throws Exception {
+        assertEquals("Toll fee simple", 18, getTollForDates("20130205 07:14", "20130205 08:16"));
+    }
     @Test public void getTollFee_maxesOut() throws Exception {
         assertEquals("Toll fee double.", 60, getTollForDates("20130205 07:07", 
                                                              "20130205 08:08", 
