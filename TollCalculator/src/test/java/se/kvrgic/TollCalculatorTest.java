@@ -168,6 +168,12 @@ public class TollCalculatorTest {
                      tollFreeDates);
     }
     
+    @Test public void getTollFee_Saturday() {
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(new Car(), getDate("20130209 06:00")));
+    }
+    @Test public void getTollFee_Sunday() {
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(new Car(), getDate("20130210 06:00")));
+    }
     
     
     private Date getDate(String date) {
