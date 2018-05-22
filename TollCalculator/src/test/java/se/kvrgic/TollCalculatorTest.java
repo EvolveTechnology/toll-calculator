@@ -122,6 +122,30 @@ public class TollCalculatorTest {
     }
     
 
+    @Test public void getTollFee_Car() {
+        assertEquals("Tull", 8, new TollCalculator().getTollFee(new Car(), getDate("20130205 06:00")));
+    }
+    @Test public void getTollFee_Motorbike() {
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(new Motorbike(), getDate("20130205 06:00")));
+    }
+    @Test public void getTollFee_Tractor() {
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(getVehicle("Tractor"), getDate("20130205 06:00")));
+    }
+    @Test public void getTollFee_Emergency() {
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(getVehicle("Emergency"), getDate("20130205 06:00")));
+    }
+    @Test public void getTollFee_Diplomat() {
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(getVehicle("Diplomat"), getDate("20130205 06:00")));
+    }
+    @Test public void getTollFee_Foreign() {
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(getVehicle("Foreign"), getDate("20130205 06:00")));
+    }
+    @Test public void getTollFee_Military() {
+        assertEquals("Ingen tull", 0, new TollCalculator().getTollFee(getVehicle("Military"), getDate("20130205 06:00")));
+    }
+    
+    
+    
     private Date getDate(String date) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd HH:mm");
         try {
@@ -136,5 +160,14 @@ public class TollCalculatorTest {
         TollCalculator tollCalculator = new TollCalculator();
         List<Date> dates = Arrays.asList(dateStrings).stream().map(dateString -> getDate(dateString)).collect(Collectors.toList());
         return tollCalculator.getTollFee(new Car(), dates.toArray(new Date[dates.size()]));
+    }
+    
+    private static Vehicle getVehicle(String type) {
+        return new Vehicle() {
+            @Override
+            public String getType() {
+                return type;
+            }
+        };
     }
 }
