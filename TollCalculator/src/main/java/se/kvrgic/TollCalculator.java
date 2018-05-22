@@ -5,6 +5,7 @@ import java.util.concurrent.*;
 
 public class TollCalculator {
 
+    private static final int MAXFEE = 60;
     private List<Vehicle> tolledVehicles = Arrays.asList(Vehicle.CAR);
     
   /**
@@ -15,26 +16,24 @@ public class TollCalculator {
    * @return - the total toll fee for that day
    */
     public int getTollFee(Vehicle vehicle, Date... dates) {
-        Date intervalStart = dates[0];
         int totalFee = 0;
-        for (Date date : dates) {
-            int nextFee = getTollFee(date, vehicle);
-            int tempFee = getTollFee(intervalStart, vehicle);
+        Date intervalStart = dates[0];
+        int intervalFee = 0;
 
+        for (Date date : dates) {
             TimeUnit timeUnit = TimeUnit.MINUTES;
             long diffInMillies = date.getTime() - intervalStart.getTime();
             long minutes = timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
-
-            if (minutes <= 60) {
-                if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee >= tempFee) tempFee = nextFee;
-                totalFee += tempFee;
-            } else {
-                totalFee += nextFee;
+            if (minutes > 60) {
+                totalFee += intervalFee;
+                intervalStart = date;
+                intervalFee = 0;
             }
+            intervalFee = Math.max(intervalFee, getTollFee(date, vehicle));
         }
-        if (totalFee > 60) totalFee = 60;
-        return totalFee;
+        totalFee += intervalFee;
+        
+        return (totalFee > MAXFEE) ? MAXFEE : totalFee;
     }
 
     private boolean isTollFreeVehicle(Vehicle vehicle) {

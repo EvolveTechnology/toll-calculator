@@ -9,7 +9,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,7 +25,7 @@ public class TollCalculatorTest {
         assertEquals("Toll fee simple", 18, getTollForDates("20130205 07:14", "20130205 07:24"));
     }
     @Test public void getTollFee_twoPassingsSpaced() throws Exception {
-        assertEquals("Toll fee simple", 18, getTollForDates("20130205 07:14", "20130205 08:16"));
+        assertEquals("Toll fee simple", 18+13, getTollForDates("20130205 07:14", "20130205 08:16"));
     }
     @Test public void getTollFee_maxesOut() throws Exception {
         assertEquals("Toll fee double.", 60, getTollForDates("20130205 07:07", 
