@@ -9,7 +9,6 @@ import java.util.Date;
 
 import static test_data.TestData.*;
 
-@Test
 public class TollCalculatorTest {
 
     static class TestCase {
@@ -67,6 +66,17 @@ public class TollCalculatorTest {
                         holidayAndNotWeekEndDate, aFreeVehicle()
                 ),
         };
+    }
+
+    @Test
+    public void non_fee_free_day_SHOULD_be_free_WHEN_vehicle_is_fee_free() {
+        Date nonFreeDate = timeOf(2013, Calendar.JANUARY, 2,
+                10, 20, 30);
+        check(new TestCase("non_fee_free_day_SHOULD_be_free_WHEN_vehicle_is_fee_free",
+                nonFreeDate,
+                aFreeVehicle(),
+                0));
+
     }
 
     private static Object[] isFeeFreeWeekend(String name,
