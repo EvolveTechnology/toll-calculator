@@ -94,6 +94,16 @@ public class DateTestDataBuilder {
         return withTime(timeOfDay.hour, timeOfDay.minute, timeOfDay.second);
     }
 
+    public Date buildForTime(TimeOfDay timeOfDay) {
+        return withTime(timeOfDay).build();
+    }
+
+    public Date buildForTime(int hourOfDay,
+                             int minute,
+                             int second) {
+        return withTime(hourOfDay, minute, second).build();
+    }
+
     public static Date aSaturday() {
         return timeOf(2018, Calendar.MAY, 19, 10, 20, 30);
     }

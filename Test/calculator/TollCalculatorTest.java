@@ -3,9 +3,9 @@ package calculator;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import test_utils.DateTestDataBuilder;
-import test_utils.TestCase;
-import test_utils.TestCaseBuilder;
+import test_utils.*;
+
+import java.util.Date;
 
 import static test_utils.DateTestDataBuilder.A_SATURDAY;
 import static test_utils.DateTestDataBuilder.A_SUNDAY;
@@ -129,6 +129,48 @@ public class TollCalculatorTest {
         Assert.assertEquals(actual, 8 + 18);
     }
 
+    @Test(dataProvider = "vehicle_should_only_be_charged_once_an_hour_cases")
+    public void a_vehicle_should_only_be_charged_once_an_hour(TestCaseWithMultipleDates testCase) {
+        check(testCase);
+    }
+
+    @DataProvider(name = "vehicle_should_only_be_charged_once_an_hour_cases")
+    public Object[][] vehicle_should_only_be_charged_once_an_hour_cases() {
+        DateTestDataBuilder dateBuilder = new DateTestDataBuilder(DAY_WITH_FEE);
+
+        TestCaseWithMultipleDatesBuilder caseBuilder = TestCaseWithMultipleDatesBuilder.newWithoutHeader()
+                .withVehicle(A_NON_FREE_VEHICLE);
+
+        return new Object[][]{
+                caseBuilder
+                        .withName("WHEN first date is free THEN second date SHOULD be charged even when closer than 1 h")
+                        .withExpectedFee(8)
+                        .build(new Date[]{
+                        dateBuilder.buildForTime(5, 59, 0),
+                        dateBuilder.buildForTime(6, 0, 0),
+                })
+                ,
+                caseBuilder
+                        .withName("WHEN first date is non-free THEN second date SHOULD not be charged when closer than 1 h")
+                        .withExpectedFee(13)
+                        .build(new Date[]{
+                        dateBuilder.buildForTime(6, 0, 0),
+                        dateBuilder.buildForTime(6, 59, 0),
+                })
+                ,
+                // bug:
+//                caseBuilder
+//                        .withName("WHEN 1st .. >1h .. 2nd .. <1h .. 3rd THEN only 1st and 2nd should be charged")
+//                        .withExpectedFee(8 + 13)
+//                        .build(new Date[]{
+//                        dateBuilder.buildForTime(6, 0, 0),
+//                        dateBuilder.buildForTime(8, 0, 0),
+//                        dateBuilder.buildForTime(8, 1, 0),
+//                })
+//                ,
+        };
+    }
+
 
     private void check(TestCase testCase) {
         TollCalculator calculator = new TollCalculator();
@@ -141,6 +183,14 @@ public class TollCalculatorTest {
         Assert.assertEquals(calculator.getTollFee(testCase.actualVehicle, testCase.actualTime),
                 testCase.expected,
                 "Method for multiple dates: " + testCase.name);
+    }
+
+    private void check(TestCaseWithMultipleDates testCase) {
+        TollCalculator calculator = new TollCalculator();
+
+        Assert.assertEquals(calculator.getTollFee(testCase.actualVehicle, testCase.actualTimes),
+                testCase.expected,
+                testCase.name);
     }
 
 }
