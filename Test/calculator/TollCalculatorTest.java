@@ -14,15 +14,15 @@ import static test_utils.TestData.*;
 public class TollCalculatorTest {
 
 
-    @Test(dataProvider = "week_end_cases")
-    public void test_week_end(TestCase testCase) {
+    @Test(dataProvider = "weekend_cases")
+    public void weekend_SHOULD_be_free_for_any_vehicle(TestCase testCase) {
         check(testCase);
     }
 
-    @DataProvider(name = "week_end_cases")
-    public Object[][] week_end_cases() {
+    @DataProvider(name = "weekend_cases")
+    public Object[][] weekend_cases() {
         TestCaseBuilder caseBuilder =
-                TestCaseBuilder.newWithHeader("Week end should be free for any vehicle")
+                TestCaseBuilder.newWithoutHeader()
                         .withTime(FEE_IS_8)
                         .withExpectedFee(0);
 
@@ -49,7 +49,7 @@ public class TollCalculatorTest {
     }
 
     @Test(dataProvider = "holiday_cases")
-    public void test_holiday(TestCase testCase) {
+    public void holiday_SHOULD_be_free_for_any_vehicle(TestCase testCase) {
         check(testCase);
     }
 
@@ -73,7 +73,7 @@ public class TollCalculatorTest {
     }
 
     @Test
-    public void day_with_fee_SHOULD_be_free_WHEN_vehicle_is_free() {
+    public void WHEN_date_is_non_free_THEN_a_free_vehicle_SHOULD_not_be_charged() {
         check(new TestCase(DAY_WITH_FEE, FEE_IS_8,
                 A_FREE_VEHICLE,
                 0));
@@ -81,7 +81,7 @@ public class TollCalculatorTest {
     }
 
     @Test(dataProvider = "test_fees_of_date_with_fee_and_non_free_vehicle_cases")
-    public void test_fees_of_date_with_fee_AND_non_free_vehicle(TestCase testCase) {
+    public void WHEN_date_is_non_free_THEN_a_non_free_vehicle_SHOULD_be_charged(TestCase testCase) {
         check(testCase);
     }
 
