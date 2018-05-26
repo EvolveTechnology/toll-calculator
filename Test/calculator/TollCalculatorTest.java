@@ -107,7 +107,6 @@ public class TollCalculatorTest {
         };
     }
 
-
     @Test
     public void WHEN_multiple_times_THEN_fees_SHOULD_be_summed() {
         // GIVEN //
@@ -124,21 +123,20 @@ public class TollCalculatorTest {
 
         // THEN //
 
-        Assert.assertEquals(8 + 18,
-                actual);
-
+        Assert.assertEquals(actual, 8 + 18);
     }
 
 
     private void check(TestCase testCase) {
         TollCalculator calculator = new TollCalculator();
 
-        Assert.assertEquals(testCase.expected,
+        Assert.assertEquals(
                 calculator.getTollFee(testCase.actualTime, testCase.actualVehicle),
+                testCase.expected,
                 "Method for single date: " + testCase.name);
 
-        Assert.assertEquals(testCase.expected,
-                calculator.getTollFee(testCase.actualVehicle, testCase.actualTime),
+        Assert.assertEquals(calculator.getTollFee(testCase.actualVehicle, testCase.actualTime),
+                testCase.expected,
                 "Method for multiple dates: " + testCase.name);
     }
 
