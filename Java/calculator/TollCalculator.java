@@ -68,12 +68,18 @@ public class TollCalculator {
     }
 
     public int getTollFee(final Date date, Vehicle vehicle) {
-        if (isTollFreeDate(date) || isTollFreeVehicle(vehicle)) return 0;
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.setTime(date);
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
+        if (isTollFreeVehicle(vehicle)) return 0;
 
+        Calendar dateTime = dateTimeOf(date);
+
+        if (isTollFreeDate(dateTime)) return 0;
+
+        return getFeeForTimeOfDay(dateTime);
+    }
+
+    private int getFeeForTimeOfDay(Calendar dateTime) {
+        int hour = dateTime.get(Calendar.HOUR_OF_DAY);
+        int minute = dateTime.get(Calendar.MINUTE);
         return feeForTimeOfDaySpecification.feeFor(hour, minute);
     }
 
@@ -81,14 +87,18 @@ public class TollCalculator {
         return isTollFreeVehicle.test(vehicle);
     }
 
-    private Boolean isTollFreeDate(Date date) {
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.setTime(date);
-
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) return true;
-
-        return holidaySpecification.isHoliday(new Day(calendar));
+    private boolean isTollFreeDate(Calendar dateTime) {
+        return isWeekend(dateTime) || holidaySpecification.isHoliday(new Day(dateTime));
     }
 
+    private boolean isWeekend(Calendar dateTime) {
+        int dayOfWeek = dateTime.get(Calendar.DAY_OF_WEEK);
+        return dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY;
+    }
+
+    private static Calendar dateTimeOf(Date date) {
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+    }
 }
