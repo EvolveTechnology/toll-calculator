@@ -3,29 +3,16 @@ package calculator;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import test_utils.TestCase;
 
 import java.util.Calendar;
 import java.util.Date;
 
-import static test_data.DateTestDataBuilder.*;
-import static test_data.TestData.aFreeVehicle;
-import static test_data.TestData.aNonFreeVehicle;
+import static test_utils.DateTestDataBuilder.*;
+import static test_utils.TestData.aFreeVehicle;
+import static test_utils.TestData.aNonFreeVehicle;
 
 public class TollCalculatorTest {
-
-    static class TestCase {
-        final String name;
-        final Date actualTime;
-        final Vehicle actualVehicle;
-        final int expected;
-
-        TestCase(String name, Date actualTime, Vehicle actualVehicle, int expected) {
-            this.name = name;
-            this.actualTime = actualTime;
-            this.actualVehicle = actualVehicle;
-            this.expected = expected;
-        }
-    }
 
     @Test(dataProvider = "week_end_cases")
     public void test_week_end(TestCase testCase) {

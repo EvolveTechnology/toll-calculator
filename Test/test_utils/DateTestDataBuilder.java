@@ -1,4 +1,4 @@
-package test_data;
+package test_utils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -36,6 +36,24 @@ public class DateTestDataBuilder {
         return new DateTestDataBuilder(year, month, date, 0, 0, 0);
     }
 
+    public DateTestDataBuilder withDay(int year,
+                                       int month,
+                                       int date) {
+        this.year = year;
+        this.month = month;
+        this.date = date;
+        return this;
+    }
+
+    public DateTestDataBuilder withTime(int hourOfDay,
+                                        int minute,
+                                        int second) {
+        this.hourOfDay = hourOfDay;
+        this.minute = minute;
+        this.second = second;
+        return this;
+    }
+
     public static Date aSaturday() {
         return timeOf(2018, Calendar.MAY, 19, 10, 20, 30);
     }
@@ -49,14 +67,5 @@ public class DateTestDataBuilder {
         calendar.clear();
         calendar.set(year, month, date, hourOfDay, minute, second);
         return calendar.getTime();
-    }
-
-    public DateTestDataBuilder withTime(int hourOfDay,
-                                        int minute,
-                                        int second) {
-        this.hourOfDay = hourOfDay;
-        this.minute = minute;
-        this.second = second;
-        return this;
     }
 }

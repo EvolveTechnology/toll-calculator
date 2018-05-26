@@ -1,4 +1,4 @@
-package test_data;
+package test_utils;
 
 import calculator.Car;
 import calculator.Motorbike;
