@@ -13,7 +13,6 @@ import static test_utils.TestData.*;
 
 public class TollCalculatorTest {
 
-
     @Test(dataProvider = "weekend_cases")
     public void weekend_SHOULD_be_free_for_any_vehicle(TestCase testCase) {
         check(testCase);
@@ -77,6 +76,15 @@ public class TollCalculatorTest {
         check(new TestCase(DAY_WITH_FEE, FEE_IS_8,
                 A_FREE_VEHICLE,
                 0));
+
+    }
+
+    @Test
+    public void WHEN_vehicle_is_null_THEN_it_is_not_free() {
+        Vehicle nullVehicle = null;
+        check(new TestCase(DAY_WITH_FEE, FEE_IS_8,
+                nullVehicle,
+                8));
 
     }
 
