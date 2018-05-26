@@ -91,7 +91,7 @@ public class TollCalculator {
   }
 
   private enum TollFreeVehicles {
-    MOTORBIKE("calculator.Motorbike"),
+    MOTORBIKE("Motorbike"),
     TRACTOR("Tractor"),
     EMERGENCY("Emergency"),
     DIPLOMAT("Diplomat"),
