@@ -17,15 +17,10 @@ public class TollCalculator {
     public TollCalculator(FeeForTimeOfDaySpecification feeForTimeOfDaySpecification,
                           HolidaySpecification holidaySpecification,
                           Predicate<Vehicle> isTollFreeVehicle) {
-        if (feeForTimeOfDaySpecification == null) {
-            throw new NullPointerException("feeForTimeOfDaySpecification");
-        }
-        if (holidaySpecification == null) {
-            throw new NullPointerException("holidaySpecification");
-        }
-        if (isTollFreeVehicle == null) {
-            throw new NullPointerException("isTollFreeVehicle");
-        }
+        preconditionIsNotNull(feeForTimeOfDaySpecification, "feeForTimeOfDaySpecification");
+        preconditionIsNotNull(holidaySpecification, "holidaySpecification");
+        preconditionIsNotNull(isTollFreeVehicle, "isTollFreeVehicle");
+
         this.feeForTimeOfDaySpecification = feeForTimeOfDaySpecification;
         this.holidaySpecification = holidaySpecification;
         this.isTollFreeVehicle = isTollFreeVehicle;
@@ -100,5 +95,11 @@ public class TollCalculator {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);
         return calendar;
+    }
+
+    private static void preconditionIsNotNull(Object o, String oName) {
+        if (o == null) {
+            throw new NullPointerException(oName);
+        }
     }
 }
