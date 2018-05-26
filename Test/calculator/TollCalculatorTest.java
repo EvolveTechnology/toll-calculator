@@ -93,14 +93,17 @@ public class TollCalculatorTest {
 
         return new Object[][]{
                 caseBuilder
+                        .withName("Fee is 8")
                         .withTime(FEE_IS_8)
                         .withExpectedFee(8)
                         .build2(),
                 caseBuilder
+                        .withName("Fee is 18")
                         .withTime(FEE_IS_18)
                         .withExpectedFee(18)
                         .build2(),
                 caseBuilder
+                        .withName("Fee is 0")
                         .withTime(FEE_IS_0)
                         .withExpectedFee(0)
                         .build2(),

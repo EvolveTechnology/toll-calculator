@@ -28,4 +28,9 @@ public class TestCase {
     public TestCase(Day actualDay, TimeOfDay actualTimeOfDay, Vehicle actualVehicle, int expected) {
         this("", timeOf(actualDay, actualTimeOfDay), actualVehicle, expected);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
