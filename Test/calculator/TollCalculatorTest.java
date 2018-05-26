@@ -17,9 +17,10 @@ import static test_utils.TestData.aNonFreeVehicle;
 
 public class TollCalculatorTest {
 
-    private static final Day DAY_WITH_FEE = new Day(2013,
-            Calendar.JANUARY,
-            2);
+    private static final Day
+            DAY_WITH_FEE = new Day(2013, Calendar.JANUARY, 2),
+            HOLIDAY_DAY = new Day(2013, Calendar.JANUARY, 1);
+
 
     private static final TimeOfDay
             FEE_IS_8 = new TimeOfDay(6, 15, 0),
@@ -33,19 +34,30 @@ public class TollCalculatorTest {
 
     @DataProvider(name = "week_end_cases")
     public Object[][] week_end_cases() {
+        TestCaseBuilder caseBuilder =
+                TestCaseBuilder.newWithHeader("Week end should be free for any vehicle")
+                        .withTime(FEE_IS_8)
+                        .withExpectedFee(0);
+
         return new Object[][]{
-                isFeeFreeWeekend("saturday / non-free Vehicle",
-                        aSaturday(), aNonFreeVehicle()
-                ),
-                isFeeFreeWeekend("saturday / free Vehicle",
-                        aSaturday(), aFreeVehicle()
-                ),
-                isFeeFreeWeekend("sunday / non-free Vehicle",
-                        aSunday(), aNonFreeVehicle()
-                ),
-                isFeeFreeWeekend("sunday / free Vehicle",
-                        aSunday(), aFreeVehicle()
-                ),
+                caseBuilder
+                        .withDay(A_SATURDAY)
+                        .withVehicle(aNonFreeVehicle())
+                        .named("saturday / non-free Vehicle")
+                ,
+                caseBuilder
+                        .withVehicle(aFreeVehicle())
+                        .named("saturday / free Vehicle")
+                ,
+                caseBuilder
+                        .withDay(A_SUNDAY)
+                        .withVehicle(aNonFreeVehicle())
+                        .named("sunday / non-free Vehicle")
+                ,
+                caseBuilder
+                        .withVehicle(aFreeVehicle())
+                        .named("sunday / free Vehicle")
+                ,
         };
     }
 
@@ -56,26 +68,25 @@ public class TollCalculatorTest {
 
     @DataProvider(name = "holiday_cases")
     public Object[][] holiday_cases() {
-        Date holidayAndNotWeekEndDate = timeOf(2013,
-                Calendar.JANUARY,
-                1,
-                10,
-                20,
-                30
-        );
+        TestCaseBuilder caseBuilder = TestCaseBuilder.newWithoutHeader()
+                .withDay(HOLIDAY_DAY)
+                .withTime(FEE_IS_8)
+                .withExpectedFee(0);
 
         return new Object[][]{
-                isFeeFreeHoliday("non-free Vehicle",
-                        holidayAndNotWeekEndDate, aNonFreeVehicle()
-                ),
-                isFeeFreeHoliday("free Vehicle",
-                        holidayAndNotWeekEndDate, aFreeVehicle()
-                ),
+                caseBuilder
+                        .withVehicle(aNonFreeVehicle())
+                        .named("non-free Vehicle")
+                ,
+                caseBuilder
+                        .withVehicle(aFreeVehicle())
+                        .named("free Vehicle")
+                ,
         };
     }
 
     @Test
-    public void non_free_day_SHOULD_be_free_WHEN_vehicle_is_free() {
+    public void day_with_fee_SHOULD_be_free_WHEN_vehicle_is_free() {
         check(new TestCase(aDateWithFee(),
                 aFreeVehicle(),
                 0));
@@ -106,32 +117,6 @@ public class TollCalculatorTest {
                         .withTime(FEE_IS_0)
                         .withExpectedFee(0)
                         .build2(),
-        };
-    }
-
-
-    private static Object[] isFeeFreeWeekend(String name,
-                                             Date actualTime,
-                                             Vehicle actualVehicle) {
-        return new Object[]{
-                new TestCase(
-                        "Fee Free Weekend : " + name,
-                        actualTime,
-                        actualVehicle,
-                        0)
-        };
-    }
-
-
-    private static Object[] isFeeFreeHoliday(String name,
-                                             Date actualTime,
-                                             Vehicle actualVehicle) {
-        return new Object[]{
-                new TestCase(
-                        "Fee Free Holiday : " + name,
-                        actualTime,
-                        actualVehicle,
-                        0)
         };
     }
 

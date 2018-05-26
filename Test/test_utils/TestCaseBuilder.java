@@ -51,6 +51,11 @@ public class TestCaseBuilder {
         return new Object[]{build()};
     }
 
+    public Object[] named(String name) {
+        withName(name);
+        return build2();
+    }
+
     public TestCaseBuilder withName(String nameTail) {
         this.nameTail = nameTail;
         return this;
