@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import static test_data.TestData.*;
@@ -48,12 +49,45 @@ public class TollCalculatorTest {
         };
     }
 
+    @Test(dataProvider = "holiday_cases")
+    public void test_holiday(TestCase testCase) {
+        check(testCase);
+    }
+
+    @DataProvider(name = "holiday_cases")
+    public Object[][] holiday_cases() {
+        Date holidayAndNotWeekEndDate = timeOf(2013, Calendar.JANUARY, 1,
+                10, 20, 30);
+
+        return new Object[][]{
+                isFeeFreeHoliday("non-free Vehicle",
+                        holidayAndNotWeekEndDate, aNonFreeVehicle()
+                ),
+                isFeeFreeHoliday("free Vehicle",
+                        holidayAndNotWeekEndDate, aFreeVehicle()
+                ),
+        };
+    }
+
     private static Object[] isFeeFreeWeekend(String name,
                                              Date actualTime,
                                              Vehicle actualVehicle) {
         return new Object[]{
                 new TestCase(
                         "Fee Free Weekend : " + name,
+                        actualTime,
+                        actualVehicle,
+                        0)
+        };
+    }
+
+
+    private static Object[] isFeeFreeHoliday(String name,
+                                             Date actualTime,
+                                             Vehicle actualVehicle) {
+        return new Object[]{
+                new TestCase(
+                        "Fee Free Holiday : " + name,
                         actualTime,
                         actualVehicle,
                         0)
