@@ -110,9 +110,13 @@ public class TollCalculatorTest {
     private void check(TestCase testCase) {
         TollCalculator calculator = new TollCalculator();
 
-        int actual = calculator.getTollFee(testCase.actualVehicle, testCase.actualTime);
+        Assert.assertEquals(testCase.expected,
+                calculator.getTollFee(testCase.actualTime, testCase.actualVehicle),
+                "Method for single date: " + testCase.name);
 
-        Assert.assertEquals(testCase.expected, actual, testCase.name);
+        Assert.assertEquals(testCase.expected,
+                calculator.getTollFee(testCase.actualVehicle, testCase.actualTime),
+                "Method for multiple dates: " + testCase.name);
     }
 
 }
