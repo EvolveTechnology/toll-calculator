@@ -1,5 +1,8 @@
 package test_utils;
 
+import util.Day;
+import util.TimeOfDay;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -7,15 +10,15 @@ import java.util.GregorianCalendar;
 public class DateTestDataBuilder {
     int year;
     int month;
-    int date;
+    int dayOfMonth;
     int hourOfDay;
     int minute;
     int second;
 
-    public DateTestDataBuilder(int year, int month, int date, int hourOfDay, int minute, int second) {
+    public DateTestDataBuilder(int year, int month, int dayOfMonth, int hourOfDay, int minute, int second) {
         this.year = year;
         this.month = month;
-        this.date = date;
+        this.dayOfMonth = dayOfMonth;
         this.hourOfDay = hourOfDay;
         this.minute = minute;
         this.second = second;
@@ -23,11 +26,19 @@ public class DateTestDataBuilder {
 
     public static Date timeOf(int year,
                               int month,
-                              int date,
+                              int dayOfMonth,
                               int hourOfDay,
                               int minute,
                               int second) {
-        return new DateTestDataBuilder(year, month, date, hourOfDay, minute, second).build();
+        return new DateTestDataBuilder(year, month, dayOfMonth, hourOfDay, minute, second).build();
+    }
+
+    public static Date timeOf(Day day,
+                              int hourOfDay,
+                              int minute,
+                              int second) {
+        return new DateTestDataBuilder(day.year, day.month, day.dayOfMonth,
+                hourOfDay, minute, second).build();
     }
 
     public static DateTestDataBuilder ofDay(int year,
@@ -38,12 +49,17 @@ public class DateTestDataBuilder {
 
     public DateTestDataBuilder withDay(int year,
                                        int month,
-                                       int date) {
+                                       int dayOfMonth) {
         this.year = year;
         this.month = month;
-        this.date = date;
+        this.dayOfMonth = dayOfMonth;
         return this;
     }
+
+    public DateTestDataBuilder withDay(Day day) {
+        return this.withDay(day.year, day.month, day.dayOfMonth);
+    }
+
 
     public DateTestDataBuilder withTime(int hourOfDay,
                                         int minute,
@@ -52,6 +68,10 @@ public class DateTestDataBuilder {
         this.minute = minute;
         this.second = second;
         return this;
+    }
+
+    public DateTestDataBuilder withTime(TimeOfDay timeOfDay) {
+        return withTime(timeOfDay.hour, timeOfDay.minute, timeOfDay.second);
     }
 
     public static Date aSaturday() {
@@ -65,7 +85,7 @@ public class DateTestDataBuilder {
     public Date build() {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.clear();
-        calendar.set(year, month, date, hourOfDay, minute, second);
+        calendar.set(year, month, dayOfMonth, hourOfDay, minute, second);
         return calendar.getTime();
     }
 }
