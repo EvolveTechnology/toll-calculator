@@ -1,5 +1,7 @@
 package calculator;
 
+import util.Day;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -8,16 +10,23 @@ import java.util.concurrent.TimeUnit;
 public class TollCalculator {
 
     private final FeeForTimeOfDaySpecification feeForTimeOfDaySpecification;
+    private final HolidaySpecification holidaySpecification;
 
-    public TollCalculator(FeeForTimeOfDaySpecification feeForTimeOfDaySpecification) {
+    public TollCalculator(FeeForTimeOfDaySpecification feeForTimeOfDaySpecification,
+                          HolidaySpecification holidaySpecification) {
         if (feeForTimeOfDaySpecification == null) {
             throw new NullPointerException("feeForTimeOfDaySpecification");
         }
+        if (holidaySpecification == null) {
+            throw new NullPointerException("holidaySpecification");
+        }
         this.feeForTimeOfDaySpecification = feeForTimeOfDaySpecification;
+        this.holidaySpecification = holidaySpecification;
     }
 
     public TollCalculator() {
-        this(new DefaultFeeForTimeOfDaySpecification());
+        this(new DefaultFeeForTimeOfDaySpecification(),
+                new HolidaySpecificationFor2013());
     }
 
     /**
@@ -74,26 +83,11 @@ public class TollCalculator {
     private Boolean isTollFreeDate(Date date) {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) return true;
 
-        if (year == 2013) {
-            if (month == Calendar.JANUARY && day == 1 ||
-                    month == Calendar.MARCH && (day == 28 || day == 29) ||
-                    month == Calendar.APRIL && (day == 1 || day == 30) ||
-                    month == Calendar.MAY && (day == 1 || day == 8 || day == 9) ||
-                    month == Calendar.JUNE && (day == 5 || day == 6 || day == 21) ||
-                    month == Calendar.JULY ||
-                    month == Calendar.NOVEMBER && day == 1 ||
-                    month == Calendar.DECEMBER && (day == 24 || day == 25 || day == 26 || day == 31)) {
-                return true;
-            }
-        }
-        return false;
+        return holidaySpecification.isHoliday(new Day(calendar));
     }
 
     private enum TollFreeVehicles {
@@ -114,4 +108,3 @@ public class TollCalculator {
         }
     }
 }
-
