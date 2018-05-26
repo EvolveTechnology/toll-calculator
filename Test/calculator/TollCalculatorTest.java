@@ -3,6 +3,7 @@ package calculator;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import test_utils.DateTestDataBuilder;
 import test_utils.TestCase;
 import test_utils.TestCaseBuilder;
 
@@ -104,6 +105,28 @@ public class TollCalculatorTest {
                         .withExpectedFee(0)
                         .build2(),
         };
+    }
+
+
+    @Test
+    public void WHEN_multiple_times_THEN_fees_SHOULD_be_summed() {
+        // GIVEN //
+
+        DateTestDataBuilder dateBuilder = new DateTestDataBuilder(DAY_WITH_FEE);
+
+        TollCalculator calculator = new TollCalculator();
+
+        // WHEN  //
+
+        int actual = calculator.getTollFee(A_NON_FREE_VEHICLE,
+                dateBuilder.withTime(FEE_IS_8).build(),
+                dateBuilder.withTime(FEE_IS_18).build());
+
+        // THEN //
+
+        Assert.assertEquals(8 + 18,
+                actual);
+
     }
 
 

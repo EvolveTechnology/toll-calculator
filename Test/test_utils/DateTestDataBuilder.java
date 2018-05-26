@@ -30,6 +30,15 @@ public class DateTestDataBuilder {
         this.second = second;
     }
 
+    public DateTestDataBuilder(Day day, TimeOfDay timeOfDay) {
+        this(day.year, day.month, day.dayOfMonth,
+                timeOfDay.hour, timeOfDay.minute, timeOfDay.second);
+    }
+
+    public DateTestDataBuilder(Day day) {
+        this(day, TimeOfDay.midnight());
+    }
+
     public static Date timeOf(int year,
                               int month,
                               int dayOfMonth,

@@ -10,4 +10,8 @@ public final class TimeOfDay {
         this.minute = minute;
         this.second = second;
     }
+
+    public static TimeOfDay midnight() {
+        return new TimeOfDay(0, 0, 0);
+    }
 }
