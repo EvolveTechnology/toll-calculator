@@ -39,6 +39,11 @@ public class DateTestDataBuilder {
         return new DateTestDataBuilder(year, month, dayOfMonth, hourOfDay, minute, second).build();
     }
 
+    public static Date timeOf(Day day, TimeOfDay timeOfDay) {
+        return timeOf(day.year, day.month, day.dayOfMonth,
+                timeOfDay.hour, timeOfDay.minute, timeOfDay.second);
+    }
+
     public static Date timeOf(Day day,
                               int hourOfDay,
                               int minute,

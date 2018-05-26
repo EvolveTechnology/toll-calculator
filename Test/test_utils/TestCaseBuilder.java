@@ -29,14 +29,14 @@ public class TestCaseBuilder {
     public static TestCaseBuilder newWithHeader(String nameHeader) {
         return new TestCaseBuilder(nameHeader, null,
                 DateTestDataBuilder.ofDay(2013, Calendar.JANUARY, 1),
-                TestData.aNonFreeVehicle(),
+                TestData.A_NON_FREE_VEHICLE,
                 -1);
     }
 
     public static TestCaseBuilder newWithoutHeader() {
         return new TestCaseBuilder(null, null,
                 DateTestDataBuilder.ofDay(2013, Calendar.JANUARY, 1),
-                TestData.aNonFreeVehicle(),
+                TestData.A_NON_FREE_VEHICLE,
                 -1);
     }
 
