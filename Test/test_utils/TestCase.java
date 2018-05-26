@@ -16,4 +16,8 @@ public class TestCase {
         this.actualVehicle = actualVehicle;
         this.expected = expected;
     }
+
+    public TestCase(Date actualTime, Vehicle actualVehicle, int expected) {
+        this("", actualTime, actualVehicle, expected);
+    }
 }
