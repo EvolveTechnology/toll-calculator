@@ -1,10 +1,12 @@
 package test_utils;
 
+import calculator.FeeForTimeOfDaySpecification;
 import calculator.Vehicle;
 import util.Day;
 import util.TimeOfDay;
 
 import java.util.Calendar;
+import java.util.function.Predicate;
 
 public class TestCaseBuilder extends TestCaseBuilderBase {
 
@@ -52,8 +54,31 @@ public class TestCaseBuilder extends TestCaseBuilderBase {
         return build2();
     }
 
+    public TestCaseBuilder withNameHeader(String nameHeader) {
+        this.nameHeader = nameHeader;
+        return this;
+    }
+
     public TestCaseBuilder withName(String nameTail) {
         this.nameTail = nameTail;
+        return this;
+    }
+
+    public Predicate<Day> isHoliday;
+    public Predicate<Vehicle> isTollFreeVehicle;
+
+    public TestCaseBuilder withFeeForTimeOfDaySpecification(FeeForTimeOfDaySpecification feeForTimeOfDay) {
+        this.specifications.feeForTimeOfDay = feeForTimeOfDay;
+        return this;
+    }
+
+    public TestCaseBuilder withIsHolidaySpecification(Predicate<Day> isTollFreeDay) {
+        this.specifications.isHoliday = isTollFreeDay;
+        return this;
+    }
+
+    public TestCaseBuilder withIsTollFreeVehicleSpecification(Predicate<Vehicle> isTollFreeVehicle) {
+        this.specifications.isTollFreeVehicle = isTollFreeVehicle;
         return this;
     }
 

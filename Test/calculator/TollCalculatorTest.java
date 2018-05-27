@@ -5,7 +5,10 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import test_utils.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import static test_utils.DateTestDataBuilder.A_SATURDAY;
 import static test_utils.DateTestDataBuilder.A_SUNDAY;
@@ -22,8 +25,10 @@ public class TollCalculatorTest {
     public Object[][] weekend_cases() {
         TestCaseBuilder caseBuilder =
                 TestCaseBuilder.newWithoutHeader()
-                        .withTime(FEE_IS_8)
-                        .withExpectedFee(0);
+                               .withFeeForTimeOfDaySpecification(constantFeeOf(1))
+                               .withIsHolidaySpecification(holidayIsConstant(false))
+                               .withTime(NOON)
+                               .withExpectedFee(0);
 
         return new Object[][]{
                 caseBuilder
@@ -53,22 +58,36 @@ public class TollCalculatorTest {
     }
 
     @DataProvider(name = "holiday_cases")
-    public Object[][] holiday_cases() {
+    public Iterator<Object[]> holiday_cases() {
         TestCaseBuilder caseBuilder = TestCaseBuilder.newWithoutHeader()
-                .withDay(HOLIDAY_DAY)
-                .withTime(FEE_IS_8)
-                .withExpectedFee(0);
+                                                     .withIsHolidaySpecification(holidayIsConstant(true))
+                                                     .withFeeForTimeOfDaySpecification(constantFeeOf(1))
+                                                     .withTime(NOON)
+                                                     .withExpectedFee(0);
 
-        return new Object[][]{
-                caseBuilder
-                        .withVehicle(A_NON_FREE_VEHICLE)
-                        .named("non-free Vehicle")
-                ,
-                caseBuilder
-                        .withVehicle(A_FREE_VEHICLE)
-                        .named("free Vehicle")
-                ,
-        };
+        List<Object[]> cases = new ArrayList<>();
+
+        caseBuilder
+                .withNameHeader("non-free vehicle")
+                .withVehicle(A_NON_FREE_VEHICLE);
+
+        NOON_WEEKEND_DAYS.forEach(
+                dayNameAndValue -> cases.add(caseBuilder.withName(dayNameAndValue.name)
+                                                        .withDay(dayNameAndValue.value)
+                                                        .build2())
+        );
+
+        caseBuilder
+                .withNameHeader("free vehicle")
+                .withVehicle(A_FREE_VEHICLE);
+
+        NOON_WEEKEND_DAYS.forEach(
+                dayNameAndValue -> cases.add(caseBuilder.withName(dayNameAndValue.name)
+                                                        .withDay(dayNameAndValue.value)
+                                                        .build2())
+        );
+
+        return cases.iterator();
     }
 
     @Test
@@ -96,8 +115,8 @@ public class TollCalculatorTest {
     @DataProvider(name = "test_fees_of_date_with_fee_and_non_free_vehicle_cases")
     public Object[][] test_fees_of_date_with_fee_and_non_free_vehicle_cases() {
         TestCaseBuilder caseBuilder = TestCaseBuilder.newWithoutHeader()
-                .withDay(DAY_WITH_FEE)
-                .withVehicle(A_NON_FREE_VEHICLE);
+                                                     .withDay(DAY_WITH_FEE)
+                                                     .withVehicle(A_NON_FREE_VEHICLE);
 
         return new Object[][]{
                 caseBuilder
@@ -147,7 +166,7 @@ public class TollCalculatorTest {
         DateTestDataBuilder dateBuilder = new DateTestDataBuilder(DAY_WITH_FEE);
 
         TestCaseWithMultipleDatesBuilder caseBuilder = TestCaseWithMultipleDatesBuilder.newWithoutHeader()
-                .withVehicle(A_NON_FREE_VEHICLE);
+                                                                                       .withVehicle(A_NON_FREE_VEHICLE);
 
         return new Object[][]{
                 caseBuilder

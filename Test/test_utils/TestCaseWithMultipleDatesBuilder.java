@@ -1,8 +1,11 @@
 package test_utils;
 
+import calculator.FeeForTimeOfDaySpecification;
 import calculator.Vehicle;
+import util.Day;
 
 import java.util.Date;
+import java.util.function.Predicate;
 
 public class TestCaseWithMultipleDatesBuilder extends TestCaseBuilderBase {
 
@@ -36,6 +39,21 @@ public class TestCaseWithMultipleDatesBuilder extends TestCaseBuilderBase {
                                               actualDates,
                                               expected)
         };
+    }
+
+    public TestCaseWithMultipleDatesBuilder withFeeForTimeOfDaySpecification(FeeForTimeOfDaySpecification feeForTimeOfDay) {
+        this.specifications.feeForTimeOfDay = feeForTimeOfDay;
+        return this;
+    }
+
+    public TestCaseWithMultipleDatesBuilder withIsHolidaySpecification(Predicate<Day> isTollFreeDay) {
+        this.specifications.isHoliday = isTollFreeDay;
+        return this;
+    }
+
+    public TestCaseWithMultipleDatesBuilder withIsTollFreeVehicleSpecification(Predicate<Vehicle> isTollFreeVehicle) {
+        this.specifications.isTollFreeVehicle = isTollFreeVehicle;
+        return this;
     }
 
     public TestCaseWithMultipleDatesBuilder withName(String nameTail) {
