@@ -30,16 +30,16 @@ public class TestData {
             HOLIDAY_DAY = new Day(2013, Calendar.JANUARY, 1);
 
     public static final List<NameAndValue<Day>> NON_WEEKEND_DAYS = new ArrayList<NameAndValue<Day>>() {{
-        add(new NameAndValue<Day>("MONDAY", MONDAY));
-        add(new NameAndValue<Day>("TUESDAY", TUESDAY));
-        add(new NameAndValue<Day>("WEDNESDAY", WEDNESDAY));
-        add(new NameAndValue<Day>("THURSDAY", THURSDAY));
-        add(new NameAndValue<Day>("FRIDAY", FRIDAY));
+        add(new NameAndValue<>("MONDAY", MONDAY));
+        add(new NameAndValue<>("TUESDAY", TUESDAY));
+        add(new NameAndValue<>("WEDNESDAY", WEDNESDAY));
+        add(new NameAndValue<>("THURSDAY", THURSDAY));
+        add(new NameAndValue<>("FRIDAY", FRIDAY));
     }};
 
     public static final List<NameAndValue<Day>> WEEKEND_DAYS = new ArrayList<NameAndValue<Day>>() {{
-        add(new NameAndValue<Day>("SATURDAY", SATURDAY));
-        add(new NameAndValue<Day>("SUNDAY", SUNDAY));
+        add(new NameAndValue<>("SATURDAY", SATURDAY));
+        add(new NameAndValue<>("SUNDAY", SUNDAY));
     }};
 
     public static final TimeOfDay
