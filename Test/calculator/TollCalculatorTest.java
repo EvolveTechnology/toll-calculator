@@ -5,10 +5,9 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import test_utils.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static test_utils.DateTestDataBuilder.A_SATURDAY;
 import static test_utils.DateTestDataBuilder.A_SUNDAY;
@@ -92,12 +91,25 @@ public class TollCalculatorTest {
         return cases.iterator();
     }
 
-    @Test
-    public void WHEN_date_is_non_free_THEN_a_free_vehicle_SHOULD_not_be_charged() {
-        check(new TestCase(A_FREE_VEHICLE,
-                           DAY_WITH_FEE, FEE_IS_8,
-                           0));
+    @Test(dataProvider = "WHEN_date_is_non_free_THEN_a_free_vehicle_SHOULD_not_be_charged_cases")
+    public void WHEN_date_is_non_free_THEN_a_free_vehicle_SHOULD_not_be_charged(TestCase testCase) {
+        check(testCase);
+    }
 
+    @DataProvider(name = "WHEN_date_is_non_free_THEN_a_free_vehicle_SHOULD_not_be_charged_cases")
+    public Iterator<Object[]> WHEN_date_is_non_free_THEN_a_free_vehicle_SHOULD_not_be_charged_cases() {
+        TestCaseBuilder caseBuilder = TestCaseBuilder.newWithoutHeader()
+                                                     .withIsHolidaySpecification(holidayIsConstant(false))
+                                                     .withFeeForTimeOfDaySpecification(constantFeeOf(1))
+                                                     .withVehicle(A_FREE_VEHICLE)
+                                                     .withTime(NOON)
+                                                     .withExpectedFee(0);
+
+        return map(NON_WEEKEND_DAYS,
+                   dayNameAndValue -> caseBuilder.withName(dayNameAndValue.name)
+                                                 .withDay(dayNameAndValue.value)
+                                                 .build2()
+        );
     }
 
     @Test
@@ -222,4 +234,12 @@ public class TollCalculatorTest {
                             testCase.name);
     }
 
+    private static <T, U> Iterator<U> map(Collection<T> collection, Function<T, U> mapper) {
+        return collection
+                .stream()
+                .map(mapper)
+                .collect(Collectors.toList())
+                .iterator();
+
+    }
 }
