@@ -1,4 +1,7 @@
-package calculator;
+package calculator.vehicles;
+
+import calculator.Vehicle;
+import calculator.Vehicles;
 
 public class Car implements Vehicle {
     @Override

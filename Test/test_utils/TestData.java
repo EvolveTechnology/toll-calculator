@@ -1,8 +1,8 @@
 package test_utils;
 
-import calculator.Car;
-import calculator.Motorbike;
 import calculator.Vehicle;
+import calculator.vehicles.Car;
+import calculator.vehicles.Motorbike;
 import util.Day;
 import util.TimeOfDay;
 
