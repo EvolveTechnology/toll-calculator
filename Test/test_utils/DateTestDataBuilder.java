@@ -42,31 +42,6 @@ public class DateTestDataBuilder {
         this(day, TimeOfDay.midnight());
     }
 
-    public static Date timeOf(int year,
-                              int month,
-                              int dayOfMonth,
-                              int hourOfDay,
-                              int minute,
-                              int second)
-    {
-        return new DateTestDataBuilder(year, month, dayOfMonth, hourOfDay, minute, second).build();
-    }
-
-    public static Date timeOf(Day day, TimeOfDay timeOfDay)
-    {
-        return timeOf(day.year, day.month, day.dayOfMonth,
-                      timeOfDay.hour, timeOfDay.minute, timeOfDay.second);
-    }
-
-    public static Date timeOf(Day day,
-                              int hourOfDay,
-                              int minute,
-                              int second)
-    {
-        return new DateTestDataBuilder(day.year, day.month, day.dayOfMonth,
-                                       hourOfDay, minute, second).build();
-    }
-
     public static DateTestDataBuilder ofDay(int year,
                                             int month,
                                             int date)
@@ -119,32 +94,10 @@ public class DateTestDataBuilder {
         return withTime(timeOfDay.hour, timeOfDay.minute, timeOfDay.second);
     }
 
-    public Date buildForTime(TimeOfDay timeOfDay)
-    {
-        return withTime(timeOfDay).build();
-    }
-
-    public Date buildForTime(int hourOfDay,
-                             int minute,
-                             int second)
-    {
-        return withTime(hourOfDay, minute, second).build();
-    }
-
     public Date buildForTime(int hourOfDay,
                              int minute)
     {
         return withTime(hourOfDay, minute, second).build();
-    }
-
-    public static Date aSaturday()
-    {
-        return timeOf(2018, Calendar.MAY, 19, 10, 20, 30);
-    }
-
-    public static Date aSunday()
-    {
-        return timeOf(2018, Calendar.MAY, 20, 10, 20, 30);
     }
 
     public Date build()
