@@ -14,19 +14,19 @@ import java.util.function.Predicate;
 public class TollCalculator {
 
     private final FeeForTimeOfDaySpecification feeForTimeOfDaySpecification;
-    private final HolidaySpecification holidaySpecification;
-    private final Predicate<Vehicle> isTollFreeVehicle;
+    private final Predicate<Day> isHolidaySpecification;
+    private final Predicate<Vehicle> isTollFreeVehicleSpecification;
 
     public TollCalculator(FeeForTimeOfDaySpecification feeForTimeOfDaySpecification,
-                          HolidaySpecification holidaySpecification,
-                          Predicate<Vehicle> isTollFreeVehicle) {
+                          Predicate<Day> isHolidaySpecification,
+                          Predicate<Vehicle> isTollFreeVehicleSpecification) {
         preconditionIsNotNull(feeForTimeOfDaySpecification, "feeForTimeOfDaySpecification");
-        preconditionIsNotNull(holidaySpecification, "holidaySpecification");
-        preconditionIsNotNull(isTollFreeVehicle, "isTollFreeVehicle");
+        preconditionIsNotNull(isHolidaySpecification, "isHolidaySpecification");
+        preconditionIsNotNull(isTollFreeVehicleSpecification, "isTollFreeVehicleSpecification");
 
         this.feeForTimeOfDaySpecification = feeForTimeOfDaySpecification;
-        this.holidaySpecification = holidaySpecification;
-        this.isTollFreeVehicle = isTollFreeVehicle;
+        this.isHolidaySpecification = isHolidaySpecification;
+        this.isTollFreeVehicleSpecification = isTollFreeVehicleSpecification;
     }
 
     public TollCalculator() {
@@ -82,11 +82,11 @@ public class TollCalculator {
     }
 
     private boolean isTollFreeVehicle(Vehicle vehicle) {
-        return isTollFreeVehicle.test(vehicle);
+        return isTollFreeVehicleSpecification.test(vehicle);
     }
 
     private boolean isTollFreeDate(Calendar dateTime) {
-        return isWeekend(dateTime) || holidaySpecification.isHoliday(new Day(dateTime));
+        return isWeekend(dateTime) || isHolidaySpecification.test(new Day(dateTime));
     }
 
     private boolean isWeekend(Calendar dateTime) {

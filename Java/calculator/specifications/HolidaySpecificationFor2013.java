@@ -1,18 +1,15 @@
 package calculator.specifications;
 
-import calculator.HolidaySpecification;
 import util.Day;
 
 import java.util.Calendar;
+import java.util.function.Predicate;
 
 /**
  * Tells if a given day is a holiday.
  */
-public class HolidaySpecificationFor2013 implements HolidaySpecification {
-    /**
-     * @return Undefined if day is a weekend day.
-     */
-    public boolean isHoliday(Day day) {
+public class HolidaySpecificationFor2013 implements Predicate<Day> {
+    public boolean test(Day day) {
         if (day.year == 2013) {
             if (day.month == Calendar.JANUARY && day.dayOfMonth == 1 ||
                     day.month == Calendar.MARCH && (day.dayOfMonth == 28 || day.dayOfMonth == 29) ||
