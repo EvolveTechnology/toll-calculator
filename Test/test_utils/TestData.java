@@ -2,8 +2,7 @@ package test_utils;
 
 import calculator.FeeForTimeOfDaySpecification;
 import calculator.Vehicle;
-import calculator.vehicles.Car;
-import calculator.vehicles.Motorbike;
+import calculator.Vehicles;
 import util.Day;
 import util.TimeOfDay;
 
@@ -15,9 +14,9 @@ import java.util.function.Predicate;
 public class TestData {
 
     public static final Vehicle
-            A_NON_FREE_VEHICLE = new Car(),
-            A_FREE_VEHICLE = new Motorbike(),
-            RANDOM_VEHICLE = new Motorbike();
+            A_NON_FREE_VEHICLE = Vehicles.newCar(),
+            A_FREE_VEHICLE = Vehicles.newMotorbike(),
+            RANDOM_VEHICLE = Vehicles.newMotorbike();
 
     public static final Day
             MONDAY = new Day(2018, Calendar.MAY, 7),

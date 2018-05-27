@@ -1,6 +1,16 @@
 package calculator;
 
-public interface Vehicle {
+public class Vehicle {
 
-  String getType();
+    private final String type;
+
+    public Vehicle(String type)
+    {
+        this.type = type;
+    }
+
+    public String getType()
+    {
+        return type;
+    }
 }
