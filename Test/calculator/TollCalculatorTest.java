@@ -110,7 +110,8 @@ public class TollCalculatorTest {
         TestCaseBuilder caseBuilder = TestCaseBuilder.newWithoutHeader()
                                                      .withIsHolidaySpecification(holidayIsConstant(false))
                                                      .withFeeForTimeOfDaySpecification(constantFeeOf(1))
-                                                     .withVehicle(A_FREE_VEHICLE)
+                                                     .withIsTollFreeVehicleSpecification(TestData.vehicleIsTollFreeIsConstant(true))
+                                                     .withVehicle(RANDOM_VEHICLE)
                                                      .withTime(NOON)
                                                      .withExpectedFee(0);
 
