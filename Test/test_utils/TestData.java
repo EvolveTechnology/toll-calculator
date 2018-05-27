@@ -24,19 +24,17 @@ public class TestData {
             SATURDAY = new Day(2018, Calendar.MAY, 12),
             SUNDAY = new Day(2018, Calendar.MAY, 13);
 
-    public static final List<NameAndValue<Day>> NON_WEEKEND_DAYS = new ArrayList<NameAndValue<Day>>() {{
-        add(new NameAndValue<>("MONDAY", MONDAY));
-        add(new NameAndValue<>("TUESDAY", TUESDAY));
-        add(new NameAndValue<>("WEDNESDAY", WEDNESDAY));
-        add(new NameAndValue<>("THURSDAY", THURSDAY));
-        add(new NameAndValue<>("FRIDAY", FRIDAY));
-    }};
+    public static final List<NameAndValue<Day>> NON_WEEKEND_DAYS =
+            new ArrayList<NameAndValue<Day>>() {{
+                add(new NameAndValue<>("MONDAY", MONDAY));
+                add(new NameAndValue<>("TUESDAY", TUESDAY));
+                add(new NameAndValue<>("WEDNESDAY", WEDNESDAY));
+                add(new NameAndValue<>("THURSDAY", THURSDAY));
+                add(new NameAndValue<>("FRIDAY", FRIDAY));
+            }};
 
     public static final TimeOfDay
-            NOON = new TimeOfDay(12, 0, 0),
-            FEE_IS_8 = new TimeOfDay(6, 15, 0),
-            FEE_IS_18 = new TimeOfDay(7, 30, 10),
-            FEE_IS_0 = new TimeOfDay(19, 0, 0);
+            NOON = new TimeOfDay(12, 0, 0);
 
     public static FeeForTimeOfDaySpecification constantFeeOf(int fee)
     {

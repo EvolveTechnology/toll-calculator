@@ -5,8 +5,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import util.TimeOfDay;
 
-import static test_utils.TestData.*;
-
 public class DefaultFeeForTimeOfDaySpecificationTest {
 
     private DefaultFeeForTimeOfDaySpecification sut = new DefaultFeeForTimeOfDaySpecification();
@@ -21,6 +19,12 @@ public class DefaultFeeForTimeOfDaySpecificationTest {
     @DataProvider(name = "test_cases")
     public Object[][] test_cases()
     {
+        TimeOfDay
+                FEE_IS_8 = new TimeOfDay(6, 15, 0),
+                FEE_IS_18 = new TimeOfDay(7, 30, 10),
+                FEE_IS_0 = new TimeOfDay(19, 0, 0);
+
+
         return new Object[][]{
                 of(FEE_IS_8, 8),
                 of(FEE_IS_18, 18),
