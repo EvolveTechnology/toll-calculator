@@ -29,7 +29,7 @@ public class TestCaseBuilder extends TestCaseBuilderBase {
     {
         return new TestCaseBuilder(null, null,
                                    DateTestDataBuilder.ofDay(2013, Calendar.JANUARY, 1),
-                                   TestData.A_NON_FREE_VEHICLE,
+                                   TestData.RANDOM_VEHICLE,
                                    -1);
     }
 

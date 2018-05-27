@@ -23,7 +23,7 @@ public class TestCaseWithMultipleDatesBuilder extends TestCaseBuilderBase {
     public static TestCaseWithMultipleDatesBuilder newWithoutHeader()
     {
         return new TestCaseWithMultipleDatesBuilder(null, null,
-                                                    TestData.A_NON_FREE_VEHICLE,
+                                                    TestData.RANDOM_VEHICLE,
                                                     -1);
     }
 

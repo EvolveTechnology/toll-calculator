@@ -13,10 +13,7 @@ import java.util.function.Predicate;
 
 public class TestData {
 
-    public static final Vehicle
-            A_NON_FREE_VEHICLE = Vehicles.newCar(),
-            A_FREE_VEHICLE = Vehicles.newMotorbike(),
-            RANDOM_VEHICLE = Vehicles.newMotorbike();
+    public static final Vehicle RANDOM_VEHICLE = Vehicles.newMotorbike();
 
     public static final Day
             MONDAY = new Day(2018, Calendar.MAY, 7),
@@ -25,9 +22,7 @@ public class TestData {
             THURSDAY = new Day(2018, Calendar.MAY, 10),
             FRIDAY = new Day(2018, Calendar.MAY, 11),
             SATURDAY = new Day(2018, Calendar.MAY, 12),
-            SUNDAY = new Day(2018, Calendar.MAY, 13),
-            DAY_WITH_FEE = new Day(2013, Calendar.JANUARY, 2),
-            HOLIDAY_DAY = new Day(2013, Calendar.JANUARY, 1);
+            SUNDAY = new Day(2018, Calendar.MAY, 13);
 
     public static final List<NameAndValue<Day>> NON_WEEKEND_DAYS = new ArrayList<NameAndValue<Day>>() {{
         add(new NameAndValue<>("MONDAY", MONDAY));
@@ -35,11 +30,6 @@ public class TestData {
         add(new NameAndValue<>("WEDNESDAY", WEDNESDAY));
         add(new NameAndValue<>("THURSDAY", THURSDAY));
         add(new NameAndValue<>("FRIDAY", FRIDAY));
-    }};
-
-    public static final List<NameAndValue<Day>> WEEKEND_DAYS = new ArrayList<NameAndValue<Day>>() {{
-        add(new NameAndValue<>("SATURDAY", SATURDAY));
-        add(new NameAndValue<>("SUNDAY", SUNDAY));
     }};
 
     public static final TimeOfDay
