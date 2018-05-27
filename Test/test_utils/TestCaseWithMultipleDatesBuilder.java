@@ -4,12 +4,7 @@ import calculator.Vehicle;
 
 import java.util.Date;
 
-public class TestCaseWithMultipleDatesBuilder {
-
-    String nameHeader;
-    String nameTail;
-    Vehicle actualVehicle;
-    int expected;
+public class TestCaseWithMultipleDatesBuilder extends TestCaseBuilderBase {
 
     public TestCaseWithMultipleDatesBuilder(String nameHeader,
                                             String nameTail,
@@ -55,15 +50,5 @@ public class TestCaseWithMultipleDatesBuilder {
     public TestCaseWithMultipleDatesBuilder withExpectedFee(int expected) {
         this.expected = expected;
         return this;
-    }
-
-    private String name() {
-        if (nameHeader == null) {
-            return nameTail;
-        } else if (nameTail == null) {
-            return nameHeader;
-        } else {
-            return nameHeader + ": " + nameTail;
-        }
     }
 }

@@ -8,17 +8,12 @@ import java.util.Date;
 
 import static test_utils.DateTestDataBuilder.timeOf;
 
-public class TestCase {
-    public final String name;
+public class TestCase extends TestCaseBase {
     public final Date actualTime;
-    public final Vehicle actualVehicle;
-    public final int expected;
 
     public TestCase(String name, Date actualTime, Vehicle actualVehicle, int expected) {
-        this.name = name;
+        super(expected, actualVehicle, name);
         this.actualTime = actualTime;
-        this.actualVehicle = actualVehicle;
-        this.expected = expected;
     }
 
     public TestCase(Date actualTime, Vehicle actualVehicle, int expected) {
@@ -29,8 +24,4 @@ public class TestCase {
         this("", timeOf(actualDay, actualTimeOfDay), actualVehicle, expected);
     }
 
-    @Override
-    public String toString() {
-        return name;
-    }
 }

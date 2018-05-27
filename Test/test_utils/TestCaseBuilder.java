@@ -6,13 +6,9 @@ import util.TimeOfDay;
 
 import java.util.Calendar;
 
-public class TestCaseBuilder {
+public class TestCaseBuilder extends TestCaseBuilderBase {
 
-    String nameHeader;
-    String nameTail;
     DateTestDataBuilder actualTime;
-    Vehicle actualVehicle;
-    int expected;
 
     public TestCaseBuilder(String nameHeader,
                            String nameTail,
@@ -93,16 +89,5 @@ public class TestCaseBuilder {
     public TestCaseBuilder withExpectedFee(int expected) {
         this.expected = expected;
         return this;
-    }
-
-
-    private String name() {
-        if (nameHeader == null) {
-            return nameTail;
-        } else if (nameTail == null) {
-            return nameHeader;
-        } else {
-            return nameHeader + ": " + nameTail;
-        }
     }
 }
