@@ -16,4 +16,13 @@ public final class TimeOfDay {
     {
         return new TimeOfDay(0, 0, 0);
     }
+
+    @Override
+    public String toString()
+    {
+        return String.format("TimeOfDay{%02d:%02d:%02d}",
+                             hour,
+                             minute,
+                             second);
+    }
 }
