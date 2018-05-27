@@ -29,7 +29,7 @@ public class TestData {
             DAY_WITH_FEE = new Day(2013, Calendar.JANUARY, 2),
             HOLIDAY_DAY = new Day(2013, Calendar.JANUARY, 1);
 
-    public static final List<NameAndValue<Day>> NOON_WEEKEND_DAYS = new ArrayList<NameAndValue<Day>>() {{
+    public static final List<NameAndValue<Day>> NON_WEEKEND_DAYS = new ArrayList<NameAndValue<Day>>() {{
         add(new NameAndValue<Day>("MONDAY", MONDAY));
         add(new NameAndValue<Day>("TUESDAY", TUESDAY));
         add(new NameAndValue<Day>("WEDNESDAY", WEDNESDAY));

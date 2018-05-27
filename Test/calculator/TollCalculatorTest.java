@@ -73,7 +73,7 @@ public class TollCalculatorTest {
                 .withNameHeader("non-free vehicle")
                 .withVehicle(A_NON_FREE_VEHICLE);
 
-        NOON_WEEKEND_DAYS.forEach(
+        NON_WEEKEND_DAYS.forEach(
                 dayNameAndValue -> cases.add(caseBuilder.withName(dayNameAndValue.name)
                                                         .withDay(dayNameAndValue.value)
                                                         .build2())
@@ -83,7 +83,7 @@ public class TollCalculatorTest {
                 .withNameHeader("free vehicle")
                 .withVehicle(A_FREE_VEHICLE);
 
-        NOON_WEEKEND_DAYS.forEach(
+        NON_WEEKEND_DAYS.forEach(
                 dayNameAndValue -> cases.add(caseBuilder.withName(dayNameAndValue.name)
                                                         .withDay(dayNameAndValue.value)
                                                         .build2())
