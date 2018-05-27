@@ -131,6 +131,12 @@ public class DateTestDataBuilder {
         return withTime(hourOfDay, minute, second).build();
     }
 
+    public Date buildForTime(int hourOfDay,
+                             int minute)
+    {
+        return withTime(hourOfDay, minute, second).build();
+    }
+
     public static Date aSaturday()
     {
         return timeOf(2018, Calendar.MAY, 19, 10, 20, 30);

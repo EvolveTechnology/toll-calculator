@@ -141,47 +141,117 @@ public class TollCalculatorTest {
         Assert.assertEquals(actual, 8 + 18);
     }
 
-    @Test(dataProvider = "vehicle_should_only_be_charged_once_an_hour_cases")
-    public void a_vehicle_should_only_be_charged_once_an_hour(TestCaseWithMultipleDates testCase)
+    @Test(dataProvider = "only_charge_for_first_date_within_charge_interval_cases")
+    public void a_vehicle_SHOULD_only_be_charged_for_first_date_within_charge_interval(TestCaseWithMultipleDates testCase)
     {
         check(testCase);
     }
 
-    @DataProvider(name = "vehicle_should_only_be_charged_once_an_hour_cases")
-    public Object[][] vehicle_should_only_be_charged_once_an_hour_cases()
+    @DataProvider
+    public Object[][] only_charge_for_first_date_within_charge_interval_cases()
     {
-        DateTestDataBuilder dateBuilder = new DateTestDataBuilder(DAY_WITH_FEE);
+        DateTestDataBuilder dateBuilder = new DateTestDataBuilder(MONDAY);
 
         TestCaseWithMultipleDatesBuilder caseBuilder = TestCaseWithMultipleDatesBuilder.newWithoutHeader()
-                                                                                       .withVehicle(A_NON_FREE_VEHICLE);
+                                                                                       .withIsHolidaySpecification(holidayIsConstant(false))
+                                                                                       .withIsTollFreeVehicleSpecification(vehicleIsTollFreeIsConstant(false))
+                                                                                       .withMaxFeePerDay(Integer.MAX_VALUE)
+                                                                                       .withMinNumMinutesBetweenCharges(30)
+                                                                                       .withFeeForTimeOfDaySpecification(feeIsSameAsMinute());
 
         return new Object[][]{
                 caseBuilder
-                        .withName("WHEN first date is free THEN second date SHOULD be charged even when closer than 1 h")
-                        .withExpectedFee(8)
-                        .build(
-                        dateBuilder.buildForTime(5, 59, 0),
-                        dateBuilder.buildForTime(6, 0, 0)
-                )
+                        .withName("WHEN 2nd date is withing same interval THEN only 1st date SHOULD be charged")
+                        .withExpectedFee(2)
+                        .build(dateBuilder.buildForTime(10, 2),
+                               dateBuilder.buildForTime(10, 10))
                 ,
                 caseBuilder
-                        .withName("WHEN first date is non-free THEN second date SHOULD not be charged when closer than 1 h")
-                        .withExpectedFee(13)
-                        .build(
-                        dateBuilder.buildForTime(6, 0, 0),
-                        dateBuilder.buildForTime(6, 59, 0)
-                )
+                        .withName("WHEN 2nd date is withing same interval THEN only 1st date SHOULD be charged (different hours)")
+                        .withExpectedFee(50)
+                        .build(dateBuilder.buildForTime(10, 50),
+                               dateBuilder.buildForTime(11, 10))
                 ,
-                // bug:
-//                caseBuilder
-//                        .withName("WHEN 1st .. >1h .. 2nd .. <1h .. 3rd THEN only 1st and 2nd should be charged")
-//                        .withExpectedFee(8 + 13)
-//                        .build(new Date[]{
-//                        dateBuilder.buildForTime(6, 0, 0),
-//                        dateBuilder.buildForTime(8, 0, 0),
-//                        dateBuilder.buildForTime(8, 1, 0),
-//                })
-//                ,
+                caseBuilder
+                        .withName("WHEN 2nd, 3rd date is withing same interval THEN only 1st date SHOULD be charged")
+                        .withExpectedFee(2)
+                        .build(dateBuilder.buildForTime(10, 2),
+                               dateBuilder.buildForTime(10, 10),
+                               dateBuilder.buildForTime(10, 20))
+                ,
+                caseBuilder
+                        .withName("WHEN 2nd date is withing same interval but 3rd is not THEN 1st & 3rd dates SHOULD be charged")
+                        .withExpectedFee(30 + 5)
+                        .build(dateBuilder.buildForTime(10, 30),
+                               dateBuilder.buildForTime(10, 40),
+                               dateBuilder.buildForTime(11, 5))
+                ,
+                caseBuilder
+                        .withName("WHEN 2nd & 4th date is withing same interval but 3rd is not THEN 1st & 3rd dates SHOULD be charged")
+                        .withExpectedFee(32 + 5)
+                        .build(dateBuilder.buildForTime(10, 32),
+                               dateBuilder.buildForTime(10, 40),
+                               dateBuilder.buildForTime(11, 5),
+                               dateBuilder.buildForTime(11, 30))
+                ,
+                caseBuilder
+                        .withName("WHEN 2nd & 4th date is withing same interval but 3rd is not THEN 1st & 3rd dates SHOULD be charged (with limit)")
+                        .withMaxFeePerDay(33)
+                        .withExpectedFee(Integer.min(33, 32 + 5))
+                        .build(dateBuilder.buildForTime(10, 32),
+                               dateBuilder.buildForTime(10, 40),
+                               dateBuilder.buildForTime(11, 5),
+                               dateBuilder.buildForTime(11, 30))
+        };
+    }
+
+    @Test(dataProvider = "dates_with_zero_charge_SHOULD_not_count_as_point_in_charge_interval_cases")
+    public void dates_with_zero_charge_SHOULD_not_count_as_point_in_charge_interval(TestCaseWithMultipleDates testCase)
+    {
+        check(testCase);
+    }
+
+    @DataProvider
+    public Object[][] dates_with_zero_charge_SHOULD_not_count_as_point_in_charge_interval_cases()
+    {
+        DateTestDataBuilder dateBuilder = new DateTestDataBuilder(MONDAY);
+
+        TestCaseWithMultipleDatesBuilder caseBuilder = TestCaseWithMultipleDatesBuilder.newWithoutHeader()
+                                                                                       .withIsHolidaySpecification(holidayIsConstant(false))
+                                                                                       .withIsTollFreeVehicleSpecification(vehicleIsTollFreeIsConstant(false))
+                                                                                       .withMaxFeePerDay(Integer.MAX_VALUE)
+                                                                                       .withMinNumMinutesBetweenCharges(60)
+                                                                                       .withFeeForTimeOfDaySpecification(feeIsSameAsMinuteWhenMinuteIsEvenElseZero());
+
+        return new Object[][]{
+                caseBuilder
+                        .withName("initial zero charge SHOULD be ignored")
+                        .withExpectedFee(10)
+                        .build(dateBuilder.buildForTime(10, 1),
+                               dateBuilder.buildForTime(10, 10))
+                ,
+                caseBuilder
+                        .withName("initial zero chargeS SHOULD be ignored")
+                        .withExpectedFee(10)
+                        .build(dateBuilder.buildForTime(10, 1),
+                               dateBuilder.buildForTime(10, 51),
+                               dateBuilder.buildForTime(11, 10))
+                ,
+                caseBuilder
+                        .withName("initial zero charge SHOULD be ignored and following interval should count from 1st non-zero point")
+                        .withExpectedFee(50 + 52)
+                        .build(dateBuilder.buildForTime(10, 1),
+                               dateBuilder.buildForTime(10, 50),
+                               dateBuilder.buildForTime(11, 10),
+                               dateBuilder.buildForTime(11, 52))
+                ,
+                caseBuilder
+                        .withName("initial zero charge SHOULD be ignored and following interval should count from 1st non-zero point")
+                        .withExpectedFee(10 + 20)
+                        .build(dateBuilder.buildForTime(10, 31),
+                               dateBuilder.buildForTime(11, 10),
+                               dateBuilder.buildForTime(11, 51),
+                               dateBuilder.buildForTime(12, 20))
         };
     }
 

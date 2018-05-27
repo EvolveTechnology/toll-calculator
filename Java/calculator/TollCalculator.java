@@ -3,10 +3,9 @@ package calculator;
 import util.Day;
 import util.Precondition;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class TollCalculator {
 
@@ -33,29 +32,11 @@ public class TollCalculator {
      */
     public int getTollFee(Vehicle vehicle, Date... dates)
     {
-        Date intervalStart = dates[0];
-        int totalFee = 0;
-        for (Date date : dates) {
-            int nextFee = getTollFee(date, vehicle);
-            int tempFee = getTollFee(intervalStart, vehicle);
-
-            TimeUnit timeUnit = TimeUnit.MINUTES;
-            long diffInMillies = date.getTime() - intervalStart.getTime();
-            long minutes = timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
-
-            if (minutes <= specifications.minNumMinutesBetweenCharges) {
-                if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee >= tempFee) tempFee = nextFee;
-                totalFee += tempFee;
-            } else {
-                totalFee += nextFee;
-            }
-        }
-        if (totalFee > specifications.maxFeePerDay) totalFee = specifications.maxFeePerDay;
-        return totalFee;
+        int unlimitedFee = getUnlimitedFee(vehicle, dates);
+        return Integer.min(unlimitedFee, specifications.maxFeePerDay);
     }
 
-    public int getTollFee(final Date date, Vehicle vehicle)
+    public int getTollFee(Date date, Vehicle vehicle)
     {
         if (isTollFreeVehicle(vehicle)) return 0;
 
@@ -64,6 +45,36 @@ public class TollCalculator {
         if (isTollFreeDate(dateTime)) return 0;
 
         return getFeeForTimeOfDay(dateTime);
+    }
+
+    private int getUnlimitedFee(Vehicle vehicle, Date... dates)
+    {
+        List<Date> datesWithFee = Arrays.stream(dates)
+                                        .filter(d -> getTollFee(d, vehicle) > 0)
+                                        .collect(Collectors.toList());
+        int sum = 0;
+
+        while (!datesWithFee.isEmpty()) {
+            Date firstDate = datesWithFee.remove(0);
+            sum += getTollFee(firstDate, vehicle);
+            skipDatesWithinChargeInterval(firstDate.getTime(), datesWithFee);
+        }
+        return sum;
+    }
+
+    private void skipDatesWithinChargeInterval(long intervalStartMillis, List<Date> remainingDates)
+    {
+        while (!remainingDates.isEmpty() && isWithinSameChargeInterval(intervalStartMillis, remainingDates.get(0))) {
+            remainingDates.remove(0);
+        }
+    }
+
+    private boolean isWithinSameChargeInterval(long intervalStartMillis, Date date)
+    {
+        long diffInMillis = date.getTime() - intervalStartMillis;
+        long diffInMinutes = TimeUnit.MINUTES.convert(diffInMillis, TimeUnit.MILLISECONDS);
+
+        return diffInMinutes <= specifications.minNumMinutesBetweenCharges;
     }
 
     private int getFeeForTimeOfDay(Calendar dateTime)

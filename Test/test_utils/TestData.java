@@ -59,6 +59,11 @@ public class TestData {
         return (hour, minute) -> minute;
     }
 
+    public static FeeForTimeOfDaySpecification feeIsSameAsMinuteWhenMinuteIsEvenElseZero()
+    {
+        return (hour, minute) -> minute % 2 == 0 ? minute : 0;
+    }
+
     public static Predicate<Day> holidayIsConstant(boolean isHoliday)
     {
         return day -> isHoliday;
