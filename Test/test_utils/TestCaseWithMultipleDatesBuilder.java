@@ -38,6 +38,15 @@ public class TestCaseWithMultipleDatesBuilder extends TestCaseBuilderBase {
         };
     }
 
+    public TestCaseWithMultipleDates buildTestCase(Date... actualDates)
+    {
+        return new TestCaseWithMultipleDates(name(),
+                                             configuration,
+                                             actualVehicle,
+                                             actualDates,
+                                             expected);
+    }
+
     public TestCaseWithMultipleDatesBuilder withFeeForTimeOfDaySpecification(FeeForTimeOfDaySpecification feeForTimeOfDay)
     {
         this.configuration.feeForTimeOfDay = feeForTimeOfDay;

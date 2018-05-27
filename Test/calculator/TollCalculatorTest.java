@@ -122,23 +122,18 @@ public class TollCalculatorTest {
     }
 
     @Test
-    public void WHEN_multiple_times_THEN_fees_SHOULD_be_summed()
+    public void WHEN_multiple_dates_THEN_fees_SHOULD_be_sum_of_charges_for_every_date()
     {
-        // GIVEN //
+        DateTestDataBuilder dateBuilder = new DateTestDataBuilder(MONDAY);
 
-        DateTestDataBuilder dateBuilder = new DateTestDataBuilder(DAY_WITH_FEE);
-
-        TollCalculator calculator = new TollCalculator();
-
-        // WHEN  //
-
-        int actual = calculator.getTollFee(A_NON_FREE_VEHICLE,
-                                           dateBuilder.withTime(FEE_IS_8).build(),
-                                           dateBuilder.withTime(FEE_IS_18).build());
-
-        // THEN //
-
-        Assert.assertEquals(actual, 8 + 18);
+        check(TestCaseWithMultipleDatesBuilder.newWithoutHeader()
+                                              .withIsTollFreeVehicleSpecification(TestData.vehicleIsTollFreeIsConstant(false))
+                                              .withMaxFeePerDay(Integer.MAX_VALUE)
+                                              .withMinNumMinutesBetweenCharges(60)
+                                              .withFeeForTimeOfDaySpecification(feeIsSameAsMinute())
+                                              .withExpectedFee(20 + 30)
+                                              .buildTestCase(dateBuilder.withTime(10, 20, 0).build(),
+                                                             dateBuilder.withTime(11, 30, 0).build()));
     }
 
     @Test(dataProvider = "only_charge_for_first_date_within_charge_interval_cases")

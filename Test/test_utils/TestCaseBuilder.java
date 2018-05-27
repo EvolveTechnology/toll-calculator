@@ -64,17 +64,36 @@ public class TestCaseBuilder extends TestCaseBuilderBase {
         return this;
     }
 
+    public TestCaseBuilder withIsHolidaySpecification(Predicate<Day> isTollFreeDay)
+    {
+        this.configuration.isHoliday = isTollFreeDay;
+        return this;
+    }
+
     public TestCaseBuilder withFeeForTimeOfDaySpecification(FeeForTimeOfDaySpecification feeForTimeOfDay)
     {
         this.configuration.feeForTimeOfDay = feeForTimeOfDay;
         return this;
     }
 
-    public TestCaseBuilder withIsHolidaySpecification(Predicate<Day> isTollFreeDay)
+    public TestCaseBuilder withIsTollFreeVehicleSpecification(Predicate<Vehicle> isTollFreeVehicle)
     {
-        this.configuration.isHoliday = isTollFreeDay;
+        this.configuration.isTollFreeVehicle = isTollFreeVehicle;
         return this;
     }
+
+    public TestCaseBuilder withMaxFeePerDay(int x)
+    {
+        this.configuration.maxFeePerDay = x;
+        return this;
+    }
+
+    public TestCaseBuilder withMinNumMinutesBetweenCharges(int x)
+    {
+        this.configuration.minNumMinutesBetweenCharges = x;
+        return this;
+    }
+
 
     public TestCaseBuilder withDay(Day day)
     {
