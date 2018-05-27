@@ -112,15 +112,6 @@ public class TollCalculatorTest {
         );
     }
 
-    @Test
-    public void WHEN_vehicle_is_null_THEN_it_is_not_free() {
-        Vehicle nullVehicle = null;
-        check(new TestCase(nullVehicle,
-                           DAY_WITH_FEE, FEE_IS_8,
-                           8));
-
-    }
-
     @Test(dataProvider = "test_fees_of_date_with_fee_and_non_free_vehicle_cases")
     public void WHEN_date_is_non_free_THEN_a_non_free_vehicle_SHOULD_be_charged(TestCase testCase) {
         check(testCase);
