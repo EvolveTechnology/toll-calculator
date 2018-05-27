@@ -70,9 +70,14 @@ public class TollCalculatorTest {
     @DataProvider(name = "holiday_cases")
     public Iterator<Object[]> holiday_cases()
     {
+        Vehicle
+                toll_free_vehicle = Vehicles.of("toll-fre"),
+                non_toll_free_vehicle = Vehicles.of("non-toll-fre");
+
         TestCaseBuilder caseBuilder = TestCaseBuilder.newWithoutHeader()
                                                      .withIsHolidaySpecification(holidayIsConstant(true))
                                                      .withFeeForTimeOfDaySpecification(constantFeeOf(1))
+                                                     .withIsTollFreeVehicleSpecification(v -> v.getType().equals(toll_free_vehicle.getType()))
                                                      .withTime(NOON)
                                                      .withExpectedFee(0);
 
@@ -80,7 +85,7 @@ public class TollCalculatorTest {
 
         caseBuilder
                 .withNameHeader("non-free vehicle")
-                .withVehicle(A_NON_FREE_VEHICLE);
+                .withVehicle(non_toll_free_vehicle);
 
         NON_WEEKEND_DAYS.forEach(
                 dayNameAndValue -> cases.add(caseBuilder.withName(dayNameAndValue.name)
@@ -90,7 +95,7 @@ public class TollCalculatorTest {
 
         caseBuilder
                 .withNameHeader("free vehicle")
-                .withVehicle(A_FREE_VEHICLE);
+                .withVehicle(toll_free_vehicle);
 
         NON_WEEKEND_DAYS.forEach(
                 dayNameAndValue -> cases.add(caseBuilder.withName(dayNameAndValue.name)
