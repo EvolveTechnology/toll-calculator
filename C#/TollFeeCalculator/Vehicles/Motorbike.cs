@@ -12,5 +12,10 @@ namespace TollFeeCalculator
         {
             return "Motorbike";
         }
+
+        public bool IsTollFree()
+        {
+            return true;
+        }
     }
 }
