@@ -20,13 +20,6 @@ public class TestCaseWithMultipleDatesBuilder extends TestCaseBuilderBase {
         this.expected = expected;
     }
 
-    public static TestCaseWithMultipleDatesBuilder newWithHeader(String nameHeader)
-    {
-        return new TestCaseWithMultipleDatesBuilder(nameHeader, null,
-                                                    TestData.A_NON_FREE_VEHICLE,
-                                                    -1);
-    }
-
     public static TestCaseWithMultipleDatesBuilder newWithoutHeader()
     {
         return new TestCaseWithMultipleDatesBuilder(null, null,

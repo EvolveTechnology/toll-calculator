@@ -25,14 +25,6 @@ public class TestCaseBuilder extends TestCaseBuilderBase {
         this.expected = expected;
     }
 
-    public static TestCaseBuilder newWithHeader(String nameHeader)
-    {
-        return new TestCaseBuilder(nameHeader, null,
-                                   DateTestDataBuilder.ofDay(2013, Calendar.JANUARY, 1),
-                                   TestData.A_NON_FREE_VEHICLE,
-                                   -1);
-    }
-
     public static TestCaseBuilder newWithoutHeader()
     {
         return new TestCaseBuilder(null, null,
@@ -72,9 +64,6 @@ public class TestCaseBuilder extends TestCaseBuilderBase {
         return this;
     }
 
-    public Predicate<Day> isHoliday;
-    public Predicate<Vehicle> isTollFreeVehicle;
-
     public TestCaseBuilder withFeeForTimeOfDaySpecification(FeeForTimeOfDaySpecification feeForTimeOfDay)
     {
         this.configuration.feeForTimeOfDay = feeForTimeOfDay;
@@ -87,43 +76,9 @@ public class TestCaseBuilder extends TestCaseBuilderBase {
         return this;
     }
 
-    public TestCaseBuilder withIsTollFreeVehicleSpecification(Predicate<Vehicle> isTollFreeVehicle)
-    {
-        this.configuration.isTollFreeVehicle = isTollFreeVehicle;
-        return this;
-    }
-
-    public TestCaseBuilder withMaxFeePerDay(int x)
-    {
-        this.configuration.maxFeePerDay = x;
-        return this;
-    }
-
-    public TestCaseBuilder withMinNumMinutesBetweenCharges(int x)
-    {
-        this.configuration.minNumMinutesBetweenCharges = x;
-        return this;
-    }
-
-    public TestCaseBuilder withDay(int year,
-                                   int month,
-                                   int dayOfMonth)
-    {
-        this.actualTime.withDay(year, month, dayOfMonth);
-        return this;
-    }
-
     public TestCaseBuilder withDay(Day day)
     {
         this.actualTime.withDay(day);
-        return this;
-    }
-
-    public TestCaseBuilder withTime(int hourOfDay,
-                                    int minute,
-                                    int second)
-    {
-        this.actualTime.withTime(hourOfDay, minute, second);
         return this;
     }
 

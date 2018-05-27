@@ -23,6 +23,5 @@ public class DefaultFeeForTimeOfDaySpecification implements FeeForTimeOfDaySpeci
         else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
         else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
         else return 0;
-
     }
 }
