@@ -1,21 +1,21 @@
 package test_utils;
 
-import calculator.Specifications;
+import calculator.Configuration;
 import calculator.Vehicle;
 
 public class TestCaseBase {
     public final String name;
-    public final Specifications specifications;
+    public final Configuration configuration;
     public final Vehicle actualVehicle;
     public final int expected;
 
     public TestCaseBase(String name,
-                        Specifications specifications,
+                        Configuration configuration,
                         Vehicle actualVehicle,
                         int expected)
     {
         this.name = name;
-        this.specifications = specifications.clone();
+        this.configuration = configuration.clone();
         this.actualVehicle = actualVehicle;
         this.expected = expected;
     }

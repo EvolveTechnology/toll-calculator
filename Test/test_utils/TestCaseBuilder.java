@@ -44,7 +44,7 @@ public class TestCaseBuilder extends TestCaseBuilderBase {
     public TestCase build()
     {
         return new TestCase(name(),
-                            specifications,
+                            configuration,
                             actualVehicle, actualTime.build(),
                             expected);
     }
@@ -77,31 +77,31 @@ public class TestCaseBuilder extends TestCaseBuilderBase {
 
     public TestCaseBuilder withFeeForTimeOfDaySpecification(FeeForTimeOfDaySpecification feeForTimeOfDay)
     {
-        this.specifications.feeForTimeOfDay = feeForTimeOfDay;
+        this.configuration.feeForTimeOfDay = feeForTimeOfDay;
         return this;
     }
 
     public TestCaseBuilder withIsHolidaySpecification(Predicate<Day> isTollFreeDay)
     {
-        this.specifications.isHoliday = isTollFreeDay;
+        this.configuration.isHoliday = isTollFreeDay;
         return this;
     }
 
     public TestCaseBuilder withIsTollFreeVehicleSpecification(Predicate<Vehicle> isTollFreeVehicle)
     {
-        this.specifications.isTollFreeVehicle = isTollFreeVehicle;
+        this.configuration.isTollFreeVehicle = isTollFreeVehicle;
         return this;
     }
 
     public TestCaseBuilder withMaxFeePerDay(int x)
     {
-        this.specifications.maxFeePerDay = x;
+        this.configuration.maxFeePerDay = x;
         return this;
     }
 
     public TestCaseBuilder withMinNumMinutesBetweenCharges(int x)
     {
-        this.specifications.minNumMinutesBetweenCharges = x;
+        this.configuration.minNumMinutesBetweenCharges = x;
         return this;
     }
 

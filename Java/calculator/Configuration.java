@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 /**
  * Helper class to keep Toll Calculator specification components
  */
-public final class Specifications implements Cloneable {
+public final class Configuration implements Cloneable {
 
     public FeeForTimeOfDaySpecification feeForTimeOfDay;
     public Predicate<Day> isHoliday;
@@ -19,11 +19,11 @@ public final class Specifications implements Cloneable {
     public int maxFeePerDay;
     public int minNumMinutesBetweenCharges;
 
-    public Specifications(FeeForTimeOfDaySpecification feeForTimeOfDay,
-                          Predicate<Day> isHoliday,
-                          Predicate<Vehicle> isTollFreeVehicle,
-                          int maxFeePerDay,
-                          int minNumMinutesBetweenCharges)
+    public Configuration(FeeForTimeOfDaySpecification feeForTimeOfDay,
+                         Predicate<Day> isHoliday,
+                         Predicate<Vehicle> isTollFreeVehicle,
+                         int maxFeePerDay,
+                         int minNumMinutesBetweenCharges)
     {
         Precondition.isNotNull(feeForTimeOfDay, "feeForTimeOfDay");
         Precondition.isNotNull(isHoliday, "isHoliday");
@@ -36,22 +36,22 @@ public final class Specifications implements Cloneable {
         this.minNumMinutesBetweenCharges = minNumMinutesBetweenCharges;
     }
 
-    public static Specifications newDefault()
+    public static Configuration newDefault()
     {
-        return new Specifications(new DefaultFeeForTimeOfDaySpecification(),
-                                  new HolidaySpecificationFor2013(),
-                                  new DefaultTollFreeVehicles(),
-                                  60,
-                                  60);
+        return new Configuration(new DefaultFeeForTimeOfDaySpecification(),
+                                 new HolidaySpecificationFor2013(),
+                                 new DefaultTollFreeVehicles(),
+                                 60,
+                                 60);
     }
 
     @Override
-    public Specifications clone()
+    public Configuration clone()
     {
-        return new Specifications(feeForTimeOfDay,
-                                  isHoliday,
-                                  isTollFreeVehicle,
-                                  maxFeePerDay,
-                                  minNumMinutesBetweenCharges);
+        return new Configuration(feeForTimeOfDay,
+                                 isHoliday,
+                                 isTollFreeVehicle,
+                                 maxFeePerDay,
+                                 minNumMinutesBetweenCharges);
     }
 }

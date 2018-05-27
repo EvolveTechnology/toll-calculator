@@ -1,13 +1,13 @@
 package test_utils;
 
-import calculator.Specifications;
+import calculator.Configuration;
 import calculator.Vehicle;
 
 public class TestCaseBuilderBase {
     String nameHeader;
     String nameTail;
 
-    Specifications specifications = Specifications.newDefault();
+    Configuration configuration = Configuration.newDefault();
 
     Vehicle actualVehicle;
     int expected;

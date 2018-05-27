@@ -1,6 +1,6 @@
 package test_utils;
 
-import calculator.Specifications;
+import calculator.Configuration;
 import calculator.Vehicle;
 import util.Day;
 import util.TimeOfDay;
@@ -12,16 +12,16 @@ import static test_utils.DateTestDataBuilder.timeOf;
 public class TestCase extends TestCaseBase {
     public final Date actualTime;
 
-    public TestCase(String name, Specifications specifications, Vehicle actualVehicle, Date actualTime, int expected)
+    public TestCase(String name, Configuration configuration, Vehicle actualVehicle, Date actualTime, int expected)
     {
-        super(name, specifications, actualVehicle, expected);
+        super(name, configuration, actualVehicle, expected);
         this.actualTime = actualTime;
     }
 
-    public TestCase(Specifications specifications, Vehicle actualVehicle, Day actualDay, TimeOfDay actualTimeOfDay, int expected)
+    public TestCase(Configuration configuration, Vehicle actualVehicle, Day actualDay, TimeOfDay actualTimeOfDay, int expected)
     {
         this("",
-             specifications,
+             configuration,
              actualVehicle, timeOf(actualDay, actualTimeOfDay),
              expected);
     }
@@ -29,7 +29,7 @@ public class TestCase extends TestCaseBase {
     public TestCase(Vehicle actualVehicle, Day actualDay, TimeOfDay actualTimeOfDay, int expected)
     {
         this("",
-             Specifications.newDefault(),
+             Configuration.newDefault(),
              actualVehicle, timeOf(actualDay, actualTimeOfDay),
              expected);
     }

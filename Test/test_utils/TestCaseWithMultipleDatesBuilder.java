@@ -38,7 +38,7 @@ public class TestCaseWithMultipleDatesBuilder extends TestCaseBuilderBase {
     {
         return new Object[]{
                 new TestCaseWithMultipleDates(name(),
-                                              specifications,
+                                              configuration,
                                               actualVehicle,
                                               actualDates,
                                               expected)
@@ -47,31 +47,31 @@ public class TestCaseWithMultipleDatesBuilder extends TestCaseBuilderBase {
 
     public TestCaseWithMultipleDatesBuilder withFeeForTimeOfDaySpecification(FeeForTimeOfDaySpecification feeForTimeOfDay)
     {
-        this.specifications.feeForTimeOfDay = feeForTimeOfDay;
+        this.configuration.feeForTimeOfDay = feeForTimeOfDay;
         return this;
     }
 
     public TestCaseWithMultipleDatesBuilder withIsHolidaySpecification(Predicate<Day> isTollFreeDay)
     {
-        this.specifications.isHoliday = isTollFreeDay;
+        this.configuration.isHoliday = isTollFreeDay;
         return this;
     }
 
     public TestCaseWithMultipleDatesBuilder withIsTollFreeVehicleSpecification(Predicate<Vehicle> isTollFreeVehicle)
     {
-        this.specifications.isTollFreeVehicle = isTollFreeVehicle;
+        this.configuration.isTollFreeVehicle = isTollFreeVehicle;
         return this;
     }
 
     public TestCaseWithMultipleDatesBuilder withMaxFeePerDay(int x)
     {
-        this.specifications.maxFeePerDay = x;
+        this.configuration.maxFeePerDay = x;
         return this;
     }
 
     public TestCaseWithMultipleDatesBuilder withMinNumMinutesBetweenCharges(int x)
     {
-        this.specifications.minNumMinutesBetweenCharges = x;
+        this.configuration.minNumMinutesBetweenCharges = x;
         return this;
     }
 

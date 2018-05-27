@@ -9,31 +9,31 @@ import java.util.stream.Collectors;
 
 public class TollCalculator {
 
-    private final Specifications specifications;
+    private final Configuration configuration;
 
-    public TollCalculator(Specifications specifications)
+    public TollCalculator(Configuration configuration)
     {
-        Precondition.isNotNull(specifications, "specifications");
+        Precondition.isNotNull(configuration, "configuration");
 
-        this.specifications = specifications.clone();
+        this.configuration = configuration.clone();
     }
 
     public TollCalculator()
     {
-        this(Specifications.newDefault());
+        this(Configuration.newDefault());
     }
 
     /**
      * Calculate the total toll fee for one day
      *
      * @param vehicle - the vehicle
-     * @param dates   - date and time of all passes on one day
+     * @param dates   - date and time of all passes on one day in ascending order
      * @return - the total toll fee for that day
      */
     public int getTollFee(Vehicle vehicle, Date... dates)
     {
         int unlimitedFee = getUnlimitedFee(vehicle, dates);
-        return Integer.min(unlimitedFee, specifications.maxFeePerDay);
+        return Integer.min(unlimitedFee, configuration.maxFeePerDay);
     }
 
     public int getTollFee(Date date, Vehicle vehicle)
@@ -74,24 +74,24 @@ public class TollCalculator {
         long diffInMillis = date.getTime() - intervalStartMillis;
         long diffInMinutes = TimeUnit.MINUTES.convert(diffInMillis, TimeUnit.MILLISECONDS);
 
-        return diffInMinutes <= specifications.minNumMinutesBetweenCharges;
+        return diffInMinutes <= configuration.minNumMinutesBetweenCharges;
     }
 
     private int getFeeForTimeOfDay(Calendar dateTime)
     {
         int hour = dateTime.get(Calendar.HOUR_OF_DAY);
         int minute = dateTime.get(Calendar.MINUTE);
-        return specifications.feeForTimeOfDay.feeFor(hour, minute);
+        return configuration.feeForTimeOfDay.feeFor(hour, minute);
     }
 
     private boolean isTollFreeVehicle(Vehicle vehicle)
     {
-        return specifications.isTollFreeVehicle.test(vehicle);
+        return configuration.isTollFreeVehicle.test(vehicle);
     }
 
     private boolean isTollFreeDate(Calendar dateTime)
     {
-        return isWeekend(dateTime) || specifications.isHoliday.test(new Day(dateTime));
+        return isWeekend(dateTime) || configuration.isHoliday.test(new Day(dateTime));
     }
 
     private boolean isWeekend(Calendar dateTime)
@@ -106,5 +106,4 @@ public class TollCalculator {
         calendar.setTime(date);
         return calendar;
     }
-
 }

@@ -337,7 +337,7 @@ public class TollCalculatorTest {
 
     private void check(TestCase testCase)
     {
-        TollCalculator calculator = new TollCalculator(testCase.specifications);
+        TollCalculator calculator = new TollCalculator(testCase.configuration);
 
         Assert.assertEquals(
                 calculator.getTollFee(testCase.actualTime, testCase.actualVehicle),
@@ -351,7 +351,7 @@ public class TollCalculatorTest {
 
     private void check(TestCaseWithMultipleDates testCase)
     {
-        TollCalculator calculator = new TollCalculator(testCase.specifications);
+        TollCalculator calculator = new TollCalculator(testCase.configuration);
 
         Assert.assertEquals(calculator.getTollFee(testCase.actualVehicle, testCase.actualTimes),
                             testCase.expected,
