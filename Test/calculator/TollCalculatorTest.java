@@ -32,22 +32,24 @@ public class TollCalculatorTest {
 
         return new Object[][]{
                 caseBuilder
-                        .withDay(A_SATURDAY)
+                        .withNameHeader("non-free vehicle")
                         .withVehicle(A_NON_FREE_VEHICLE)
-                        .named("saturday / non-free Vehicle")
-                ,
-                caseBuilder
-                        .withVehicle(A_FREE_VEHICLE)
-                        .named("saturday / free Vehicle")
+                        .withDay(A_SATURDAY)
+                        .named("saturday")
                 ,
                 caseBuilder
                         .withDay(A_SUNDAY)
-                        .withVehicle(A_NON_FREE_VEHICLE)
-                        .named("sunday / non-free Vehicle")
+                        .named("sunday")
                 ,
                 caseBuilder
+                        .withNameHeader("free vehicle")
                         .withVehicle(A_FREE_VEHICLE)
-                        .named("sunday / free Vehicle")
+                        .withDay(A_SATURDAY)
+                        .named("saturday")
+                ,
+                caseBuilder
+                        .withDay(A_SUNDAY)
+                        .named("sunday")
                 ,
         };
     }
