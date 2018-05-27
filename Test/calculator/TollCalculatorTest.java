@@ -112,36 +112,6 @@ public class TollCalculatorTest {
         );
     }
 
-    @Test(dataProvider = "test_fees_of_date_with_fee_and_non_free_vehicle_cases")
-    public void WHEN_date_is_non_free_THEN_a_non_free_vehicle_SHOULD_be_charged(TestCase testCase) {
-        check(testCase);
-    }
-
-    @DataProvider(name = "test_fees_of_date_with_fee_and_non_free_vehicle_cases")
-    public Object[][] test_fees_of_date_with_fee_and_non_free_vehicle_cases() {
-        TestCaseBuilder caseBuilder = TestCaseBuilder.newWithoutHeader()
-                                                     .withDay(DAY_WITH_FEE)
-                                                     .withVehicle(A_NON_FREE_VEHICLE);
-
-        return new Object[][]{
-                caseBuilder
-                        .withName("Fee is 8")
-                        .withTime(FEE_IS_8)
-                        .withExpectedFee(8)
-                        .build2(),
-                caseBuilder
-                        .withName("Fee is 18")
-                        .withTime(FEE_IS_18)
-                        .withExpectedFee(18)
-                        .build2(),
-                caseBuilder
-                        .withName("Fee is 0")
-                        .withTime(FEE_IS_0)
-                        .withExpectedFee(0)
-                        .build2(),
-        };
-    }
-
     @Test
     public void WHEN_multiple_times_THEN_fees_SHOULD_be_summed() {
         // GIVEN //
