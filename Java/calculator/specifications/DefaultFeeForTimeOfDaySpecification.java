@@ -1,4 +1,6 @@
-package calculator;
+package calculator.specifications;
+
+import calculator.FeeForTimeOfDaySpecification;
 
 /**
  * Gives the fee for a given time of day.

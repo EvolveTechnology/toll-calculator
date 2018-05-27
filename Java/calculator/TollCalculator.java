@@ -1,5 +1,8 @@
 package calculator;
 
+import calculator.specifications.DefaultFeeForTimeOfDaySpecification;
+import calculator.specifications.DefaultTollFreeVehicles;
+import calculator.specifications.HolidaySpecificationFor2013;
 import util.Day;
 
 import java.util.Calendar;

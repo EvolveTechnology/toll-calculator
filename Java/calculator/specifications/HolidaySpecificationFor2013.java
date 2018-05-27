@@ -1,5 +1,6 @@
-package calculator;
+package calculator.specifications;
 
+import calculator.HolidaySpecification;
 import util.Day;
 
 import java.util.Calendar;

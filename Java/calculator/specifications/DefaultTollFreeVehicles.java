@@ -1,4 +1,7 @@
-package calculator;
+package calculator.specifications;
+
+import calculator.Vehicle;
+import calculator.Vehicles;
 
 import java.util.Arrays;
 import java.util.HashSet;
