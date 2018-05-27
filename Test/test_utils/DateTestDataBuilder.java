@@ -10,10 +10,6 @@ import java.util.GregorianCalendar;
 public class DateTestDataBuilder {
 
 
-    public static final Day
-            A_SATURDAY = new Day(2018, Calendar.MAY, 19),
-            A_SUNDAY = new Day(2018, Calendar.MAY, 20);
-
     int year;
     int month;
     int dayOfMonth;

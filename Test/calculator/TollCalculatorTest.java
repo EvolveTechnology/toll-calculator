@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static test_utils.DateTestDataBuilder.A_SATURDAY;
-import static test_utils.DateTestDataBuilder.A_SUNDAY;
 import static test_utils.TestData.*;
 
 public class TollCalculatorTest {
@@ -43,21 +41,21 @@ public class TollCalculatorTest {
                 caseBuilder
                         .withNameHeader("non-free vehicle")
                         .withVehicle(non_toll_free_vehicle)
-                        .withDay(A_SATURDAY)
+                        .withDay(SATURDAY)
                         .named("saturday")
                 ,
                 caseBuilder
-                        .withDay(A_SUNDAY)
+                        .withDay(SUNDAY)
                         .named("sunday")
                 ,
                 caseBuilder
                         .withNameHeader("free vehicle")
                         .withVehicle(toll_free_vehicle)
-                        .withDay(A_SATURDAY)
+                        .withDay(SATURDAY)
                         .named("saturday")
                 ,
                 caseBuilder
-                        .withDay(A_SUNDAY)
+                        .withDay(SUNDAY)
                         .named("sunday")
                 ,
         };
