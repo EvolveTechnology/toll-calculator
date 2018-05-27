@@ -18,22 +18,23 @@ public class TestCaseWithMultipleDatesBuilder extends TestCaseBuilderBase {
 
     public static TestCaseWithMultipleDatesBuilder newWithHeader(String nameHeader) {
         return new TestCaseWithMultipleDatesBuilder(nameHeader, null,
-                TestData.A_NON_FREE_VEHICLE,
-                -1);
+                                                    TestData.A_NON_FREE_VEHICLE,
+                                                    -1);
     }
 
     public static TestCaseWithMultipleDatesBuilder newWithoutHeader() {
         return new TestCaseWithMultipleDatesBuilder(null, null,
-                TestData.A_NON_FREE_VEHICLE,
-                -1);
+                                                    TestData.A_NON_FREE_VEHICLE,
+                                                    -1);
     }
 
     public Object[] build(Date[] actualDates) {
         return new Object[]{
                 new TestCaseWithMultipleDates(name(),
-                        actualDates,
-                        actualVehicle,
-                        expected)
+                                              specifications,
+                                              actualVehicle,
+                                              actualDates,
+                                              expected)
         };
     }
 

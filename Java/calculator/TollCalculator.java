@@ -1,38 +1,25 @@
 package calculator;
 
-import calculator.specifications.DefaultFeeForTimeOfDaySpecification;
-import calculator.specifications.DefaultTollFreeVehicles;
-import calculator.specifications.HolidaySpecificationFor2013;
 import util.Day;
+import util.Precondition;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
 
 public class TollCalculator {
 
-    private final FeeForTimeOfDaySpecification feeForTimeOfDaySpecification;
-    private final Predicate<Day> isHolidaySpecification;
-    private final Predicate<Vehicle> isTollFreeVehicleSpecification;
+    private final Specifications specifications;
 
-    public TollCalculator(FeeForTimeOfDaySpecification feeForTimeOfDaySpecification,
-                          Predicate<Day> isHolidaySpecification,
-                          Predicate<Vehicle> isTollFreeVehicleSpecification) {
-        preconditionIsNotNull(feeForTimeOfDaySpecification, "feeForTimeOfDaySpecification");
-        preconditionIsNotNull(isHolidaySpecification, "isHolidaySpecification");
-        preconditionIsNotNull(isTollFreeVehicleSpecification, "isTollFreeVehicleSpecification");
+    public TollCalculator(Specifications specifications) {
+        Precondition.isNotNull(specifications, "specifications");
 
-        this.feeForTimeOfDaySpecification = feeForTimeOfDaySpecification;
-        this.isHolidaySpecification = isHolidaySpecification;
-        this.isTollFreeVehicleSpecification = isTollFreeVehicleSpecification;
+        this.specifications = specifications;
     }
 
     public TollCalculator() {
-        this(new DefaultFeeForTimeOfDaySpecification(),
-                new HolidaySpecificationFor2013(),
-                new DefaultTollFreeVehicles());
+        this(Specifications.newDefault());
     }
 
     /**
@@ -78,15 +65,15 @@ public class TollCalculator {
     private int getFeeForTimeOfDay(Calendar dateTime) {
         int hour = dateTime.get(Calendar.HOUR_OF_DAY);
         int minute = dateTime.get(Calendar.MINUTE);
-        return feeForTimeOfDaySpecification.feeFor(hour, minute);
+        return specifications.feeForTimeOfDay.feeFor(hour, minute);
     }
 
     private boolean isTollFreeVehicle(Vehicle vehicle) {
-        return isTollFreeVehicleSpecification.test(vehicle);
+        return specifications.isTollFreeVehicle.test(vehicle);
     }
 
     private boolean isTollFreeDate(Calendar dateTime) {
-        return isWeekend(dateTime) || isHolidaySpecification.test(new Day(dateTime));
+        return isWeekend(dateTime) || specifications.isHoliday.test(new Day(dateTime));
     }
 
     private boolean isWeekend(Calendar dateTime) {
@@ -100,9 +87,4 @@ public class TollCalculator {
         return calendar;
     }
 
-    private static void preconditionIsNotNull(Object o, String oName) {
-        if (o == null) {
-            throw new NullPointerException(oName);
-        }
-    }
 }

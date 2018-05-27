@@ -73,18 +73,18 @@ public class TollCalculatorTest {
 
     @Test
     public void WHEN_date_is_non_free_THEN_a_free_vehicle_SHOULD_not_be_charged() {
-        check(new TestCase(DAY_WITH_FEE, FEE_IS_8,
-                A_FREE_VEHICLE,
-                0));
+        check(new TestCase(A_FREE_VEHICLE,
+                           DAY_WITH_FEE, FEE_IS_8,
+                           0));
 
     }
 
     @Test
     public void WHEN_vehicle_is_null_THEN_it_is_not_free() {
         Vehicle nullVehicle = null;
-        check(new TestCase(DAY_WITH_FEE, FEE_IS_8,
-                nullVehicle,
-                8));
+        check(new TestCase(nullVehicle,
+                           DAY_WITH_FEE, FEE_IS_8,
+                           8));
 
     }
 
@@ -129,8 +129,8 @@ public class TollCalculatorTest {
         // WHEN  //
 
         int actual = calculator.getTollFee(A_NON_FREE_VEHICLE,
-                dateBuilder.withTime(FEE_IS_8).build(),
-                dateBuilder.withTime(FEE_IS_18).build());
+                                           dateBuilder.withTime(FEE_IS_8).build(),
+                                           dateBuilder.withTime(FEE_IS_18).build());
 
         // THEN //
 
@@ -189,16 +189,16 @@ public class TollCalculatorTest {
                 "Method for single date: " + testCase.name);
 
         Assert.assertEquals(calculator.getTollFee(testCase.actualVehicle, testCase.actualTime),
-                testCase.expected,
-                "Method for multiple dates: " + testCase.name);
+                            testCase.expected,
+                            "Method for multiple dates: " + testCase.name);
     }
 
     private void check(TestCaseWithMultipleDates testCase) {
         TollCalculator calculator = new TollCalculator();
 
         Assert.assertEquals(calculator.getTollFee(testCase.actualVehicle, testCase.actualTimes),
-                testCase.expected,
-                testCase.name);
+                            testCase.expected,
+                            testCase.name);
     }
 
 }

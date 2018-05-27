@@ -24,23 +24,23 @@ public class TestCaseBuilder extends TestCaseBuilderBase {
 
     public static TestCaseBuilder newWithHeader(String nameHeader) {
         return new TestCaseBuilder(nameHeader, null,
-                DateTestDataBuilder.ofDay(2013, Calendar.JANUARY, 1),
-                TestData.A_NON_FREE_VEHICLE,
-                -1);
+                                   DateTestDataBuilder.ofDay(2013, Calendar.JANUARY, 1),
+                                   TestData.A_NON_FREE_VEHICLE,
+                                   -1);
     }
 
     public static TestCaseBuilder newWithoutHeader() {
         return new TestCaseBuilder(null, null,
-                DateTestDataBuilder.ofDay(2013, Calendar.JANUARY, 1),
-                TestData.A_NON_FREE_VEHICLE,
-                -1);
+                                   DateTestDataBuilder.ofDay(2013, Calendar.JANUARY, 1),
+                                   TestData.A_NON_FREE_VEHICLE,
+                                   -1);
     }
 
     public TestCase build() {
         return new TestCase(name(),
-                actualTime.build(),
-                actualVehicle,
-                expected);
+                            specifications,
+                            actualVehicle, actualTime.build(),
+                            expected);
     }
 
     public Object[] build2() {
