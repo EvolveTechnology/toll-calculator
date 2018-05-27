@@ -46,7 +46,7 @@ public final class Specifications implements Cloneable {
     }
 
     @Override
-    protected Specifications clone()
+    public Specifications clone()
     {
         return new Specifications(feeForTimeOfDay,
                                   isHoliday,

@@ -225,6 +225,46 @@ public class TollCalculatorTest {
         };
     }
 
+    @Test(dataProvider = "WHEN_sum_of_individual_charges_exceed_maximum_charge_THEN_result_SHOULD_be_maximum_change_cases")
+    public void WHEN_sum_of_individual_charges_exceed_maximum_charge_THEN_result_SHOULD_be_maximum_change(TestCaseWithMultipleDates testCase)
+    {
+        check(testCase);
+    }
+
+    @DataProvider
+    public Object[][] WHEN_sum_of_individual_charges_exceed_maximum_charge_THEN_result_SHOULD_be_maximum_change_cases()
+    {
+        TestCaseWithMultipleDatesBuilder caseBuilder =
+                TestCaseWithMultipleDatesBuilder.newWithoutHeader()
+                                                .withIsHolidaySpecification(holidayIsConstant(false))
+                                                .withIsTollFreeVehicleSpecification(vehicleIsTollFreeIsConstant(false))
+                                                .withVehicle(RANDOM_VEHICLE)
+                                                .withMinNumMinutesBetweenCharges(1)
+                                                .withFeeForTimeOfDaySpecification(feeIsSameAsMinute())
+                                                .withMaxFeePerDay(20);
+
+        DateTestDataBuilder dateBuilder =
+                new DateTestDataBuilder(MONDAY)
+                        .withTime(NOON);
+
+        return new Object[][]{
+                caseBuilder
+                        .withName("Sum that is higher than maximum")
+                        .withExpectedFee(20)
+                        .build(dateBuilder.withMinute(5).build(),
+                               dateBuilder.withNextHour()
+                                          .withMinute(20).build(),
+                               dateBuilder.withMinute(30).build())
+                ,
+                caseBuilder
+                        .withName("Single charge that is higher than maximum")
+                        .withFeeForTimeOfDaySpecification(constantFeeOf(1000))
+                        .withExpectedFee(20)
+                        .build(dateBuilder.build())
+                ,
+        };
+    }
+
     private void check(TestCase testCase)
     {
         TollCalculator calculator = new TollCalculator(testCase.specifications);

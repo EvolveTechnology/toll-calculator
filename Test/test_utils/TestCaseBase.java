@@ -15,7 +15,7 @@ public class TestCaseBase {
                         int expected)
     {
         this.name = name;
-        this.specifications = specifications;
+        this.specifications = specifications.clone();
         this.actualVehicle = actualVehicle;
         this.expected = expected;
     }
