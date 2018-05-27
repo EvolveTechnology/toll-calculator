@@ -12,7 +12,8 @@ public class TestCaseBase {
     public TestCaseBase(String name,
                         Specifications specifications,
                         Vehicle actualVehicle,
-                        int expected) {
+                        int expected)
+    {
         this.name = name;
         this.specifications = specifications;
         this.actualVehicle = actualVehicle;
@@ -20,7 +21,8 @@ public class TestCaseBase {
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return name;
     }
 }

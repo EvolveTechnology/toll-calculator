@@ -19,7 +19,8 @@ public final class Specifications implements Cloneable {
 
     public Specifications(FeeForTimeOfDaySpecification feeForTimeOfDay,
                           Predicate<Day> isHoliday,
-                          Predicate<Vehicle> isTollFreeVehicle) {
+                          Predicate<Vehicle> isTollFreeVehicle)
+    {
         Precondition.isNotNull(feeForTimeOfDay, "feeForTimeOfDay");
         Precondition.isNotNull(isHoliday, "isHoliday");
         Precondition.isNotNull(isTollFreeVehicle, "isTollFreeVehicle");
@@ -29,14 +30,16 @@ public final class Specifications implements Cloneable {
         this.isTollFreeVehicle = isTollFreeVehicle;
     }
 
-    public static Specifications newDefault() {
+    public static Specifications newDefault()
+    {
         return new Specifications(new DefaultFeeForTimeOfDaySpecification(),
                                   new HolidaySpecificationFor2013(),
                                   new DefaultTollFreeVehicles());
     }
 
     @Override
-    protected Specifications clone() {
+    protected Specifications clone()
+    {
         return new Specifications(feeForTimeOfDay,
                                   isHoliday,
                                   isTollFreeVehicle);

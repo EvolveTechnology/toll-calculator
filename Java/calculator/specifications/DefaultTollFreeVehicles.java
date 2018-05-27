@@ -21,7 +21,8 @@ public class DefaultTollFreeVehicles implements Predicate<Vehicle> {
             ));
 
     @Override
-    public boolean test(Vehicle vehicle) {
+    public boolean test(Vehicle vehicle)
+    {
         return vehicle != null && TOLL_FREE_TYPES.contains(vehicle.getType());
     }
 }

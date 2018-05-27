@@ -16,12 +16,14 @@ import static test_utils.TestData.*;
 public class TollCalculatorTest {
 
     @Test(dataProvider = "weekend_cases")
-    public void weekend_SHOULD_be_free_for_any_vehicle(TestCase testCase) {
+    public void weekend_SHOULD_be_free_for_any_vehicle(TestCase testCase)
+    {
         check(testCase);
     }
 
     @DataProvider(name = "weekend_cases")
-    public Object[][] weekend_cases() {
+    public Object[][] weekend_cases()
+    {
         TestCaseBuilder caseBuilder =
                 TestCaseBuilder.newWithoutHeader()
                                .withFeeForTimeOfDaySpecification(constantFeeOf(1))
@@ -54,12 +56,14 @@ public class TollCalculatorTest {
     }
 
     @Test(dataProvider = "holiday_cases")
-    public void holiday_SHOULD_be_free_for_any_vehicle(TestCase testCase) {
+    public void holiday_SHOULD_be_free_for_any_vehicle(TestCase testCase)
+    {
         check(testCase);
     }
 
     @DataProvider(name = "holiday_cases")
-    public Iterator<Object[]> holiday_cases() {
+    public Iterator<Object[]> holiday_cases()
+    {
         TestCaseBuilder caseBuilder = TestCaseBuilder.newWithoutHeader()
                                                      .withIsHolidaySpecification(holidayIsConstant(true))
                                                      .withFeeForTimeOfDaySpecification(constantFeeOf(1))
@@ -92,12 +96,14 @@ public class TollCalculatorTest {
     }
 
     @Test(dataProvider = "WHEN_date_is_non_free_THEN_a_free_vehicle_SHOULD_not_be_charged_cases")
-    public void WHEN_date_is_non_free_THEN_a_free_vehicle_SHOULD_not_be_charged(TestCase testCase) {
+    public void WHEN_date_is_non_free_THEN_a_free_vehicle_SHOULD_not_be_charged(TestCase testCase)
+    {
         check(testCase);
     }
 
     @DataProvider(name = "WHEN_date_is_non_free_THEN_a_free_vehicle_SHOULD_not_be_charged_cases")
-    public Iterator<Object[]> WHEN_date_is_non_free_THEN_a_free_vehicle_SHOULD_not_be_charged_cases() {
+    public Iterator<Object[]> WHEN_date_is_non_free_THEN_a_free_vehicle_SHOULD_not_be_charged_cases()
+    {
         TestCaseBuilder caseBuilder = TestCaseBuilder.newWithoutHeader()
                                                      .withIsHolidaySpecification(holidayIsConstant(false))
                                                      .withFeeForTimeOfDaySpecification(constantFeeOf(1))
@@ -113,7 +119,8 @@ public class TollCalculatorTest {
     }
 
     @Test
-    public void WHEN_multiple_times_THEN_fees_SHOULD_be_summed() {
+    public void WHEN_multiple_times_THEN_fees_SHOULD_be_summed()
+    {
         // GIVEN //
 
         DateTestDataBuilder dateBuilder = new DateTestDataBuilder(DAY_WITH_FEE);
@@ -132,12 +139,14 @@ public class TollCalculatorTest {
     }
 
     @Test(dataProvider = "vehicle_should_only_be_charged_once_an_hour_cases")
-    public void a_vehicle_should_only_be_charged_once_an_hour(TestCaseWithMultipleDates testCase) {
+    public void a_vehicle_should_only_be_charged_once_an_hour(TestCaseWithMultipleDates testCase)
+    {
         check(testCase);
     }
 
     @DataProvider(name = "vehicle_should_only_be_charged_once_an_hour_cases")
-    public Object[][] vehicle_should_only_be_charged_once_an_hour_cases() {
+    public Object[][] vehicle_should_only_be_charged_once_an_hour_cases()
+    {
         DateTestDataBuilder dateBuilder = new DateTestDataBuilder(DAY_WITH_FEE);
 
         TestCaseWithMultipleDatesBuilder caseBuilder = TestCaseWithMultipleDatesBuilder.newWithoutHeader()
@@ -174,7 +183,8 @@ public class TollCalculatorTest {
     }
 
 
-    private void check(TestCase testCase) {
+    private void check(TestCase testCase)
+    {
         TollCalculator calculator = new TollCalculator();
 
         Assert.assertEquals(
@@ -187,7 +197,8 @@ public class TollCalculatorTest {
                             "Method for multiple dates: " + testCase.name);
     }
 
-    private void check(TestCaseWithMultipleDates testCase) {
+    private void check(TestCaseWithMultipleDates testCase)
+    {
         TollCalculator calculator = new TollCalculator();
 
         Assert.assertEquals(calculator.getTollFee(testCase.actualVehicle, testCase.actualTimes),
@@ -195,7 +206,8 @@ public class TollCalculatorTest {
                             testCase.name);
     }
 
-    private static <T, U> Iterator<U> map(Collection<T> collection, Function<T, U> mapper) {
+    private static <T, U> Iterator<U> map(Collection<T> collection, Function<T, U> mapper)
+    {
         return collection
                 .stream()
                 .map(mapper)

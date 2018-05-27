@@ -11,7 +11,8 @@ public class DefaultFeeForTimeOfDaySpecification implements FeeForTimeOfDaySpeci
      * @param minute in [0,59]
      * @return >= 0
      */
-    public int feeFor(int hour, int minute) {
+    public int feeFor(int hour, int minute)
+    {
         if (hour == 6 && minute >= 0 && minute <= 29) return 8;
         else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
         else if (hour == 7 && minute >= 0 && minute <= 59) return 18;

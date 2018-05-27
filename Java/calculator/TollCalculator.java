@@ -12,13 +12,15 @@ public class TollCalculator {
 
     private final Specifications specifications;
 
-    public TollCalculator(Specifications specifications) {
+    public TollCalculator(Specifications specifications)
+    {
         Precondition.isNotNull(specifications, "specifications");
 
         this.specifications = specifications;
     }
 
-    public TollCalculator() {
+    public TollCalculator()
+    {
         this(Specifications.newDefault());
     }
 
@@ -29,7 +31,8 @@ public class TollCalculator {
      * @param dates   - date and time of all passes on one day
      * @return - the total toll fee for that day
      */
-    public int getTollFee(Vehicle vehicle, Date... dates) {
+    public int getTollFee(Vehicle vehicle, Date... dates)
+    {
         Date intervalStart = dates[0];
         int totalFee = 0;
         for (Date date : dates) {
@@ -52,7 +55,8 @@ public class TollCalculator {
         return totalFee;
     }
 
-    public int getTollFee(final Date date, Vehicle vehicle) {
+    public int getTollFee(final Date date, Vehicle vehicle)
+    {
         if (isTollFreeVehicle(vehicle)) return 0;
 
         Calendar dateTime = dateTimeOf(date);
@@ -62,26 +66,31 @@ public class TollCalculator {
         return getFeeForTimeOfDay(dateTime);
     }
 
-    private int getFeeForTimeOfDay(Calendar dateTime) {
+    private int getFeeForTimeOfDay(Calendar dateTime)
+    {
         int hour = dateTime.get(Calendar.HOUR_OF_DAY);
         int minute = dateTime.get(Calendar.MINUTE);
         return specifications.feeForTimeOfDay.feeFor(hour, minute);
     }
 
-    private boolean isTollFreeVehicle(Vehicle vehicle) {
+    private boolean isTollFreeVehicle(Vehicle vehicle)
+    {
         return specifications.isTollFreeVehicle.test(vehicle);
     }
 
-    private boolean isTollFreeDate(Calendar dateTime) {
+    private boolean isTollFreeDate(Calendar dateTime)
+    {
         return isWeekend(dateTime) || specifications.isHoliday.test(new Day(dateTime));
     }
 
-    private boolean isWeekend(Calendar dateTime) {
+    private boolean isWeekend(Calendar dateTime)
+    {
         int dayOfWeek = dateTime.get(Calendar.DAY_OF_WEEK);
         return dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY;
     }
 
-    private static Calendar dateTimeOf(Date date) {
+    private static Calendar dateTimeOf(Date date)
+    {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);
         return calendar;

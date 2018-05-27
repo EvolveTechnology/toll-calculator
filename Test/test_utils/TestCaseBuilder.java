@@ -16,7 +16,8 @@ public class TestCaseBuilder extends TestCaseBuilderBase {
                            String nameTail,
                            DateTestDataBuilder actualTime,
                            Vehicle actualVehicle,
-                           int expected) {
+                           int expected)
+    {
         this.nameHeader = nameHeader;
         this.nameTail = nameTail;
         this.actualTime = actualTime;
@@ -24,42 +25,49 @@ public class TestCaseBuilder extends TestCaseBuilderBase {
         this.expected = expected;
     }
 
-    public static TestCaseBuilder newWithHeader(String nameHeader) {
+    public static TestCaseBuilder newWithHeader(String nameHeader)
+    {
         return new TestCaseBuilder(nameHeader, null,
                                    DateTestDataBuilder.ofDay(2013, Calendar.JANUARY, 1),
                                    TestData.A_NON_FREE_VEHICLE,
                                    -1);
     }
 
-    public static TestCaseBuilder newWithoutHeader() {
+    public static TestCaseBuilder newWithoutHeader()
+    {
         return new TestCaseBuilder(null, null,
                                    DateTestDataBuilder.ofDay(2013, Calendar.JANUARY, 1),
                                    TestData.A_NON_FREE_VEHICLE,
                                    -1);
     }
 
-    public TestCase build() {
+    public TestCase build()
+    {
         return new TestCase(name(),
                             specifications,
                             actualVehicle, actualTime.build(),
                             expected);
     }
 
-    public Object[] build2() {
+    public Object[] build2()
+    {
         return new Object[]{build()};
     }
 
-    public Object[] named(String name) {
+    public Object[] named(String name)
+    {
         withName(name);
         return build2();
     }
 
-    public TestCaseBuilder withNameHeader(String nameHeader) {
+    public TestCaseBuilder withNameHeader(String nameHeader)
+    {
         this.nameHeader = nameHeader;
         return this;
     }
 
-    public TestCaseBuilder withName(String nameTail) {
+    public TestCaseBuilder withName(String nameTail)
+    {
         this.nameTail = nameTail;
         return this;
     }
@@ -67,51 +75,60 @@ public class TestCaseBuilder extends TestCaseBuilderBase {
     public Predicate<Day> isHoliday;
     public Predicate<Vehicle> isTollFreeVehicle;
 
-    public TestCaseBuilder withFeeForTimeOfDaySpecification(FeeForTimeOfDaySpecification feeForTimeOfDay) {
+    public TestCaseBuilder withFeeForTimeOfDaySpecification(FeeForTimeOfDaySpecification feeForTimeOfDay)
+    {
         this.specifications.feeForTimeOfDay = feeForTimeOfDay;
         return this;
     }
 
-    public TestCaseBuilder withIsHolidaySpecification(Predicate<Day> isTollFreeDay) {
+    public TestCaseBuilder withIsHolidaySpecification(Predicate<Day> isTollFreeDay)
+    {
         this.specifications.isHoliday = isTollFreeDay;
         return this;
     }
 
-    public TestCaseBuilder withIsTollFreeVehicleSpecification(Predicate<Vehicle> isTollFreeVehicle) {
+    public TestCaseBuilder withIsTollFreeVehicleSpecification(Predicate<Vehicle> isTollFreeVehicle)
+    {
         this.specifications.isTollFreeVehicle = isTollFreeVehicle;
         return this;
     }
 
     public TestCaseBuilder withDay(int year,
                                    int month,
-                                   int dayOfMonth) {
+                                   int dayOfMonth)
+    {
         this.actualTime.withDay(year, month, dayOfMonth);
         return this;
     }
 
-    public TestCaseBuilder withDay(Day day) {
+    public TestCaseBuilder withDay(Day day)
+    {
         this.actualTime.withDay(day);
         return this;
     }
 
     public TestCaseBuilder withTime(int hourOfDay,
                                     int minute,
-                                    int second) {
+                                    int second)
+    {
         this.actualTime.withTime(hourOfDay, minute, second);
         return this;
     }
 
-    public TestCaseBuilder withTime(TimeOfDay timeOfDay) {
+    public TestCaseBuilder withTime(TimeOfDay timeOfDay)
+    {
         this.actualTime.withTime(timeOfDay);
         return this;
     }
 
-    public TestCaseBuilder withVehicle(Vehicle vehicle) {
+    public TestCaseBuilder withVehicle(Vehicle vehicle)
+    {
         this.actualVehicle = vehicle;
         return this;
     }
 
-    public TestCaseBuilder withExpectedFee(int expected) {
+    public TestCaseBuilder withExpectedFee(int expected)
+    {
         this.expected = expected;
         return this;
     }

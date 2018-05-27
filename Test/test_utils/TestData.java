@@ -48,19 +48,23 @@ public class TestData {
             FEE_IS_18 = new TimeOfDay(7, 30, 10),
             FEE_IS_0 = new TimeOfDay(19, 0, 0);
 
-    public static FeeForTimeOfDaySpecification constantFeeOf(int fee) {
+    public static FeeForTimeOfDaySpecification constantFeeOf(int fee)
+    {
         return new FeeForTimeOfDaySpecification() {
             @Override
-            public int feeFor(int hour, int minute) {
+            public int feeFor(int hour, int minute)
+            {
                 return fee;
             }
         };
     }
 
-    public static Predicate<Day> holidayIsConstant(boolean isHoliday) {
+    public static Predicate<Day> holidayIsConstant(boolean isHoliday)
+    {
         return new Predicate<Day>() {
             @Override
-            public boolean test(Day day) {
+            public boolean test(Day day)
+            {
                 return isHoliday;
             }
         };

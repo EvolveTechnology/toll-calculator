@@ -21,7 +21,8 @@ public class DateTestDataBuilder {
     int minute;
     int second;
 
-    public DateTestDataBuilder(int year, int month, int dayOfMonth, int hourOfDay, int minute, int second) {
+    public DateTestDataBuilder(int year, int month, int dayOfMonth, int hourOfDay, int minute, int second)
+    {
         this.year = year;
         this.month = month;
         this.dayOfMonth = dayOfMonth;
@@ -30,12 +31,14 @@ public class DateTestDataBuilder {
         this.second = second;
     }
 
-    public DateTestDataBuilder(Day day, TimeOfDay timeOfDay) {
+    public DateTestDataBuilder(Day day, TimeOfDay timeOfDay)
+    {
         this(day.year, day.month, day.dayOfMonth,
-                timeOfDay.hour, timeOfDay.minute, timeOfDay.second);
+             timeOfDay.hour, timeOfDay.minute, timeOfDay.second);
     }
 
-    public DateTestDataBuilder(Day day) {
+    public DateTestDataBuilder(Day day)
+    {
         this(day, TimeOfDay.midnight());
     }
 
@@ -44,75 +47,88 @@ public class DateTestDataBuilder {
                               int dayOfMonth,
                               int hourOfDay,
                               int minute,
-                              int second) {
+                              int second)
+    {
         return new DateTestDataBuilder(year, month, dayOfMonth, hourOfDay, minute, second).build();
     }
 
-    public static Date timeOf(Day day, TimeOfDay timeOfDay) {
+    public static Date timeOf(Day day, TimeOfDay timeOfDay)
+    {
         return timeOf(day.year, day.month, day.dayOfMonth,
-                timeOfDay.hour, timeOfDay.minute, timeOfDay.second);
+                      timeOfDay.hour, timeOfDay.minute, timeOfDay.second);
     }
 
     public static Date timeOf(Day day,
                               int hourOfDay,
                               int minute,
-                              int second) {
+                              int second)
+    {
         return new DateTestDataBuilder(day.year, day.month, day.dayOfMonth,
-                hourOfDay, minute, second).build();
+                                       hourOfDay, minute, second).build();
     }
 
     public static DateTestDataBuilder ofDay(int year,
                                             int month,
-                                            int date) {
+                                            int date)
+    {
         return new DateTestDataBuilder(year, month, date, 0, 0, 0);
     }
 
     public DateTestDataBuilder withDay(int year,
                                        int month,
-                                       int dayOfMonth) {
+                                       int dayOfMonth)
+    {
         this.year = year;
         this.month = month;
         this.dayOfMonth = dayOfMonth;
         return this;
     }
 
-    public DateTestDataBuilder withDay(Day day) {
+    public DateTestDataBuilder withDay(Day day)
+    {
         return this.withDay(day.year, day.month, day.dayOfMonth);
     }
 
 
     public DateTestDataBuilder withTime(int hourOfDay,
                                         int minute,
-                                        int second) {
+                                        int second)
+    {
         this.hourOfDay = hourOfDay;
         this.minute = minute;
         this.second = second;
         return this;
     }
 
-    public DateTestDataBuilder withTime(TimeOfDay timeOfDay) {
+    public DateTestDataBuilder withTime(TimeOfDay timeOfDay)
+    {
         return withTime(timeOfDay.hour, timeOfDay.minute, timeOfDay.second);
     }
 
-    public Date buildForTime(TimeOfDay timeOfDay) {
+    public Date buildForTime(TimeOfDay timeOfDay)
+    {
         return withTime(timeOfDay).build();
     }
 
     public Date buildForTime(int hourOfDay,
                              int minute,
-                             int second) {
+                             int second)
+    {
         return withTime(hourOfDay, minute, second).build();
     }
 
-    public static Date aSaturday() {
+    public static Date aSaturday()
+    {
         return timeOf(2018, Calendar.MAY, 19, 10, 20, 30);
     }
 
-    public static Date aSunday() {
+    public static Date aSunday()
+    {
         return timeOf(2018, Calendar.MAY, 20, 10, 20, 30);
     }
 
-    public Date build() {
+    public Date build()
+    {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.clear();
         calendar.set(year, month, dayOfMonth, hourOfDay, minute, second);

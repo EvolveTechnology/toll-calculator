@@ -12,26 +12,30 @@ public class TestCaseWithMultipleDatesBuilder extends TestCaseBuilderBase {
     public TestCaseWithMultipleDatesBuilder(String nameHeader,
                                             String nameTail,
                                             Vehicle actualVehicle,
-                                            int expected) {
+                                            int expected)
+    {
         this.nameHeader = nameHeader;
         this.nameTail = nameTail;
         this.actualVehicle = actualVehicle;
         this.expected = expected;
     }
 
-    public static TestCaseWithMultipleDatesBuilder newWithHeader(String nameHeader) {
+    public static TestCaseWithMultipleDatesBuilder newWithHeader(String nameHeader)
+    {
         return new TestCaseWithMultipleDatesBuilder(nameHeader, null,
                                                     TestData.A_NON_FREE_VEHICLE,
                                                     -1);
     }
 
-    public static TestCaseWithMultipleDatesBuilder newWithoutHeader() {
+    public static TestCaseWithMultipleDatesBuilder newWithoutHeader()
+    {
         return new TestCaseWithMultipleDatesBuilder(null, null,
                                                     TestData.A_NON_FREE_VEHICLE,
                                                     -1);
     }
 
-    public Object[] build(Date[] actualDates) {
+    public Object[] build(Date[] actualDates)
+    {
         return new Object[]{
                 new TestCaseWithMultipleDates(name(),
                                               specifications,
@@ -41,32 +45,38 @@ public class TestCaseWithMultipleDatesBuilder extends TestCaseBuilderBase {
         };
     }
 
-    public TestCaseWithMultipleDatesBuilder withFeeForTimeOfDaySpecification(FeeForTimeOfDaySpecification feeForTimeOfDay) {
+    public TestCaseWithMultipleDatesBuilder withFeeForTimeOfDaySpecification(FeeForTimeOfDaySpecification feeForTimeOfDay)
+    {
         this.specifications.feeForTimeOfDay = feeForTimeOfDay;
         return this;
     }
 
-    public TestCaseWithMultipleDatesBuilder withIsHolidaySpecification(Predicate<Day> isTollFreeDay) {
+    public TestCaseWithMultipleDatesBuilder withIsHolidaySpecification(Predicate<Day> isTollFreeDay)
+    {
         this.specifications.isHoliday = isTollFreeDay;
         return this;
     }
 
-    public TestCaseWithMultipleDatesBuilder withIsTollFreeVehicleSpecification(Predicate<Vehicle> isTollFreeVehicle) {
+    public TestCaseWithMultipleDatesBuilder withIsTollFreeVehicleSpecification(Predicate<Vehicle> isTollFreeVehicle)
+    {
         this.specifications.isTollFreeVehicle = isTollFreeVehicle;
         return this;
     }
 
-    public TestCaseWithMultipleDatesBuilder withName(String nameTail) {
+    public TestCaseWithMultipleDatesBuilder withName(String nameTail)
+    {
         this.nameTail = nameTail;
         return this;
     }
 
-    public TestCaseWithMultipleDatesBuilder withVehicle(Vehicle vehicle) {
+    public TestCaseWithMultipleDatesBuilder withVehicle(Vehicle vehicle)
+    {
         this.actualVehicle = vehicle;
         return this;
     }
 
-    public TestCaseWithMultipleDatesBuilder withExpectedFee(int expected) {
+    public TestCaseWithMultipleDatesBuilder withExpectedFee(int expected)
+    {
         this.expected = expected;
         return this;
     }

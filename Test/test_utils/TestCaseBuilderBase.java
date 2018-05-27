@@ -12,7 +12,8 @@ public class TestCaseBuilderBase {
     Vehicle actualVehicle;
     int expected;
 
-    String name() {
+    String name()
+    {
         if (nameHeader == null) {
             return nameTail;
         } else if (nameTail == null) {

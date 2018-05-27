@@ -12,7 +12,8 @@ public class TestCaseWithMultipleDates extends TestCaseBase {
                                      Specifications specifications,
                                      Vehicle actualVehicle,
                                      Date[] actualTimes,
-                                     int expected) {
+                                     int expected)
+    {
         super(name, specifications, actualVehicle, expected);
         this.actualTimes = actualTimes;
     }
