@@ -5,7 +5,10 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import test_utils.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -156,18 +159,18 @@ public class TollCalculatorTest {
                 caseBuilder
                         .withName("WHEN first date is free THEN second date SHOULD be charged even when closer than 1 h")
                         .withExpectedFee(8)
-                        .build(new Date[]{
+                        .build(
                         dateBuilder.buildForTime(5, 59, 0),
-                        dateBuilder.buildForTime(6, 0, 0),
-                })
+                        dateBuilder.buildForTime(6, 0, 0)
+                )
                 ,
                 caseBuilder
                         .withName("WHEN first date is non-free THEN second date SHOULD not be charged when closer than 1 h")
                         .withExpectedFee(13)
-                        .build(new Date[]{
+                        .build(
                         dateBuilder.buildForTime(6, 0, 0),
-                        dateBuilder.buildForTime(6, 59, 0),
-                })
+                        dateBuilder.buildForTime(6, 59, 0)
+                )
                 ,
                 // bug:
 //                caseBuilder
@@ -182,10 +185,49 @@ public class TollCalculatorTest {
         };
     }
 
+    @Test(dataProvider = "charge_for_multiple_dates_SHOULD_be_sum_of_charge_for_individual_dates_cases")
+    public void charge_for_multiple_dates_SHOULD_be_sum_of_charge_for_individual_dates(TestCaseWithMultipleDates testCase)
+    {
+        check(testCase);
+    }
+
+    @DataProvider
+    public Object[][] charge_for_multiple_dates_SHOULD_be_sum_of_charge_for_individual_dates_cases()
+    {
+        TestCaseWithMultipleDatesBuilder caseBuilder =
+                TestCaseWithMultipleDatesBuilder.newWithoutHeader()
+                                                .withIsHolidaySpecification(holidayIsConstant(false))
+                                                .withIsTollFreeVehicleSpecification(vehicleIsTollFreeIsConstant(false))
+                                                .withVehicle(RANDOM_VEHICLE)
+                                                .withMaxFeePerDay(Integer.MAX_VALUE)
+                                                .withMinNumMinutesBetweenCharges(1)
+                                                .withFeeForTimeOfDaySpecification(feeIsSameAsMinute());
+
+        DateTestDataBuilder dateBuilder =
+                new DateTestDataBuilder(MONDAY)
+                        .withTime(NOON);
+
+        return new Object[][]{
+                caseBuilder
+                        .withName("Two times")
+                        .withExpectedFee(5)
+                        .build(dateBuilder.withMinute(1).build(),
+                               dateBuilder.withMinute(4).build())
+                ,
+                caseBuilder
+                        .withName("Three times, separate by hours")
+                        .withExpectedFee(55)
+                        .build(dateBuilder.withMinute(5).build(),
+                               dateBuilder.withNextHour()
+                                          .withMinute(20).build(),
+                               dateBuilder.withMinute(30).build())
+                ,
+        };
+    }
 
     private void check(TestCase testCase)
     {
-        TollCalculator calculator = new TollCalculator();
+        TollCalculator calculator = new TollCalculator(testCase.specifications);
 
         Assert.assertEquals(
                 calculator.getTollFee(testCase.actualTime, testCase.actualVehicle),
@@ -199,7 +241,7 @@ public class TollCalculatorTest {
 
     private void check(TestCaseWithMultipleDates testCase)
     {
-        TollCalculator calculator = new TollCalculator();
+        TollCalculator calculator = new TollCalculator(testCase.specifications);
 
         Assert.assertEquals(calculator.getTollFee(testCase.actualVehicle, testCase.actualTimes),
                             testCase.expected,

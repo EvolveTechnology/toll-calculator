@@ -43,7 +43,7 @@ public class TollCalculator {
             long diffInMillies = date.getTime() - intervalStart.getTime();
             long minutes = timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
 
-            if (minutes <= 60) {
+            if (minutes <= specifications.minNumMinutesBetweenCharges) {
                 if (totalFee > 0) totalFee -= tempFee;
                 if (nextFee >= tempFee) tempFee = nextFee;
                 totalFee += tempFee;
@@ -51,7 +51,7 @@ public class TollCalculator {
                 totalFee += nextFee;
             }
         }
-        if (totalFee > 60) totalFee = 60;
+        if (totalFee > specifications.maxFeePerDay) totalFee = specifications.maxFeePerDay;
         return totalFee;
     }
 

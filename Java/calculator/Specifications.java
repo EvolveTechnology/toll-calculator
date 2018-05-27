@@ -16,10 +16,14 @@ public final class Specifications implements Cloneable {
     public FeeForTimeOfDaySpecification feeForTimeOfDay;
     public Predicate<Day> isHoliday;
     public Predicate<Vehicle> isTollFreeVehicle;
+    public int maxFeePerDay;
+    public int minNumMinutesBetweenCharges;
 
     public Specifications(FeeForTimeOfDaySpecification feeForTimeOfDay,
                           Predicate<Day> isHoliday,
-                          Predicate<Vehicle> isTollFreeVehicle)
+                          Predicate<Vehicle> isTollFreeVehicle,
+                          int maxFeePerDay,
+                          int minNumMinutesBetweenCharges)
     {
         Precondition.isNotNull(feeForTimeOfDay, "feeForTimeOfDay");
         Precondition.isNotNull(isHoliday, "isHoliday");
@@ -28,13 +32,17 @@ public final class Specifications implements Cloneable {
         this.feeForTimeOfDay = feeForTimeOfDay;
         this.isHoliday = isHoliday;
         this.isTollFreeVehicle = isTollFreeVehicle;
+        this.maxFeePerDay = maxFeePerDay;
+        this.minNumMinutesBetweenCharges = minNumMinutesBetweenCharges;
     }
 
     public static Specifications newDefault()
     {
         return new Specifications(new DefaultFeeForTimeOfDaySpecification(),
                                   new HolidaySpecificationFor2013(),
-                                  new DefaultTollFreeVehicles());
+                                  new DefaultTollFreeVehicles(),
+                                  60,
+                                  60);
     }
 
     @Override
@@ -42,6 +50,8 @@ public final class Specifications implements Cloneable {
     {
         return new Specifications(feeForTimeOfDay,
                                   isHoliday,
-                                  isTollFreeVehicle);
+                                  isTollFreeVehicle,
+                                  maxFeePerDay,
+                                  minNumMinutesBetweenCharges);
     }
 }

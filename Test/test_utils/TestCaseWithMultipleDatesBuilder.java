@@ -34,7 +34,7 @@ public class TestCaseWithMultipleDatesBuilder extends TestCaseBuilderBase {
                                                     -1);
     }
 
-    public Object[] build(Date[] actualDates)
+    public Object[] build(Date... actualDates)
     {
         return new Object[]{
                 new TestCaseWithMultipleDates(name(),
@@ -60,6 +60,18 @@ public class TestCaseWithMultipleDatesBuilder extends TestCaseBuilderBase {
     public TestCaseWithMultipleDatesBuilder withIsTollFreeVehicleSpecification(Predicate<Vehicle> isTollFreeVehicle)
     {
         this.specifications.isTollFreeVehicle = isTollFreeVehicle;
+        return this;
+    }
+
+    public TestCaseWithMultipleDatesBuilder withMaxFeePerDay(int x)
+    {
+        this.specifications.maxFeePerDay = x;
+        return this;
+    }
+
+    public TestCaseWithMultipleDatesBuilder withMinNumMinutesBetweenCharges(int x)
+    {
+        this.specifications.minNumMinutesBetweenCharges = x;
         return this;
     }
 

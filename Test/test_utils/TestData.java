@@ -16,16 +16,17 @@ public class TestData {
 
     public static final Vehicle
             A_NON_FREE_VEHICLE = new Car(),
-            A_FREE_VEHICLE = new Motorbike();
+            A_FREE_VEHICLE = new Motorbike(),
+            RANDOM_VEHICLE = new Motorbike();
 
     public static final Day
-            MONDAY = new Day(2018, Calendar.JANUARY, 7),
-            TUESDAY = new Day(2018, Calendar.JANUARY, 8),
-            WEDNESDAY = new Day(2018, Calendar.JANUARY, 9),
-            THURSDAY = new Day(2018, Calendar.JANUARY, 10),
-            FRIDAY = new Day(2018, Calendar.JANUARY, 11),
-            SATURDAY = new Day(2018, Calendar.JANUARY, 12),
-            SUNDAY = new Day(2018, Calendar.JANUARY, 13),
+            MONDAY = new Day(2018, Calendar.MAY, 7),
+            TUESDAY = new Day(2018, Calendar.MAY, 8),
+            WEDNESDAY = new Day(2018, Calendar.MAY, 9),
+            THURSDAY = new Day(2018, Calendar.MAY, 10),
+            FRIDAY = new Day(2018, Calendar.MAY, 11),
+            SATURDAY = new Day(2018, Calendar.MAY, 12),
+            SUNDAY = new Day(2018, Calendar.MAY, 13),
             DAY_WITH_FEE = new Day(2013, Calendar.JANUARY, 2),
             HOLIDAY_DAY = new Day(2013, Calendar.JANUARY, 1);
 
@@ -50,23 +51,21 @@ public class TestData {
 
     public static FeeForTimeOfDaySpecification constantFeeOf(int fee)
     {
-        return new FeeForTimeOfDaySpecification() {
-            @Override
-            public int feeFor(int hour, int minute)
-            {
-                return fee;
-            }
-        };
+        return (hour, minute) -> fee;
+    }
+
+    public static FeeForTimeOfDaySpecification feeIsSameAsMinute()
+    {
+        return (hour, minute) -> minute;
     }
 
     public static Predicate<Day> holidayIsConstant(boolean isHoliday)
     {
-        return new Predicate<Day>() {
-            @Override
-            public boolean test(Day day)
-            {
-                return isHoliday;
-            }
-        };
+        return day -> isHoliday;
+    }
+
+    public static Predicate<Vehicle> vehicleIsTollFreeIsConstant(boolean isTollFree)
+    {
+        return vehicle -> isTollFree;
     }
 }

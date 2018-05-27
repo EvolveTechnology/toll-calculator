@@ -93,6 +93,18 @@ public class TestCaseBuilder extends TestCaseBuilderBase {
         return this;
     }
 
+    public TestCaseBuilder withMaxFeePerDay(int x)
+    {
+        this.specifications.maxFeePerDay = x;
+        return this;
+    }
+
+    public TestCaseBuilder withMinNumMinutesBetweenCharges(int x)
+    {
+        this.specifications.minNumMinutesBetweenCharges = x;
+        return this;
+    }
+
     public TestCaseBuilder withDay(int year,
                                    int month,
                                    int dayOfMonth)

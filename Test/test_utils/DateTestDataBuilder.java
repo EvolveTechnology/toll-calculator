@@ -100,6 +100,20 @@ public class DateTestDataBuilder {
         return this;
     }
 
+    public DateTestDataBuilder withMinute(int minute)
+    {
+        this.minute = minute;
+        return this;
+    }
+
+
+    public DateTestDataBuilder withNextHour()
+    {
+        this.hourOfDay += 1;
+        return this;
+    }
+
+
     public DateTestDataBuilder withTime(TimeOfDay timeOfDay)
     {
         return withTime(timeOfDay.hour, timeOfDay.minute, timeOfDay.second);
