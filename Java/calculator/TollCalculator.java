@@ -16,7 +16,7 @@ public class TollCalculator {
     {
         Precondition.isNotNull(specifications, "specifications");
 
-        this.specifications = specifications;
+        this.specifications = specifications.clone();
     }
 
     public TollCalculator()
