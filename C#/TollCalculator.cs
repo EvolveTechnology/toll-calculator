@@ -1,74 +1,103 @@
 ﻿using System;
-using System.Globalization;
-using TollFeeCalculator;
+using System.Collections.Generic;
+using System.Linq;
+
+public enum VehicleType
+{
+    Default = 0,
+
+    // Vehicle types below are toll free
+    Motorbike = 1,
+    Tractor = 2,
+    Emergency = 3,
+    Diplomat = 4,
+    Foreign = 5,
+    Military = 6
+}
 
 public class TollCalculator
 {
 
+    private readonly Dictionary<Tuple<TimeSpan,TimeSpan>, int> Fees;
+
+    public TollCalculator()
+    {
+        this.Fees = new Dictionary<Tuple<TimeSpan, TimeSpan>, int>
+        {
+            { new Tuple<TimeSpan, TimeSpan>(new TimeSpan(0, 0, 0), new TimeSpan(5, 59, 59)), 0 },
+            { new Tuple<TimeSpan, TimeSpan>(new TimeSpan(6, 0, 0), new TimeSpan(6, 29, 59)), 8 },
+            { new Tuple<TimeSpan, TimeSpan>(new TimeSpan(6, 30, 0), new TimeSpan(6, 59, 59)), 13 },
+            { new Tuple<TimeSpan, TimeSpan>(new TimeSpan(7, 0, 0), new TimeSpan(7, 59, 59)), 18 },
+            { new Tuple<TimeSpan, TimeSpan>(new TimeSpan(8, 0, 0), new TimeSpan(8, 29, 59)), 13 },
+            { new Tuple<TimeSpan, TimeSpan>(new TimeSpan(8, 30, 0), new TimeSpan(14, 59, 59)), 8 },
+            { new Tuple<TimeSpan, TimeSpan>(new TimeSpan(15, 0, 0), new TimeSpan(15, 29, 59)), 13 },
+            { new Tuple<TimeSpan, TimeSpan>(new TimeSpan(15, 30, 0), new TimeSpan(16, 59, 59)), 18 },
+            { new Tuple<TimeSpan, TimeSpan>(new TimeSpan(17, 0, 0), new TimeSpan(17, 59, 59)), 13 },
+            { new Tuple<TimeSpan, TimeSpan>(new TimeSpan(18, 0, 0), new TimeSpan(18, 29, 59)), 8 },
+            { new Tuple<TimeSpan, TimeSpan>(new TimeSpan(18, 30, 0), new TimeSpan(23, 59, 59)), 0 }
+        };
+    }
+
     /**
      * Calculate the total toll fee for one day
      *
-     * @param vehicle - the vehicle
+     * @param VehicleType - the vehicle, use the enum type provided above
      * @param dates   - date and time of all passes on one day
      * @return - the total toll fee for that day
      */
 
-    public int GetTollFee(Vehicle vehicle, DateTime[] dates)
+    public int GetTollFee(VehicleType vehicle, DateTime[] timestamps)
     {
-        DateTime intervalStart = dates[0];
+        Array.Sort(timestamps);
+
+        if (IsTollFreeDate(timestamps[0]) || IsTollFreeVehicle(vehicle)) return 0;
+
+        DateTime previousTimestamp = timestamps[0];
         int totalFee = 0;
-        foreach (DateTime date in dates)
+
+        foreach (DateTime timestamp in timestamps)
         {
-            int nextFee = GetTollFee(date, vehicle);
-            int tempFee = GetTollFee(intervalStart, vehicle);
-
-            long diffInMillies = date.Millisecond - intervalStart.Millisecond;
-            long minutes = diffInMillies/1000/60;
-
-            if (minutes <= 60)
+            if ((timestamp - timestamps[0]).Days >= 1)
             {
-                if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee >= tempFee) tempFee = nextFee;
-                totalFee += tempFee;
+                // Should not happen since it should be timestamps from one single day, but if someone
+                // uses this incorrectly, this is a simple safety measure.
+                throw new Exception("All timestamps should be on the same day.");
+            }
+            else if (timestamp == timestamps[0] || (timestamp - previousTimestamp).Hours >= 1)
+            {
+                totalFee += TollFee(timestamp.Hour, timestamp.Minute);
             }
             else
             {
-                totalFee += nextFee;
+                // Already payed once this hour.
+                // May be the case that you payed a lower fee than would be required now, 
+                // but I feel generous today.
             }
+            previousTimestamp = timestamp;
         }
         if (totalFee > 60) totalFee = 60;
         return totalFee;
     }
 
-    private bool IsTollFreeVehicle(Vehicle vehicle)
+    private int TollFee(int hour, int minute)
     {
-        if (vehicle == null) return false;
-        String vehicleType = vehicle.GetVehicleType();
-        return vehicleType.Equals(TollFreeVehicles.Motorbike.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Tractor.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Emergency.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Diplomat.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Foreign.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Military.ToString());
+
+        TimeSpan t = new TimeSpan(hour, minute, 0);
+
+        IEnumerable<int> output = from row in this.Fees
+                     where  t >= row.Key.Item1 &&
+                            t <= row.Key.Item2
+                     select row.Value;
+
+        return output.FirstOrDefault();
+
     }
 
-    public int GetTollFee(DateTime date, Vehicle vehicle)
+    private bool IsTollFreeVehicle(VehicleType vehicle)
     {
-        if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
-
-        int hour = date.Hour;
-        int minute = date.Minute;
-
-        if (hour == 6 && minute >= 0 && minute <= 29) return 8;
-        else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
-        else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
-        else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
-        else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
-        else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
-        else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
-        else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
-        else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
-        else return 0;
+        if (vehicle == 0) return false;
+        // If not 0, then it must be a vehicle type that is toll free
+        return true;
     }
 
     private Boolean IsTollFreeDate(DateTime date)
@@ -96,13 +125,4 @@ public class TollCalculator
         return false;
     }
 
-    private enum TollFreeVehicles
-    {
-        Motorbike = 0,
-        Tractor = 1,
-        Emergency = 2,
-        Diplomat = 3,
-        Foreign = 4,
-        Military = 5
-    }
 }
