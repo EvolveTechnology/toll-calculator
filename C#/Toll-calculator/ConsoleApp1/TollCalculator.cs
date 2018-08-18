@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using TollFeeCalculator;
+using ConsoleApp1;
+using System.Linq;
 
 public class TollCalculator
-{
-
+{    
     /**
      * Calculate the total toll fee for one day
      *
@@ -17,6 +18,8 @@ public class TollCalculator
     {
         DateTime intervalStart = dates[0];
         int totalFee = 0;
+        int maxDaylyFee = Settings.MaxDaylyFee;
+        
         foreach (DateTime date in dates)
         {
             int nextFee = GetTollFee(date, vehicle);
@@ -36,7 +39,7 @@ public class TollCalculator
                 totalFee += nextFee;
             }
         }
-        if (totalFee > 60) totalFee = 60;
+        if (totalFee > maxDaylyFee) totalFee = maxDaylyFee;
         return totalFee;
     }
 
@@ -54,21 +57,53 @@ public class TollCalculator
 
     public int GetTollFee(DateTime date, Vehicle vehicle)
     {
-        if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
+        if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle))
+        {
+            return 0;
+        }
 
-        int hour = date.Hour;
-        int minute = date.Minute;
-
-        if (hour == 6 && minute >= 0 && minute <= 29) return 8;
-        else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
-        else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
-        else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
-        else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
-        else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
-        else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
-        else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
-        else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
-        else return 0;
+        TimeSpan time = new TimeSpan(date.Hour, date.Minute, date.Second);
+        
+        if(time >= new TimeSpan(6, 0, 0) && time < new TimeSpan(6, 29, 59))
+        {
+            return 8;
+        }
+        else if(time >= new TimeSpan(6, 30, 0) && time < new TimeSpan(6, 59, 59))
+        {
+            return 13;
+        }
+        else if (time >= new TimeSpan(7, 0, 0) && time < new TimeSpan(7, 59, 59))
+        {
+            return 18;
+        }
+        else if (time >= new TimeSpan(8, 0, 0) && time < new TimeSpan(8, 29, 59))
+        {
+            return 13;
+        }
+        else if (time >= new TimeSpan(8, 30, 0) && time < new TimeSpan(14, 59, 59))
+        {
+            return 8;
+        }
+        else if (time >= new TimeSpan(15, 0, 0) && time < new TimeSpan(15, 29, 59))
+        {
+            return 13;
+        }
+        else if (time >= new TimeSpan(15, 30, 0) && time < new TimeSpan(16, 59, 59))
+        {
+            return 18;
+        }
+        else if (time >= new TimeSpan(17, 0, 0) && time < new TimeSpan(17, 59, 59))
+        {
+            return 13;
+        }
+        else if (time >= new TimeSpan(18, 0, 0) && time < new TimeSpan(18, 29, 59))
+        {
+            return 8;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     private Boolean IsTollFreeDate(DateTime date)
