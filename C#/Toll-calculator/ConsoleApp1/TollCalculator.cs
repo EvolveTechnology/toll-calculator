@@ -3,141 +3,92 @@ using System.Globalization;
 using TollFeeCalculator;
 using ConsoleApp1;
 using System.Linq;
+using System.Collections.Generic;
 
 public class TollCalculator
 {    
-    /**
-     * Calculate the total toll fee for one day
-     *
-     * @param vehicle - the vehicle
-     * @param dates   - date and time of all passes on one day
-     * @return - the total toll fee for that day
-     */
-
-    public int GetTollFee(Vehicle vehicle, DateTime[] dates)
+    /// <summary>
+    /// Gets the toll fee for a given vehicle and a number of passage-dates
+    /// </summary>
+    /// <param name="vehicle">The vehicle that the calculation is done for.</param>
+    /// <param name="dateArray">An array of DateTimes of the passages</param>
+    /// <returns>The fee for the given vehicle and passages.</returns>
+    public double GetTollFee(Vehicle vehicle, DateTime[] dateArray)
     {
-        DateTime intervalStart = dates[0];
-        int totalFee = 0;
-        int maxDaylyFee = Settings.MaxDaylyFee;
-        
-        foreach (DateTime date in dates)
+        List<DateTime> dateList = dateArray.ToList();
+        dateList.Sort();
+
+        DateTime intervalStart = dateList[0];
+        double totalFee = 0;
+        double maxDaylyFee = DummyDatabase.GetMaximumCostPerDay();
+        double gracePeriod = DummyDatabase.GetGracePeriodMinutes();
+
+        while (dateList.Any())
         {
-            int nextFee = GetTollFee(date, vehicle);
-            int tempFee = GetTollFee(intervalStart, vehicle);
+            // Get all datetimes that are in the grace-period (if graceperiod is 0 or only 1 item in list only the current date will be found). 
+            List<DateTime> datesInWindow = dateList.Where(d => d >= dateList[0] && d <= dateList[0].AddMinutes(gracePeriod)).ToList();
 
-            long diffInMillies = date.Millisecond - intervalStart.Millisecond;
-            long minutes = diffInMillies/1000/60;
+            double maximumFoundFee = 0;
 
-            if (minutes <= 60)
+            foreach (DateTime d in datesInWindow)
             {
-                if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee >= tempFee) tempFee = nextFee;
-                totalFee += tempFee;
+                double foundFee = getTollFee(d, vehicle);
+
+                maximumFoundFee = foundFee > maximumFoundFee ? foundFee : maximumFoundFee;
             }
-            else
+
+            totalFee += maximumFoundFee;
+
+            foreach (DateTime dateToRemove in datesInWindow)
             {
-                totalFee += nextFee;
-            }
+                dateList.Remove(dateToRemove);
+            }            
         }
-        if (totalFee > maxDaylyFee) totalFee = maxDaylyFee;
+
+        if(totalFee > maxDaylyFee)
+        {
+            totalFee = maxDaylyFee;
+        }
+
         return totalFee;
     }
 
     private bool IsTollFreeVehicle(Vehicle vehicle)
     {
-        if (vehicle == null) return false;
-        String vehicleType = vehicle.GetVehicleType();
-        return vehicleType.Equals(TollFreeVehicles.Motorbike.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Tractor.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Emergency.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Diplomat.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Foreign.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Military.ToString());
+        if (vehicle == null)
+        {
+            throw new ArgumentNullException("vehicle", "IsTollFreeVehicle does not accept null as param vehicle");
+        }
+        if(vehicle.vehicleType == null)
+        {
+            throw new ArgumentNullException("vehicle.vehicleType", "IsTollFreeVehicle does not accept null as param vehicle.vehicleType");
+        }
+
+        return vehicle.vehicleType.VehicleTypeIsFreeToll();
     }
 
-    public int GetTollFee(DateTime date, Vehicle vehicle)
+    private double getTollFee(DateTime date, Vehicle vehicle)
     {
-        if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle))
+        if (isTollFreeDate(date) || IsTollFreeVehicle(vehicle))
         {
             return 0;
         }
 
-        TimeSpan time = new TimeSpan(date.Hour, date.Minute, date.Second);
-        
-        if(time >= new TimeSpan(6, 0, 0) && time < new TimeSpan(6, 29, 59))
-        {
-            return 8;
-        }
-        else if(time >= new TimeSpan(6, 30, 0) && time < new TimeSpan(6, 59, 59))
-        {
-            return 13;
-        }
-        else if (time >= new TimeSpan(7, 0, 0) && time < new TimeSpan(7, 59, 59))
-        {
-            return 18;
-        }
-        else if (time >= new TimeSpan(8, 0, 0) && time < new TimeSpan(8, 29, 59))
-        {
-            return 13;
-        }
-        else if (time >= new TimeSpan(8, 30, 0) && time < new TimeSpan(14, 59, 59))
-        {
-            return 8;
-        }
-        else if (time >= new TimeSpan(15, 0, 0) && time < new TimeSpan(15, 29, 59))
-        {
-            return 13;
-        }
-        else if (time >= new TimeSpan(15, 30, 0) && time < new TimeSpan(16, 59, 59))
-        {
-            return 18;
-        }
-        else if (time >= new TimeSpan(17, 0, 0) && time < new TimeSpan(17, 59, 59))
-        {
-            return 13;
-        }
-        else if (time >= new TimeSpan(18, 0, 0) && time < new TimeSpan(18, 29, 59))
-        {
-            return 8;
-        }
-        else
-        {
-            return 0;
-        }
+        return DummyDatabase.GetPriceOfPassageOnTime(date.Hour, date.Minute, date.Second);
     }
 
-    private Boolean IsTollFreeDate(DateTime date)
+    private Boolean isTollFreeDate(DateTime date)
     {
-        int year = date.Year;
-        int month = date.Month;
-        int day = date.Day;
-
-        if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) return true;
-
-        if (year == 2013)
+        if (date == null)
         {
-            if (month == 1 && day == 1 ||
-                month == 3 && (day == 28 || day == 29) ||
-                month == 4 && (day == 1 || day == 30) ||
-                month == 5 && (day == 1 || day == 8 || day == 9) ||
-                month == 6 && (day == 5 || day == 6 || day == 21) ||
-                month == 7 ||
-                month == 11 && day == 1 ||
-                month == 12 && (day == 24 || day == 25 || day == 26 || day == 31))
-            {
-                return true;
-            }
+            throw new ArgumentNullException("date", "IsTollFreeDate does not accept null as date-parameter.");
         }
-        return false;
-    }
 
-    private enum TollFreeVehicles
-    {
-        Motorbike = 0,
-        Tractor = 1,
-        Emergency = 2,
-        Diplomat = 3,
-        Foreign = 4,
-        Military = 5
+        if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+        {
+            return true;
+        }
+
+        return DummyDatabase.DateIsTollFreeDate(date.Year, date.Month, date.Day);
     }
 }

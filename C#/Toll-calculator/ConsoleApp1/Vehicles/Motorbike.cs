@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace TollFeeCalculator
 {
-    public class Car : Vehicle
+    public class Motorbike : Vehicle
     {
-        public String GetVehicleType()
+        public Motorbike()
         {
-            return "Car";
+            this.vehicleType = new ConsoleApp1.VehicleType(2, "Motorbike");
         }
     }
 }
