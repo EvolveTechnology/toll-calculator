@@ -173,11 +173,6 @@ public class TollCalculator {
     return false;
   }
 
-  private enum TimePeriod {
-    DAY,
-    HOUR;
-  }
-
   private enum TollFreeVehicles {
     MOTORBIKE("Motorbike"),
     TRACTOR("Tractor"),
