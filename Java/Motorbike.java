@@ -1,3 +1,4 @@
+package tollfee;
 
 public class Motorbike implements Vehicle {
   @Override
