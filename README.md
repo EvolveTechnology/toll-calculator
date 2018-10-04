@@ -1,8 +1,8 @@
 # Toll fee calculator 1.0
-A calculator for vehicle toll fees. Before you get started:
+A calculator for vehicle toll fees.
 
 * Make sure you read these instructions carefully
-* The current code base is in Java and C#, but please make sure that you do an implementation in a language *you feel comfortable* in like Javascript, Python, assembler or [ModiScript](https://en.wikipedia.org/wiki/ModiScript) (please don't choose ModiScript). 
+* The current code base is in Java and C#, but please make sure that you do an implementation in a language **you feel comfortable** in like Javascript, Python, assembler or [ModiScript](https://en.wikipedia.org/wiki/ModiScript) (please don't choose ModiScript). 
 
 ## Background
 Our city has decided to implement toll fees in order to reduce traffic congestion during rush hours.
