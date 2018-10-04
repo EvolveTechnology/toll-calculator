@@ -1,8 +1,11 @@
+![here we are](https://media.giphy.com/media/FnGJfc18tDDHy/giphy.gif)
+
 # Toll fee calculator 1.0
 A calculator for vehicle toll fees.
 
 * Make sure you read these instructions carefully
 * The current code base is in Java and C#, but please make sure that you do an implementation in a language **you feel comfortable** in like Javascript, Python, Assembler or [ModiScript](https://en.wikipedia.org/wiki/ModiScript) (please don't choose ModiScript). 
+* No requirement but bonus points if you know what movie is in the gif
 
 ## Background
 Our city has decided to implement toll fees in order to reduce traffic congestion during rush hours.
@@ -26,3 +29,4 @@ You can make any modifications or suggestions for modifications that you see fit
 
 ## Help I dont know C# or Java
 No worries! we accept submissions in other languages as well, why not try it in Go or nodejs.
+
