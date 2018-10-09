@@ -1,0 +1,10 @@
+version: '3.5'
+
+services:
+  toll_caclulator:
+    image: "node:latest"
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: npm test -- --watchAll
+

@@ -1,0 +1,25 @@
+{
+  "name": "toll_fee_caclulator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babel": "^6.23.0",
+    "babel-core": "^7.0.0-0",
+    "babel-jest": "^23.6.0",
+    "jest": "^23.6.0"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
+  },
+  "author": "Oskar Adin",
+  "license": "ISC"
+}
