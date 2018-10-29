@@ -1,0 +1,19 @@
+{
+  "name": "tollcalc",
+  "version": "1.0.0",
+  "description": "A calculator for vehicle toll fees.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -r ts-node/register ./tests.ts"
+  },
+  "author": "Daniel Bark",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.1.3"
+  }
+}
