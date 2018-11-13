@@ -28,5 +28,5 @@ Your job is to deliver the code and from now on, you are the responsible go-to-p
 You can make any modifications or suggestions for modifications that you see fit. Fork this repository and deliver your results via a pull-request or send us an e-mail. You could also create a gist, for privacy reasons, and send us the link.
 
 ## Help I dont know C# or Java
-No worries! we accept submissions in other languages as well, why not try it in Go or nodejs.
+No worries! We accept submissions in other languages as well, why not try it in Go or nodejs.
 
