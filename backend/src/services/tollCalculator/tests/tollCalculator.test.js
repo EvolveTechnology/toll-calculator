@@ -1,11 +1,10 @@
 import tollCalculator from '..';
+import { oneHour } from '../../../constants';
 
 describe('toll calculator', () => {
   const baseDate = new Date(Date.UTC(2018, 0, 1));
   const baseDateUnix = baseDate.getTime();
 
-  // define 60 minutes
-  const oneHour = 60 * 60 * 1000;
   // generate timestamps separated by 60 minutes
   const dates = Array.from({ length: 24 }, (_, i) => new Date(baseDateUnix + i * oneHour));
 
