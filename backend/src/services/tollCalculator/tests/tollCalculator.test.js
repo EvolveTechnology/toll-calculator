@@ -1,12 +1,12 @@
 import tollCalculator from '..';
-import { halfHour } from '../../../constants';
+import { generateTimeStamps } from '../../../utils';
+import { oneHour } from '../../../constants';
 
 describe('toll calculator', () => {
   const baseDate = new Date(Date.UTC(2018, 0, 1));
-  const baseDateUnix = baseDate.getTime();
 
   // generate timestamps separated by 60 minutes
-  const dates = Array.from({ length: 24 }, (_, i) => new Date(baseDateUnix + i * halfHour));
+  const dates = generateTimeStamps(baseDate, oneHour, 24);
 
   const vehicle = {
     type: 'Car',
