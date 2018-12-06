@@ -13,4 +13,10 @@ export const generateTimeStamps = (start, span, length) => {
   return Array.from({ length }, (_, index) => new Date(startDateUnix + index * span));
 };
 
+/**
+ * Sort an array of dates
+ *
+ * @param dates - array of dates
+ * @return - sorted array of dates from earliest to latest
+ */
 export const sortDates = dates => dates.slice(0).sort();

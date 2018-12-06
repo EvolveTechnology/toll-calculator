@@ -16,6 +16,6 @@ describe('toll calculator', () => {
   // and should accumulate more than 60 SEK in fees
   // but will only be charged 60 SEK
   it('calculates the toll for a given vehicle and dates', () => {
-    expect(tollCalculator(vehicle, dates)).toEqual({ fee: 60, ...vehicle });
+    expect(tollCalculator(vehicle, dates)).toEqual({ totalFee: 60, ...vehicle });
   });
 });
