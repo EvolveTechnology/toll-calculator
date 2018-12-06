@@ -13,4 +13,4 @@ export const generateTimeStamps = (start, span, length) => {
   return Array.from({ length }, (_, index) => new Date(startDateUnix + index * span));
 };
 
-export default generateTimeStamps;
+export const sortDates = dates => dates.slice(0).sort();

@@ -1,4 +1,4 @@
-import { generateTimeStamps } from '.';
+import { generateTimeStamps, sortDates } from '.';
 import { oneMinute } from '../constants';
 
 describe('timeStamp', () => {
@@ -17,5 +17,17 @@ describe('timeStamp', () => {
     const [first] = timeStamps;
     const totalSpan = last - first;
     expect(totalSpan).toEqual(span * (length - 1));
+  });
+});
+
+describe('sortDates', () => {
+  const earlyStart = new Date('2018-01-01');
+  const early = generateTimeStamps(earlyStart, oneMinute, 10);
+  const lateStart = new Date('2019-01-01');
+  const late = generateTimeStamps(lateStart, 3 * oneMinute, 10);
+
+  const unOrdered = [...late, ...early];
+  it('sorts the dates from earliest to latest', () => {
+    expect(sortDates(unOrdered)).toEqual([...early, ...late]);
   });
 });
