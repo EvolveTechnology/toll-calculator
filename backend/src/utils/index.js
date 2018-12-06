@@ -3,7 +3,7 @@
  *
  * @param start - the start date
  * @param span  - separation between timestamps
- * @param length  - amount of spans
+ * @param length  - amount of timestamps -> intervals = lenght - 1;
  * @return - array where each element is start + index * span
  */
 export const generateTimeStamps = (start, span, length) => {
