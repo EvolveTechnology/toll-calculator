@@ -1,4 +1,7 @@
-import { oneHour } from '../../constants';
+import intervalMaker from '../intervalMaker';
+import feeByTimeOfDay from '../feeByTimeOfDay';
+import { sortDates } from '../../utils';
+import { oneHour, MAX_FEE } from '../../constants';
 
 /**
  * Calculate the total toll fee for one day
@@ -8,23 +11,11 @@ import { oneHour } from '../../constants';
  * @return - the total toll fee for that day
  */
 export default function tollCalculator(vehicle, dates) {
-  const feeIntervals = dates.reduce((intervals, curr) => {
-    const asUnix = curr.getTime();
-    const inOneHour = new Date(asUnix + oneHour);
+  const sortedPasses = sortDates(dates);
+  const feeIntervals = intervalMaker(sortedPasses, oneHour);
+  const fee = feeIntervals
+    .map(({ start }) => feeByTimeOfDay(start))
+    .reduce((acc, val) => (acc > MAX_FEE ? MAX_FEE : acc + val), 0);
 
-    if (!intervals.length) {
-      return [{ start: curr, end: inOneHour }];
-    }
-
-    const lastInterval = intervals.slice(-1);
-    const inInterval = lastInterval.end < curr;
-
-    if (inInterval) {
-      return intervals;
-    }
-
-    return intervals.concat([{ start: curr, end: inOneHour }]);
-  }, []);
-  console.log(feeIntervals);
-  return { vehicle, fee: dates.length };
+  return { ...vehicle, fee };
 }
