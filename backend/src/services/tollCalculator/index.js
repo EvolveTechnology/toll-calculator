@@ -1,5 +1,8 @@
 import intervalMaker from '../intervalMaker';
 import feeByTimeOfDay from '../feeByTimeOfDay';
+import tollFreeDays from '../tollFreeDays';
+import tollFreeVehicles from '../tollFreeVehicles';
+
 import { sortDates } from '../../utils';
 import { oneHour, MAX_FEE } from '../../constants';
 
@@ -28,11 +31,29 @@ export const selectStart = ({ start }) => start;
  * @return - the total toll fee for that day
  */
 export default function tollCalculator(vehicle, dates) {
+  const isTollFreeVehicle = tollFreeVehicles(vehicle);
+  // lazy check
+  const isTollFreeDay = dates.every(date => tollFreeDays(date));
+
+  if (isTollFreeVehicle || isTollFreeDay) {
+    return {
+      ...vehicle,
+      totalFee: 0,
+      passes: dates.length,
+      chargeablePasses: 0,
+    };
+  }
+
   const sortedPasses = sortDates(dates);
   const feeIntervals = intervalMaker(sortedPasses, oneHour);
   const chargeableTimes = feeIntervals.map(selectStart);
   const fees = chargeableTimes.map(feeByTimeOfDay);
   const totalFee = fees.reduce(dailyFeeAccumulator, 0);
 
-  return { ...vehicle, totalFee };
+  return {
+    ...vehicle,
+    totalFee,
+    passes: dates.length,
+    chargeablePasses: chargeableTimes.length,
+  };
 }
