@@ -1,9 +1,11 @@
 import feeByTimeOfDay from '..';
 import { generateTimeStamps } from '../../../utils';
-import { halfHour, oneHour } from '../../../constants';
+import { halfHour, oneMinute } from '../../../constants';
+
+const timeZoneOffset = (...args) => new Date(...args).getTimezoneOffset() * oneMinute;
 
 describe('feeByTimeOfDay', () => {
-  const baseDate = new Date(Date.UTC(2018, 0, 1));
+  const baseDate = new Date(new Date(2018, 0, 1).getTime() - timeZoneOffset(2018, 0, 1));
 
   // generate timestamps separated by 30 minutes
   const aWholeDay = generateTimeStamps(baseDate, halfHour, 48);
@@ -15,10 +17,16 @@ describe('feeByTimeOfDay', () => {
 });
 
 describe('Correction for poor initial implementation', () => {
-  const baseDate = new Date(Date.UTC(2018, 0, 4, 9));
-  const trickyHours = generateTimeStamps(baseDate, oneHour, 5);
+  const baseDate = new Date(Date.UTC(2018, 0, 4, 8, 58) - timeZoneOffset(2018, 0, 1));
+  const trickLimit = generateTimeStamps(baseDate, oneMinute, 5);
+  const anotherBase = new Date(Date.UTC(2018, 0, 4, 9, 28) - timeZoneOffset);
+  const secondTrickLimit = generateTimeStamps(anotherBase, oneMinute, 5);
 
-  it('corrects poor initial implementation', () => {
-    expect(trickyHours.map(feeByTimeOfDay)).toEqual([8, 8, 8, 8, 8]);
+  it('corrects poor initial implementation between 8 and 14', () => {
+    expect(trickLimit.map(feeByTimeOfDay)).toEqual([8, 8, 8, 8, 8]);
+  });
+
+  it('every second half hour charges', () => {
+    expect(secondTrickLimit.map(feeByTimeOfDay)).toEqual([8, 8, 8, 8, 8]);
   });
 });

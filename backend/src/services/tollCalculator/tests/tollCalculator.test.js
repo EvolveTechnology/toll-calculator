@@ -1,9 +1,10 @@
 import tollCalculator from '..';
 import { generateTimeStamps } from '../../../utils';
-import { oneHour } from '../../../constants';
+import { oneHour, oneMinute } from '../../../constants';
 
 describe('toll calculator', () => {
-  const baseDate = new Date(Date.UTC(2018, 0, 1));
+  const timeZoneOffset = new Date().getTimezoneOffset() * oneMinute;
+  const baseDate = new Date(new Date(2018, 0, 1) - timeZoneOffset);
 
   // generate timestamps separated by 60 minutes
   const dates = generateTimeStamps(baseDate, oneHour, 24);

@@ -1,8 +1,12 @@
 import isTollFreeDate from '..';
 import { weekends, holidays } from './mock';
 
-const asUTC = ({ month, day, year }) => new Date(Date.UTC(year, month, day));
-const asDates = arr => arr.map(asUTC);
+// the time zone is dynamic
+const timeZoneOffset = (...args) => new Date(...args).getTimezoneOffset() * 60 * 1000;
+const getDateTime = (...args) => new Date(...args).getTime();
+const localTime = (...args) => getDateTime(...args) - timeZoneOffset(...args);
+const toDate = ({ year, month, day }) => new Date(localTime(year, month, day));
+const asDates = arr => arr.map(toDate);
 
 describe('tollFreeDays', () => {
   it('labels specified holidays as tollfree', () => {
