@@ -30,10 +30,10 @@ export const selectStart = ({ start }) => start;
  * @param dates   - date and time of all passes on one day
  * @return - the total toll fee for that day
  */
-export default function tollCalculator(vehicle, dates) {
+export default function tollCalculator(vehicle, dates, holidays) {
   const isTollFreeVehicle = tollFreeVehicles(vehicle);
   // lazy check
-  const isTollFreeDay = dates.every(date => tollFreeDays(date));
+  const isTollFreeDay = dates.every(date => tollFreeDays(date, holidays));
 
   if (isTollFreeVehicle || isTollFreeDay) {
     return {
