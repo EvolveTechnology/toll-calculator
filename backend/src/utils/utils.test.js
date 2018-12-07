@@ -1,7 +1,13 @@
 import {
-  generateTimeStamps, sortDates, pipe, partial, partialRight,
+  generateTimeStamps,
+  sortDates,
+  pipe,
+  partial,
+  partialRight,
+  inDayMinutes,
+  inRange,
 } from '.';
-import { oneMinute } from '../constants';
+import { oneMinute, oneHour } from '../constants';
 
 describe('timeStamp', () => {
   const start = new Date('2018-01-01');
@@ -76,5 +82,26 @@ describe('partialRight', () => {
     expect(result).toEqual(0);
     expect(fn).toHaveBeenCalledTimes(1);
     expect(fn).toHaveBeenCalledWith(-1, -1);
+  });
+});
+
+describe('inDayMinutes', () => {
+  const fourMinutes = 4 * oneMinute;
+  const fourMinutesPastMidnight = new Date(Date.UTC(2018, 1, 1) + fourMinutes);
+  const threeHours = 3 * oneHour;
+  const threeHoursPastMidnight = new Date(Date.UTC(2018, 1, 1) + threeHours);
+  it('returns how many miliseconds since midnight have passed', () => {
+    expect(inDayMinutes(fourMinutesPastMidnight)).toEqual(4);
+    expect(inDayMinutes(threeHoursPastMidnight)).toEqual(180);
+  });
+});
+
+describe('inRange', () => {
+  const val = 4;
+  const range = [0, 5];
+  const outOfRange = 6;
+  it('checks if values are in range', () => {
+    expect(inRange(val, range)).toEqual(true);
+    expect(inRange(outOfRange, range)).toEqual(false);
   });
 });

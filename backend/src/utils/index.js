@@ -63,3 +63,28 @@ export const partial = f => (...a) => (...b) => f(...a, ...b);
  * @return result of appliying the two group of arguments against f
  */
 export const partialRight = f => (...b) => (...a) => f(...a, ...b);
+
+/**
+ *  given a date, take the hour and minutes and count minutes from midnight
+ *  midnight yields 0 minutes
+ *
+ *
+ * @param date - a date
+ * @return minutes since midnight
+ */
+export const inDayMinutes = (date) => {
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  const totalMinutes = hours * 60 + minutes;
+  return totalMinutes;
+};
+
+/**
+ *  check if a given value is included in a range
+ *
+ *
+ * @param val numeric value to test
+ * @param range array with lower and upper bound
+ * @return minutes since midnight
+ */
+export const inRange = (val, [lower, upper]) => val <= upper && val >= lower;
