@@ -8,3 +8,10 @@ export const oneDay = 24 * oneHour;
 // so we can just use continuous numbers to
 // describe money
 export const MAX_FEE = 60;
+
+// PRICES
+
+export const FREE = 0;
+export const LOW = 8;
+export const MEDIUM = 13;
+export const HIGH = 18;
