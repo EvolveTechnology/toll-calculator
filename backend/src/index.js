@@ -1,6 +1,6 @@
 import axios from 'axios';
-import feeByTimeOfDay from './services/feeByTimeOfDay';
-import isTollFreeDay from './services/tollFreeDays';
+import tollCalculator from './services/tollCalculator';
+
 import apiKey from './key';
 
 const tz = new Date().getTimezoneOffset();
@@ -11,13 +11,17 @@ const { key } = apiKey;
 
 const endpoint = `https://www.calendarindex.com/api/v1/holidays?country=SE&year=${year}&api_key=${key}`;
 
-const calculateToll = async (day) => {
+// a given set of data
+const myCar = { type: 'Car' };
+const tollPasses = [now];
+
+const calculateToll = async (vehicle, dates) => {
   const holidays = await axios.get(endpoint).then(({ data }) => data.response.holidays);
   const holidayDates = holidays.map(({ date }) => date.split(' ')[0]);
-
-  console.log('The time is: ', day);
-  console.log('Fee:', feeByTimeOfDay(day));
-  console.log('Is it a fee free day?', isTollFreeDay(day, holidayDates));
+  const result = tollCalculator(vehicle, dates, holidayDates);
+  /* eslint-disable-next-line */
+  console.log(result);
+  return result;
 };
 
-calculateToll(now);
+calculateToll(myCar, tollPasses);
