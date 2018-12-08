@@ -1,5 +1,8 @@
 import { inDayMinutes, inRange, partial } from '../../utils';
 import fees from './fees';
+import { FREE } from '../../constants';
+
+const defaultValue = { fee: FREE };
 
 /*
  *
@@ -13,11 +16,13 @@ import fees from './fees';
  * My solution cancels that, and from 8:30 to 14:30 it charges 8 SEK
  *
  */
-
-const defaultValue = { fee: 0 };
 export default (date) => {
   const minutes = inDayMinutes(date);
+  // partially apply our minutes variable to inRange
   const minutesInRange = partial(inRange)(minutes);
+
+  // check if there is a range where our mintues are included
+  // if not default to free
   const { fee } = fees.find(({ range }) => minutesInRange(range)) || defaultValue;
   return fee;
 };
