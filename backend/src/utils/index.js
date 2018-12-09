@@ -88,3 +88,23 @@ export const inDayMinutes = (date) => {
  * @return minutes since midnight
  */
 export const inRange = (val, [lower, upper]) => val <= upper && val >= lower;
+
+/**
+ *  take the first element of an array - unwrapped
+ *  equivalent to array[0]
+ *
+ *
+ * @param array target array
+ * @return first element
+ */
+export const head = ([first]) => first;
+
+/**
+ *  split a string at the pattern
+ *
+ *
+ * @param str target string
+ * @param pattern where to break
+ * @return first element
+ */
+export const split = (str, pattern) => str.split(pattern);

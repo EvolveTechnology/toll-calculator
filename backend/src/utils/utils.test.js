@@ -6,6 +6,8 @@ import {
   partialRight,
   inDayMinutes,
   inRange,
+  head,
+  split,
 } from '.';
 import { oneMinute, oneHour } from '../constants';
 
@@ -103,5 +105,21 @@ describe('inRange', () => {
   it('checks if values are in range', () => {
     expect(inRange(val, range)).toEqual(true);
     expect(inRange(outOfRange, range)).toEqual(false);
+  });
+});
+
+describe('head', () => {
+  const val = 4;
+  const array = [val, 1, 2, 3, 5];
+  it('checks if values are in range', () => {
+    expect(head(array)).toEqual(val);
+  });
+});
+
+describe('split', () => {
+  const str = 'asjdkllasjd999s999ssksks';
+  const pattern = '999';
+  it('checks if values are in range', () => {
+    expect(split(str, pattern)).toEqual(['asjdkllasjd', 's', 'ssksks']);
   });
 });
