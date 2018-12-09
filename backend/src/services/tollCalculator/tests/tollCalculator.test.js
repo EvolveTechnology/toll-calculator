@@ -1,13 +1,13 @@
 import tollCalculator from '..';
-import { generateTimeStamps } from '../../../utils';
-import { oneHour, oneMinute } from '../../../constants';
+import groupByDay from '../../groupByDay';
+import { generateTimeStamps, head } from '../../../utils';
+import { oneHour } from '../../../constants';
 
 describe('toll calculator', () => {
-  const timeZoneOffset = new Date().getTimezoneOffset() * oneMinute;
-  const baseDate = new Date(new Date(2018, 0, 1) - timeZoneOffset);
+  const baseDate = new Date(new Date(2018, 0, 1));
 
   // generate timestamps separated by 60 minutes
-  const dates = generateTimeStamps(baseDate, oneHour, 24);
+  const dates = groupByDay(generateTimeStamps(baseDate, oneHour, 24));
 
   const vehicle = {
     type: 'Car',
@@ -18,11 +18,12 @@ describe('toll calculator', () => {
   // and should accumulate more than 60 SEK in fees
   // but will only be charged 60 SEK
   it('calculates the toll for a given vehicle and dates', () => {
+    const passes = head(Object.values(dates));
     expect(tollCalculator(vehicle, dates, holidays)).toEqual({
       chargeablePasses: 24,
-      passes: 24,
+      passes,
+      totalPasses: passes.length,
       totalFee: 60,
-      ...vehicle,
     });
   });
 });
