@@ -2,8 +2,8 @@ import {
   partialRight, sortDates, head, split,
 } from '../../utils';
 
-const toISO = date => date.toISOString();
-const splitISO = partialRight(split)('T');
+export const toISO = date => date.toISOString();
+export const splitISO = partialRight(split)('T');
 
 const getTimeZoneDev = date => new Date(date).getTimezoneOffset() * 60 * 1000;
 
