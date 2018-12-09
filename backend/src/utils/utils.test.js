@@ -9,6 +9,7 @@ import {
   head,
   split,
   flatten,
+  localTime,
 } from '.';
 import { oneMinute, oneHour } from '../constants';
 
@@ -129,5 +130,12 @@ describe('flatten', () => {
   const nested = [[0, 1], 2, 3, [4, 5]];
   it('flattens', () => {
     expect(flatten(nested)).toEqual([0, 1, 2, 3, 4, 5]);
+  });
+});
+
+describe('with timezone', () => {
+  const date = '2018-01-01 00:00:00';
+  it('removes time zone issues from the date calculation', () => {
+    expect(localTime(date).toISOString()).toEqual('2018-01-01T00:00:00.000Z');
   });
 });

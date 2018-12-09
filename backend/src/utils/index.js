@@ -116,3 +116,13 @@ export const split = (str, pattern) => str.split(pattern);
  * @return flattened array
  */
 export const flatten = nested => [].concat(...nested);
+
+/**
+ *  From string to date without time zone influence
+ *
+ * @param date a string to convert with fidelity
+ * @return flattened array
+ */
+const getTimezoneOffset = date => new Date(date).getTimezoneOffset() * 60 * 1000;
+const getTime = date => new Date(date).getTime();
+export const localTime = date => new Date(getTime(date) - getTimezoneOffset(date));
