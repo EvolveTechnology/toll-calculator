@@ -1,15 +1,13 @@
 import axios from 'axios';
 import tollCalculator from './services/tollCalculator';
 import groupByDay from './services/groupByDay';
-import { head, flatten, split } from './utils';
-
-import apiKey from './key';
-
-const { key, dataEndpoint } = apiKey;
+import {
+  head, flatten, split, partial,
+} from './utils';
 
 const calendarURI = 'https://www.calendarindex.com/api/v1/holidays?country=SE';
 // dynamic yearly based endpoint
-const holidaysURI = year => `${calendarURI}&year=${year}&api_key=${key}`;
+const holidaysURI = (key, year) => `${calendarURI}&year=${year}&api_key=${key}`;
 // select the holidays object from the network response
 const selectHolidays = ({ data }) => data.response.holidays;
 // format the string, since the api returns string + ' ' +hours
@@ -37,7 +35,7 @@ const getUniqueYears = dates => dates.reduce((prev, curr) => {
  * @param targetRegNum registration plate string
  * @return fees for the vehicle, daily
  */
-const calculateToll = async (targetRegNum) => {
+async function calculator(targetRegNum, holidayKey, dataEndpoint) {
   // get all vehicles from an endpoint
   const vehicles = await axios.get(dataEndpoint).then(({ data }) => data);
   // filter the one vehicle we care about, assuming regNums are unique
@@ -48,7 +46,8 @@ const calculateToll = async (targetRegNum) => {
   // get unique years
   const years = getUniqueYears(dates);
   // get yearly holidays for the years present in dates
-  const yearlyHolidays = await Promise.all(years.map(getHolidaysForYear));
+  const withApiKey = partial(getHolidaysForYear)(holidayKey);
+  const yearlyHolidays = await Promise.all(years.map(withApiKey));
   // since we get an array of arrays, flatten it
   const holidays = flatten(yearlyHolidays);
 
@@ -64,11 +63,7 @@ const calculateToll = async (targetRegNum) => {
   }, {});
 
   // append the vehicle with fees
-  const result = { ...vehicle, fees: withFees };
-  /* eslint-disable-next-line */
-  console.log(result);
-  return result;
-};
+  return { ...vehicle, fees: withFees };
+}
 
-const myCar = 'FJK-136';
-calculateToll(myCar);
+module.exports = calculator;
