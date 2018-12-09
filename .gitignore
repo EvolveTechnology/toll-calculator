@@ -3,3 +3,4 @@ coverage/
 REST/
 **/key.json
 mockData/
+**/.secrets
