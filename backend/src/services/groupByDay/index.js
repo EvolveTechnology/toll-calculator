@@ -1,13 +1,4 @@
-import {
-  partialRight, sortDates, head, split,
-} from '../../utils';
-
-export const toISO = date => date.toISOString();
-export const splitISO = partialRight(split)('T');
-
-const getTimeZoneDev = date => new Date(date).getTimezoneOffset() * 60 * 1000;
-
-export const localTime = date => new Date(new Date(date) - getTimeZoneDev(date));
+import { sortDates, head, split } from '../../utils';
 
 /**
  *  Group an array of dates by day
@@ -17,7 +8,7 @@ export const localTime = date => new Date(new Date(date) - getTimeZoneDev(date))
  * @return object with days as keys and relative dates as values
  */
 export default dates => sortDates(dates).reduce((prev, date) => {
-  const currentDay = head(splitISO(toISO(localTime(date))));
+  const currentDay = head(split(date, ' '));
   // extract the current day from prev, named as passes
   // if its undefined assign it an empty array
   // this could be done as:
@@ -25,5 +16,5 @@ export default dates => sortDates(dates).reduce((prev, date) => {
   // but I leave to 'show off'
   const { [currentDay]: passes = [] } = prev;
 
-  return { ...prev, [currentDay]: passes.concat(localTime(date)) };
+  return { ...prev, [currentDay]: passes.concat(date) };
 }, {});
