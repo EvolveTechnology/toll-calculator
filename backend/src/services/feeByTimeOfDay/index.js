@@ -18,10 +18,11 @@ const defaultValue = { fee: FREE };
  */
 export default (date) => {
   const minutes = inDayMinutes(date);
+
   // partially apply our minutes variable to inRange
   const minutesInRange = partial(inRange)(minutes);
 
-  // check if there is a range where our mintues are included
+  // check if there is a range where our minutes are included
   // if not default to free
   const { fee } = fees.find(({ range }) => minutesInRange(range)) || defaultValue;
   return fee;
