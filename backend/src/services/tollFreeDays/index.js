@@ -1,5 +1,7 @@
-import { toISO, splitISO } from '../groupByDay';
-import { head } from '../../utils';
+import { head, partialRight, split } from '../../utils';
+
+const toISO = date => date.toISOString();
+const splitISO = partialRight(split)('T');
 
 const utcWeekend = [0, 6];
 
