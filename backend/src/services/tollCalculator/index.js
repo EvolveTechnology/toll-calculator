@@ -3,7 +3,7 @@ import feeByTimeOfDay from '../feeByTimeOfDay';
 import tollFreeDays from '../tollFreeDays';
 import tollFreeVehicles from '../tollFreeVehicles';
 
-import { sortDates } from '../../utils';
+import { sortDates, head } from '../../utils';
 import { oneHour, MAX_FEE } from '../../constants';
 
 /**
@@ -32,28 +32,33 @@ export const selectStart = ({ start }) => start;
  */
 export default function tollCalculator(vehicle, dates, holidays) {
   const isTollFreeVehicle = tollFreeVehicles(vehicle);
-  // lazy check
-  const isTollFreeDay = dates.every(date => tollFreeDays(date, holidays));
+
+  // extract data from dates = { [day] : passes}
+  const date = head(Object.keys(dates));
+  const { [date]: passes } = dates;
+
+  const day = new Date(date);
+  const isTollFreeDay = tollFreeDays(day, holidays);
 
   if (isTollFreeVehicle || isTollFreeDay) {
     return {
-      ...vehicle,
       totalFee: 0,
-      passes: dates.length,
+      passes,
+      totalPasses: passes.length,
       chargeablePasses: 0,
     };
   }
 
-  const sortedPasses = sortDates(dates);
+  const sortedPasses = sortDates(passes);
   const feeIntervals = intervalMaker(sortedPasses, oneHour);
   const chargeableTimes = feeIntervals.map(selectStart);
   const fees = chargeableTimes.map(feeByTimeOfDay);
   const totalFee = fees.reduce(dailyFeeAccumulator, 0);
 
   return {
-    ...vehicle,
     totalFee,
-    passes: dates.length,
+    passes,
+    totalPasses: passes.length,
     chargeablePasses: chargeableTimes.length,
   };
 }
