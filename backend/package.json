@@ -7,6 +7,9 @@
     "coverage": "jest --collectCoverageFrom=src/**.js --coverage src",
     "lint": "eslint src/**",
     "start": "babel-node src/index.js",
+    "build": "babel src -d build",
+    "wt-serve": "wt serve index.js --hostname localhost --port 1337 --secrets .secrets",
+    "serve": "yarn build && nodemon --exec \"yarn wt-serve\"",
     "test": "jest src"
   },
   "author": "",
@@ -24,6 +27,9 @@
     "jest": "^23.6.0"
   },
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "webtask-tools": "^3.4.0"
   }
 }
