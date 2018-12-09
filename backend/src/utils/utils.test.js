@@ -8,6 +8,7 @@ import {
   inRange,
   head,
   split,
+  flatten,
 } from '.';
 import { oneMinute, oneHour } from '../constants';
 
@@ -119,7 +120,14 @@ describe('head', () => {
 describe('split', () => {
   const str = 'asjdkllasjd999s999ssksks';
   const pattern = '999';
-  it('checks if values are in range', () => {
+  it('splits at pattern', () => {
     expect(split(str, pattern)).toEqual(['asjdkllasjd', 's', 'ssksks']);
+  });
+});
+
+describe('flatten', () => {
+  const nested = [[0, 1], 2, 3, [4, 5]];
+  it('flattens', () => {
+    expect(flatten(nested)).toEqual([0, 1, 2, 3, 4, 5]);
   });
 });

@@ -108,3 +108,11 @@ export const head = ([first]) => first;
  * @return first element
  */
 export const split = (str, pattern) => str.split(pattern);
+
+/**
+ *  flatten a nested array
+ *
+ * @param nested array
+ * @return flattened array
+ */
+export const flatten = nested => [].concat(...nested);
