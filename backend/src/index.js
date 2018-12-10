@@ -18,6 +18,10 @@ export async function byVehicleCalculator(regNum, holidayKey, dataEndpoint) {
   // filter the one vehicle we care about, assuming regNums are unique
   const vehicle = find('regNum', regNum, vehicles);
 
+  if (!vehicle) {
+    return { regNum, id: null };
+  }
+
   // get the logged dates for the vehicle
   const { dates } = vehicle;
   // get unique years
