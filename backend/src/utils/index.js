@@ -126,3 +126,24 @@ export const flatten = nested => [].concat(...nested);
 const getTimezoneOffset = date => new Date(date).getTimezoneOffset() * 60 * 1000;
 const getTime = date => new Date(date).getTime();
 export const localTime = date => new Date(getTime(date) - getTimezoneOffset(date));
+
+/**
+ *  given an array of dates, get unique years
+ *
+ * @param dates array of dates
+ * @return unique years in dates
+ */
+export const getUniqueYears = dates => dates.reduce((prev, curr) => {
+  const year = localTime(curr).getFullYear();
+  return prev.includes(year) ? prev : prev.concat(year);
+}, []);
+
+/**
+ *  find a key with value in array
+ *
+ * @param key key from the array
+ * @param value value to find
+ * @param array target array
+ * @return first element where key equals value
+ */
+export const find = (key, value, array) => array.find(({ [key]: val }) => value === val);

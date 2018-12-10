@@ -10,6 +10,8 @@ import {
   split,
   flatten,
   localTime,
+  getUniqueYears,
+  find,
 } from '.';
 import { oneMinute, oneHour } from '../constants';
 
@@ -137,5 +139,25 @@ describe('with timezone', () => {
   const date = '2018-01-01 00:00:00';
   it('removes time zone issues from the date calculation', () => {
     expect(localTime(date).toISOString()).toEqual('2018-01-01T00:00:00.000Z');
+  });
+});
+
+describe('getUniqueYears', () => {
+  const dates = ['2018-01-01', '2018-01-02', '2018-02-02', '2017-02-03'];
+  const uniqueYears = getUniqueYears(dates);
+  it('extracts unique years into an array', () => {
+    expect(uniqueYears).toEqual([2018, 2017]);
+  });
+});
+
+describe('find', () => {
+  const test = [
+    {
+      a: 1,
+    },
+    { a: 2 },
+  ];
+  it('finds the value', () => {
+    expect(find('a', 1, test)).toEqual({ a: 1 });
   });
 });
