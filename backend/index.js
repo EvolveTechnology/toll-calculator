@@ -1,13 +1,28 @@
 const express = require('express');
 const Webtask = require('webtask-tools');
 const bodyParser = require('body-parser');
-const tollCalculatorService = require('./build');
+const Services = require('./build');
 
 const app = express();
 
 const jsonParser = bodyParser.json();
 
 app.use(jsonParser);
+
+// TODO: add authentication to this route
+app.post('/all', async (req, res) => {
+  const { webtaskContext } = req;
+  const {
+    secrets: { HOLIDAY_API_KEY, TOLL_DATA_ENDPOINT },
+  } = webtaskContext;
+  try {
+    const result = await Services.allVehiclesCalculator(HOLIDAY_API_KEY, TOLL_DATA_ENDPOINT);
+    return res.status(200).send(result);
+  } catch (err) {
+    return res.status(401).send({});
+  }
+});
+
 app.post('/vehicle', async (req, res) => {
   const { webtaskContext, body } = req;
   const { regNum } = body;
@@ -15,7 +30,7 @@ app.post('/vehicle', async (req, res) => {
     secrets: { HOLIDAY_API_KEY, TOLL_DATA_ENDPOINT },
   } = webtaskContext;
   try {
-    const result = await tollCalculatorService(regNum, HOLIDAY_API_KEY, TOLL_DATA_ENDPOINT);
+    const result = await Services.byVehicleCalculator(regNum, HOLIDAY_API_KEY, TOLL_DATA_ENDPOINT);
     return res.status(200).send(result);
   } catch (err) {
     return res.status(401).send({});
