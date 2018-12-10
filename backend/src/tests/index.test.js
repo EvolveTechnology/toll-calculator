@@ -21,6 +21,10 @@ describe('byVehicleCalculator', () => {
     const result = await byVehicleCalculator(regNum, apiKey, vehiclesEndPoint);
     expect(result).toEqual(expectedByVehicle);
   });
+  it('safely rejects a regNum not found in vehicles', async () => {
+    const result = await byVehicleCalculator('kskssk', apiKey, vehiclesEndPoint);
+    expect(result).toEqual({ regNum: 'kskssk', id: null });
+  });
 });
 
 describe('allVehiclesCalculator', () => {
