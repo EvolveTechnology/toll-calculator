@@ -46,6 +46,8 @@ export default function tollCalculator(vehicle, dates, holidays) {
       passes,
       totalPasses: passes.length,
       chargeablePasses: 0,
+      isTollFreeVehicle,
+      isTollFreeDay,
     };
   }
 
@@ -60,5 +62,7 @@ export default function tollCalculator(vehicle, dates, holidays) {
     passes,
     totalPasses: passes.length,
     chargeablePasses: chargeableTimes.length,
+    isTollFreeVehicle,
+    isTollFreeDay,
   };
 }
