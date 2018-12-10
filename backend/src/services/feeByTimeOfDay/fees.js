@@ -1,6 +1,6 @@
 import { LOW, MEDIUM, HIGH } from '../../constants';
 
-const asMinutes = (h = 0, m = 0) => h * 60 + m;
+const asMinutes = (h, m = 0) => h * 60 + m;
 const makeRange = (...from) => (...to) => [from, to].map(hour => asMinutes(...hour));
 
 // We should have a way to allow admins to set ranges and prices
