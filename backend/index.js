@@ -8,6 +8,15 @@ const app = express();
 const jsonParser = bodyParser.json();
 
 app.use(jsonParser);
+app.use((req, res, next) => {
+  const allowedURIs = 'http://localhost:3000';
+
+  const accessControlAllowOrigin = ['Access-Control-Allow-Origin', allowedURIs];
+  const accessControlAllowHeaders = ['Access-Control-Allow-Headers', 'Content-Type'];
+  res.setHeader(...accessControlAllowOrigin);
+  res.setHeader(...accessControlAllowHeaders);
+  next();
+});
 
 // TODO: add authentication to this route
 app.post('/all', async (req, res) => {
