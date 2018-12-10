@@ -1,69 +1,65 @@
-import axios from 'axios';
-import tollCalculator from './services/tollCalculator';
+import byDayFeeAccumulator from './services/byDayFeeAccumulator';
 import groupByDay from './services/groupByDay';
-import {
-  head, flatten, split, partial,
-} from './utils';
-
-const calendarURI = 'https://www.calendarindex.com/api/v1/holidays?country=SE';
-// dynamic yearly based endpoint
-const holidaysURI = (key, year) => `${calendarURI}&year=${year}&api_key=${key}`;
-// select the holidays object from the network response
-const selectHolidays = ({ data }) => data.response.holidays;
-// format the string, since the api returns string + ' ' +hours
-const removeHoursPadding = ({ date }) => head(split(date, ' '));
-// make the api call and process the response
-const getHolidaysForYear = year => axios
-  .get(holidaysURI(year))
-  .then(selectHolidays)
-  .then(holidays => holidays.map(removeHoursPadding));
-
-/**
- *  given an array of dates, get unique years
- *
- * @param dates array of dates
- * @return unique years in dates
- */
-const getUniqueYears = dates => dates.reduce((prev, curr) => {
-  const year = new Date(curr).getFullYear();
-  return prev.includes(year) ? prev : prev.concat(year);
-}, []);
+import byYearHolidays from './services/holidaysAPI';
+import getAllVehicles from './services/vehiclesAPI';
+import { partial, getUniqueYears, find } from './utils';
 
 /**
  *  given a vehicle registration number, return daily toll fees
  *
- * @param targetRegNum registration plate string
+ * @param regNum registration plate string
+ * @param holidayKey holidays api key
+ * @param dataEndpoint endpoint to fetch vehicles
  * @return fees for the vehicle, daily
  */
-async function calculator(targetRegNum, holidayKey, dataEndpoint) {
+export async function byVehicleCalculator(regNum, holidayKey, dataEndpoint) {
   // get all vehicles from an endpoint
-  const vehicles = await axios.get(dataEndpoint).then(({ data }) => data);
+  const vehicles = await getAllVehicles(dataEndpoint);
   // filter the one vehicle we care about, assuming regNums are unique
-  const vehicle = vehicles.find(({ regNum }) => regNum === targetRegNum);
+  const vehicle = find('regNum', regNum, vehicles);
+
   // get the logged dates for the vehicle
   const { dates } = vehicle;
-
   // get unique years
   const years = getUniqueYears(dates);
-  // get yearly holidays for the years present in dates
-  const withApiKey = partial(getHolidaysForYear)(holidayKey);
-  const yearlyHolidays = await Promise.all(years.map(withApiKey));
-  // since we get an array of arrays, flatten it
-  const holidays = flatten(yearlyHolidays);
+  const holidays = await byYearHolidays(holidayKey, years);
 
   // group dates by day
   const byDay = groupByDay(dates);
-
   // inject daily fees
-  const withFees = Object.keys(byDay).reduce((otherDays, day) => {
-    // get the passes for this day
-    const { [day]: passes } = byDay;
-    // return the accumulated fees for other days, and append this day
-    return { ...otherDays, [day]: tollCalculator(vehicle, { [day]: passes }, holidays) };
-  }, {});
+  const feeAccumulator = partial(byDayFeeAccumulator)(vehicle, byDay, holidays);
+  const withFees = Object.keys(byDay).reduce(feeAccumulator, {});
 
   // append the vehicle with fees
   return { ...vehicle, fees: withFees };
 }
 
-module.exports = calculator;
+/**
+ *  Return daily toll fees for all vehicles
+ *
+ * @param holidayKey holidays api key
+ * @param dataEndpoint endpoint to fetch vehicles
+ * @return fees for ALL the vehicle, daily
+ */
+export async function allVehiclesCalculator(holidayKey, dataEndpoint) {
+  // get all vehicles from an endpoint
+  const vehicles = await getAllVehicles(dataEndpoint);
+
+  const allDates = vehicles.reduce((prev, { dates }) => prev.concat(dates), []);
+  const years = getUniqueYears(allDates);
+  const holidays = await byYearHolidays(holidayKey, years);
+
+  return vehicles.reduce((otherVehicles, vehicle) => {
+    const { dates } = vehicle;
+    const byDay = groupByDay(dates);
+    const feeAccumulator = partial(byDayFeeAccumulator)(vehicle, byDay, holidays);
+    // inject daily fees
+    const withFees = Object.keys(byDay).reduce(feeAccumulator, {});
+
+    // append the vehicle with fees
+    return otherVehicles.concat({ ...vehicle, fees: withFees });
+  }, []);
+  // get the logged dates for the vehicle
+}
+
+module.exports = { byVehicleCalculator, allVehiclesCalculator };
