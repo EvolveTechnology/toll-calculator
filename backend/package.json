@@ -7,7 +7,7 @@
     "coverage": "jest --collectCoverageFrom=src/**.js --coverage src",
     "lint": "eslint src/**",
     "start": "babel-node src/index.js",
-    "build": "babel src -d build",
+    "build": "yarn coverage && babel src -d build",
     "wt-serve": "wt serve index.js --hostname localhost --port 1337 --secrets .secrets",
     "serve": "yarn build && nodemon --exec \"yarn wt-serve\"",
     "test": "jest src"
@@ -32,5 +32,15 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "webtask-tools": "^3.4.0"
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    }
   }
 }
