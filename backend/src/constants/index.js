@@ -10,8 +10,10 @@ export const oneDay = 24 * oneHour;
 export const MAX_FEE = 60;
 
 // PRICES
-
 export const FREE = 0;
 export const LOW = 8;
 export const MEDIUM = 13;
 export const HIGH = 18;
+
+// public 3rd party endpoint
+export const calendarURI = 'https://www.calendarindex.com/api/v1/holidays?country=SE';
