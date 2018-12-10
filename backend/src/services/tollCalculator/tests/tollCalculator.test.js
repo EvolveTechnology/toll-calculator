@@ -11,6 +11,10 @@ describe('toll calculator', () => {
   const vehicle = {
     type: 'Car',
   };
+
+  const freeVehicle = {
+    type: 'Diplomat',
+  };
   const holidays = ['2018-01-01', '2018-01-06'];
 
   // For this initial test case, our case will cross a toll point every hour
@@ -23,6 +27,20 @@ describe('toll calculator', () => {
       passes,
       totalPasses: passes.length,
       totalFee: 60,
+      isTollFreeVehicle: false,
+      isTollFreeDay: false,
+    });
+  });
+
+  it('calculates the toll for a fee free vehicle and dates', () => {
+    const passes = head(Object.values(byDay));
+    expect(tollCalculator(freeVehicle, byDay, holidays)).toEqual({
+      chargeablePasses: 0,
+      passes,
+      totalPasses: passes.length,
+      totalFee: 0,
+      isTollFreeVehicle: true,
+      isTollFreeDay: false,
     });
   });
 });
