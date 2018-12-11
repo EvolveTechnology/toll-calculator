@@ -6,15 +6,20 @@ describe('tollFreeDays', () => {
     day => new Date(day),
   );
   it('labels specified holidays as tollfree', () => {
-    expect(days.map(date => isTollFreeDate(date, holidays))).toEqual([true, false, true, false]);
+    expect(days.map(date => isTollFreeDate(date, holidays))).toEqual([
+      { isWeekend: false, isHoliday: true },
+      { isWeekend: false, isHoliday: false },
+      { isWeekend: true, isHoliday: true },
+      { isWeekend: false, isHoliday: false },
+    ]);
   });
 
   it('labels weekends as tollfree', () => {
     expect(weekends.map(date => isTollFreeDate(new Date(date), holidays))).toEqual([
-      true,
-      true,
-      true,
-      true,
+      { isWeekend: true, isHoliday: false },
+      { isWeekend: true, isHoliday: false },
+      { isWeekend: true, isHoliday: false },
+      { isWeekend: true, isHoliday: false },
     ]);
   });
 });

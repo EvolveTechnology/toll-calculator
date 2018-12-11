@@ -26,7 +26,5 @@ export default (date, holidays) => {
   const isWeekend = utcWeekend.includes(date.getUTCDay());
   const isHoliday = holidays.includes(calendarDate(date));
 
-  if (isWeekend || isHoliday) return true;
-
-  return false;
+  return { isWeekend, isHoliday };
 };
