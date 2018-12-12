@@ -7,19 +7,19 @@ describe('tollFreeDays', () => {
   );
   it('labels specified holidays as tollfree', () => {
     expect(days.map(date => isTollFreeDate(date, holidays))).toEqual([
-      { isWeekend: false, isHoliday: true },
-      { isWeekend: false, isHoliday: false },
-      { isWeekend: true, isHoliday: true },
-      { isWeekend: false, isHoliday: false },
+      { isSaturday: false, isSunday: false, isHoliday: true },
+      { isSaturday: false, isSunday: false, isHoliday: false },
+      { isSaturday: true, isSunday: false, isHoliday: true },
+      { isSaturday: false, isSunday: false, isHoliday: false },
     ]);
   });
 
   it('labels weekends as tollfree', () => {
     expect(weekends.map(date => isTollFreeDate(new Date(date), holidays))).toEqual([
-      { isWeekend: true, isHoliday: false },
-      { isWeekend: true, isHoliday: false },
-      { isWeekend: true, isHoliday: false },
-      { isWeekend: true, isHoliday: false },
+      { isSaturday: true, isSunday: false, isHoliday: false },
+      { isSaturday: false, isSunday: true, isHoliday: false },
+      { isSaturday: true, isSunday: false, isHoliday: false },
+      { isSaturday: false, isSunday: true, isHoliday: false },
     ]);
   });
 });

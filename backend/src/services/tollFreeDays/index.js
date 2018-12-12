@@ -12,7 +12,8 @@ const calendarDate = pipe(
   head,
 );
 
-const utcWeekend = [0, 6];
+const Sunday = 0;
+const Saturday = 6;
 
 /**
  * Check if the date is a holiday or a weekend
@@ -23,8 +24,9 @@ const utcWeekend = [0, 6];
  * @return whether or not date is weekend or is holiday
  */
 export default (date, holidays) => {
-  const isWeekend = utcWeekend.includes(date.getUTCDay());
+  const isSaturday = date.getUTCDay() === Saturday;
+  const isSunday = date.getUTCDay() === Sunday;
   const isHoliday = holidays.includes(calendarDate(date));
 
-  return { isWeekend, isHoliday };
+  return { isSaturday, isSunday, isHoliday };
 };

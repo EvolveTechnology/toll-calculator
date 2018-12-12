@@ -15,7 +15,8 @@ describe('byDayFeeAccumulator', () => {
     fees: {
       '2018-01-31': {
         chargeablePasses: 0,
-        isWeekend: false,
+        isSaturday: false,
+        isSunday: false,
         isHoliday: true,
         isTollFreeVehicle: false,
         passes: ['2018-01-31 22:56:04'],
@@ -30,7 +31,8 @@ describe('byDayFeeAccumulator', () => {
       ...otherDays,
       '2018-02-03': {
         chargeablePasses: 0,
-        isWeekend: true,
+        isSaturday: true,
+        isSunday: false,
         isHoliday: false,
         isTollFreeVehicle: false,
         passes: ['2018-02-03 06:18:00', '2018-02-03 09:10:00'],

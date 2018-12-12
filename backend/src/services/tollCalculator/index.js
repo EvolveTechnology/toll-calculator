@@ -38,16 +38,17 @@ export default function tollCalculator(vehicle, dates, holidays) {
   const { [date]: passes } = dates;
 
   const day = new Date(date);
-  const { isWeekend, isHoliday } = tollFreeDays(day, holidays);
+  const { isSunday, isSaturday, isHoliday } = tollFreeDays(day, holidays);
 
-  if (isTollFreeVehicle || isWeekend || isHoliday) {
+  if (isTollFreeVehicle || isSunday || isSaturday || isHoliday) {
     return {
       totalFee: 0,
       passes,
       totalPasses: passes.length,
       chargeablePasses: 0,
       isTollFreeVehicle,
-      isWeekend,
+      isSunday,
+      isSaturday,
       isHoliday,
     };
   }
@@ -64,7 +65,9 @@ export default function tollCalculator(vehicle, dates, holidays) {
     totalPasses: passes.length,
     chargeablePasses: chargeableTimes.length,
     isTollFreeVehicle,
-    isWeekend,
+    isSunday,
+    isSaturday,
+
     isHoliday,
   };
 }

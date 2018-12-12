@@ -28,7 +28,8 @@ describe('toll calculator', () => {
       totalPasses: passes.length,
       totalFee: 60,
       isTollFreeVehicle: false,
-      isWeekend: false,
+      isSunday: false,
+      isSaturday: false,
       isHoliday: false,
     });
   });
@@ -41,7 +42,8 @@ describe('toll calculator', () => {
       totalPasses: passes.length,
       totalFee: 0,
       isTollFreeVehicle: true,
-      isWeekend: false,
+      isSunday: false,
+      isSaturday: false,
       isHoliday: false,
     });
   });
