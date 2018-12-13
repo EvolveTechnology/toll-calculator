@@ -34,3 +34,6 @@ export const sortingByTotalFees = (sort, arr) =>
 
 export const capitalize = str =>
   `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
+
+export const upperCase = str =>
+  str && typeof str === "string" ? str.toUpperCase() : "";

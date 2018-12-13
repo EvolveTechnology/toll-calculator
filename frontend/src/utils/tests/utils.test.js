@@ -5,7 +5,8 @@ import {
   isWeekend,
   isValidRegNum,
   sortingByTotalFees,
-  capitalize
+  capitalize,
+  upperCase
 } from "..";
 
 import { HIGHEST, NONE, LOWEST } from "../../constants";
@@ -75,5 +76,13 @@ describe("capitalize", () => {
   it("capitalizes", () => {
     expect(capitalize("joseph")).toEqual("Joseph");
     expect(capitalize("")).toEqual("");
+  });
+});
+
+describe("upperCase", () => {
+  it("upperCases", () => {
+    expect(upperCase("joseph")).toEqual("JOSEPH");
+    expect(upperCase("")).toEqual("");
+    expect(upperCase(2)).toEqual("");
   });
 });
