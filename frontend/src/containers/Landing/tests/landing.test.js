@@ -14,7 +14,7 @@ import { HIGHEST } from "../../../constants";
 // This sets the mock adapter on the default instance
 const mock = new MockAdapter(axios);
 
-mock.onPost(`${endpoint}/vehicle`).reply(config => {
+mock.onPost(`${endpoint}/vehicle`).reply(() => {
   return [200, { ...mockData }];
 });
 
