@@ -28,5 +28,25 @@
     "axios-mock-adapter": "^1.15.0",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/serviceWorker.js",
+      "!src/setupTests.js",
+      "!src/index.js"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
   }
 }
