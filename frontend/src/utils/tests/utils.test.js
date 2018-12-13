@@ -1,6 +1,7 @@
 import {
   vehicleTypesAccumulator,
-  totalFeeAccumulator,
+  objectTotalFeeAccumulator,
+  arrayTotalFeeAccumulator,
   isHoliday,
   isWeekend,
   isValidRegNum,
@@ -25,7 +26,14 @@ describe("total fee accumulator", () => {
     c: { totalFee: 30 }
   };
   it("accumulates all vehicle types", () => {
-    expect(totalFeeAccumulator(fees)).toEqual(60);
+    expect(objectTotalFeeAccumulator(fees)).toEqual(60);
+  });
+});
+
+describe("feeAccumulator", () => {
+  const arr = [{ totalFee: 10 }, { totalFee: 20 }, { totalFee: 30 }];
+  it("accumulates from the array", () => {
+    expect(arrayTotalFeeAccumulator(arr)).toEqual(60);
   });
 });
 

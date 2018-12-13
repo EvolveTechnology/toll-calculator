@@ -7,9 +7,13 @@ export const vehicleTypesAccumulator = vehicles =>
     []
   );
 
-// accumulate total fees
-export const totalFeeAccumulator = fees =>
-  Object.keys(fees).reduce((prev, day) => fees[day].totalFee + prev, 0);
+// accumulate total fees when input is object
+export const objectTotalFeeAccumulator = obj =>
+  Object.keys(obj).reduce((prev, day) => obj[day].totalFee + prev, 0);
+
+// accumulate total fees when input is array
+export const arrayTotalFeeAccumulator = arr =>
+  arr.reduce((prev, { totalFee }) => totalFee + prev, 0);
 
 // check if holidays
 export const isHoliday = fee => fee.isHoliday;

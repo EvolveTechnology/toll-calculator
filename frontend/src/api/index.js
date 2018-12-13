@@ -1,5 +1,5 @@
 import axios from "axios";
-import { totalFeeAccumulator } from "../utils";
+import { objectTotalFeeAccumulator } from "../utils";
 
 export const endpoint = "http://localhost:1337";
 
@@ -19,7 +19,7 @@ export const queryOne = (vehicle, callback, fallbackState) => {
         isTollFree: Object.keys(fees).some(day => fees[day].isTollFreeVehicle),
         regNum,
         type,
-        allTimeTotalFee: totalFeeAccumulator(fees),
+        allTimeTotalFee: objectTotalFeeAccumulator(fees),
         showSpinner: false
       })
     )
@@ -33,7 +33,7 @@ export const queryAll = () => {
     })
     .then(({ data }) =>
       data.map(({ fees, ...vehicle }) => ({
-        totalFee: totalFeeAccumulator(fees),
+        totalFee: objectTotalFeeAccumulator(fees),
         fees,
         ...vehicle
       }))
