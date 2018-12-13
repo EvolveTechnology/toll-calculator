@@ -8,7 +8,7 @@
     "lint": "eslint src/**",
     "start": "babel-node src/index.js",
     "build": "yarn coverage && babel src -d build",
-    "wt-serve": "wt serve index.js --hostname localhost --port 1337 --secrets .secrets",
+    "wt-serve": "wt serve index.js --hostname localhost --port 1337 --secrets .secrets --meta ENV=DEV",
     "serve": "yarn build && nodemon --exec \"yarn wt-serve\"",
     "test": "jest src"
   },

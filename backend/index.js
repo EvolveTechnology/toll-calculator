@@ -9,7 +9,9 @@ const jsonParser = bodyParser.json();
 
 app.use(jsonParser);
 app.use((req, res, next) => {
-  const allowedURIs = 'http://localhost:3000';
+  const { webtaskContext } = req;
+  const { meta } = webtaskContext;
+  const allowedURIs = meta.ENV === 'DEV' ? 'http://localhost:3000' : 'https://icyjoseph.github.io';
 
   const accessControlAllowOrigin = ['Access-Control-Allow-Origin', allowedURIs];
   const accessControlAllowHeaders = ['Access-Control-Allow-Headers', 'Content-Type'];
