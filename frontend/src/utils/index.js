@@ -1,4 +1,4 @@
-import { HIGHEST, LOWEST, NONE } from "../constants";
+import { HIGHEST, NONE } from "../constants";
 
 // accumulate all types of vehicles
 export const vehicleTypesAccumulator = vehicles =>
@@ -23,14 +23,10 @@ export const isValidRegNum = regNum => {
 };
 
 const sortingFn = sort => {
-  switch (sort) {
-    case HIGHEST:
-      return (entity, nextEntity) => nextEntity.totalFee - entity.totalFee;
-    case LOWEST:
-      return (entity, nextEntity) => entity.totalFee - nextEntity.totalFee;
-    default:
-      return null;
+  if (sort === HIGHEST) {
+    return (entity, nextEntity) => nextEntity.totalFee - entity.totalFee;
   }
+  return (entity, nextEntity) => entity.totalFee - nextEntity.totalFee;
 };
 
 export const sortingByTotalFees = (sort, arr) =>
