@@ -4,9 +4,10 @@ import {
   isHoliday,
   isWeekend,
   isValidRegNum,
-  sortingByTotalFees
+  sortingByTotalFees,
+  capitalize
 } from "..";
-import { expected } from "../../api/tests/mock";
+
 import { HIGHEST, NONE, LOWEST } from "../../constants";
 
 describe("vehicles types accumulator", () => {
@@ -67,5 +68,12 @@ describe("sorts by total fee", () => {
       { totalFee: 100 },
       { totalFee: 10 }
     ]);
+  });
+});
+
+describe("capitalize", () => {
+  it("capitalizes", () => {
+    expect(capitalize("joseph")).toEqual("Joseph");
+    expect(capitalize("")).toEqual("");
   });
 });
