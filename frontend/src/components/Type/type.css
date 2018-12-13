@@ -1,0 +1,18 @@
+.type {
+  display: flex;
+  justify-content: space-between;
+}
+
+.type > * {
+  margin: 0 1em;
+}
+
+.type > * + * {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.type > * + * > * + * > img {
+  margin-left: 0.5em;
+}

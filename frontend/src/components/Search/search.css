@@ -1,0 +1,30 @@
+.styled-form {
+  display: flex;
+  justify-content: center;
+}
+
+.styled-form > input {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 3%;
+  background: rgba(0, 0, 0, 0);
+  border: none;
+  color: #f8f8f8;
+  border-bottom: 2px solid #f8f8f8;
+  font-size: 36pt;
+  max-width: 200px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.styled-form > input:focus {
+  outline: none;
+}
+
+.styled-form > input::placeholder {
+  color: #003633;
+}
+
+.styled-form > button {
+  margin-top: 15px;
+}

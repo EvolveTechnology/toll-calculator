@@ -1,0 +1,33 @@
+.progress-with-label {
+  display: flex;
+  flex-direction: column;
+  margin: 1em;
+}
+
+.progress-wrapper {
+  position: relative;
+  height: auto;
+  background: #002b36;
+  display: flex;
+  flex-direction: column;
+}
+
+.fee {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.fee-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.label {
+  text-align: center;
+  margin-top: 4px;
+}

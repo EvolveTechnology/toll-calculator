@@ -1,0 +1,12 @@
+.circle {
+  transform: rotate(-90deg);
+  fill: none;
+  stroke-linecap: round;
+}
+.circle-background {
+  stroke: #e6e6e6;
+}
+
+.circle-fill {
+  stroke: #65c3de;
+}
