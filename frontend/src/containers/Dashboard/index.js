@@ -80,7 +80,7 @@ export class Admin extends Component {
     return (
       <Fragment>
         <div className="admin-container">
-          <h1 id="admin" className="lead admin-title">
+          <h1 id="admin" className="lead title">
             Welcome!
           </h1>
           <div className="filters">

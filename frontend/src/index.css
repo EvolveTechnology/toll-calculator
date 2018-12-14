@@ -16,3 +16,12 @@ body {
 body::-webkit-scrollbar {
   display: none;
 }
+
+.flex-nav {
+  flex: 1;
+  display: flex;
+}
+
+.title {
+  text-align: center;
+}
