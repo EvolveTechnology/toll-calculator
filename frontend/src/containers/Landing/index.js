@@ -75,8 +75,7 @@ class Landing extends Component {
           )}
           {results.length > 0 && (
             <Results
-              sorted={sorted}
-              results={results}
+              results={sorted}
               type={type}
               regNum={regNum}
               isTollFree={isTollFree}

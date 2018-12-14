@@ -7,7 +7,7 @@ import Holiday from "../../Holiday";
 
 describe("Results for tollFree Vehicle", () => {
   const props = {
-    sorted: [],
+    results: [],
     isTollFree: true,
     type: "Diplomat",
     regNum: "ABC-123",
@@ -24,7 +24,7 @@ describe("Results for tollFree Vehicle", () => {
 
 describe("Results for holidays", () => {
   const props = {
-    sorted: [{ day: "a", isHoliday: true, isSunday: false, isSaturday: true }],
+    results: [{ day: "a", isHoliday: true, isSunday: false, isSaturday: true }],
     isTollFree: false,
     type: "Truck",
     regNum: "ABC-123",
@@ -42,7 +42,7 @@ describe("Results for holidays", () => {
 
 describe("Results for weekends", () => {
   const props = {
-    sorted: [
+    results: [
       { day: "a", isHoliday: false, isSunday: false, isSaturday: true },
       { day: "b", isHoliday: false, isSunday: true, isSaturday: false }
     ],

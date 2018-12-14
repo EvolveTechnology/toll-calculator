@@ -9,7 +9,7 @@ import { isHoliday, isWeekend } from "../../utils";
 
 import "./results.css";
 
-const Results = ({ sorted, isTollFree, type, regNum, allTimeTotalFee }) => (
+const Results = ({ results, isTollFree, type, regNum, allTimeTotalFee }) => (
   <Fragment>
     {type && (
       <div className="results">
@@ -25,7 +25,7 @@ const Results = ({ sorted, isTollFree, type, regNum, allTimeTotalFee }) => (
       <TollFreeVehicle />
     ) : (
       <div className="results-group">
-        {sorted.map(({ day, totalFee, ...fee }) => {
+        {results.map(({ day, totalFee, ...fee }) => {
           const holiday = isHoliday(fee);
           const weekend = isWeekend(fee);
           const freeDay = holiday || weekend;
