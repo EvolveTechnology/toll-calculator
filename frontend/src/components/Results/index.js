@@ -38,7 +38,8 @@ const Results = ({ sorted, isTollFree, type, regNum, allTimeTotalFee }) => (
               freeDay={freeDay}
             >
               {holiday && <Holiday key={day} label={day} />}
-              {weekend && <Weekend key={day} label={day} {...fee} />}
+              {weekend &&
+                !holiday && <Weekend key={day} label={day} {...fee} />}
             </AnimatedProgress>
           );
         })}
