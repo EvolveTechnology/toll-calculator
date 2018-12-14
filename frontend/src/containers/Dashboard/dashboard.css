@@ -6,6 +6,12 @@
   flex-direction: column;
 }
 
+.admin-title {
+  margin: 0.5em;
+  padding: 10px;
+  text-align: center;
+}
+
 .vehicle-list {
   flex: 1;
   display: flex;
