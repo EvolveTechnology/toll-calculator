@@ -1,15 +1,18 @@
 import React, { Fragment, Component } from "react";
 
+import withResultData from "../withResultData";
 import Filter from "../../components/Filter";
 import Search from "../../components/Search";
 import Summary from "../../components/Summary";
 import VehicleList from "../../components/VehicleList";
+import Results from "../../components/Results";
 import Spinner from "../../components/Spinner";
 
 import Fabs from "../../components/Fabs";
 
 import { queryAll } from "../../api";
 import {
+  partial,
   vehicleTypesAccumulator,
   isValidRegNum,
   sortingByTotalFees,
@@ -26,6 +29,8 @@ import {
 } from "../../constants";
 
 import "./dashboard.css";
+
+const SingleVehicle = partial(withResultData)(Results);
 
 const initialState = {
   query: "",
@@ -70,7 +75,8 @@ export class Admin extends Component {
       .filter(({ regNum }) => !query || query === regNum);
 
     const typeOptions = [ALL, ...vehicleTypesAccumulator(vehicles)];
-
+    const hasVehicles = !!vehicles.length;
+    const showSingleView = hasVehicles && isValidRegNum(query);
     return (
       <Fragment>
         <div className="admin-container">
@@ -81,6 +87,7 @@ export class Admin extends Component {
             <Search search={this.search} track={this._input} />
             <Filter
               title={TYPE}
+              disabled={!!query}
               change={this.onChangeFilter(FILTER_TYPE)}
               options={typeOptions}
             />
@@ -91,7 +98,8 @@ export class Admin extends Component {
             />
           </div>
           <Summary vehicles={vehicles} sortedVehicles={sortedVehicles} />
-          {vehicles.length > 0 && <VehicleList vehicles={sortedVehicles} />}
+          {hasVehicles && <VehicleList vehicles={sortedVehicles} />}
+          {showSingleView && SingleVehicle(sorting, sortedVehicles)}
         </div>
         <Fabs>
           <button
@@ -99,7 +107,7 @@ export class Admin extends Component {
             onClick={this.loadAll}
             onMouseDown={e => e.preventDefault()}
           >
-            {vehicles.length ? REFRESH : LOAD_ALL}
+            {hasVehicles ? REFRESH : LOAD_ALL}
           </button>
         </Fabs>
         <Spinner show={loadingAll} />
