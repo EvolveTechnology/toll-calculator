@@ -73,7 +73,7 @@ class Landing extends Component {
               options={sortingOptions}
             />
           )}
-          {!showSpinner && (
+          {results.length > 0 && (
             <Results
               sorted={sorted}
               results={results}
