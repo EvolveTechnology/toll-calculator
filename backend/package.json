@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "deploy": "yarn build && yarn wt-deploy",
+    "wt-deploy": "wt create --bundle index.js --secrets-file .secrets",
     "coverage": "jest --collectCoverageFrom=src/**.js --coverage src",
     "lint": "eslint src/**",
     "start": "babel-node src/index.js",
     "build": "yarn coverage && babel src -d build",
-    "wt-serve": "wt serve index.js --hostname localhost --port 1337 --secrets .secrets --meta ENV=DEV",
+    "wt-serve": "wt serve index.js --hostname localhost --port 1337 --secrets-file .secrets --meta ENV=DEV",
     "serve": "yarn build && nodemon --exec \"yarn wt-serve\"",
     "test": "jest src"
   },

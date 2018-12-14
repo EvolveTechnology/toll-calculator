@@ -10,6 +10,9 @@
     "react-scripts": "2.1.1"
   },
   "scripts": {
+    "deploy": "yarn pre-deploy && surge --project ./build --domain https://nice-sky.surge.sh",
+    "pre-deploy": "yarn test --coverage && yarn build && yarn make-200",
+    "make-200": "cp build/index.html build/200.html -f",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
