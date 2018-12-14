@@ -6,7 +6,7 @@ import { mockData, expected, expectedAll } from "./mock";
 // This sets the mock adapter on the default instance
 const mock = new MockAdapter(axios);
 
-mock.onPost(`${endpoint}/vehicle`).reply(config => {
+mock.onPost(`${endpoint}/vehicle`).replyOnce(config => {
   if (config.data === '"QNX-473"') {
     return [
       200,
@@ -18,7 +18,7 @@ mock.onPost(`${endpoint}/vehicle`).reply(config => {
   return [401, { id: null }];
 });
 
-mock.onPost(`${endpoint}/all`).reply(200, [{ ...mockData }]);
+mock.onPost(`${endpoint}/all`).replyOnce(200, [{ ...mockData }]);
 
 describe("query for one", () => {
   const fallback = {};
@@ -39,7 +39,17 @@ describe("query for one", () => {
 
 describe("query for all", () => {
   it("fetches one vehicle", async () => {
-    const result = await queryAll();
-    expect(result).toEqual(expectedAll);
+    const callback = jest.fn();
+    const fallback = {};
+    await queryAll(callback, fallback);
+    expect(callback).toHaveBeenCalledWith(expectedAll);
+  });
+
+  it("gracefully handles failure", async () => {
+    const callback = jest.fn();
+    const fallback = {};
+
+    await queryAll(callback, fallback);
+    expect(callback).toHaveBeenCalledWith(fallback);
   });
 });

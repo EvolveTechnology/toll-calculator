@@ -26,16 +26,20 @@ export const queryOne = (vehicle, callback, fallbackState) => {
     .catch(() => callback({ ...fallbackState }));
 };
 
-export const queryAll = () => {
+export const queryAll = (callback, fallbackState) => {
   return axios
     .post(`${endpoint}/all`, {
       headers
     })
     .then(({ data }) =>
-      data.map(({ fees, ...vehicle }) => ({
-        totalFee: objectTotalFeeAccumulator(fees),
-        fees,
-        ...vehicle
-      }))
-    );
+      callback({
+        vehicles: data.map(({ fees, ...vehicle }) => ({
+          totalFee: objectTotalFeeAccumulator(fees),
+          fees,
+          ...vehicle
+        })),
+        loadingAll: false
+      })
+    )
+    .catch(() => callback({ ...fallbackState }));
 };
