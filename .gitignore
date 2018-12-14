@@ -8,7 +8,7 @@ mockData/
 
 **/.pnp
 .pnp.js
-
+**/.env
 
 # misc
 **/.DS_Store

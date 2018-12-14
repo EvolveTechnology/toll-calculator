@@ -1,7 +1,6 @@
 import axios from "axios";
 import { objectTotalFeeAccumulator } from "../utils";
-
-export const endpoint = "http://localhost:1337";
+import { endpoint } from "../endpoints";
 
 const headers = {
   "Content-Type": "application/json"

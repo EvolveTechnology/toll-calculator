@@ -10,7 +10,7 @@ import { HIGHEST, LOWEST, NONE } from "../../../constants";
 import Summary from "../../../components/Summary";
 import VehicleList from "../../../components/VehicleList";
 
-import { endpoint } from "../../../api";
+import { endpoint } from "../../../endpoints";
 import { mockData, expected } from "./mock";
 import Type from "../../../components/Type";
 

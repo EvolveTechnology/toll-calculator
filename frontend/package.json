@@ -34,7 +34,8 @@
       "src/**/*.js",
       "!src/serviceWorker.js",
       "!src/setupTests.js",
-      "!src/index.js"
+      "!src/index.js",
+      "!src/endpoints/index.js"
     ],
     "coverageReporters": [
       "text",

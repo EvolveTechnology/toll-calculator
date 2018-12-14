@@ -4,7 +4,7 @@ import MockAdapter from "axios-mock-adapter";
 import { mount } from "enzyme";
 import Landing from "..";
 import Spinner from "../../../components/Spinner";
-import { endpoint } from "../../../api";
+import { endpoint } from "../../../endpoints";
 import { mockData, expected } from "./mock";
 import Filter from "../../../components/Filter";
 import Results from "../../../components/Results";

@@ -1,6 +1,7 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { queryOne, queryAll, endpoint } from "..";
+import { queryOne, queryAll } from "..";
+import { endpoint } from "../../endpoints";
 import { mockData, expected, expectedAll } from "./mock";
 
 // This sets the mock adapter on the default instance
