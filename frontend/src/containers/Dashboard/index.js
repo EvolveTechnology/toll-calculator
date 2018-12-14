@@ -27,13 +27,17 @@ import {
 
 import "./dashboard.css";
 
+const initialState = {
+  query: "",
+  sorting: "None",
+  filterType: "All",
+  vehicles: [],
+  loadingAll: false
+};
+
 export class Admin extends Component {
   state = {
-    query: "",
-    sorting: "None",
-    filterType: "All",
-    vehicles: [],
-    loadingAll: false
+    ...initialState
   };
 
   _input = React.createRef();
@@ -50,12 +54,12 @@ export class Admin extends Component {
     return this.setState({ [type]: update });
   };
 
+  updateState = newState => this.setState({ ...newState });
+
+  request = () => queryAll(this.updateState, initialState);
+
   loadAll = () => {
-    return this.setState({ loadingAll: true }, () =>
-      queryAll()
-        .then(vehicles => this.setState({ vehicles, loadingAll: false }))
-        .catch(() => this.setState({ vehicles: [], loadingAll: false }))
-    );
+    return this.setState({ loadingAll: true }, this.request);
   };
 
   render() {

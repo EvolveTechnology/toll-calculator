@@ -187,12 +187,4 @@ describe("Dashboard", () => {
 
     expect(preventDefault).toHaveBeenCalled();
   });
-
-  it("gracefully handles failure", () => {
-    mock.onPost(`${endpoint}/all`);
-
-    dashboard.find("button").simulate("click");
-    expect(dashboard.state("vehicles")).toEqual([]);
-    expect(dashboard.state("loadingAll")).toEqual([]);
-  });
 });
