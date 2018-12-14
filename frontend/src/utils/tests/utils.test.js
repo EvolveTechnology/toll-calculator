@@ -1,4 +1,5 @@
 import {
+  partial,
   vehicleTypesAccumulator,
   objectTotalFeeAccumulator,
   arrayTotalFeeAccumulator,
@@ -11,6 +12,19 @@ import {
 } from "..";
 
 import { HIGHEST, NONE, LOWEST } from "../../constants";
+
+describe("partial", () => {
+  const fn = jest.fn((...args) => args.reduce((acc, val) => acc + val, 0));
+  const firstArgs = [1, 2, 3];
+  const secondArg = 4;
+  const result = partial(fn)(...firstArgs)(secondArg);
+
+  it("allows users to declare arguments in two batches from the left", () => {
+    expect(result).toEqual(10);
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(fn).toHaveBeenCalledWith(1, 2, 3, 4);
+  });
+});
 
 describe("vehicles types accumulator", () => {
   const vehicles = [{ type: "a" }, { type: "a" }, { type: "b" }];

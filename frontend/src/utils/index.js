@@ -1,5 +1,8 @@
 import { HIGHEST, NONE } from "../constants";
 
+// take a function, and then allocate arguments partially
+export const partial = f => (...a) => (...b) => f(...a, ...b);
+
 // accumulate all types of vehicles
 export const vehicleTypesAccumulator = vehicles =>
   vehicles.reduce(
