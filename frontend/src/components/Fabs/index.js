@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { activateButton } from "./helpers";
 import "./fabs.css";
 
 export class Fabs extends Component {
@@ -15,22 +15,7 @@ export class Fabs extends Component {
     window.removeEventListener("scroll", this.showButton);
   }
 
-  showButton = () => {
-    const { show } = this.state;
-    const fromTop = window.scrollY;
-
-    if (fromTop > 100) {
-      if (!show) {
-        return this.setState({ show: true });
-      }
-    }
-    if (fromTop <= 100) {
-      if (show) {
-        return this.setState({ show: false });
-      }
-    }
-    return null;
-  };
+  showButton = activateButton.bind(this);
 
   scrollTop = () => window.scrollTo(0, 0);
 
