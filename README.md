@@ -1,6 +1,6 @@
 # Toll fee calculator 1.0
 
-## Background
+## <a id="background"></a>Background
 
 Our city has decided to implement toll fees in order to reduce traffic congestion during rush hours.
 This is the current draft of requirements:
@@ -25,10 +25,15 @@ You can make any modifications or suggestions for modifications that you see fit
 
 ## Solution
 
-### Understanding the application
+### Demo
 
-Demo available [here.](https://nice-sky.surge.sh/). You may want to search for `SDG-560`, or `QNX-473`.
-Otherwise navigate to the [dashboard](https://nice-sky.surge.sh/dashboard) and fetch all available vehicles.
+Available [here.](https://nice-sky.surge.sh/)
+
+- You may want to search for `SDG-560`, or `QNX-473`.
+
+- Otherwise navigate to the [dashboard](https://nice-sky.surge.sh/dashboard) and fetch all available vehicles.
+
+### Understanding the application
 
 The proposed solution breaks the assignment into two pieces.
 
@@ -47,14 +52,14 @@ The express web task, acts as a gateway, by exposing two end points, `/all`/ and
 
 Second, the functions which calculate the tolling fee. These are applications of the `byDayFeeAccumulator` function.
 
-1. byVehicleCalculator
+1. `byVehicleCalculator`
 
    - Gets All vehicles and filters the required one.
    - Gets holidays for the years included in the vehicle data.
    - Group the dates array by day using `groupByDay`.
    - Applies `byDayFeeAccumulator` to a single vehicle.
 
-2. allVehiclesCalculator
+2. `allVehiclesCalculator`
 
    - Gets All vehicles.
    - Gets holidays for the years included in the vehicles data.
@@ -71,7 +76,7 @@ The `tollCalculator` function calculates the cost of each pass, adds up the tota
 
 It does this by relying in supporting functions, such as `dailyFeeAccumulator`, `feeByTimeOfDay`, `tollFreeVehicles`, `tollFreeDays` and `intervalMarker`.
 
-These support functions impose the special business conditions required by the city administration.
+These support functions impose the special business conditions required by the city [administration](#background).
 
 Then, `byDayFeeAccumulator` when ran against all days that a vehicle passes through tolls, returns fees object carrying the passes and the total fee for each day, in addition to the rest of vehicle meta data.
 
@@ -86,24 +91,23 @@ const vehicle = {
 
 //output
 const vehicleWithFees = {
-  dates: ['2018-11-15 17:51:37'],
   fees: {
-    '2018-11-15': {
+    "2018-11-15": {
       chargeablePasses: 1,
       isHoliday: false,
       isSaturday: false,
       isSunday: false,
       isTollFreeVehicle: false,
-      passes: ['2018-11-15 17:51:37'],
+      passes: ["2018-11-15 17:51:37"],
       totalFee: 13,
-      totalPasses: 1,
-    },
-  }
-  id: '063ad323-8c82-40e6-b509-af8f99c47324',
-  regNum: 'QNX-473',
-  type: 'Truck',
+      totalPasses: 1
+    }
+  },
+  dates: ["2018-11-15 17:51:37"],
+  id: "063ad323-8c82-40e6-b509-af8f99c47324",
+  regNum: "QNX-473",
+  type: "Truck"
 };
-
 ```
 
 #### References
@@ -140,7 +144,9 @@ In the front end application one can:
 
    - Additionally they can search for a registration number or click on a vehicle to see more detail.
 
-The back end responds with the a fees object attached to every vehicle, whether it is one vehicle or an array of vehicles. The fees object contains the `key-values` pairs, where the key is the day and the values are:
+The back end responds with the a `fees` object attached to every vehicle, whether it is one vehicle or an array of vehicles.
+
+This `fees` object contains the `key-values` pairs, where the key is the `date` and the values are:
 
 - chargeablePasses
 - isHoliday
@@ -151,7 +157,7 @@ The back end responds with the a fees object attached to every vehicle, whether 
 - totalFee
 - totalPasses
 
-These allow, the front end to aggregate data further and have a total for the vehicle, which adds all fees for all days, and also allows the front end to show the reason why certain days may be charged with zero SEK, that is, holidays, Saturday, Sunday, or simply out of chargeable hours.
+These allow the front end to aggregate data further and have a total for the vehicle, which adds all of the fees for all days, and also allows the front end to show the reason why certain days may be charged with zero SEK, that is, holidays, Saturday, Sunday, or simply out of chargeable hours. Furthermore the front end shows if a vehicle is toll free.
 
 When looking at a single vehicle, either in home `/` or dashboard `/dashboard`, one can see a summary for the vehicle, and a circular progress bar for every day, indicating how much of the maximum 60 SEK has been covered that day.
 
@@ -185,6 +191,30 @@ cd frontend && yarn test --coverage
 
 > The api mock is not tested, because it is a simple express app.
 
+### Maintenance
+
+Keeping the application up to date is really simple.
+
+As as administrator perhaps you would like to change the price scheme. For that you just modify, the fees files, located at `backend/src/services/feeByTimeOfDay/fees.js`.
+
+```javascript
+export default [
+  { range: makeRange(6)(6, 29), fee: LOW },
+  { range: makeRange(6, 30)(6, 59), fee: MEDIUM },
+  { range: makeRange(7)(7, 59), fee: HIGH },
+  { range: makeRange(8)(8, 29), fee: MEDIUM },
+  { range: makeRange(8, 30)(14, 59), fee: LOW },
+  { range: makeRange(15)(15, 29), fee: MEDIUM },
+  { range: makeRange(15, 30)(16, 29), fee: HIGH },
+  { range: makeRange(17)(17, 59), fee: MEDIUM },
+  { range: makeRange(18)(18, 29), fee: LOW }
+];
+```
+
+As a developer that should be very easy!
+
+Or if you'd like to change the maximum fee, just edit the constant `MAX_FEE` in `backend/src/services/constants/index.js`. There you can also edit the `LOW`, `MEDIUM` and `HIGH` price levels.
+
 ## Running the solution locally
 
 You'll need:
@@ -198,7 +228,6 @@ The solution uses nodeJS, and was build under version `11.2.0`, but should work 
 
 ```bash
 yarn install-all
-
 ```
 
 2. To run the application locally you need to start three components. Luckily, we do that with just one command.
@@ -209,14 +238,14 @@ yarn start-all
 
 3. You'll be taken to your favorite web browser opened at localhost:3000/
 
-4. Try searching of `SDG-560`, that vehicle sure has a lot of debt.
+4. Try searching for `SDG-560`, that vehicle sure has a lot of debt.
 
-What did you just do?
+#### What you happened?
 
-Installed `node_modules` in all sub-parts of the project, and then:
+You installed `node_modules` in all sub-parts of the project, and then:
 
 - An api-mock ran in port 9191.
 - The backend solution ran in port 1337.
 - The frontend solution ran in port 3000.
 
-The api-mock is used to avoid requesting data from live endpoints, which may end up causing costs to my self. These endpoints are hidden in a `.secrets` file not included in the project, which is why if you want to run it locally, you must follow the steps above.
+The api-mock is used to avoid requesting data from live endpoints and avoid sharing api keys, which may end up causing monetary costs to my self. These endpoints and api keys are hidden in a `.secrets` file not included in the project, which is why **if you want to run it locally, you must follow the steps above.**
