@@ -15,7 +15,7 @@
   flex-wrap: wrap;
   justify-content: center;
   animation: fadeIn 1s ease;
-  max-width: 600px;
+  max-width: 900px;
 }
 
 .flex-column {
