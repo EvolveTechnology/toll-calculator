@@ -1,5 +1,5 @@
 import React from "react";
-
+import Image from "../Image";
 import total from "../../assets/total.png";
 import "./type.css";
 
@@ -7,14 +7,13 @@ export const Type = ({
   src,
   type,
   regNum,
+  clickAction,
   unit = "SEK",
   className = "",
   totalFee
 }) => (
   <div className={`type lead ${className}`}>
-    <div>
-      <img src={src} alt={type} width="64px" />
-    </div>
+    <Image onClick={clickAction} payload={regNum} src={src} alt={type} />
     <div>
       <span>{regNum}</span>
       <span>Type: {type}</span>

@@ -1,5 +1,6 @@
 import React from "react";
 import { safeClick } from "../../utils";
+import "./interactive.css";
 
 const isClickable = onClick =>
   typeof onClick === "function" ? "clickable" : "";
