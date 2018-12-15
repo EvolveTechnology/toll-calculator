@@ -1,0 +1,15 @@
+{
+  "name": "mockedservices",
+  "version": "1.0.0",
+  "description": "Use this to run the application locally",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
