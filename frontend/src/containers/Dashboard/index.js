@@ -8,6 +8,7 @@ import Summary from "../../components/Summary";
 import VehicleList from "../../components/VehicleList";
 import Results from "../../components/Results";
 import Spinner from "../../components/Spinner";
+import Placeholder from "../../components/Placeholder";
 
 import Fabs from "../../components/Fabs";
 
@@ -39,7 +40,8 @@ const initialState = {
   sorting: "None",
   filterType: "All",
   vehicles: [],
-  loadingAll: false
+  loadingAll: false,
+  error: false
 };
 
 export class Admin extends Component {
@@ -75,20 +77,31 @@ export class Admin extends Component {
 
   request = () => queryAll(this.updateState, initialState);
 
-  loadAll = () => {
-    return this.setState({ loadingAll: true }, this.request);
-  };
+  loadAll = () => this.setState({ loadingAll: true }, this.request);
 
   render() {
-    const { vehicles, sorting, filterType, query, loadingAll } = this.state;
+    const {
+      vehicles,
+      sorting,
+      filterType,
+      query,
+      loadingAll,
+      error
+    } = this.state;
 
     const sortedVehicles = sortingByTotalFees(sorting, vehicles)
       .filter(({ type }) => filterType === ALL || type === filterType)
       .filter(({ regNum }) => !query || query === regNum);
 
     const typeOptions = [ALL, ...vehicleTypesAccumulator(vehicles)];
-    const hasVehicles = !!sortedVehicles.length;
-    const showSingleView = hasVehicles && isValidRegNum(query);
+
+    const hasVehicles = !!vehicles.length;
+    const hasSortedVehicles = !!sortedVehicles.length;
+
+    const showSingleView = hasSortedVehicles && isValidRegNum(query);
+    const showEmptyBox =
+      !hasSortedVehicles && isValidRegNum(query) && hasVehicles;
+
     return (
       <Fragment>
         <div className="admin-container">
@@ -118,6 +131,8 @@ export class Admin extends Component {
           )}
           {showSingleView && SingleVehicle(sorting, sortedVehicles)}
         </div>
+        {showEmptyBox && <Placeholder placeholder="empty" />}
+        {error && <Placeholder placeholder="error" />}
         <Fabs>
           {showSingleView ? (
             <Button text="Show All" onClick={this.clearQuery} />

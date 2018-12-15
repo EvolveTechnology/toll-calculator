@@ -10,13 +10,25 @@ import Filter from "../../../components/Filter";
 import Results from "../../../components/Results";
 import AnimatedProgress from "../../../components/AnimatedProgress";
 import { HIGHEST } from "../../../constants";
+import Placeholder from "../../../components/Placeholder";
 
 // This sets the mock adapter on the default instance
 const mock = new MockAdapter(axios);
 
-mock.onPost(`${endpoint}/vehicle`).reply(() => {
-  return [200, { ...mockData }];
-});
+mock
+  .onPost(`${endpoint}/vehicle`)
+  .replyOnce(() => {
+    return [200, { ...mockData }];
+  })
+  .onPost(`${endpoint}/vehicle`)
+  .replyOnce(() => {
+    return [
+      200,
+      { id: null, fees: {}, dates: [], regNum: "QNX-473", type: "" }
+    ];
+  })
+  .onPost(`${endpoint}/vehicle`)
+  .reply(500);
 
 describe("Landing", () => {
   const landing = mount(<Landing />);
@@ -98,5 +110,76 @@ describe("Landing", () => {
     landing.find("input").simulate("change", { target: { value: undefined } });
     expect(landing.state("showSpinner")).toEqual(false);
     expect(landing.find(Spinner).prop("show")).toEqual(false);
+  });
+});
+
+describe("Landing with a vehicle without any data", () => {
+  const landing = mount(<Landing />);
+  it("renders", () => {
+    expect(landing.find("h1").text()).toEqual("Hello!");
+  });
+
+  it("has 2 children", () => {
+    expect(landing.children()).toHaveLength(2);
+  });
+
+  it("loads the spinner", () => {
+    expect(landing.find(Spinner)).toHaveLength(1);
+  });
+
+  it("sets the spinner upon valid regNum", () => {
+    expect(landing.state("results")).toEqual([]);
+
+    // this time the mock RETURNS null in a 200!!
+    landing.find("input").instance().value = "QNX-473";
+    landing.find("input").simulate("change", { target: { value: "" } });
+
+    expect(landing.state("showSpinner")).toEqual(true);
+    expect(landing.find(Spinner).prop("show")).toEqual(true);
+  });
+
+  it("renders an empty box", () => {
+    expect(landing.state("error")).toEqual(false);
+    expect(landing.state("results")).toEqual([]);
+    landing.update();
+    expect(landing.find(Placeholder)).toHaveLength(1);
+    expect(landing.find(Placeholder).prop("placeholder")).toEqual("empty");
+
+    expect(landing.find(Results)).toHaveLength(0);
+  });
+});
+
+describe("Landing with network error", () => {
+  const landing = mount(<Landing />);
+  it("renders", () => {
+    expect(landing.find("h1").text()).toEqual("Hello!");
+  });
+
+  it("has 2 children", () => {
+    expect(landing.children()).toHaveLength(2);
+  });
+
+  it("loads the spinner", () => {
+    expect(landing.find(Spinner)).toHaveLength(1);
+  });
+
+  it("sets the spinner upon valid regNum", () => {
+    expect(landing.state("results")).toEqual([]);
+
+    // this time the mock FAILS with 500!!
+    landing.find("input").instance().value = "QNX-473";
+    landing.find("input").simulate("change", { target: { value: "" } });
+
+    expect(landing.state("showSpinner")).toEqual(true);
+    expect(landing.find(Spinner).prop("show")).toEqual(true);
+  });
+
+  it("renders network error placeholder", () => {
+    expect(landing.state("results")).toEqual([]);
+    expect(landing.state("error")).toEqual(true);
+    landing.update();
+    expect(landing.find(Placeholder)).toHaveLength(1);
+    expect(landing.find(Placeholder).prop("placeholder")).toEqual("error");
+    expect(landing.find(Results)).toHaveLength(0);
   });
 });

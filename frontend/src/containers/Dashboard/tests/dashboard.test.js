@@ -15,14 +15,17 @@ import { mockData, expected } from "./mock";
 import Type from "../../../components/Type";
 import AnimatedProgress from "../../../components/AnimatedProgress";
 import Button from "../../../components/Button";
+import Placeholder from "../../../components/Placeholder";
 
 // This sets the mock adapter on the default instance
-const mock = new MockAdapter(axios);
+const mockAxios = new MockAdapter(axios);
 
-mock.onPost(`${endpoint}/all`).replyOnce(200, mockData);
+mockAxios.onPost(`${endpoint}/all`).replyOnce(function() {
+  return [200, mockData];
+});
 
 describe("Dashboard", () => {
-  const dashboard = mount(<Dashboard />);
+  const dashboard = mount(<Dashboard />, { disableLifecycleMethods: false });
   it("renders", () => {
     expect(dashboard.find("h1").text()).toEqual("Welcome!");
   });
@@ -65,7 +68,7 @@ describe("Dashboard", () => {
     expect(dashboard.find(Type)).toHaveLength(2);
   });
 
-  it("sorts them according from Highest to Lowest", () => {
+  it("sorts them from Highest to Lowest", () => {
     dashboard
       .find(Filter)
       .find("select")
@@ -89,7 +92,7 @@ describe("Dashboard", () => {
     ).toEqual(26);
   });
 
-  it("sorts them according from Lowest to Highest", () => {
+  it("sorts them from Lowest to Highest", () => {
     dashboard
       .find(Filter)
       .find("select")
@@ -198,5 +201,28 @@ describe("Dashboard", () => {
     dashboard.find(Button).simulate("click");
     expect(dashboard.find(AnimatedProgress)).toHaveLength(0);
     expect(dashboard.find(Type)).toHaveLength(2);
+  });
+
+  it("shows empty box for non existent vehicle", () => {
+    dashboard.find("input").instance().value = "QQQ-321";
+    dashboard
+      .find("input")
+      .simulate("change", { target: { value: "QQQ-321" } });
+
+    expect(dashboard.find(Placeholder)).toHaveLength(1);
+    expect(dashboard.find(Placeholder).prop("placeholder")).toEqual("empty");
+  });
+
+  it("shows network error", () => {
+    dashboard.setState({
+      query: "",
+      sorting: "None",
+      filterType: "All",
+      vehicles: [],
+      loadingAll: false,
+      error: true
+    });
+
+    expect(dashboard.find(Placeholder)).toHaveLength(1);
   });
 });
