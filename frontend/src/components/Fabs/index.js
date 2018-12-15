@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { activateButton } from "./helpers";
+import { softTopScroll } from "../../utils";
 import "./fabs.css";
 
 export class Fabs extends Component {
@@ -17,7 +18,7 @@ export class Fabs extends Component {
 
   showButton = activateButton.bind(this);
 
-  scrollTop = () => window.scrollTo(0, 0);
+  scrollTop = () => softTopScroll();
 
   render() {
     const { show } = this.state;

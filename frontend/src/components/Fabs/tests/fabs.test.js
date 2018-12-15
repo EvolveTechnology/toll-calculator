@@ -49,8 +49,11 @@ describe("", () => {
   });
 
   it("scrolls back to top", () => {
+    const distance = 1;
+    document.body.scrollTop = distance;
+    const afterStep = distance - distance / 8;
     fabs.find("button").simulate("click");
-    expect(scrollMock).toHaveBeenCalledWith(0, 0);
+    expect(scrollMock).toHaveBeenCalledWith(0, afterStep);
   });
 
   it("removes listener on unmount", () => {
