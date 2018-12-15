@@ -19,7 +19,12 @@ export async function byVehicleCalculator(regNum, holidayKey, dataEndpoint) {
   const vehicle = find('regNum', regNum, vehicles);
 
   if (!vehicle) {
-    return { regNum, id: null };
+    return {
+      regNum,
+      id: null,
+      fees: {},
+      dates: [],
+    };
   }
 
   // get the logged dates for the vehicle
