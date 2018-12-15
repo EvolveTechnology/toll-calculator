@@ -34,7 +34,7 @@ describe("query for one", () => {
 
   it("gracefully handles failure to fetch", async () => {
     await queryOne(badRegNum, callback, fallback);
-    expect(callback).toHaveBeenCalledWith(fallback);
+    expect(callback).toHaveBeenCalledWith({ ...fallback, error: true });
   });
 });
 
@@ -51,6 +51,6 @@ describe("query for all", () => {
     const fallback = {};
 
     await queryAll(callback, fallback);
-    expect(callback).toHaveBeenCalledWith(fallback);
+    expect(callback).toHaveBeenCalledWith({ ...fallback, error: true });
   });
 });

@@ -1,5 +1,7 @@
 export const expected = {
   allTimeTotalFee: 13,
+  error: false,
+  id: "063ad323-8c82-40e6-b509-af8f99c47324",
   fees: {
     "2018-11-15": {
       chargeablePasses: 1,
@@ -32,6 +34,7 @@ export const expected = {
 };
 
 export const expectedAll = {
+  error: false,
   loadingAll: false,
   vehicles: [
     {

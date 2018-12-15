@@ -11,18 +11,20 @@ export const queryOne = (vehicle, callback, fallbackState) => {
     .post(`${endpoint}/vehicle`, JSON.stringify(vehicle), {
       headers
     })
-    .then(({ data: { fees, regNum, type } }) =>
+    .then(({ data: { fees, regNum, type, id } }) =>
       callback({
+        id,
         fees,
         results: Object.keys(fees).map(day => ({ day, ...fees[day] })),
         isTollFree: Object.keys(fees).some(day => fees[day].isTollFreeVehicle),
         regNum,
         type,
         allTimeTotalFee: objectTotalFeeAccumulator(fees),
-        showSpinner: false
+        showSpinner: false,
+        error: false
       })
     )
-    .catch(() => callback({ ...fallbackState }));
+    .catch(() => callback({ ...fallbackState, error: true }));
 };
 
 export const queryAll = (callback, fallbackState) => {
@@ -37,8 +39,9 @@ export const queryAll = (callback, fallbackState) => {
           fees,
           ...vehicle
         })),
-        loadingAll: false
+        loadingAll: false,
+        error: false
       })
     )
-    .catch(() => callback({ ...fallbackState }));
+    .catch(() => callback({ ...fallbackState, error: true }));
 };
