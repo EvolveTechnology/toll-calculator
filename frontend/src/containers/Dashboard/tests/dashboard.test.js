@@ -13,6 +13,8 @@ import VehicleList from "../../../components/VehicleList";
 import { endpoint } from "../../../endpoints";
 import { mockData, expected } from "./mock";
 import Type from "../../../components/Type";
+import AnimatedProgress from "../../../components/AnimatedProgress";
+import Button from "../../../components/Button";
 
 // This sets the mock adapter on the default instance
 const mock = new MockAdapter(axios);
@@ -36,13 +38,13 @@ describe("Dashboard", () => {
   });
 
   it("has a load all button", () => {
-    expect(dashboard.find("button").text()).toEqual("Load All");
+    expect(dashboard.find(Button).text()).toEqual("Load All");
   });
 
   it("sets the spinner when loading all", () => {
     expect(dashboard.state("vehicles")).toEqual([]);
 
-    dashboard.find("button").simulate("click");
+    dashboard.find(Button).simulate("click");
 
     expect(dashboard.state("loadingAll")).toEqual(true);
     expect(dashboard.find(Spinner).prop("show")).toEqual(true);
@@ -181,10 +183,20 @@ describe("Dashboard", () => {
     expect(dashboard.find(Type)).toHaveLength(2);
   });
 
-  it("prevents onMouse down bootstrap coloring", () => {
-    const preventDefault = jest.fn();
-    dashboard.find("button").simulate("mousedown", { preventDefault });
+  it("updates query when clicking an element, showing animated progress", () => {
+    expect(dashboard.find(AnimatedProgress)).toHaveLength(0);
+    const type = dashboard.find(Type);
+    const clickableElement = type
+      .at(0)
+      .childAt(0)
+      .childAt(0);
+    clickableElement.simulate("click");
+    expect(dashboard.find(AnimatedProgress)).toHaveLength(2);
+  });
 
-    expect(preventDefault).toHaveBeenCalled();
+  it("clears the query when clicking Show All", () => {
+    dashboard.find(Button).simulate("click");
+    expect(dashboard.find(AnimatedProgress)).toHaveLength(0);
+    expect(dashboard.find(Type)).toHaveLength(2);
   });
 });

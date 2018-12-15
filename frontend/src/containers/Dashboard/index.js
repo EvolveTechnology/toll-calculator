@@ -1,6 +1,7 @@
 import React, { Fragment, Component } from "react";
 
 import withResultData from "../withResultData";
+import Button from "../../components/Button";
 import Filter from "../../components/Filter";
 import Search from "../../components/Search";
 import Summary from "../../components/Summary";
@@ -16,7 +17,8 @@ import {
   vehicleTypesAccumulator,
   isValidRegNum,
   sortingByTotalFees,
-  upperCase
+  upperCase,
+  softTopScroll
 } from "../../utils";
 import {
   sortingOptions,
@@ -54,6 +56,16 @@ export class Admin extends Component {
     return this.setState({ query: isValidRegNum(query) ? query : "" });
   };
 
+  updateQuery = regNum => {
+    this._input.current.value = regNum;
+    return this.search();
+  };
+
+  clearQuery = () => {
+    this.updateQuery("");
+    return softTopScroll();
+  };
+
   onChangeFilter = type => e => {
     const update = e.target.value;
     return this.setState({ [type]: update });
@@ -75,7 +87,7 @@ export class Admin extends Component {
       .filter(({ regNum }) => !query || query === regNum);
 
     const typeOptions = [ALL, ...vehicleTypesAccumulator(vehicles)];
-    const hasVehicles = !!vehicles.length;
+    const hasVehicles = !!sortedVehicles.length;
     const showSingleView = hasVehicles && isValidRegNum(query);
     return (
       <Fragment>
@@ -98,17 +110,23 @@ export class Admin extends Component {
             />
           </div>
           <Summary vehicles={vehicles} sortedVehicles={sortedVehicles} />
-          {hasVehicles && <VehicleList vehicles={sortedVehicles} />}
+          {hasVehicles && (
+            <VehicleList
+              vehicles={sortedVehicles}
+              vehicleClickAction={this.updateQuery}
+            />
+          )}
           {showSingleView && SingleVehicle(sorting, sortedVehicles)}
         </div>
         <Fabs>
-          <button
-            className="btn btn-primary"
-            onClick={this.loadAll}
-            onMouseDown={e => e.preventDefault()}
-          >
-            {hasVehicles ? REFRESH : LOAD_ALL}
-          </button>
+          {showSingleView ? (
+            <Button text="Show All" onClick={this.clearQuery} />
+          ) : (
+            <Button
+              text={hasVehicles ? REFRESH : LOAD_ALL}
+              onClick={this.loadAll}
+            />
+          )}
         </Fabs>
         <Spinner show={loadingAll} />
       </Fragment>
