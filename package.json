@@ -1,0 +1,30 @@
+{
+  "name": "evolve",
+  "version": "1.0.0",
+  "description": "Entry point for coding challenge",
+  "main": "index.js",
+  "scripts": {
+    "api-mock-deps": "cd apiMock && yarn && cd ../",
+    "backend-deps": "cd backend && yarn && cd ../",
+    "frontend-deps": "cd frontend && yarn && cd ../",
+    "install-all": "yarn && yarn api-mock-deps && yarn backend-deps && yarn frontend-deps",
+    "api-mock": "cd apiMock && yarn start",
+    "backend": "cd backend && yarn start",
+    "frontend": "cd frontend && yarn start",
+    "start-all": "concurrently -r -k \"yarn api-mock\" \"yarn backend\" \"yarn frontend\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/icyJoseph/toll-calculator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/icyJoseph/toll-calculator/issues"
+  },
+  "homepage": "https://github.com/icyJoseph/toll-calculator#readme",
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  }
+}

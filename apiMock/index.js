@@ -1,7 +1,8 @@
 // Local development server.
+
 // Used to fake API calls
 // and avoid using real endpoints
-// which might have costs
+// which might have costs.
 
 const express = require("express");
 const app = express();
@@ -16,11 +17,6 @@ const { holidays2017, holidays2018 } = require("./holidays");
 app.use((req, res, next) => {
   res.setHeader(...accessControlAllowOrigin);
   res.setHeader(...accessControlAllowHeaders);
-  console.log(
-    `****\nmethod: ${req.method}\nendpoint: ${req.originalUrl}\nsource: ${
-      req.headers.origin
-    }\n****`
-  );
   next();
 });
 
