@@ -1,22 +1,23 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import Landing from "../containers/Landing";
 import Dashboard from "../containers/Dashboard";
 import NoMatch from "../containers/NoMatch";
 import Nav from "../containers/Nav";
+import Offline from "../containers/Offline";
 
 export function Routes() {
   return (
     <BrowserRouter>
-      <Fragment>
+      <Offline>
         <Nav />
         <Switch>
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/" component={Landing} />
           <Route component={NoMatch} />
         </Switch>
-      </Fragment>
+      </Offline>
     </BrowserRouter>
   );
 }
