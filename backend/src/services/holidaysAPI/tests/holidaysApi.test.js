@@ -10,21 +10,21 @@ import { holidays2017, holidays2018 } from './mock';
 
 // This sets the mock adapter on the default instance
 const mock = new MockAdapter(axios);
-const apiKey = 'someSuperSecretStuff';
+const endPoint = 'holidaysEndpoint';
 const testYear = '2018';
 const anotherTestYear = '2017';
 
-mock.onGet(holidaysURI(apiKey, testYear)).reply(200, {
+mock.onGet(holidaysURI(endPoint, testYear)).reply(200, {
   ...holidays2018,
 });
 
-mock.onGet(holidaysURI(apiKey, anotherTestYear)).reply(200, {
+mock.onGet(holidaysURI(endPoint, anotherTestYear)).reply(200, {
   ...holidays2017,
 });
 
 describe('holidaysAPI', () => {
   it('fetches the holidays2018', async () => {
-    const results = await getHolidaysForYear(apiKey, testYear);
+    const results = await getHolidaysForYear(endPoint, testYear);
     expect(results).toEqual(['2018-01-01', '2018-01-06', '2018-01-13']);
   });
 });
@@ -46,7 +46,7 @@ describe('removePadding', () => {
 describe('byYearHolidays', () => {
   const years = ['2017', '2018'];
   it('get all holidays for the given years', async () => {
-    const holidays = await byYearHolidays(apiKey, years);
+    const holidays = await byYearHolidays(endPoint, years);
     expect(holidays).toEqual([
       '2017-01-01',
       '2017-01-06',

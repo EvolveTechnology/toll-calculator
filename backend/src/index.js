@@ -12,7 +12,7 @@ import { partial, getUniqueYears, find } from './utils';
  * @param dataEndpoint endpoint to fetch vehicles
  * @return fees for the vehicle, daily
  */
-export async function byVehicleCalculator(regNum, holidayKey, dataEndpoint) {
+export async function byVehicleCalculator(regNum, holidayEndpoint, dataEndpoint) {
   // get all vehicles from an endpoint
   const vehicles = await getAllVehicles(dataEndpoint);
   // filter the one vehicle we care about, assuming regNums are unique
@@ -31,7 +31,7 @@ export async function byVehicleCalculator(regNum, holidayKey, dataEndpoint) {
   const { dates } = vehicle;
   // get unique years
   const years = getUniqueYears(dates);
-  const holidays = await byYearHolidays(holidayKey, years);
+  const holidays = await byYearHolidays(holidayEndpoint, years);
 
   // group dates by day
   const byDay = groupByDay(dates);
@@ -50,13 +50,13 @@ export async function byVehicleCalculator(regNum, holidayKey, dataEndpoint) {
  * @param dataEndpoint endpoint to fetch vehicles
  * @return fees for ALL the vehicle, daily
  */
-export async function allVehiclesCalculator(holidayKey, dataEndpoint) {
+export async function allVehiclesCalculator(holidayEndpoint, dataEndpoint) {
   // get all vehicles from an endpoint
   const vehicles = await getAllVehicles(dataEndpoint);
 
   const allDates = vehicles.reduce((prev, { dates }) => prev.concat(dates), []);
   const years = getUniqueYears(allDates);
-  const holidays = await byYearHolidays(holidayKey, years);
+  const holidays = await byYearHolidays(holidayEndpoint, years);
 
   return vehicles.reduce((otherVehicles, vehicle) => {
     const { dates } = vehicle;

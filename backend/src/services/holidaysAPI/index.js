@@ -1,13 +1,12 @@
 import axios from 'axios';
-import { calendarURI } from '../../constants';
 import {
   head, split, partialRight, partial, flatten,
 } from '../../utils';
 
 const splitEmptySpace = partialRight(split)(' ');
 
-// dynamic yearly based endpoint
-export const holidaysURI = (key, year) => `${calendarURI}&year=${year}&api_key=${key}`;
+// dynamic yearly based endpoint => the endpoint already contains the key
+export const holidaysURI = (endpoint, year) => `${endpoint}&year=${year}`;
 
 // select the holidays object from the network response
 export const selectHolidays = ({

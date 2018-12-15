@@ -3,6 +3,14 @@ const Webtask = require('webtask-tools');
 const bodyParser = require('body-parser');
 const Services = require('./build');
 
+const local = 'http://localhost:9191';
+
+const calendarURI = 'https://www.calendarindex.com/api/v1/holidays?country=SE';
+const withKey = key => `${calendarURI}&api_key=${key}`;
+
+const makeHolidayEP = ({ ENV }, key) => (ENV === 'DEV' ? `${local}/holiday` : withKey(key));
+const makeTollDataEP = ({ ENV }, endpoint) => (ENV === 'DEV' ? `${local}/vehicles` : endpoint);
+
 const app = express();
 
 const jsonParser = bodyParser.json();
@@ -24,10 +32,15 @@ app.use((req, res, next) => {
 app.post('/all', async (req, res) => {
   const { webtaskContext } = req;
   const {
+    meta,
     secrets: { HOLIDAY_API_KEY, TOLL_DATA_ENDPOINT },
   } = webtaskContext;
+
+  const holidayEndpoint = makeHolidayEP(meta, HOLIDAY_API_KEY);
+  const tollDataEndpoint = makeTollDataEP(meta, TOLL_DATA_ENDPOINT);
+
   try {
-    const result = await Services.allVehiclesCalculator(HOLIDAY_API_KEY, TOLL_DATA_ENDPOINT);
+    const result = await Services.allVehiclesCalculator(holidayEndpoint, tollDataEndpoint);
     return res.status(200).send(result);
   } catch (err) {
     return res.status(401).send({});
@@ -38,10 +51,15 @@ app.post('/vehicle', async (req, res) => {
   const { webtaskContext, body } = req;
   const { regNum } = body;
   const {
+    meta,
     secrets: { HOLIDAY_API_KEY, TOLL_DATA_ENDPOINT },
   } = webtaskContext;
+
+  const holidayEndpoint = makeHolidayEP(meta, HOLIDAY_API_KEY);
+  const tollDataEndpoint = makeTollDataEP(meta, TOLL_DATA_ENDPOINT);
+
   try {
-    const result = await Services.byVehicleCalculator(regNum, HOLIDAY_API_KEY, TOLL_DATA_ENDPOINT);
+    const result = await Services.byVehicleCalculator(regNum, holidayEndpoint, tollDataEndpoint);
     return res.status(200).send(result);
   } catch (err) {
     return res.status(401).send({});

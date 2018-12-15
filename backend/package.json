@@ -4,15 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "deploy": "yarn build && yarn wt-deploy",
-    "wt-deploy": "wt create --bundle index.js --secrets-file .secrets",
-    "coverage": "jest --collectCoverageFrom=src/**.js --coverage src",
     "lint": "eslint src/**",
     "start": "babel-node src/index.js",
     "build": "yarn coverage && babel src -d build",
+    "test": "jest src",
+    "coverage": "jest --collectCoverageFrom=src/**.js --coverage src",
     "wt-serve": "wt serve index.js --hostname localhost --port 1337 --secrets-file .secrets --meta ENV=DEV",
-    "serve": "yarn build && nodemon --exec \"yarn wt-serve\"",
-    "test": "jest src"
+    "wt-watch": "yarn build && nodemon --exec \"yarn wt-serve\"",
+    "wt-deploy": "wt create --bundle index.js --secrets-file .secrets",
+    "deploy": "yarn build && yarn wt-deploy"
   },
   "author": "",
   "license": "ISC",
