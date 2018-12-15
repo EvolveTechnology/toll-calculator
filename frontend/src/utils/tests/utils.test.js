@@ -8,7 +8,9 @@ import {
   isValidRegNum,
   sortingByTotalFees,
   capitalize,
-  upperCase
+  upperCase,
+  softTopScroll,
+  safeClick
 } from "..";
 
 import { HIGHEST, NONE, LOWEST } from "../../constants";
@@ -106,5 +108,63 @@ describe("upperCase", () => {
     expect(upperCase("joseph")).toEqual("JOSEPH");
     expect(upperCase("")).toEqual("");
     expect(upperCase(2)).toEqual("");
+  });
+});
+
+describe("softTopScroll", () => {
+  const scrollMock = jest.fn();
+  const reqAnimMock = jest.fn();
+
+  const scrollToMock = function(a, b) {
+    return scrollMock(a, b);
+  };
+
+  const animToMock = function(...args) {
+    return reqAnimMock(...args);
+  };
+
+  Object.defineProperty(window, "scrollTo", {
+    value: scrollToMock
+  });
+
+  Object.defineProperty(window, "requestAnimationFrame", {
+    value: animToMock
+  });
+
+  it("scrolls", () => {
+    document.body.scrollTop = 8;
+    softTopScroll();
+    expect(reqAnimMock).toHaveBeenCalledWith(softTopScroll);
+    expect(scrollMock).toHaveBeenCalledWith(0, 8 - 8 / 8);
+  });
+  it("does nothing if already at top", () => {
+    document.body.scrollTop = 0;
+    reqAnimMock.mockReset();
+    scrollMock.mockReset();
+    softTopScroll();
+    expect(reqAnimMock).not.toHaveBeenCalled();
+    expect(scrollMock).not.toHaveBeenCalled();
+  });
+});
+
+describe("safeClick", () => {
+  const onClick = jest.fn();
+  const payload = [1, 2, 3];
+  const eventData = { target: { value: "sjsjs" } };
+  it("returns calls the onClick action", () => {
+    const ev = safeClick(onClick, payload);
+    expect(ev).toBeInstanceOf(Function);
+    expect(onClick).not.toHaveBeenCalled();
+    ev(eventData);
+    expect(onClick).toHaveBeenCalledWith(payload);
+  });
+  it("returns null for bad onClick action", () => {
+    onClick.mockReset();
+    const evNull = safeClick(undefined, payload);
+    expect(evNull).toBeInstanceOf(Function);
+    expect(onClick).not.toHaveBeenCalled();
+    const ret = evNull(eventData);
+    expect(onClick).not.toHaveBeenCalled();
+    expect(ret).toEqual(null);
   });
 });

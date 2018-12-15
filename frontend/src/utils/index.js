@@ -43,3 +43,18 @@ export const capitalize = str => `${upperCase(str.charAt(0))}${str.slice(1)}`;
 
 export const upperCase = str =>
   str && typeof str === "string" ? str.toUpperCase() : "";
+
+// smooth scroll to top
+export const softTopScroll = () => {
+  const { documentElement, body } = document;
+  const distance = documentElement.scrollTop || body.scrollTop;
+  const step = 8;
+  if (distance > 0) {
+    window.requestAnimationFrame(softTopScroll);
+    window.scrollTo(0, distance - distance / step);
+  }
+  return null;
+};
+
+export const safeClick = (fn, ...args) => () =>
+  typeof fn === "function" ? fn(...args) : null;
