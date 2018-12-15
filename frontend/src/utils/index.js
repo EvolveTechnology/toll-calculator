@@ -37,7 +37,7 @@ const sortingFn = sort => {
 };
 
 export const sortingByTotalFees = (sort, arr) =>
-  sort !== NONE ? arr.slice(0).sort(sortingFn(sort)) : arr;
+  sort !== NONE ? arr.slice(0).sort(sortingFn(sort)) : arr.slice(0);
 
 export const capitalize = str => `${upperCase(str.charAt(0))}${str.slice(1)}`;
 
