@@ -25,8 +25,6 @@ import {
   SORTING,
   FILTER_TYPE,
   TYPE,
-  LOAD_ALL,
-  REFRESH,
   ALL
 } from "../../constants";
 
@@ -133,12 +131,9 @@ export class Dashboard extends Component {
         {error && <Placeholder placeholder="error" />}
         <Fabs>
           {showSingleView ? (
-            <Button text="Show All" onClick={this.clearQuery} />
+            <Button type="undo" onClick={this.clearQuery} />
           ) : (
-            <Button
-              text={hasVehicles ? REFRESH : LOAD_ALL}
-              onClick={this.loadAll}
-            />
+            <Button type="load" onClick={this.loadAll} />
           )}
         </Fabs>
         <Spinner show={loadingAll} />

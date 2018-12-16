@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Button from "../Button";
 import { activateButton } from "./helpers";
 import { softTopScroll } from "../../utils";
 import "./fabs.css";
@@ -27,13 +28,7 @@ export class Fabs extends Component {
       <div className="fabs-container">
         {show && (
           <div id="scrollTop">
-            <button
-              className="btn btn-primary"
-              onClick={this.scrollTop}
-              onMouseDown={e => e.preventDefault()}
-            >
-              Top
-            </button>
+            <Button type="slideup" onClick={this.scrollTop} />
           </div>
         )}
         <div id="fab-children">{children}</div>

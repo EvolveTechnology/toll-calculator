@@ -2,6 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import Fabs from "..";
 import { activateButton } from "../helpers";
+import Button from "../../Button";
 
 describe("", () => {
   const scrollMock = jest.fn();
@@ -39,20 +40,14 @@ describe("", () => {
 
   it("renders", () => {
     expect(fabs).toBeDefined();
-    expect(fabs.find("button").text()).toEqual("Top");
-  });
-
-  it("prevents mouse down highlight", () => {
-    const preventDefault = jest.fn();
-    fabs.find("button").simulate("mousedown", { preventDefault });
-    expect(preventDefault).toHaveBeenCalled();
+    expect(fabs.find(Button)).toHaveLength(1);
   });
 
   it("scrolls back to top", () => {
     const distance = 1;
     document.body.scrollTop = distance;
     const afterStep = distance - distance / 8;
-    fabs.find("button").simulate("click");
+    fabs.find(Button).simulate("click");
     expect(scrollMock).toHaveBeenCalledWith(0, afterStep);
   });
 

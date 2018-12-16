@@ -1,11 +1,21 @@
 import React from "react";
 
-export default ({ text, onClick }) => (
-  <button
-    className="btn btn-primary"
+import load from "../../assets/load.png";
+import slideup from "../../assets/slideup.png";
+import undo from "../../assets/undo.png";
+
+const buttonTypes = {
+  load,
+  slideup,
+  undo
+};
+
+export default ({ type, onClick }) => (
+  <img
+    className="clickable"
     onClick={onClick}
-    onMouseDown={e => e.preventDefault()}
-  >
-    {text}
-  </button>
+    alt={type}
+    src={buttonTypes[type]}
+    width="64px"
+  />
 );

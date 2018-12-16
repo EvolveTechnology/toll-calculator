@@ -41,7 +41,7 @@ describe("Dashboard", () => {
   });
 
   it("has a load all button", () => {
-    expect(dashboard.find(Button).text()).toEqual("Load All");
+    expect(dashboard.find(Button).prop("type")).toEqual("load");
   });
 
   it("sets the spinner when loading all", () => {
