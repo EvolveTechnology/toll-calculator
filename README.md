@@ -33,6 +33,15 @@ Available [here.](https://nice-sky.surge.sh/)
 
 - Otherwise navigate to the [dashboard](https://nice-sky.surge.sh/dashboard) and fetch all available vehicles.
 
+### Asumptions
+
+I've made a few asumptions.
+
+1. There is a system which collects, or rather, logs the data of a vehicle passing through a tolling point.
+2. The data is taken local time.
+3. This system keeps updates a database, from which all vehicles that went through a tolling point can be collected.
+4. For the holidays I use a third party API. In practice, we should have our own defined holidays.
+
 ### Understanding the application
 
 The proposed solution breaks the assignment into two pieces.
@@ -46,9 +55,9 @@ The `data` in this context refers to a collection of vehicles all of which have 
 
 ### Back End
 
-The back end is further broken in two. First, an express web task (AKA a lambda, FaaS, etc.), and the actual functions which calculate the tolling fee.
+The back end is further broken in two. First, an express webtask (AKA a lambda, FaaS, etc.), and the actual functions which calculate the tolling fee.
 
-The express web task, acts as a gateway, by exposing two end points, `/all`/ and `/vehicle`, which respond to `POST` requests. The web task is in `backend/index.js`.
+The express webtask, acts as a gateway, by exposing two end points, `/all`/ and `/vehicle`, which respond to `POST` requests. The webtask is in `backend/index.js`.
 
 Second, the functions which calculate the tolling fee. These are applications of the `byDayFeeAccumulator` function.
 
@@ -240,7 +249,7 @@ yarn start-all
 
 4. Try searching for `SDG-560`, that vehicle sure has a lot of debt.
 
-#### What you happened?
+#### What just happened?
 
 You installed `node_modules` in all sub-parts of the project, and then:
 
