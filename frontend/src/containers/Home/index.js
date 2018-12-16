@@ -11,7 +11,7 @@ import { queryOne } from "../../api";
 import { sortingOptions } from "../../constants";
 import { isValidRegNum, sortingByTotalFees, upperCase } from "../../utils";
 
-import "./landing.css";
+import "./home.css";
 
 const initialState = {
   showSpinner: false,
@@ -24,7 +24,7 @@ const initialState = {
   error: false
 };
 
-class Landing extends Component {
+class Home extends Component {
   state = {
     ...initialState
   };
@@ -69,7 +69,7 @@ class Landing extends Component {
     const isEmptySearch = id === null && isValidRegNum(regNum) && !hasResults;
     return (
       <Fragment>
-        <div className="landing">
+        <div className="home">
           <h1 className="lead title">Hello!</h1>
           <Search search={this.search} track={this._input} />
           {hasResults && (
@@ -98,4 +98,4 @@ class Landing extends Component {
   }
 }
 
-export default Landing;
+export default Home;

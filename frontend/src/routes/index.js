@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import Landing from "../containers/Landing";
+import Home from "../containers/Home";
 import Dashboard from "../containers/Dashboard";
 import NoMatch from "../containers/NoMatch";
 import Nav from "../containers/Nav";
@@ -14,7 +14,7 @@ export function Routes() {
         <Nav />
         <Switch>
           <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/" component={Landing} />
+          <Route exact path="/" component={Home} />
           <Route component={NoMatch} />
         </Switch>
       </Offline>

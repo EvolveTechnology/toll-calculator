@@ -44,7 +44,7 @@ const initialState = {
   error: false
 };
 
-export class Admin extends Component {
+export class Dashboard extends Component {
   state = {
     ...initialState
   };
@@ -149,4 +149,4 @@ export class Admin extends Component {
   }
 }
 
-export default Admin;
+export default Dashboard;
