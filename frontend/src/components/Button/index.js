@@ -1,11 +1,11 @@
 import React from "react";
 
-import load from "../../assets/load.png";
+import download from "../../assets/download.png";
 import slideup from "../../assets/slideup.png";
 import undo from "../../assets/undo.png";
 
 const buttonTypes = {
-  load,
+  download,
   slideup,
   undo
 };

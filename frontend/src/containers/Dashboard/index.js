@@ -133,7 +133,7 @@ export class Dashboard extends Component {
           {showSingleView ? (
             <Button type="undo" onClick={this.clearQuery} />
           ) : (
-            <Button type="load" onClick={this.loadAll} />
+            <Button type="download" onClick={this.loadAll} />
           )}
         </Fabs>
         <Spinner show={loadingAll} />
