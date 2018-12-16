@@ -36,8 +36,8 @@ describe("Landing", () => {
     expect(landing.find("h1").text()).toEqual("Hello!");
   });
 
-  it("has 2 children", () => {
-    expect(landing.children()).toHaveLength(2);
+  it("has 3 children, search, fabs and spinner ", () => {
+    expect(landing.children()).toHaveLength(3);
   });
 
   it("loads the spinner", () => {
@@ -119,8 +119,8 @@ describe("Landing with a vehicle without any data", () => {
     expect(landing.find("h1").text()).toEqual("Hello!");
   });
 
-  it("has 2 children", () => {
-    expect(landing.children()).toHaveLength(2);
+  it("has 3 children, search, fabs and spinner", () => {
+    expect(landing.children()).toHaveLength(3);
   });
 
   it("loads the spinner", () => {
@@ -155,8 +155,8 @@ describe("Landing with network error", () => {
     expect(landing.find("h1").text()).toEqual("Hello!");
   });
 
-  it("has 2 children", () => {
-    expect(landing.children()).toHaveLength(2);
+  it("has 3 children, search, fabs and spinner", () => {
+    expect(landing.children()).toHaveLength(3);
   });
 
   it("loads the spinner", () => {

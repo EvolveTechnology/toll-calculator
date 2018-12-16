@@ -3,7 +3,7 @@ import React, { Fragment, Component } from "react";
 import Results from "../../components/Results";
 import Search from "../../components/Search";
 import Filter from "../../components/Filter";
-
+import Fabs from "../../components/Fabs";
 import Spinner from "../../components/Spinner";
 import Placeholder from "../../components/Placeholder";
 
@@ -91,6 +91,7 @@ class Landing extends Component {
           {isEmptySearch && <Placeholder placeholder="empty" />}
           {error && <Placeholder placeholder="error" />}
         </div>
+        <Fabs />
         <Spinner show={showSpinner} />
       </Fragment>
     );
