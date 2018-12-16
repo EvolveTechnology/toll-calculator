@@ -16,7 +16,6 @@ import { queryAll } from "../../api";
 import {
   partial,
   vehicleTypesAccumulator,
-  isValidRegNum,
   sortingByTotalFees,
   upperCase,
   softTopScroll
@@ -55,7 +54,7 @@ export class Dashboard extends Component {
     const { value } = this._input.current;
     const query = upperCase(value);
 
-    return this.setState({ query: isValidRegNum(query) ? query : "" });
+    return this.setState({ query });
   };
 
   updateQuery = regNum => {
@@ -91,16 +90,15 @@ export class Dashboard extends Component {
 
     const sortedVehicles = sortingByTotalFees(sorting, vehicles)
       .filter(({ type }) => filterType === ALL || type === filterType)
-      .filter(({ regNum }) => !query || query === regNum);
+      .filter(({ regNum }) => !query || regNum.includes(query));
 
     const typeOptions = [ALL, ...vehicleTypesAccumulator(vehicles)];
 
     const hasVehicles = !!vehicles.length;
     const hasSortedVehicles = !!sortedVehicles.length;
 
-    const showSingleView = hasSortedVehicles && isValidRegNum(query);
-    const showEmptyBox =
-      !hasSortedVehicles && isValidRegNum(query) && hasVehicles;
+    const showSingleView = sortedVehicles.length === 1;
+    const showEmptyBox = !hasSortedVehicles && hasVehicles;
 
     return (
       <Fragment>

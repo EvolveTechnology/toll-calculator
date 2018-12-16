@@ -178,8 +178,16 @@ describe("Dashboard", () => {
     expect(dashboard.find(Type).prop("regNum")).toEqual("ABC-123");
   });
 
-  it("resets list upon invalid regNum", () => {
+  it("searches regNums that match the input", () => {
     dashboard.find("input").instance().value = "2";
+    dashboard.find("input").simulate("change", { target: { value: "2" } });
+
+    expect(dashboard.state("query")).toEqual("2");
+    expect(dashboard.find(Type)).toHaveLength(1);
+  });
+
+  it("shows all vehicles when input is empty", () => {
+    dashboard.find("input").instance().value = "";
     dashboard.find("input").simulate("change", { target: { value: "" } });
 
     expect(dashboard.state("query")).toEqual("");
