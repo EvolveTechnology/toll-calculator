@@ -1,10 +1,7 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import byYearHolidays, {
-  getHolidaysForYear,
-  holidaysURI,
-  selectHolidays,
-  removeHoursPadding,
+  getHolidaysForYear, holidaysURI, selectHolidays, getISO,
 } from '..';
 import { holidays2017, holidays2018 } from './mock';
 
@@ -36,10 +33,10 @@ describe('selectHolidays', () => {
   });
 });
 
-describe('removePadding', () => {
-  const date = '2018-02-02 19:23:01';
+describe('getISO', () => {
+  const date = { iso: '2018-02-02', datetime: { year: 2018, month: 2, day: 2 } };
   it('removes padding', () => {
-    expect(removeHoursPadding({ date })).toEqual('2018-02-02');
+    expect(getISO({ date })).toEqual('2018-02-02');
   });
 });
 

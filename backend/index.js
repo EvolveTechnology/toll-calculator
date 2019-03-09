@@ -5,7 +5,7 @@ const Services = require('./build');
 
 const local = 'http://localhost:9191';
 
-const calendarURI = 'https://www.calendarindex.com/api/v1/holidays?country=SE';
+const calendarURI = 'https://www.calendarific.com/api/v2/holidays?country=SE';
 const withKey = key => `${calendarURI}&api_key=${key}`;
 
 const makeHolidayEP = ({ ENV }, key) => (ENV === 'DEV' ? `${local}/holiday` : withKey(key));
@@ -62,7 +62,7 @@ app.post('/vehicle', async (req, res) => {
     const result = await Services.byVehicleCalculator(regNum, holidayEndpoint, tollDataEndpoint);
     return res.status(200).send(result);
   } catch (err) {
-    return res.status(401).send({});
+    return res.status(401).send(err);
   }
 });
 

@@ -1,9 +1,5 @@
 import axios from 'axios';
-import {
-  head, split, partialRight, partial, flatten,
-} from '../../utils';
-
-const splitEmptySpace = partialRight(split)(' ');
+import { partial, flatten } from '../../utils';
 
 // dynamic yearly based endpoint => the endpoint already contains the key
 export const holidaysURI = (endpoint, year) => `${endpoint}&year=${year}`;
@@ -15,14 +11,13 @@ export const selectHolidays = ({
   },
 }) => holidays;
 
-// format the string, since the api returns string + ' ' +hours
-export const removeHoursPadding = ({ date }) => head(splitEmptySpace(date));
+export const getISO = ({ date: { iso } }) => iso;
 
 // make the api call and process the response
 export const getHolidaysForYear = async (key, year) => axios
   .get(holidaysURI(key, year))
   .then(selectHolidays)
-  .then(holidays => holidays.map(removeHoursPadding));
+  .then(holidays => holidays.map(getISO));
 
 // use key and years and return all holidays
 export default async (holidayKey, years) => {
