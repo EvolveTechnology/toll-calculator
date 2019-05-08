@@ -57,6 +57,9 @@
     <Compile Include="TollFeeAmount\TollFeeAmountServiceTests\GetTollFeeAmountTests.cs" />
     <Compile Include="TollCalculatorTests\GetTollFeeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TollFeeTime\TollFeeTimeServiceTests\GetFeeTimeTests.cs" />
+    <Compile Include="TollFeeTime\TollFeeTimeServiceTests\IsTollFreeDateTests.cs" />
+    <Compile Include="Vehicles\VehicleTests\GetVehicleTypeTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

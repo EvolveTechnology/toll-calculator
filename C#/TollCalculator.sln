@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TollFeeCalculator", "TollCa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{929B9C6E-552E-4B10-807D-8AA1B2DB87A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\TollCalculatorTests.csproj", "{FD1A9256-2770-4274-8B1A-3F7C9DCDBD26}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TollCalculatorTests", "Tests\TollCalculatorTests.csproj", "{FD1A9256-2770-4274-8B1A-3F7C9DCDBD26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace TollFeeCalculator.TollFeeTime
 {
     public interface ITollFeeTimeService
     {
-        List<FeeTime> GetTollFeeTimes();
+        FeeTime GetFeeTime(TimeSpan date);
+        bool IsTollFreeDate(DateTime date);
     }
 }

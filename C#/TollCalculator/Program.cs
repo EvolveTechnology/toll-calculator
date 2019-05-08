@@ -1,21 +1,25 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TollFeeCalculator.TollFeeAmount;
+using TollFeeCalculator.TollFeeTime;
+using TollFeeCalculator.Vehicles;
 
-namespace TollCalculator
+namespace TollFeeCalculator
 {
     class Program
     {
         static void Main(string[] args)
         {
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-            Console.WriteLine("Hello World!");
+            //Lokal testing
+            var tollCalculator = new TollCalculator(new TollFeeAmountService(new TollFeeTimeService()));
+            var result = tollCalculator.GetTollFee(new Car(), new List<DateTime> { 
+             new DateTime(2013, 3, 6, 6, 40, 00),
+             new DateTime(2013, 3, 6, 7, 30, 00),
+             new DateTime(2013, 3, 6, 17, 00, 00),
+             new DateTime(2013, 3, 6, 18, 40, 00)});
+            Console.WriteLine(result);
             Console.ReadKey();
-
-            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
         }
+        
     }
 }
