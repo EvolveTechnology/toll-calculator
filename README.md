@@ -15,6 +15,7 @@ This is the current draft of requirements:
 * Rush-hour traffic will render the highest fee
 * The maximum fee for one day is 60 SEK
 * A vehicle should only be charged once an hour
+  * In the case of multiple fees in the same hour period, the highest one applies.
 * Some vehicle types are fee-free
 * Weekends and holidays are fee-free
 
