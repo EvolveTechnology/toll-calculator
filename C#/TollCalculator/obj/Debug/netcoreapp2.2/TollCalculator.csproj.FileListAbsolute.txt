@@ -1,0 +1,11 @@
+C:\dev\TollCalculator\TollCalculator\TollCalculator\bin\Debug\netcoreapp2.2\TollCalculator.deps.json
+C:\dev\TollCalculator\TollCalculator\TollCalculator\bin\Debug\netcoreapp2.2\TollCalculator.runtimeconfig.json
+C:\dev\TollCalculator\TollCalculator\TollCalculator\bin\Debug\netcoreapp2.2\TollCalculator.runtimeconfig.dev.json
+C:\dev\TollCalculator\TollCalculator\TollCalculator\bin\Debug\netcoreapp2.2\TollCalculator.dll
+C:\dev\TollCalculator\TollCalculator\TollCalculator\bin\Debug\netcoreapp2.2\TollCalculator.pdb
+C:\dev\TollCalculator\TollCalculator\TollCalculator\obj\Debug\netcoreapp2.2\TollCalculator.csproj.CoreCompileInputs.cache
+C:\dev\TollCalculator\TollCalculator\TollCalculator\obj\Debug\netcoreapp2.2\TollCalculator.AssemblyInfoInputs.cache
+C:\dev\TollCalculator\TollCalculator\TollCalculator\obj\Debug\netcoreapp2.2\TollCalculator.AssemblyInfo.cs
+C:\dev\TollCalculator\TollCalculator\TollCalculator\obj\Debug\netcoreapp2.2\TollCalculator.dll
+C:\dev\TollCalculator\TollCalculator\TollCalculator\obj\Debug\netcoreapp2.2\TollCalculator.pdb
+C:\dev\TollCalculator\TollCalculator\TollCalculator\obj\Debug\netcoreapp2.2\TollCalculator.csprojAssemblyReference.cache
