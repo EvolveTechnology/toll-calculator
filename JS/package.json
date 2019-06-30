@@ -1,0 +1,24 @@
+{
+  "name": "toll-calculator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/toll.js",
+  "scripts": {
+    "test": "mocha --require @babel/register",
+    "build": "babel src/ --plugins=strip-test-func --out-dir dist"
+  },
+  "author": "Fredrik Svensson",
+  "license": "ISC",
+  "dependencies": {
+    "date-fns": "^2.0.0-beta.2",
+    "mocha": "^6.1.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
+    "babel-plugin-strip-test-func": "^1.0.6"
+  }
+}
