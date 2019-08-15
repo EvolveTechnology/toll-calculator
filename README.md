@@ -1,33 +1,76 @@
-![here we are](https://media.giphy.com/media/FnGJfc18tDDHy/giphy.gif)
+# Toll Fee Calculator 2.0
 
-# Toll fee calculator 1.0
 A calculator for vehicle toll fees.
 
-* Make sure you read these instructions carefully
-* The current code base is in Java and C#, but please make sure that you do an implementation in a language **you feel comfortable** in like Javascript, Python, Assembler or [ModiScript](https://en.wikipedia.org/wiki/ModiScript) (please don't choose ModiScript). 
-* No requirement but bonus points if you know what movie is in the gif
-
 ## Background
-Our city has decided to implement toll fees in order to reduce traffic congestion during rush hours.
-This is the current draft of requirements:
+
+Our city has decided to implement toll fees in order to reduce traffic
+congestion during rush hours. This is the current draft of requirements:
  
-* Fees will differ between 8 SEK and 18 SEK, depending on the time of day 
-* Rush-hour traffic will render the highest fee
-* The maximum fee for one day is 60 SEK
-* A vehicle should only be charged once an hour
-  * In the case of multiple fees in the same hour period, the highest one applies.
-* Some vehicle types are fee-free
-* Weekends and holidays are fee-free
+- Fees will differ between 8 SEK and 18 SEK, depending on the time of day 
+- Rush-hour traffic will render the highest fee
+- The maximum fee for one day is 60 SEK
+- A vehicle should only be charged once an hour
+  - In the case of multiple fees in the same hour period, the highest one
+    applies.
+- Some vehicle types are fee-free
+- Weekends and holidays are fee-free
 
-## Your assignment
-The last city-developer quit recently, claiming that this solution is production-ready. 
-You are now the new developer for our city - congratulations! 
+## API
 
-Your job is to deliver the code and from now on, you are the responsible go-to-person for this solution. This is a solution you will have to put your name on. 
+**Endpoint:** `POST /v1/fee`
 
-## Instructions
-You can make any modifications or suggestions for modifications that you see fit. Fork this repository and deliver your results via a pull-request or send us an e-mail. You could also create a gist, for privacy reasons, and send us the link.
+- `passes`: Sorted list of ISO 8601 formatted timestamps of fee station passes
+  for one day.
+- `vehicle_type`: One of `"CAR"`, `"MOTORBIKE"`, `"TRACTOR"`, `"EMERGENCY"`, 
+  `"DIPLOMAT"`, `"FOREIGN"`, `"MILITARY"`.
 
-## Help I dont know C# or Java
-No worries! We accept submissions in other languages as well, why not try it in Go or nodejs.
+Example request body:
 
+```json
+{
+  "passes": ["2019-08-15T12:41:45.386869"],
+  "vehicle_type": "CAR"
+}
+```
+
+## Development
+
+Install dependencies
+
+```bash
+pip install pip-tools
+pip-sync
+```
+
+Run code formatters
+
+```bash
+sorti .
+black .
+```
+
+Run linters
+
+```bash
+flake8
+mypy .
+```
+
+Run test suite
+
+```bash
+pytest
+```
+
+Start server
+
+```bash
+python app.py
+```
+
+Send a test request to the server
+
+```bash
+curl -X POST -d '{"passes": ["2019-08-15T12:41:45"], "vehicle_type": "CAR"}' http://localhost:8080/v1/fee
+```

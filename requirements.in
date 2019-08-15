@@ -1,0 +1,7 @@
+mypy
+pytest
+black
+sorti
+typing-extensions
+flake8
+aiohttp
