@@ -34,6 +34,14 @@ Example request body:
 }
 ```
 
+Example response body:
+
+```json
+{
+  "fee": 8
+}
+```
+
 ## Development
 
 Install dependencies
