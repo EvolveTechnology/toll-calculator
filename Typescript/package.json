@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
+    "build": "tsc",
     "test": "jest --testPathIgnorePatterns dist/*"
   },
   "author": "",
