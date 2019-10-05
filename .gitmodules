@@ -1,0 +1,9 @@
+[submodule "C++/extern/date"]
+	path = C++/extern/date
+	url = https://lingfors@bitbucket.org/lingfors/date.git
+[submodule "C++/extern/googletest"]
+	path = C++/extern/googletest
+	url = https://lingfors@bitbucket.org/lingfors/googletest.git
+[submodule "C++/extern/range-v3"]
+	path = C++/extern/range-v3
+	url = https://lingfors@bitbucket.org/lingfors/range-v3.git
