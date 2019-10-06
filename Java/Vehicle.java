@@ -1,5 +1,5 @@
 
 public interface Vehicle {
 
-  public String getType();
+	public boolean isTollFreeVehicle();
 }

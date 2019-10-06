@@ -1,110 +1,116 @@
+import static java.time.temporal.ChronoUnit.HOURS;
 
-import java.util.*;
-import java.util.concurrent.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class TollCalculator {
+	
+	private static final int maxFeePerDay = 60;
 
-  /**
+/**
    * Calculate the total toll fee for one day
    *
    * @param vehicle - the vehicle
    * @param dates   - date and time of all passes on one day
    * @return - the total toll fee for that day
    */
-  public int getTollFee(Vehicle vehicle, Date... dates) {
-    Date intervalStart = dates[0];
-    int totalFee = 0;
-    for (Date date : dates) {
-      int nextFee = getTollFee(date, vehicle);
-      int tempFee = getTollFee(intervalStart, vehicle);
+	public int getTollFee(Vehicle vehicle, Date... dates) {
+		if(dates == null || dates.length == 0)
+			return 0;
+		
+		List<List<Date>> datesGroupedByDay = groupDatesByDay(dates);
+		
+		int totalFee = 0;
+		for(List<Date> datesByDay : datesGroupedByDay) {
+			SortedSet<Date> datesByDaySet = new TreeSet<>(datesByDay);
+			int totalDayFee = 0;
+			LocalTime intervalStartTime = null;
+			int highestIntervalFee = 0;
+			
+			for (Date date : datesByDaySet) {				
+				LocalTime currentTime = toLocalTime(date);
+				int currentFee = getTollFee(date, vehicle);
 
-      TimeUnit timeUnit = TimeUnit.MINUTES;
-      long diffInMillies = date.getTime() - intervalStart.getTime();
-      long minutes = timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
+				if(newInterval(intervalStartTime, currentTime) || highestIntervalFee < currentFee) {
+					if(newInterval(intervalStartTime, currentTime))
+						intervalStartTime = currentTime;
+					else if(highestIntervalFee < currentFee)
+						totalDayFee -= highestIntervalFee;
+					highestIntervalFee = currentFee;
+					totalDayFee += highestIntervalFee;
+				}
+				
+				if(totalDayFee >= maxFeePerDay) {
+					totalDayFee = maxFeePerDay;
+					break;
+				}
+			}
+			totalFee += totalDayFee;
+		}
+		
+		return totalFee;
+	}
 
-      if (minutes <= 60) {
-        if (totalFee > 0) totalFee -= tempFee;
-        if (nextFee >= tempFee) tempFee = nextFee;
-        totalFee += tempFee;
-      } else {
-        totalFee += nextFee;
-      }
-    }
-    if (totalFee > 60) totalFee = 60;
-    return totalFee;
-  }
+	public boolean newInterval(LocalTime intervalStartTime, LocalTime currentTime) {
+		return intervalStartTime == null || HOURS.between(intervalStartTime, currentTime) >= 1;
+	}
 
-  private boolean isTollFreeVehicle(Vehicle vehicle) {
-    if(vehicle == null) return false;
-    String vehicleType = vehicle.getType();
-    return vehicleType.equals(TollFreeVehicles.MOTORBIKE.getType()) ||
-           vehicleType.equals(TollFreeVehicles.TRACTOR.getType()) ||
-           vehicleType.equals(TollFreeVehicles.EMERGENCY.getType()) ||
-           vehicleType.equals(TollFreeVehicles.DIPLOMAT.getType()) ||
-           vehicleType.equals(TollFreeVehicles.FOREIGN.getType()) ||
-           vehicleType.equals(TollFreeVehicles.MILITARY.getType());
-  }
+	public boolean isTollFreeVehicle(Vehicle vehicle) {
+		if(vehicle == null) return false;
+		return vehicle.isTollFreeVehicle();
+	}
 
-  public int getTollFee(final Date date, Vehicle vehicle) {
-    if(isTollFreeDate(date) || isTollFreeVehicle(vehicle)) return 0;
-    Calendar calendar = GregorianCalendar.getInstance();
-    calendar.setTime(date);
-    int hour = calendar.get(Calendar.HOUR_OF_DAY);
-    int minute = calendar.get(Calendar.MINUTE);
+	public int getTollFee(final Date date, Vehicle vehicle) {
+		LocalDate localDate = toLocalDate(date);
+		LocalTime localTime = toLocalTime(date);
+		
+		if(isFeeFreeDayOrVehicle(localDate, vehicle))
+			return 0;
+		
+		if (localTime.isAfter(LocalTime.of(5, 59)) && localTime.isBefore(LocalTime.of(6, 30))) return 8;
+		else if (localTime.isAfter(LocalTime.of(6, 29)) && localTime.isBefore(LocalTime.of(7, 0))) return 13;
+		else if (localTime.isAfter(LocalTime.of(6, 59)) && localTime.isBefore(LocalTime.of(8, 0))) return 18;
+		else if (localTime.isAfter(LocalTime.of(7, 59)) && localTime.isBefore(LocalTime.of(8, 30))) return 13;
+		else if (localTime.isAfter(LocalTime.of(8, 29)) && localTime.isBefore(LocalTime.of(15, 0))) return 8;
+		else if (localTime.isAfter(LocalTime.of(14, 59)) && localTime.isBefore(LocalTime.of(15, 30))) return 13;
+		else if (localTime.isAfter(LocalTime.of(15, 29)) && localTime.isBefore(LocalTime.of(17, 0))) return 18;
+		else if (localTime.isAfter(LocalTime.of(16, 59)) && localTime.isBefore(LocalTime.of(18, 0))) return 13;
+		else if (localTime.isAfter(LocalTime.of(17, 59)) && localTime.isBefore(LocalTime.of(18, 30))) return 8;
+		else return 0;
+	}
+	
+	public boolean isFeeFreeDayOrVehicle(LocalDate localDate, Vehicle vehicle) {
+		Set<DayOfWeek> tollFreeDays = new HashSet<>(Arrays.asList(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY));
+		SwedishHolidays holidays = new SwedishHolidays(localDate.getYear());
+		return tollFreeDays.contains(localDate.getDayOfWeek()) || isTollFreeVehicle(vehicle) || holidays.isHoliday(localDate);
+	}
+  
+  	public LocalDate toLocalDate(Date date) {
+	    return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+  	
+  	public LocalTime toLocalTime(Date date) {
+	    return date.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+	}
 
-    if (hour == 6 && minute >= 0 && minute <= 29) return 8;
-    else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
-    else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
-    else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
-    else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
-    else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
-    else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
-    else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
-    else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
-    else return 0;
-  }
+	public List<List<Date>> groupDatesByDay(Date[] dates) {
+		List<Date> datesList = new ArrayList<>(Arrays.asList(dates));
 
-  private Boolean isTollFreeDate(Date date) {
-    Calendar calendar = GregorianCalendar.getInstance();
-    calendar.setTime(date);
-    int year = calendar.get(Calendar.YEAR);
-    int month = calendar.get(Calendar.MONTH);
-    int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-    int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-    if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) return true;
-
-    if (year == 2013) {
-      if (month == Calendar.JANUARY && day == 1 ||
-          month == Calendar.MARCH && (day == 28 || day == 29) ||
-          month == Calendar.APRIL && (day == 1 || day == 30) ||
-          month == Calendar.MAY && (day == 1 || day == 8 || day == 9) ||
-          month == Calendar.JUNE && (day == 5 || day == 6 || day == 21) ||
-          month == Calendar.JULY ||
-          month == Calendar.NOVEMBER && day == 1 ||
-          month == Calendar.DECEMBER && (day == 24 || day == 25 || day == 26 || day == 31)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private enum TollFreeVehicles {
-    MOTORBIKE("Motorbike"),
-    TRACTOR("Tractor"),
-    EMERGENCY("Emergency"),
-    DIPLOMAT("Diplomat"),
-    FOREIGN("Foreign"),
-    MILITARY("Military");
-    private final String type;
-
-    TollFreeVehicles(String type) {
-      this.type = type;
-    }
-
-    public String getType() {
-      return type;
-    }
-  }
+		return new ArrayList<>(datesList.stream().filter(v -> v != null).sorted().collect(
+				Collectors.groupingBy(d -> d.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+				LinkedHashMap::new, Collectors.toList())).values());
+	}
 }
 
