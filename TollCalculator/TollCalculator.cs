@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace TollFeeCalculator
 {
@@ -10,14 +11,31 @@ namespace TollFeeCalculator
         /// <param name="vehicle">The vehicle.</param>
         /// <param name="dates">Date and time of all passes on one day.</param>
         /// <returns>The total toll fee for that day.</returns>
-        public int GetTollFee(Vehicle vehicle, DateTime[] dates)
+        public int GetTotalTollFee(IVehicle vehicle, DateTime[] dates)
         {
+            if (vehicle == null)
+                throw new ArgumentNullException(nameof(vehicle));
+            if (dates == null)
+                throw new ArgumentNullException(nameof(dates));
+            if (dates.Length == 0)
+                throw new ArgumentException($"{nameof(dates)} cannot be empty");
+            if (!AreAllDatesSameDay(dates))
+                throw new ArgumentException("All dates must be the same year, month and day");
+
+            var sortedDates = dates.OrderBy(d => d);
+
+
+
+
+
+
             DateTime intervalStart = dates[0];
             int totalFee = 0;
+            
             foreach (DateTime date in dates)
             {
-                int nextFee = GetTollFee(date, vehicle);
-                int tempFee = GetTollFee(intervalStart, vehicle);
+                int nextFee = GetTollFee(vehicle, date);
+                int tempFee = GetTollFee(vehicle, intervalStart);
 
                 long diffInMillies = date.Millisecond - intervalStart.Millisecond;
                 long minutes = diffInMillies / 1000 / 60;
@@ -37,9 +55,21 @@ namespace TollFeeCalculator
             return totalFee;
         }
 
-        private bool IsTollFreeVehicle(Vehicle vehicle)
+        private bool AreAllDatesSameDay(DateTime[] dates)
         {
-            if (vehicle == null) return false;
+            if (dates.Length <= 1)
+            {
+                return true;
+            }
+            else
+            {
+                var currentDate = dates[0].Date;
+                return !dates.Any(d => !d.Date.Equals(currentDate));
+            }
+        }
+
+        private bool IsTollFreeVehicle(IVehicle vehicle)
+        {
             String vehicleType = vehicle.GetVehicleType();
             return vehicleType.Equals(TollFreeVehicles.Motorbike.ToString()) ||
                    vehicleType.Equals(TollFreeVehicles.Tractor.ToString()) ||
@@ -49,7 +79,7 @@ namespace TollFeeCalculator
                    vehicleType.Equals(TollFreeVehicles.Military.ToString());
         }
 
-        public int GetTollFee(DateTime date, Vehicle vehicle)
+        private int GetTollFee(IVehicle vehicle, DateTime date)
         {
             if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
 
