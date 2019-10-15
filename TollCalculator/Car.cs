@@ -2,9 +2,9 @@
 {
     public class Car : IVehicle
     {
-        public string GetVehicleType()
+        public VehicleType GetVehicleType()
         {
-            return "Car";
+            return VehicleType.Car;
         }
     }
 }
