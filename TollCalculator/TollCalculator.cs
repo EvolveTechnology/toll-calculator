@@ -5,6 +5,8 @@ namespace TollFeeCalculator
 {
     public class TollCalculator
     {
+        private const int MaxFee = 60;
+
         /// <summary>
         /// Calculate the total toll fee for one day.
         /// </summary>
@@ -23,36 +25,37 @@ namespace TollFeeCalculator
                 throw new ArgumentException("All dates must be the same year, month and day");
 
             var sortedDates = dates.OrderBy(d => d);
+            var startTime = DateTime.MinValue;
+            var totalFee = 0;
+            var highestFee = 0;
 
-
-
-
-
-
-            DateTime intervalStart = dates[0];
-            int totalFee = 0;
-            
-            foreach (DateTime date in dates)
+            for (int i = 0; i < dates.Length; i++)
             {
-                int nextFee = GetTollFee(vehicle, date);
-                int tempFee = GetTollFee(vehicle, intervalStart);
+                if (totalFee >= MaxFee)
+                    break;
 
-                long diffInMillies = date.Millisecond - intervalStart.Millisecond;
-                long minutes = diffInMillies / 1000 / 60;
+                var date = dates[i];
+                var fee = GetTollFee(vehicle, date);
 
-                if (minutes <= 60)
+                if (fee > 0)
                 {
-                    if (totalFee > 0) totalFee -= tempFee;
-                    if (nextFee >= tempFee) tempFee = nextFee;
-                    totalFee += tempFee;
+                    if (date <= startTime.AddHours(1)) //Still within one hour
+                    {
+                        highestFee = Math.Max(highestFee, fee);
+                    }
+                    else //New hour
+                    {
+                        totalFee += highestFee;
+                        startTime = date;
+                        highestFee = fee;
+                    }
                 }
-                else
-                {
-                    totalFee += nextFee;
-                }
+
+                if (i == dates.Length - 1) //Special case for last passing
+                    totalFee += highestFee;
             }
-            if (totalFee > 60) totalFee = 60;
-            return totalFee;
+
+            return totalFee < MaxFee ? totalFee : MaxFee;
         }
 
         private bool AreAllDatesSameDay(DateTime[] dates)
