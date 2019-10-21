@@ -39,7 +39,7 @@ namespace TollFeeCalculator
 
                 if (fee > 0)
                 {
-                    if (date <= startTime.AddHours(1)) //Still within one hour
+                    if (date < startTime.AddHours(1)) //Still within one hour
                     {
                         highestFee = Math.Max(highestFee, fee);
                     }
@@ -51,7 +51,7 @@ namespace TollFeeCalculator
                     }
                 }
 
-                if (i == dates.Length - 1) //Special case for last passing
+                if (i == dates.Length - 1) //Special case for last iteration
                     totalFee += highestFee;
             }
 
