@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace TollCalculator.Tests.UnitTests {
+namespace TollCalculator.Tests.ComponentTests {
     public class TollCalculator
     {
         [Fact]
