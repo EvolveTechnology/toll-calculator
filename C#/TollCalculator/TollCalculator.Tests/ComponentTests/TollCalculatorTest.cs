@@ -1,6 +1,6 @@
-using System;
 using System.Linq;
 using TollCalculator.Lib;
+using TollCalculator.Lib.Models;
 using TollCalculator.Tests.Utils;
 using Xunit;
 
@@ -14,15 +14,15 @@ namespace TollCalculator.Tests.ComponentTests {
             {
                 DateUtils.ParseDateAndTime("2020-12-24 06:20"), //No fee, holiday
                 DateUtils.ParseDateAndTime("2020-02-05 06:22"), //(8)kr
-                DateUtils.ParseDateAndTime("2020-02-05 06:33"), //13kr Day 05/02 only 13kr
+                DateUtils.ParseDateAndTime("2020-02-05 06:33"), //13kr, Same hour as above, only 13kr this day
                 DateUtils.ParseDateAndTime("2020-02-02 06:24"), //No fee, sunday
-                DateUtils.ParseDateAndTime("2020-02-06 12:25"), //Non rush hour, 8kr
-                DateUtils.ParseDateAndTime("2020-02-06 07:30"), //18kr
+                DateUtils.ParseDateAndTime("2020-02-06 12:25"), //8kr, Not rush hour
+                DateUtils.ParseDateAndTime("2020-02-06 07:30"), //18kr, Rush hour
             });
             
             //Total: 13 + 8 + 18 = 39kr
             
-            Assert.Equal(47, fee);
+            Assert.Equal(39, fee);
             AssertFeeIsInsideDayLimit(fee);
         }
         [Fact]
@@ -40,7 +40,7 @@ namespace TollCalculator.Tests.ComponentTests {
                 DateUtils.ParseDateAndTime("2020-02-05 11:20"), //8kr
             });
             
-            Assert.Equal(60, fee);
+            Assert.Equal(TollRules.DailyFeeMax, fee);
         }
         
         [Fact]
@@ -87,9 +87,8 @@ namespace TollCalculator.Tests.ComponentTests {
         {
             var fee = Lib.TollCalculator.GetTollFee(VehicleType.Car, new []
             {
-                DateUtils.ParseDateAndTime("2020-02-05 06:29"), //8kr
-                DateUtils.ParseDateAndTime("2020-02-05 06:31"), //13kr
-                DateUtils.ParseDateAndTime("2020-02-05 07:01"), //18kr
+                DateUtils.ParseDateAndTime("2020-02-05 15:00"), //13kr
+                DateUtils.ParseDateAndTime("2020-02-05 15:30"), //18kr
             });
             
             Assert.Equal(18, fee);
@@ -106,7 +105,7 @@ namespace TollCalculator.Tests.ComponentTests {
         [InlineData(VehicleType.Military)]
         public void SpecificVehicleTypesAreFree(VehicleType vehicleType)
         {
-            var testDateStrings = new string[]
+            var testDateStrings = new []
             {
                 "2020-01-20 02:00",
                 "2020-01-21 05:00",
@@ -124,7 +123,7 @@ namespace TollCalculator.Tests.ComponentTests {
         }
         
         [Theory]
-        [InlineData(VehicleType.Car, "2020-01-27 15:40")] //Saturday
+        [InlineData(VehicleType.Car, "2020-01-25 15:40")] //Saturday
         [InlineData(VehicleType.Car, "2020-02-02 14:40")] //Sunday 
         public void WeekendsAreFree(VehicleType vehicleType, string dateTimeString)
         {
@@ -149,11 +148,11 @@ namespace TollCalculator.Tests.ComponentTests {
         }
 
         private void AssertFeeIsInsideDayLimit(int fee) {
-            Assert.InRange(fee, 0, 60);
+            Assert.InRange(fee, 0, TollRules.DailyFeeMax);
         }
         
         private void AssertFeeIsInsideRangeLimits(int fee) {
-		    Assert.InRange(fee, 8, 18);
+		    Assert.InRange(fee, TollRules.FeeMin, TollRules.FeeMax);
         }
     }
 }

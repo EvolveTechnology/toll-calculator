@@ -1,94 +1,137 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TollCalculator.Lib.Models;
 
 namespace TollCalculator.Lib
 { 
     public static class TollCalculator
     {
-
-        /**
-         * Calculate the total toll fee for one day
-         *
-         * @param vehicle - the vehicle
-         * @param dates   - date and time of all passes on one day
-         * @return - the total toll fee for that day
-         */
-
         public static int GetTollFee(VehicleType vehicleType, DateTime[] dates)
         {
-            DateTime intervalStart = dates[0];
-            int totalFee = 0;
-            foreach (DateTime date in dates)
+            var datesGroupedByDay = GetDatesGroupedByDay(dates);
+            return datesGroupedByDay.Sum(g => GetDailyFee(g, vehicleType));
+        }
+
+        private static List<SameDayGroup> GetDatesGroupedByDay(DateTime[] dates)
+        {
+            var groups = new List<SameDayGroup>();
+
+            foreach (var date in dates)
             {
-                int nextFee = GetTollFee(date, vehicleType);
-                int tempFee = GetTollFee(intervalStart, vehicleType);
+                var existingGroup = groups.Find(g => g.IsSameDay(date));
+                var hasExisting = existingGroup != null;
 
-                long diffInMillies = date.Millisecond - intervalStart.Millisecond;
-                long minutes = diffInMillies/1000/60;
-
-                if (minutes <= 60)
-                {
-                    if (totalFee > 0) totalFee -= tempFee;
-                    if (nextFee >= tempFee) tempFee = nextFee;
-                    totalFee += tempFee;
-                }
+                if (hasExisting)
+                    existingGroup.AddDate(date);
                 else
                 {
-                    totalFee += nextFee;
+                    var newGroup = new SameDayGroup(date);
+                    groups.Add(newGroup);
                 }
             }
-            if (totalFee > 60) totalFee = 60;
-            return totalFee;
+
+            return groups;
         }
 
-        private static bool IsTollFreeVehicle(VehicleType vehicleType)
+        private static int GetDailyFee(SameDayGroup group, VehicleType vehicleType)
         {
-            return vehicleType != VehicleType.Car;
-        }
-
-        private static int GetTollFee(DateTime date, VehicleType vehicleType)
-        {
-            if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicleType)) return 0;
-
-            int hour = date.Hour;
-            int minute = date.Minute;
-
-            if (hour == 6 && minute >= 0 && minute <= 29) return 8;
-            else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
-            else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
-            else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
-            else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
-            else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
-            else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
-            else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
-            else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
-            else return 0;
-        }
-
-        private static Boolean IsTollFreeDate(DateTime date)
-        {
-            if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) return true;
-
-            return IsPublicHoliday(date);
-        }
-
-        private static bool IsPublicHoliday(DateTime date)
-        {
-            var staticPublicHolidays = new []
+            try
             {
-                new YearlyDate(1, 1), //Nyårsdagen
-                new YearlyDate(1, 5), //Trettondagsafton
-                new YearlyDate(1, 6), //Trettondedag jul
-                new YearlyDate(4, 30), //Valborgsmässoafton
-                new YearlyDate(5, 1), //Första maj
-                new YearlyDate(6, 6), //Sveriges nationaldag
-                new YearlyDate(12, 24), //Julafton
-                new YearlyDate(12, 25), //Juldagen
-                new YearlyDate(12, 26), //Annandag jul
-                new YearlyDate(12, 31), //Nyårsafton
-            };
-            
+                CheckIsTollFreeVehicle(vehicleType);
+                CheckIsTollFreeDay(group);
+                CheckIsTollFreeHoliday(group);
+
+                var datesGroupedByHour = GetDatesGroupedByHour(group.Dates);
+                var hourGroupsTotal = datesGroupedByHour.Sum(GetHourlyFee);
+
+                return GetFeeInsideDailyLimit(hourGroupsTotal);
+            }
+            catch (FeeExemptedException)
+            {
+                return 0;
+            }
+        }
+
+        private static void CheckIsTollFreeVehicle(VehicleType vehicleType)
+        {
+            var isTolledVehicle = TollRules.TollVehicleTypes.Contains(vehicleType);
+
+            if (!isTolledVehicle)
+                throw new FeeExemptedException();
+        }
+
+        private static void CheckIsTollFreeDay(SameDayGroup group)
+        {
+            var isTollFreeDay = TollRules.TollFreeDays.Contains(group.DayOfWeek);
+
+            if (isTollFreeDay)
+                throw new FeeExemptedException();
+        }
+
+        private static void CheckIsTollFreeHoliday(SameDayGroup group)
+        {
+            var isHoliday = IsPublicHoliday(group);
+
+            if (isHoliday)
+                throw new FeeExemptedException();
+        }
+
+        private static List<SameHourGroup> GetDatesGroupedByHour(List<DateTime> dates)
+        {
+            var groups = new List<SameHourGroup>();
+
+            foreach (var date in dates)
+            {
+                var existingGroup = groups.Find(g => g.IsSameHour(date));
+                var hasExisting = existingGroup != null;
+
+                if (hasExisting)
+                    existingGroup.AddDate(date);
+                else
+                {
+                    var newGroup = new SameHourGroup(date);
+                    groups.Add(newGroup);
+                }
+            }
+
+            return groups;
+        }
+
+        private static int GetHourlyFee(SameHourGroup group)
+        {
+            var hourlyFees = group.Dates.Select(date => GetSingleFee(date)).ToList();
+            return hourlyFees.Max();
+        }
+
+        private static int GetSingleFee(in DateTime date)
+        {
+            var rushHourFee = GetRushHourFee(date);
+            var isRushHour = rushHourFee != null;
+
+            if (isRushHour)
+                return rushHourFee.Fee;
+            else
+                return TollRules.DefaultFee;
+        }
+
+        private static RushHourFee GetRushHourFee(DateTime date)
+        {
+            return TollRules.RushHourFees.FirstOrDefault(rushHourFee => rushHourFee.IsInsideRange(date));
+        }
+
+        private static int GetFeeInsideDailyLimit(int fee)
+        {
+            var isInsideLimit = fee <= TollRules.DailyFeeMax;
+
+            if (isInsideLimit)
+                return fee;
+            else
+                return TollRules.DailyFeeMax;
+        }
+
+        private static bool IsPublicHoliday(SameDayGroup group)
+        {
             /*
              * NOTE (this is a TODO, that should normally go to a separate issue in the issue-tracker and not in the code):
              * There is an obvious mistake here, and this method is lacking dynamic public holidays,
@@ -104,7 +147,11 @@ namespace TollCalculator.Lib
              * Once dynamic holdays are added to the code, the unit tests should also reflect test cases with dynamic holidays.
              */
 
-            return staticPublicHolidays.Any(holiday => holiday.IsEqualToDate(date));
+            return SwedishHolidays.StaticPublicHolidays.Any(holiday => holiday.IsEqualToDate(group.Month, group.Day));
+        }
+
+        private class FeeExemptedException : Exception
+        {
         }
     }
 }

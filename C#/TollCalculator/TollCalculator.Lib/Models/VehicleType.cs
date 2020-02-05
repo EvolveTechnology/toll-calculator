@@ -1,4 +1,4 @@
-namespace TollCalculator.Lib
+namespace TollCalculator.Lib.Models
 {
     public enum VehicleType
     {

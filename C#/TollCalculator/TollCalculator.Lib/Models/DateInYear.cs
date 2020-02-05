@@ -1,6 +1,4 @@
-using System;
-
-namespace TollCalculator.Lib
+namespace TollCalculator.Lib.Models
 {
     public class YearlyDate
     {
@@ -13,12 +11,9 @@ namespace TollCalculator.Lib
             Day = day;
         }
 
-        public bool IsEqualToDate(DateTime date)
+        public bool IsEqualToDate(int month, int day)
         {
-            var isSameDay = date.Day == Day;
-            var isSameMonth = date.Month == Month;
-
-            return isSameDay && isSameMonth;
+            return day == Day && month == Month;
         }
     }
 }
