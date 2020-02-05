@@ -69,5 +69,10 @@ defmodule TollTest do
     test "after 18:30, returns 0" do
       assert Toll.calculate_fee(:car, [~N[2020-02-05 18:30:00]]) == 0
     end
+
+    test "weekend, returns 0" do
+      assert Toll.calculate_fee(:car, [~N[2020-02-08 15:30:00]]) == 0
+      assert Toll.calculate_fee(:car, [~N[2020-02-09 15:30:00]]) == 0
+    end
   end
 end

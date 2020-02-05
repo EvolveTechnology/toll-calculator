@@ -17,20 +17,18 @@ defmodule Toll do
     0
   end
 
-  def calculate_fee(vehicle, passages) do
+  def calculate_fee(_vehicle, passages) do
     passages
-    |> Enum.map(&passage_fee(vehicle, &1))
+    |> Enum.map(&passage_fee/1)
     |> Enum.sum()
   end
 
-  defp passage_fee(_vehicle, datetime) do
+  # credo:disable-for-lines:17
+  defp passage_fee(datetime) do
     time = NaiveDateTime.to_time(datetime)
-    passage_fee_for_time(time)
-  end
 
-  # credo:disable-for-lines:14
-  defp passage_fee_for_time(time) do
     cond do
+      weekend?(datetime) -> 0
       time_in(time, ~T[06:00:00], ~T[06:30:00]) -> 8
       time_in(time, ~T[06:30:00], ~T[07:00:00]) -> 13
       time_in(time, ~T[07:00:00], ~T[08:00:00]) -> 18
@@ -47,5 +45,10 @@ defmodule Toll do
   defp time_in(time, from, to) do
     (Time.compare(time, from) == :eq or Time.compare(time, from) == :gt) and
       Time.compare(time, to) == :lt
+  end
+
+  defp weekend?(datetime) do
+    {{year, month, day}, _time} = NaiveDateTime.to_erl(datetime)
+    Calendar.ISO.day_of_week(year, month, day) in [6, 7]
   end
 end
