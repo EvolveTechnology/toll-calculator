@@ -1,6 +1,6 @@
-.PHONY: clean compile check-format test
+.PHONY: clean deps compile check-format credo test
 
-DKR_IMAGE:=elixir:1.10.0-alpine
+DKR_IMAGE:=elixir-dev:local
 
 DKR_RUN:=docker run \
 	--rm \
@@ -10,8 +10,14 @@ DKR_RUN:=docker run \
 	--workdir /work \
 	$(DKR_IMAGE)
 
+build-image:
+	docker build -t $(DKR_IMAGE) -f Dockerfile .
+
 clean:
 	$(DKR_RUN) mix clean
+
+deps:
+	$(DKR_RUN) mix deps.get
 
 compile:
 	$(DKR_RUN) mix compile --warnings-as-errors
@@ -22,4 +28,7 @@ check-format:
 test:
 	$(DKR_RUN) mix test --trace
 
-check: clean compile check-format test
+credo:
+	$(DKR_RUN) mix credo --strict
+
+check: clean deps compile check-format credo test
