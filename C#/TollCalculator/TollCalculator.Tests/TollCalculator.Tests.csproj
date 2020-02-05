@@ -13,4 +13,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TollCalculator.Lib\TollCalculator.Lib.csproj" />
+  </ItemGroup>
+
 </Project>
