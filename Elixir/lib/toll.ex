@@ -1,4 +1,4 @@
-defmodule TollCalculator do
+defmodule Toll do
   @moduledoc false
 
   @toll_free_vehicles [
@@ -12,8 +12,8 @@ defmodule TollCalculator do
 
   @type vehicle :: atom()
 
-  @spec get_toll_fee(vehicle(), list(NaiveDateTime.t())) :: integer()
-  def get_toll_fee(vehicle, passages) do
+  @spec calculate_fee(vehicle(), list(NaiveDateTime.t())) :: integer()
+  def calculate_fee(vehicle, passages) do
     passages
     |> Enum.map(&passage_fee(vehicle, &1))
     |> Enum.sum()
