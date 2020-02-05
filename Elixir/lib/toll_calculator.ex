@@ -1,18 +1,5 @@
 defmodule TollCalculator do
-  @moduledoc """
-  Documentation for TollCalculator.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> TollCalculator.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def get_toll_fee(vehicle, passages) do
+    0
   end
 end

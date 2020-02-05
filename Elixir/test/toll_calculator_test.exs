@@ -1,8 +1,9 @@
 defmodule TollCalculatorTest do
   use ExUnit.Case
-  doctest TollCalculator
-
-  test "greets the world" do
-    assert TollCalculator.hello() == :world
+  
+  describe "get_toll_fee/2" do
+    test "no passages, returns 0" do
+      assert TollCalculator.get_toll_fee(:car, []) == 0
+    end
   end
 end
