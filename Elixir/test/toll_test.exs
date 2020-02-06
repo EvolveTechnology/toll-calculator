@@ -1,22 +1,45 @@
 defmodule TollTest do
   use ExUnit.Case
 
-  describe "calculate_fee/2" do
+  describe "corner cases" do
     test "no passages, returns 0" do
       assert Toll.calculate_fee(:car, []) == 0
     end
+  end
 
-    test "toll-free vehicle, returns 0" do
+  describe "exempt vehicles" do
+    test "motorbike, returns 0" do
       passages = [~N[2020-02-05 16:00:00]]
-
       assert Toll.calculate_fee(:motorbike, passages) == 0
-      assert Toll.calculate_fee(:tractor, passages) == 0
-      assert Toll.calculate_fee(:emergency, passages) == 0
-      assert Toll.calculate_fee(:diplomat, passages) == 0
-      assert Toll.calculate_fee(:foreign, passages) == 0
-      assert Toll.calculate_fee(:military, passages) == 0
     end
 
+    test "tractor, returns 0" do
+      passages = [~N[2020-02-05 16:00:00]]
+      assert Toll.calculate_fee(:tractor, passages) == 0
+    end
+
+    test "emergency, returns 0" do
+      passages = [~N[2020-02-05 16:00:00]]
+      assert Toll.calculate_fee(:emergency, passages) == 0
+    end
+
+    test "diplomat, returns 0" do
+      passages = [~N[2020-02-05 16:00:00]]
+      assert Toll.calculate_fee(:diplomat, passages) == 0
+    end
+
+    test "foreign, returns 0" do
+      passages = [~N[2020-02-05 16:00:00]]
+      assert Toll.calculate_fee(:foreign, passages) == 0
+    end
+
+    test "military, returns 0" do
+      passages = [~N[2020-02-05 16:00:00]]
+      assert Toll.calculate_fee(:military, passages) == 0
+    end
+  end
+
+  describe "variable rate" do
     test "before 06:00, returns 0" do
       assert Toll.calculate_fee(:car, [~N[2020-02-05 05:59:59]]) == 0
     end
@@ -69,7 +92,9 @@ defmodule TollTest do
     test "after 18:30, returns 0" do
       assert Toll.calculate_fee(:car, [~N[2020-02-05 18:30:00]]) == 0
     end
+  end
 
+  describe "exempt days" do
     test "weekend, returns 0" do
       assert Toll.calculate_fee(:car, [~N[2020-02-08 15:30:00]]) == 0
       assert Toll.calculate_fee(:car, [~N[2020-02-09 15:30:00]]) == 0
