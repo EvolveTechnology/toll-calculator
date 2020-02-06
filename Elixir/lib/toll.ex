@@ -2,30 +2,32 @@ defmodule Toll do
   @moduledoc false
   alias Toll.Holidays
 
-  @toll_free_vehicles [
-    :motorbike,
-    :tractor,
-    :emergency,
-    :diplomat,
-    :foreign,
-    :military
-  ]
-
   @type vehicle :: atom()
 
   @spec calculate_fee(vehicle(), list(NaiveDateTime.t())) :: integer()
-  def calculate_fee(vehicle, _passages) when vehicle in @toll_free_vehicles do
-    0
+  def calculate_fee(vehicle, passages) do
+    with :ok <- validate_passages(passages),
+         fee <- calculate_fee_wo_validation(vehicle, passages) do
+      {:ok, fee}
+    end
   end
 
-  def calculate_fee(_vehicle, passages) do
+  defp validate_passages(passages) do
+    case Enum.all?(passages, &datetime_in_range?/1) do
+      true -> :ok
+      false -> {:error, :invalid_datetime}
+    end
+  end
+
+  defp calculate_fee_wo_validation(vehicle, passages) do
     passages
-    |> Enum.map(&passage_fee/1)
+    |> Enum.map(&passage_fee(vehicle, &1))
     |> Enum.sum()
   end
 
-  defp passage_fee(datetime) do
+  defp passage_fee(vehicle, datetime) do
     cond do
+      exempt_vehicle?(vehicle) -> 0
       weekend?(datetime) -> 0
       holiday?(datetime) -> 0
       true -> passage_fee_for_time(datetime)
@@ -64,5 +66,21 @@ defmodule Toll do
     datetime
     |> NaiveDateTime.to_date()
     |> Holidays.include?()
+  end
+
+  defp datetime_in_range?(datetime) do
+    {{year, _month, _day}, _time} = NaiveDateTime.to_erl(datetime)
+    year == 2020
+  end
+
+  defp exempt_vehicle?(vehicle) do
+    vehicle in [
+      :motorbike,
+      :tractor,
+      :emergency,
+      :diplomat,
+      :foreign,
+      :military
+    ]
   end
 end
