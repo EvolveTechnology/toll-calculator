@@ -1,5 +1,6 @@
 defmodule Toll do
   @moduledoc false
+  alias Toll.Holidays
 
   @toll_free_vehicles [
     :motorbike,
@@ -60,13 +61,8 @@ defmodule Toll do
   end
 
   defp holiday?(datetime) do
-    {{_year, month, day}, _time} = NaiveDateTime.to_erl(datetime)
-
-    cond do
-      {month, day} == {1, 1} -> true
-      {month, day} == {5, 1} -> true
-      {month, day} == {12, 25} -> true
-      true -> false
-    end
+    datetime
+    |> NaiveDateTime.to_date()
+    |> Holidays.include?()
   end
 end
