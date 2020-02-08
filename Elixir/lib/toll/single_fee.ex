@@ -11,13 +11,13 @@ defmodule Toll.SingleFee do
   Given a vehicle and a passage, this function returns the corresponding toll
   fee.
   """
-  @spec calculate(Vehicle.t(), NaiveDateTime.t()) :: integer()
-  def calculate(vehicle, datetime) do
+  @spec calculate(Vehicle.t(), {Date.t(), Time.t()}) :: integer()
+  def calculate(vehicle, {date, time}) do
     cond do
       exempt_vehicle?(vehicle) -> 0
-      weekend?(datetime) -> 0
-      holiday?(datetime) -> 0
-      true -> calculate(datetime)
+      weekend?(date) -> 0
+      holiday?(date) -> 0
+      true -> calculate(time)
     end
   end
 
@@ -25,19 +25,17 @@ defmodule Toll.SingleFee do
     Vehicle.exempt?(vehicle)
   end
 
-  defp weekend?(datetime) do
-    {{year, month, day}, _time} = NaiveDateTime.to_erl(datetime)
+  defp weekend?(date) do
+    {year, month, day} = Date.to_erl(date)
     Calendar.ISO.day_of_week(year, month, day) in [6, 7]
   end
 
-  defp holiday?(datetime) do
-    Holidays.include?(datetime)
+  defp holiday?(date) do
+    Holidays.include?(date)
   end
 
-  # credo:disable-for-lines:16
-  defp calculate(datetime) do
-    time = NaiveDateTime.to_time(datetime)
-
+  # credo:disable-for-lines:14
+  defp calculate(time) do
     cond do
       time_in(time, ~T[06:00:00], ~T[06:30:00]) -> 8
       time_in(time, ~T[06:30:00], ~T[07:00:00]) -> 13

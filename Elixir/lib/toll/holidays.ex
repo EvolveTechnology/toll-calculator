@@ -192,18 +192,17 @@ defmodule Toll.Holidays do
   @doc """
   Returns whether or not the given datetime is a holiday.
   """
-  @spec include?(NaiveDateTime.t()) :: boolean()
-  def include?(datetime) do
-    date = NaiveDateTime.to_date(datetime)
+  @spec include?(Date.t()) :: boolean()
+  def include?(date) do
     date in @holidays
   end
 
   @doc """
-  Returns whether or not the given datetime is within the supported range.
+  Returns whether or not the given date is within the supported range.
   """
-  @spec valid_datetime?(NaiveDateTime.t()) :: boolean()
-  def valid_datetime?(datetime) do
-    {{year, _month, _day}, _time} = NaiveDateTime.to_erl(datetime)
+  @spec valid_date?(Date.t()) :: boolean()
+  def valid_date?(date) do
+    {year, _month, _day} = Date.to_erl(date)
     year in 2013..2027
   end
 end

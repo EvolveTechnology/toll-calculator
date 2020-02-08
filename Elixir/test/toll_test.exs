@@ -12,6 +12,20 @@ defmodule TollTest do
     test "no passages, returns 0" do
       assert Toll.calculate(:car, []) == {:ok, 0}
     end
+
+    test "does not charge more than 60 SEK per day" do
+      passages = [
+        ~N[2020-02-05 06:00:00],
+        ~N[2020-02-05 07:01:00],
+        ~N[2020-02-05 08:02:00],
+        ~N[2020-02-05 09:03:00],
+        ~N[2020-02-05 10:04:00],
+        ~N[2020-02-05 11:05:00],
+        ~N[2020-02-06 11:10:00]
+      ]
+
+      assert Toll.calculate(:car, passages) == {:ok, 68}
+    end
   end
 
   describe "exempt vehicles" do
