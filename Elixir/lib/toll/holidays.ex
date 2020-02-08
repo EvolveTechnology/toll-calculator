@@ -18,7 +18,6 @@ defmodule Toll.Holidays do
     ~D[2013-11-02],
     ~D[2013-12-25],
     ~D[2013-12-26],
-
     ~D[2014-01-01],
     ~D[2014-01-06],
     ~D[2014-04-18],
@@ -32,7 +31,6 @@ defmodule Toll.Holidays do
     ~D[2014-10-31],
     ~D[2014-12-25],
     ~D[2014-12-26],
-
     ~D[2015-01-01],
     ~D[2015-01-06],
     ~D[2015-04-03],
@@ -46,7 +44,6 @@ defmodule Toll.Holidays do
     ~D[2015-11-07],
     ~D[2015-12-25],
     ~D[2015-12-26],
-
     ~D[2017-01-01],
     ~D[2017-01-06],
     ~D[2017-03-25],
@@ -60,7 +57,6 @@ defmodule Toll.Holidays do
     ~D[2017-11-05],
     ~D[2017-12-25],
     ~D[2017-12-26],
-
     ~D[2018-01-01],
     ~D[2018-01-06],
     ~D[2018-04-14],
@@ -74,7 +70,6 @@ defmodule Toll.Holidays do
     ~D[2018-11-04],
     ~D[2018-12-25],
     ~D[2018-12-26],
-
     ~D[2019-01-01],
     ~D[2019-01-06],
     ~D[2019-04-19],
@@ -88,7 +83,6 @@ defmodule Toll.Holidays do
     ~D[2019-11-02],
     ~D[2019-12-25],
     ~D[2019-12-26],
-
     ~D[2020-01-01],
     ~D[2020-01-06],
     ~D[2020-04-10],
@@ -102,7 +96,6 @@ defmodule Toll.Holidays do
     ~D[2020-11-07],
     ~D[2020-12-25],
     ~D[2020-12-26],
-
     ~D[2021-01-01],
     ~D[2021-01-06],
     ~D[2021-04-02],
@@ -116,7 +109,6 @@ defmodule Toll.Holidays do
     ~D[2021-11-06],
     ~D[2021-12-25],
     ~D[2021-12-26],
-
     ~D[2022-01-01],
     ~D[2022-01-06],
     ~D[2022-04-15],
@@ -130,7 +122,6 @@ defmodule Toll.Holidays do
     ~D[2022-11-05],
     ~D[2022-12-25],
     ~D[2022-12-26],
-
     ~D[2023-01-01],
     ~D[2023-01-06],
     ~D[2023-04-07],
@@ -144,7 +135,6 @@ defmodule Toll.Holidays do
     ~D[2023-11-04],
     ~D[2023-12-25],
     ~D[2023-12-26],
-
     ~D[2024-01-01],
     ~D[2024-01-06],
     ~D[2024-03-29],
@@ -158,7 +148,6 @@ defmodule Toll.Holidays do
     ~D[2024-11-02],
     ~D[2024-12-25],
     ~D[2024-12-26],
-
     ~D[2025-01-01],
     ~D[2025-01-06],
     ~D[2025-04-18],
@@ -172,7 +161,6 @@ defmodule Toll.Holidays do
     ~D[2025-10-31],
     ~D[2025-12-25],
     ~D[2025-12-26],
-
     ~D[2026-01-01],
     ~D[2026-01-06],
     ~D[2026-04-03],
@@ -186,7 +174,6 @@ defmodule Toll.Holidays do
     ~D[2026-11-07],
     ~D[2026-12-25],
     ~D[2026-12-26],
-
     ~D[2027-01-01],
     ~D[2027-01-06],
     ~D[2027-03-26],
@@ -199,14 +186,24 @@ defmodule Toll.Holidays do
     ~D[2027-06-26],
     ~D[2027-11-06],
     ~D[2027-12-25],
-    ~D[2027-12-26],
+    ~D[2027-12-26]
   ]
 
   @doc """
-  Returns true if the given date is a holiday
+  Returns whether or not the given datetime is a holiday.
   """
-  @spec include?(Date.t()) :: boolean()
-  def include?(date) do
+  @spec include?(NaiveDateTime.t()) :: boolean()
+  def include?(datetime) do
+    date = NaiveDateTime.to_date(datetime)
     date in @holidays
+  end
+
+  @doc """
+  Returns whether or not the given datetime is within the supported range.
+  """
+  @spec valid_datetime?(NaiveDateTime.t()) :: boolean()
+  def valid_datetime?(datetime) do
+    {{year, _month, _day}, _time} = NaiveDateTime.to_erl(datetime)
+    year in 2013..2027
   end
 end
