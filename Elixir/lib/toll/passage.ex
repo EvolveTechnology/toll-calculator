@@ -1,23 +1,33 @@
-defmodule Toll.SingleFee do
+defmodule Toll.Passage do
   @moduledoc """
-  This module implements calculation of the toll fee for a single passage.
+  This module implements a data type for passages.
   """
   alias Toll.{
     Holidays,
     Vehicle
   }
 
+  defstruct [:date, :time, :fee]
+
+  @type t() :: %__MODULE__{}
+
   @doc """
-  Given a vehicle and a passage, this function returns the corresponding toll
-  fee.
+  Given a vehicle and a datetime, returns the corresponding passage struct.
   """
-  @spec calculate(Vehicle.t(), {Date.t(), Time.t()}) :: integer()
-  def calculate(vehicle, {date, time}) do
+  @spec new(Vehicle.t(), DateTime.t()) :: t()
+  def new(vehicle, datetime) do
+    date = NaiveDateTime.to_date(datetime)
+    time = NaiveDateTime.to_time(datetime)
+    fee = fee(vehicle, date, time)
+    %__MODULE__{date: date, time: time, fee: fee}
+  end
+
+  defp fee(vehicle, date, time) do
     cond do
       exempt_vehicle?(vehicle) -> 0
       weekend?(date) -> 0
       holiday?(date) -> 0
-      true -> calculate(time)
+      true -> fee(time)
     end
   end
 
@@ -35,7 +45,7 @@ defmodule Toll.SingleFee do
   end
 
   # credo:disable-for-lines:14
-  defp calculate(time) do
+  defp fee(time) do
     cond do
       time_in(time, ~T[06:00:00], ~T[06:30:00]) -> 8
       time_in(time, ~T[06:30:00], ~T[07:00:00]) -> 13

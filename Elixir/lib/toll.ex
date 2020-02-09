@@ -5,7 +5,7 @@ defmodule Toll do
   """
   alias Toll.{
     Holidays,
-    SingleFee,
+    Passage,
     Vehicle
   }
 
@@ -15,49 +15,39 @@ defmodule Toll do
   Given a vehicle and a list of passage times, this function returns the total
   toll fee.
   """
-  @spec calculate(Vehicle.t(), list(NaiveDateTime.t())) :: integer()
-  def calculate(vehicle, passages) do
-    transform = fn passage ->
-      date = NaiveDateTime.to_date(passage)
-      time = NaiveDateTime.to_time(passage)
-      {date, time}
+  @spec fee(Vehicle.t(), list(NaiveDateTime.t())) :: integer()
+  def fee(vehicle, passages) do
+    with passages <- format(vehicle, passages),
+         :ok <- validate(passages),
+         result <- calculate(passages) do
+      {:ok, result}
     end
+  end
 
-    valid? = fn {date, _time} ->
-      Holidays.valid_date?(date)
-    end
+  defp format(vehicle, passages) do
+    passages
+    |> Enum.sort()
+    |> Enum.map(&Passage.new(vehicle, &1))
+  end
 
-    passages =
-      passages
-      |> Enum.sort()
-      |> Enum.map(transform)
-
-    case Enum.all?(passages, valid?) do
-      true -> {:ok, total_fee(vehicle, passages)}
+  defp validate(passages) do
+    case Enum.all?(passages, &Holidays.valid_date?(&1.date)) do
+      true -> :ok
       false -> {:error, :invalid_datetime}
     end
   end
 
-  defp total_fee(vehicle, passages) do
-    case Enum.reduce(passages, :initial, &reduction(vehicle, &1, &2)) do
-      {_, _, total} -> total
-      :initial -> 0
-    end
+  defp calculate(passages) do
+    {_, _, total} = Enum.reduce(passages, {:initial, 0, 0}, &reduction/2)
+    total
   end
 
-  defp reduction(vehicle, {date, time}, :initial) do
-    nominal = SingleFee.calculate(vehicle, {date, time})
-    {date, nominal, nominal}
-  end
-
-  defp reduction(vehicle, {date, time}, {date, date_total, total}) do
-    nominal = SingleFee.calculate(vehicle, {date, time})
-    adjusted = min(@day_max - date_total, nominal)
+  defp reduction(%{date: date, fee: fee}, {date, date_total, total}) do
+    adjusted = min(@day_max - date_total, fee)
     {date, date_total + adjusted, total + adjusted}
   end
 
-  defp reduction(vehicle, {date, time}, {_date, _date_total, total}) do
-    nominal = SingleFee.calculate(vehicle, {date, time})
-    {date, nominal, total + nominal}
+  defp reduction(%{date: date, fee: fee}, {_date, _date_total, total}) do
+    {date, fee, total + fee}
   end
 end
