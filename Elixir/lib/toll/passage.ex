@@ -18,8 +18,9 @@ defmodule Toll.Passage do
   def new(vehicle, datetime) do
     date = NaiveDateTime.to_date(datetime)
     time = NaiveDateTime.to_time(datetime)
+    unix = NaiveDateTime.diff(datetime, ~N[1970-01-01 00:00:00], :second)
     fee = fee(vehicle, date, time)
-    %__MODULE__{date: date, time: time, fee: fee}
+    %__MODULE__{date: date, time: unix, fee: fee}
   end
 
   defp fee(vehicle, date, time) do

@@ -11,6 +11,14 @@ defmodule Toll do
 
   @day_max 60
 
+  defstruct(
+    date: nil,
+    time: nil,
+    hour_total: 0,
+    day_total: 0,
+    total: 0
+  )
+
   @doc """
   Given a vehicle and a list of passage times, this function returns the total
   toll fee.
@@ -38,16 +46,48 @@ defmodule Toll do
   end
 
   defp calculate(passages) do
-    {_, _, total} = Enum.reduce(passages, {:initial, 0, 0}, &reduction/2)
-    total
+    Enum.reduce(passages, %__MODULE__{}, &apply_fee/2).total
   end
 
-  defp reduction(%{date: date, fee: fee}, {date, date_total, total}) do
-    adjusted = min(@day_max - date_total, fee)
-    {date, date_total + adjusted, total + adjusted}
+  defp apply_fee(passage, accumulator) do
+    cond do
+      passage.date == accumulator.date and passage.time - accumulator.time < 3600 ->
+        apply_within_hour(passage, accumulator)
+
+      passage.date == accumulator.date ->
+        apply_within_day(passage, accumulator)
+
+      true ->
+        apply_separate_days(passage, accumulator)
+    end
   end
 
-  defp reduction(%{date: date, fee: fee}, {_date, _date_total, total}) do
-    {date, fee, total + fee}
+  defp apply_within_hour(passage, accumulator) do
+    delta = min(@day_max - accumulator.day_total, passage.fee)
+    delta = max(delta - accumulator.hour_total, 0)
+
+    accumulator
+    |> Map.put(:hour_total, accumulator.hour_total + delta)
+    |> Map.put(:day_total, accumulator.day_total + delta)
+    |> Map.put(:total, accumulator.total + delta)
+  end
+
+  defp apply_within_day(passage, accumulator) do
+    delta = min(@day_max - accumulator.day_total, passage.fee)
+
+    accumulator
+    |> Map.put(:time, passage.time)
+    |> Map.put(:hour_total, passage.fee)
+    |> Map.put(:day_total, accumulator.day_total + delta)
+    |> Map.put(:total, accumulator.total + delta)
+  end
+
+  defp apply_separate_days(passage, accumulator) do
+    accumulator
+    |> Map.put(:date, passage.date)
+    |> Map.put(:time, passage.time)
+    |> Map.put(:hour_total, passage.fee)
+    |> Map.put(:day_total, passage.fee)
+    |> Map.put(:total, accumulator.total + passage.fee)
   end
 end

@@ -26,5 +26,23 @@ defmodule TollTest do
 
       assert Toll.fee(:car, passages) == {:ok, 68}
     end
+
+    test "only applies the highest charge for passages within an hour" do
+      passages = [
+        # 8 SEK, ignored
+        ~N[2020-02-05 06:29:54],
+
+        # 13 SEK, ignored
+        ~N[2020-02-05 06:34:43],
+
+        # 18 SEK, applied
+        ~N[2020-02-05 07:29:12],
+
+        # 13 SEK, applied
+        ~N[2020-02-05 08:01:29]
+      ]
+
+      assert Toll.fee(:car, passages) == {:ok, 18 + 13}
+    end
   end
 end
