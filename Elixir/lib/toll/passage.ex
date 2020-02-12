@@ -9,7 +9,18 @@ defmodule Toll.Passage do
 
   defstruct [:date, :time, :fee]
 
-  @type t() :: %__MODULE__{}
+  @typedoc """
+  Type representing a passage:
+  * date - the date of passage, as a Date struct
+  * time - unix timestamp of the passage (seconds since 1970-01-01)
+  * fee - the nominal passage fee (not adjusted for previous passages within an
+          hour etc.)
+  """
+  @type t() :: %__MODULE__{
+          date: Date.t(),
+          time: integer(),
+          fee: integer()
+        }
 
   @doc """
   Given a vehicle and a datetime, returns the corresponding passage struct.

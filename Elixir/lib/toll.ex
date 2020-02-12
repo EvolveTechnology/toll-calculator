@@ -10,12 +10,24 @@ defmodule Toll do
   }
 
   @day_max 60
+  @one_hour 3600
 
+  # Struct passed as accumulator to the reduction function used when summing up
+  # the total fee.
   defstruct(
+    # Date of the previous passage.
     date: nil,
+
+    # Unix timestamp of the previous passage (seconds since 1970-01-01).
     time: nil,
+
+    # Total fee accumulated for the current hour window.
     hour_total: 0,
+
+    # Total fee accumulated for the current day.
     day_total: 0,
+
+    # Total fee accumulated.
     total: 0
   )
 
@@ -51,7 +63,7 @@ defmodule Toll do
 
   defp apply_fee(passage, accumulator) do
     cond do
-      passage.date == accumulator.date and passage.time - accumulator.time < 3600 ->
+      passage.date == accumulator.date and passage.time - accumulator.time < @one_hour ->
         apply_within_hour(passage, accumulator)
 
       passage.date == accumulator.date ->

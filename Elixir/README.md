@@ -1,20 +1,38 @@
-# TollCalculator
+# Elixir Toll Calculator
 
-**TODO: Add description**
+## Prerequisites
 
-## Installation
+* [Make][make] - for managing project tasks
+* [Docker][docker] - for running the project code without the need to setup Elixir/Erlang
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `toll_calculator` to your list of dependencies in `mix.exs`:
+## Getting Started
 
-```elixir
-def deps do
-  [
-    {:toll_calculator, "~> 0.1.0"}
-  ]
-end
+In order to run the code, start by building a Docker image capable of running Elixir:
+
+```sh
+$ make build-image
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/toll_calculator](https://hexdocs.pm/toll_calculator).
+To fetch the needed libraries, compile the code, run static code analysis, and run unit tests:
+
+```sh
+$ make check
+```
+
+## Description
+
+Since Elixir generates a lot of files when starting a new project, below is a list of the most relevant files to look at when grading the assignment:
+
+* `lib/toll.ex` - the program entry point
+* `lib/toll/*.ex` - the program code
+* `test/*_test.ex` - unit tests
+
+## Assumptions
+
+* All passages occur in the same time zone.
+* Since passages are free between 18:00 and 06:00, the code does not take any effects of daylight savings time changes into account. This might cause ssues should the pricing model change.
+* The code handles passages between 2013-01-01 and 2027-12-31. Entering a passage outside of this range results in an error response. To support a larger range, more holidays have to be added in `lib/holidays.ex`
+
+
+[make]:https://www.gnu.org/software/make/manual/make.html
+[docker]:https://docker.com
