@@ -30,9 +30,7 @@ Since Elixir generates a lot of files when starting a new project, below is a li
 ## Assumptions
 
 * All passages occur in the same time zone.
-* Since passages are free between 18:00 and 06:00, the code does not take any effects of daylight savings time changes into account. This might cause ssues should the pricing model change.
-* The code handles passages between 2013-01-01 and 2027-12-31. Entering a passage outside of this range results in an error response. To support a larger range, more holidays have to be added in `lib/holidays.ex`
-
+* Since passages are free between 18:00 and 06:00, the code does not take any effects of daylight savings time changes into account. This might cause issues should the pricing model change.
 
 [make]:https://www.gnu.org/software/make/manual/make.html
 [docker]:https://docker.com

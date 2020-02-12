@@ -4,7 +4,6 @@ defmodule Toll do
   vehicles.
   """
   alias Toll.{
-    Holidays,
     Passage,
     Vehicle
   }
@@ -37,24 +36,15 @@ defmodule Toll do
   """
   @spec fee(Vehicle.t(), list(NaiveDateTime.t())) :: integer()
   def fee(vehicle, passages) do
-    with passages <- format(vehicle, passages),
-         :ok <- validate(passages),
-         result <- calculate(passages) do
-      {:ok, result}
-    end
+    passages
+    |> format(vehicle)
+    |> calculate()
   end
 
-  defp format(vehicle, passages) do
+  defp format(passages, vehicle) do
     passages
     |> Enum.sort()
     |> Enum.map(&Passage.new(vehicle, &1))
-  end
-
-  defp validate(passages) do
-    case Enum.all?(passages, &Holidays.valid_date?(&1.date)) do
-      true -> :ok
-      false -> {:error, :invalid_datetime}
-    end
   end
 
   defp calculate(passages) do

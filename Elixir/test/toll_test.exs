@@ -1,16 +1,9 @@
 defmodule TollTest do
   use ExUnit.Case, async: true
 
-  describe "validation" do
-    test "date outside valid range, returns error" do
-      passages = [~N[2020-01-01 00:23:48], ~N[2040-01-01 00:00:00]]
-      assert Toll.fee(:car, passages) == {:error, :invalid_datetime}
-    end
-  end
-
   describe "corner cases" do
     test "no passages, returns 0" do
-      assert Toll.fee(:car, []) == {:ok, 0}
+      assert Toll.fee(:car, []) == 0
     end
 
     test "does not charge more than 60 SEK per day" do
@@ -37,7 +30,7 @@ defmodule TollTest do
         ~N[2020-02-06 11:10:00]
       ]
 
-      assert Toll.fee(:car, passages) == {:ok, 60 + 8}
+      assert Toll.fee(:car, passages) == 60 + 8
     end
 
     test "only applies the highest charge for passages within an hour" do
@@ -55,7 +48,7 @@ defmodule TollTest do
         ~N[2020-02-05 08:01:29]
       ]
 
-      assert Toll.fee(:car, passages) == {:ok, 18 + 13}
+      assert Toll.fee(:car, passages) == 18 + 13
     end
   end
 end

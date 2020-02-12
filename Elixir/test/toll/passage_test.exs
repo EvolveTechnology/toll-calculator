@@ -22,11 +22,68 @@ defmodule Toll.PassageTest do
     end
   end
 
-  describe "holidays" do
+  describe "regular holidays" do
     test "does not charge fee" do
       assert Passage.new(:car, ~N[2020-01-01 15:30:00]).fee == 0
+      assert Passage.new(:car, ~N[2020-01-06 15:30:00]).fee == 0
       assert Passage.new(:car, ~N[2020-05-01 15:30:00]).fee == 0
       assert Passage.new(:car, ~N[2020-06-06 15:30:00]).fee == 0
+      assert Passage.new(:car, ~N[2020-12-25 15:30:00]).fee == 0
+      assert Passage.new(:car, ~N[2020-12-26 15:30:00]).fee == 0
+    end
+  end
+
+  describe "easter" do
+    test "does not charge fee" do
+      easter_sundays = [
+        ~D[2013-03-31],
+        ~D[2014-04-20],
+        ~D[2015-04-05],
+        ~D[2016-03-27],
+        ~D[2017-04-16],
+        ~D[2018-04-01],
+        ~D[2019-04-21],
+        ~D[2020-04-12],
+        ~D[2021-04-04],
+        ~D[2022-04-17],
+        ~D[2023-04-09],
+        ~D[2024-03-31],
+        ~D[2025-04-20],
+        ~D[2026-04-05],
+        ~D[2027-03-28],
+        ~D[2028-04-16],
+        ~D[2029-04-01],
+        ~D[2030-04-21],
+        ~D[2031-04-13]
+      ]
+
+      Enum.each(easter_sundays, fn date ->
+        day = 86_400
+        erl = {Date.to_erl(date), {8, 10, 0}}
+
+        sunday = NaiveDateTime.from_erl!(erl)
+        monday = NaiveDateTime.add(sunday, 1 * day)
+        saturday = NaiveDateTime.add(sunday, -1 * day)
+        friday = NaiveDateTime.add(sunday, -2 * day)
+
+        tuesday = NaiveDateTime.add(sunday, 2 * day)
+        thursday = NaiveDateTime.add(sunday, -3 * day)
+
+        assert Passage.new(:car, friday).fee == 0
+        assert Passage.new(:car, saturday).fee == 0
+        assert Passage.new(:car, sunday).fee == 0
+        assert Passage.new(:car, monday).fee == 0
+
+        assert Passage.new(:car, thursday).fee != 0
+        assert Passage.new(:car, tuesday).fee != 0
+      end)
+    end
+  end
+
+  describe "acension day" do
+    test "does not charge fee" do
+      assert Passage.new(:car, ~N[2020-05-21 15:30:00]).fee == 0
+      assert Passage.new(:car, ~N[2021-05-13 15:30:00]).fee == 0
     end
   end
 
