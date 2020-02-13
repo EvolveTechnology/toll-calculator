@@ -25,7 +25,7 @@ Since Elixir generates a lot of files when starting a new project, below is a li
 
 * `lib/toll.ex` - the program entry point
 * `lib/toll/*.ex` - the program code
-* `test/*_test.ex` - unit tests
+* `test/**/*_test.ex` - unit tests
 
 ## Assumptions
 
