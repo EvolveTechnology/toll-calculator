@@ -27,30 +27,17 @@ defmodule Toll.Holidays do
     regular_holiday?(date) or irregular_holiday?(date)
   end
 
-  defp regular_holiday?(date) do
-    case Date.to_erl(date) do
-      {_year, 1, 1} -> true
-      {_year, 1, 6} -> true
-      {_year, 5, 1} -> true
-      {_year, 6, 6} -> true
-      {_year, 12, 25} -> true
-      {_year, 12, 26} -> true
-      _other -> false
-    end
-  end
+  @doc """
+  Given a year, this function returns the date of the Easter Sunday for that
+  year.
 
-  defp irregular_holiday?(date) do
-    easter_sunday = easter_sunday(date)
-    easter?(date, easter_sunday) or ascension?(date, easter_sunday)
-  end
+  https://dzone.com/articles/algorithm-calculating-date
+  http://en.wikipedia.org/wiki/Computus#Meeus.2FJones.2FButcher_Gregorian_algorithm
 
-  defp easter?(date, easter_sunday) do
-    Enum.any?(-2..1, &(date == Date.add(easter_sunday, &1)))
-  end
-
-  defp easter_sunday(date) do
-    {year, _month, _day} = Date.to_erl(date)
-
+  Public for testability reasons.
+  """
+  @spec easter_sunday(integer()) :: Date.t()
+  def easter_sunday(year) do
     a = rem(year, 19)
     b = div(year, 100)
     c = rem(year, 100)
@@ -67,6 +54,28 @@ defmodule Toll.Holidays do
     day = rem(h + l - 7 * m + 114, 31) + 1
 
     Date.from_erl!({year, month, day})
+  end
+
+  defp regular_holiday?(date) do
+    case Date.to_erl(date) do
+      {_year, 1, 1} -> true
+      {_year, 1, 6} -> true
+      {_year, 5, 1} -> true
+      {_year, 6, 6} -> true
+      {_year, 12, 25} -> true
+      {_year, 12, 26} -> true
+      _other -> false
+    end
+  end
+
+  defp irregular_holiday?(date) do
+    {year, _month, _day} = Date.to_erl(date)
+    easter_sunday = easter_sunday(year)
+    easter?(date, easter_sunday) or ascension?(date, easter_sunday)
+  end
+
+  defp easter?(date, easter_sunday) do
+    Enum.any?(-2..1, &(date == Date.add(easter_sunday, &1)))
   end
 
   defp ascension?(date, easter_sunday) do
