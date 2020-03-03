@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/C#/TollCalculator/.vs/TollCalculator
+/C#/TollCalculator/TollCalculator/obj
+/C#/TollCalculator/TollFeeCalculator.Test/bin/Debug/netcoreapp3.0
+/C#/TollCalculator/TollFeeCalculator.Test/obj
+/C#/TollCalculator/TollCalculator/bin/Debug/netcoreapp3.0
