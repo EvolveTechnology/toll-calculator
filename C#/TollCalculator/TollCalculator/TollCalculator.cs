@@ -7,6 +7,8 @@ using TollFeeCalculator.Services;
 
 public class TollCalculator : ITollCalculator
 {
+    private readonly decimal _maxPerDay;
+    private const double _chargingIntervalInMinutes = 60;
     private readonly ITollFreeVehicles _tollFreeVehicles;
     private readonly ITollFreeDates _tollFreeDates;
     private readonly IDailyTollFees _dailyTollFees;
@@ -14,13 +16,16 @@ public class TollCalculator : ITollCalculator
     public TollCalculator()
     {
         _tollFreeVehicles = new TollFreeVehicles();
+        _tollFreeDates = new TollFreeDates();
+        _dailyTollFees = new DailyTollFees();
     }
 
-    public TollCalculator(ITollFreeVehicles tollFreeVehicles, ITollFreeDates tollFreeDates, IDailyTollFees dailyTollFees)
+    public TollCalculator(ITollFreeVehicles tollFreeVehicles, ITollFreeDates tollFreeDates, IDailyTollFees dailyTollFees, decimal? maxPerDay)
     {
-        _tollFreeVehicles = tollFreeVehicles;
-        _tollFreeDates = tollFreeDates;
-        _dailyTollFees = dailyTollFees;
+        _maxPerDay = maxPerDay ?? 60M;
+        _tollFreeVehicles = tollFreeVehicles ?? new TollFreeVehicles();
+        _tollFreeDates = tollFreeDates ?? new TollFreeDates();
+        _dailyTollFees = dailyTollFees ?? new DailyTollFees();
     }
 
     /**
@@ -33,30 +38,49 @@ public class TollCalculator : ITollCalculator
 
     public decimal GetDailyTollFee(IVehicle vehicle, DateTime[] dates)
     {
+        if (vehicle == null) throw new ArgumentException($"No Vehicle type provided for {nameof(vehicle)}");
+        if (dates.Length == 0) throw new ArgumentException(nameof(dates));
+
+        if (_tollFreeVehicles.IsTollFreeVehicle((vehicle))) return 0M;
+
         DateTime intervalStart = dates[0];
+        DateTime previousDate = dates[0];
+
         decimal totalFee = 0;
+        decimal totalFeePerDay = 0;
+   
         foreach (DateTime date in dates)
         {
+            if (previousDate.Date.CompareTo(date.Date) < 0)
+            {
+                totalFee += totalFeePerDay;
+                totalFeePerDay = 0;
+                previousDate = date;
+            }
+
             decimal nextFee = GetTollFee(date, vehicle);
             decimal tempFee = GetTollFee(intervalStart, vehicle);
 
-            long diffInMillies = date.Millisecond - intervalStart.Millisecond;
-            long minutes = diffInMillies/1000/60;
+            TimeSpan span = date - intervalStart;
+            double minutes = span.TotalMinutes;
 
-            if (minutes <= 60)
+            if (minutes <= _chargingIntervalInMinutes)
             {
                 // TODO is there a bug here?
-                if (totalFee > 0) totalFee -= tempFee;
+                if (totalFeePerDay > 0) totalFeePerDay -= tempFee;
                 if (nextFee >= tempFee) tempFee = nextFee;
-                totalFee += tempFee;
+                totalFeePerDay += tempFee;
             }
             else
             {
-                totalFee += nextFee;
+                totalFeePerDay += nextFee;
+                intervalStart = date;
             }
+
+            if (totalFeePerDay > _maxPerDay) totalFeePerDay = _maxPerDay;
         }
-        if (totalFee > 60) totalFee = 60;
-        return totalFee;
+
+        return totalFee + totalFeePerDay;
     }
 
 
