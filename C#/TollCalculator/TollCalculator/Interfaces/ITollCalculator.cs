@@ -6,6 +6,6 @@ namespace TollFeeCalculator.Interfaces
 {
     public interface ITollCalculator
     {
-        int GetDailyTollFee(IVehicle vehicle, DateTime[] dates);
+        decimal GetDailyTollFee(IVehicle vehicle, DateTime[] dates);
     }
 }
