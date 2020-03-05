@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TollFeeCalculator.Interfaces;
-using TollFeeCalculator.Models.Vehicles;
+using TollFeeCalculator.Models;
 using Xunit;
 
 namespace TollFeeCalculator.Test
@@ -14,7 +14,7 @@ namespace TollFeeCalculator.Test
             int expectedFee = 0;
             ITollCalculator dailyTollCalculator = new TollCalculator();
             var testDate = new DateTime[] {new DateTime(2010, 1, 1)};
-            int fee = dailyTollCalculator.GetDailyTollFee(new Emergency(), testDate);
+            decimal fee = dailyTollCalculator.GetDailyTollFee(new Vehicle(VehicleType.Emergency), testDate);
 
             Assert.Equal(expectedFee, fee);
         }
@@ -25,7 +25,7 @@ namespace TollFeeCalculator.Test
             int expectedFee = 8;
             ITollCalculator dailyTollCalculator = new TollCalculator();
             var testDate = new DateTime[] {new DateTime(2010, 1, 1)};
-            int fee = dailyTollCalculator.GetDailyTollFee(new Emergency(), testDate);
+            decimal fee = dailyTollCalculator.GetDailyTollFee(new Vehicle(VehicleType.Emergency), testDate);
 
             Assert.Equal(expectedFee, fee);
 

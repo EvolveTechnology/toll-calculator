@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Nager.Date" Version="1.25.10" />
+  </ItemGroup>
+
 </Project>

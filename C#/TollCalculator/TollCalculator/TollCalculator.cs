@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using Nager.Date;
 using TollFeeCalculator;
 using TollFeeCalculator.Interfaces;
 using TollFeeCalculator.Services;
@@ -16,15 +17,15 @@ public class TollCalculator : ITollCalculator
     public TollCalculator()
     {
         _tollFreeVehicles = new TollFreeVehicles();
-        _tollFreeDates = new TollFreeDates();
+        _tollFreeDates = new TollFreeDates(CountryCode.SE);
         _dailyTollFees = new DailyTollFees();
     }
 
     public TollCalculator(ITollFreeVehicles tollFreeVehicles, ITollFreeDates tollFreeDates, IDailyTollFees dailyTollFees, decimal? maxPerDay)
     {
-        _maxPerDay = maxPerDay ?? 60M;
+        _maxPerDay = maxPerDay ?? 60m;
         _tollFreeVehicles = tollFreeVehicles ?? new TollFreeVehicles();
-        _tollFreeDates = tollFreeDates ?? new TollFreeDates();
+        _tollFreeDates = tollFreeDates ?? new TollFreeDates(CountryCode.SE);
         _dailyTollFees = dailyTollFees ?? new DailyTollFees();
     }
 
