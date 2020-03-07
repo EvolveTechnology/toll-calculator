@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TollFeeCalculator.Models
+﻿namespace TollFeeCalculator.Models
 {
     public class Vehicle : IVehicle
     {

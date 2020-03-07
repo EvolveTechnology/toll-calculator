@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TollFeeCalculator.Interfaces
+﻿namespace TollFeeCalculator.Interfaces
 {
     public interface ITollFreeVehicles
     {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TollFeeCalculator.Interfaces;
+﻿using TollFeeCalculator.Interfaces;
 using TollFeeCalculator.Models;
 using TollFeeCalculator.Services;
 using Xunit;

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
-using Nager.Date;
 using TollFeeCalculator;
 using TollFeeCalculator.Interfaces;
 using TollFeeCalculator.Services;
@@ -45,10 +43,11 @@ public class TollCalculator : ITollCalculator
     {
         if (vehicle == null) throw new ArgumentNullException($"No Vehicle type provided for {nameof(vehicle)}");
 
-        if (dates.GroupBy(x=>x.Date).Count() > 1 )
+        if (dates != null && dates.GroupBy(x=>x.Date).Count() > 1 )
             throw new ArgumentException($"Includes date pass values of two or more days. Only date passes within one day is allowed");
 
-        if ((dates.Length == 0) || _tollFreeVehicles.IsTollFreeVehicle((vehicle))) return 0M;
+        // assumption :  when dates parameter is null the fee is zero.
+        if ((dates == null || dates.Length == 0) || _tollFreeVehicles.IsTollFreeVehicle((vehicle))) return 0M;
 
         DateTime intervalStart = dates[0];
 
@@ -81,8 +80,7 @@ public class TollCalculator : ITollCalculator
         return totalFeePerDay;
     }
 
-    
-    public decimal GetTollFee(DateTime date, IVehicle vehicle)
+    private decimal GetTollFee(DateTime date, IVehicle vehicle)
     {
         if (_tollFreeDates.IsTollFreeDate(date) || _tollFreeVehicles.IsTollFreeVehicle(vehicle)) return 0;
 

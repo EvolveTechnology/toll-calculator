@@ -180,7 +180,8 @@ namespace TollFeeCalculator.Test
 
             DateTime[] passes = new DateTime[]{};
 
-            var result = dailyTollCalculator.GetDailyTollFee(vehicle, passes);
+            var result = dailyTollCalculator.GetDailyTollFee(vehicle, null);
+           // var result = dailyTollCalculator.GetDailyTollFee(vehicle, passes);
 
             Assert.Equal(0m, result);
         }
