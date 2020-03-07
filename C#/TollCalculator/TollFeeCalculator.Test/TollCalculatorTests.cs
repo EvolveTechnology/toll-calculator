@@ -8,6 +8,8 @@ namespace TollFeeCalculator.Test
 {
     public class TollCalculatorTests
     {
+        private static readonly decimal _maxPerDay = 60m;
+
         public static IEnumerable<object[]> NormalDatesNotFreeVehicleSinglePassData =>
             new List<object[]>
             {
@@ -42,11 +44,25 @@ namespace TollFeeCalculator.Test
                 new object[] { new Vehicle(VehicleType.Car), new DateTime[] {new DateTime(2019,07,19, 08, 35, 10)}, 0m},
                 new object[] { new Vehicle(VehicleType.Car), new DateTime[]
                                                             {
-                                                                new DateTime(2020,07,19, 09, 33, 50),
-                                                                new DateTime(2020,07,19, 10, 15, 50)
+                                                                new DateTime(2019,07,19, 09, 33, 50),
+                                                                new DateTime(2019,07,19, 10, 15, 50)
                                                             }, 0m},
                 new object[] { new Vehicle(VehicleType.Foreign), new DateTime[] {new DateTime(2019,07,19, 10, 10, 10)}, 0m},
                 
+            };
+
+        public static IEnumerable<object[]> NormalDayMultiplePassesExceedingDailyMaximum =>
+            new List<object[]>
+            {
+                new object[] { new Vehicle(VehicleType.Car), new DateTime[] {
+                         new DateTime(2020,02,20, 06, 45, 50)
+                        ,new DateTime(2020,02,20, 07, 46, 50) 
+                        ,new DateTime(2020,02,20, 08, 47, 10) 
+                        ,new DateTime(2020,02,20, 09, 48, 10)
+                        ,new DateTime(2020,02,20, 10, 49, 10)
+                        ,new DateTime(2020,02,20, 17, 30, 10)
+                    },
+                    _maxPerDay}
             };
 
         [Theory]
@@ -86,8 +102,20 @@ namespace TollFeeCalculator.Test
         }
 
         [Theory]
-        [MemberData(nameof(NormalDayMultiplePassesInOneHourWithDifferentFeeStructures))]
+        [MemberData(nameof(HolidayMixVehiclesSinglePassData))]
         public void WhenAHolidayWithDifferentTypeVehiclesIsGiven_CalculatesFeeAsZero(Vehicle vehicle, DateTime[] passes,
+            decimal expectedFee)
+        {
+            ITollCalculator dailyTollCalculator = new TollCalculator();
+
+            var result = dailyTollCalculator.GetDailyTollFee(vehicle, passes);
+
+            Assert.Equal(expectedFee, result);
+        }
+
+        [Theory]
+        [MemberData(nameof(NormalDayMultiplePassesExceedingDailyMaximum))]
+        public void WhenNormalDayWithPassingMaximumPerDay_CalculatesFeeAsDefaultMaximumValueSixty(Vehicle vehicle, DateTime[] passes,
             decimal expectedFee)
         {
             ITollCalculator dailyTollCalculator = new TollCalculator();
@@ -129,6 +157,19 @@ namespace TollFeeCalculator.Test
            Action act = () => dailyTollCalculator.GetDailyTollFee(null, passes);
 
             Assert.Throws<ArgumentNullException>(act);
+        }
+
+        [Fact]
+        public void WhenEmptyPassDatesGiven_ReturnFeeAsZero()
+        {
+            ITollCalculator dailyTollCalculator = new TollCalculator();
+            IVehicle vehicle = new Vehicle(VehicleType.Car);
+
+            DateTime[] passes = new DateTime[]{};
+
+            var result = dailyTollCalculator.GetDailyTollFee(vehicle, passes);
+
+            Assert.Equal(0m, result);
         }
 
 

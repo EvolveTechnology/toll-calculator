@@ -8,8 +8,8 @@ using TollFeeCalculator.Services;
 
 public class TollCalculator : ITollCalculator
 {
+    private const double ChargingIntervalInMinutes = 60;
     private readonly decimal _maxPerDay;
-    private const double _chargingIntervalInMinutes = 60;
     private readonly ITollFreeVehicles _tollFreeVehicles;
     private readonly ITollFreeDates _tollFreeDates;
     private readonly IDailyTollFees _dailyTollFees;
@@ -18,15 +18,18 @@ public class TollCalculator : ITollCalculator
     {
         _maxPerDay = 60m;
         _tollFreeVehicles = new TollFreeVehicles();
-        _tollFreeDates = new TollFreeDates(CountryCode.SE);
+        _tollFreeDates = new TollFreeDates();
         _dailyTollFees = new DailyTollFees();
     }
 
-    public TollCalculator(ITollFreeVehicles tollFreeVehicles, ITollFreeDates tollFreeDates, IDailyTollFees dailyTollFees, decimal? maxPerDay)
+    public TollCalculator(ITollFreeVehicles tollFreeVehicles, 
+        ITollFreeDates tollFreeDates, 
+        IDailyTollFees dailyTollFees, 
+        decimal? maxPerDay)
     {
         _maxPerDay = maxPerDay ?? 60m;
         _tollFreeVehicles = tollFreeVehicles ?? new TollFreeVehicles();
-        _tollFreeDates = tollFreeDates ?? new TollFreeDates(CountryCode.SE);
+        _tollFreeDates = tollFreeDates ?? new TollFreeDates();
         _dailyTollFees = dailyTollFees ?? new DailyTollFees();
     }
 
@@ -65,7 +68,7 @@ public class TollCalculator : ITollCalculator
             TimeSpan span = date - intervalStart;
             double minutes = span.TotalMinutes;
 
-            if (minutes <= _chargingIntervalInMinutes)
+            if (minutes <= ChargingIntervalInMinutes)
             {
                 // TODO is there a bug here?
                 if (totalFeePerDay > 0) totalFeePerDay -= tempFee;
