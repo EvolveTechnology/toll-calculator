@@ -1,4 +1,5 @@
-﻿using TollFeeCalculator.Interfaces;
+﻿using System.Collections.Generic;
+using TollFeeCalculator.Interfaces;
 using TollFeeCalculator.Models;
 using TollFeeCalculator.Services;
 using Xunit;
@@ -7,13 +8,25 @@ namespace TollFeeCalculator.Test
 {
     public class TollFreeVehicleTests
     {
+        public static IEnumerable<object[]> FreeVehicleTypes =>
+            new List<object[]>
+            {
+                new object[] { VehicleType.Tractor},
+                new object[] { VehicleType.Motorbike},
+                new object[] { VehicleType.Diplomat},
+                new object[] { VehicleType.Emergency},
+                new object[] { VehicleType.Foreign},
+                new object[] { VehicleType.Military}
+            };
+
+        public static IEnumerable<object[]> NotFreeVehicleTypes =>
+            new List<object[]>
+            {
+                new object[] { VehicleType.Car}
+            };
+
         [Theory]
-        [InlineData(VehicleType.Tractor)]
-        [InlineData(VehicleType.Motorbike)]
-        [InlineData(VehicleType.Diplomat)]
-        [InlineData(VehicleType.Emergency)]
-        [InlineData(VehicleType.Foreign)]
-        [InlineData(VehicleType.Military)]
+        [MemberData(nameof(FreeVehicleTypes))]
         public void WhenTollFreeVehicleIsGiven_ReturnTrue(VehicleType vehicleType)
         {
             ITollFreeVehicles tollFreeVehicle = new TollFreeVehicles();
@@ -26,7 +39,7 @@ namespace TollFeeCalculator.Test
         }
 
         [Theory]
-        [InlineData(VehicleType.Car)]
+        [MemberData(nameof(NotFreeVehicleTypes))]
         public void WhenNotTollFreeVehicleIsGiven_ReturnFalse(VehicleType vehicleType)
         {
             ITollFreeVehicles tollFreeVehicle = new TollFreeVehicles();

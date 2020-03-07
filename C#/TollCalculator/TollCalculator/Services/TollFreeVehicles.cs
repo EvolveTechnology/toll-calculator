@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TollFeeCalculator.Interfaces;
+using TollFeeCalculator.Models;
 
 namespace TollFeeCalculator.Services
 {

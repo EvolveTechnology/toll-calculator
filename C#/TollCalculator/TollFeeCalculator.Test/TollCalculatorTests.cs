@@ -78,6 +78,17 @@ namespace TollFeeCalculator.Test
                     }}
             };
 
+        public static IEnumerable<object[]> FreeVehicleTypes =>
+            new List<object[]>
+            {
+                new object[] { VehicleType.Tractor, 0},
+                new object[] { VehicleType.Motorbike, 0},
+                new object[] { VehicleType.Diplomat, 0},
+                new object[] { VehicleType.Emergency, 0},
+                new object[] { VehicleType.Foreign, 0},
+                new object[] { VehicleType.Military, 0}
+            };
+
         [Theory]
         [MemberData(nameof(NormalDatesNotFreeVehicleSinglePassData))]
         public void WhenASingleNormalDateIsGiven_WithNonFreeVehicle_CalculatesCorrectFee(Vehicle vehicle, DateTime[] passes,
@@ -139,12 +150,7 @@ namespace TollFeeCalculator.Test
         }
 
         [Theory]
-        [InlineData(VehicleType.Tractor, 0)]
-        [InlineData(VehicleType.Motorbike, 0)]
-        [InlineData(VehicleType.Diplomat, 0)]
-        [InlineData(VehicleType.Emergency, 0)]
-        [InlineData(VehicleType.Foreign, 0)]
-        [InlineData(VehicleType.Military, 0)]
+        [MemberData(nameof(FreeVehicleTypes))]
         public void WhenNormalDayFreeVehicleTypeIsGiven_CalculatesFeeAsZero(VehicleType vehicleType, decimal expectedFee)
         {
             ITollCalculator dailyTollCalculator = new TollCalculator();
@@ -167,7 +173,7 @@ namespace TollFeeCalculator.Test
                 new DateTime(2020, 02, 13, 12, 10, 20)
             };
 
-           Action act = () => dailyTollCalculator.GetDailyTollFee(null, passes);
+            Action act = () => dailyTollCalculator.GetDailyTollFee(null, passes);
 
             Assert.Throws<ArgumentNullException>(act);
         }
@@ -180,8 +186,7 @@ namespace TollFeeCalculator.Test
 
             DateTime[] passes = new DateTime[]{};
 
-            var result = dailyTollCalculator.GetDailyTollFee(vehicle, null);
-           // var result = dailyTollCalculator.GetDailyTollFee(vehicle, passes);
+            var result = dailyTollCalculator.GetDailyTollFee(vehicle, passes);
 
             Assert.Equal(0m, result);
         }
@@ -192,12 +197,9 @@ namespace TollFeeCalculator.Test
         {
             ITollCalculator dailyTollCalculator = new TollCalculator();
 
-
             Action act = () => dailyTollCalculator.GetDailyTollFee(vehicle, passes);
 
             Assert.Throws<ArgumentException>(act);
         }
-
-
     }
 }
