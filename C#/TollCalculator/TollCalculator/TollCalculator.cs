@@ -16,6 +16,7 @@ public class TollCalculator : ITollCalculator
 
     public TollCalculator()
     {
+        _maxPerDay = 60m;
         _tollFreeVehicles = new TollFreeVehicles();
         _tollFreeDates = new TollFreeDates(CountryCode.SE);
         _dailyTollFees = new DailyTollFees();
@@ -39,10 +40,9 @@ public class TollCalculator : ITollCalculator
 
     public decimal GetDailyTollFee(IVehicle vehicle, DateTime[] dates)
     {
-        if (vehicle == null) throw new ArgumentException($"No Vehicle type provided for {nameof(vehicle)}");
-        if (dates.Length == 0) throw new ArgumentException(nameof(dates));
+        if (vehicle == null) throw new ArgumentNullException($"No Vehicle type provided for {nameof(vehicle)}");
 
-        if (_tollFreeVehicles.IsTollFreeVehicle((vehicle))) return 0M;
+        if ((dates.Length == 0) || _tollFreeVehicles.IsTollFreeVehicle((vehicle))) return 0M;
 
         DateTime intervalStart = dates[0];
         DateTime previousDate = dates[0];
@@ -75,6 +75,7 @@ public class TollCalculator : ITollCalculator
             else
             {
                 totalFeePerDay += nextFee;
+                // setting the interval start to current date since one hour has passed
                 intervalStart = date;
             }
 
