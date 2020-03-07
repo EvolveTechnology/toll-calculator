@@ -45,23 +45,17 @@ public class TollCalculator : ITollCalculator
     {
         if (vehicle == null) throw new ArgumentNullException($"No Vehicle type provided for {nameof(vehicle)}");
 
+        if (dates.GroupBy(x=>x.Date).Count() > 1 )
+            throw new ArgumentException($"Includes date pass values of two or more days. Only date passes within one day is allowed");
+
         if ((dates.Length == 0) || _tollFreeVehicles.IsTollFreeVehicle((vehicle))) return 0M;
 
         DateTime intervalStart = dates[0];
-        DateTime previousDate = dates[0];
 
-        decimal totalFee = 0;
         decimal totalFeePerDay = 0;
    
         foreach (DateTime date in dates)
         {
-            if (previousDate.Date.CompareTo(date.Date) < 0)
-            {
-                totalFee += totalFeePerDay;
-                totalFeePerDay = 0;
-                previousDate = date;
-            }
-
             decimal nextFee = GetTollFee(date, vehicle);
             decimal tempFee = GetTollFee(intervalStart, vehicle);
 
@@ -70,7 +64,6 @@ public class TollCalculator : ITollCalculator
 
             if (minutes <= ChargingIntervalInMinutes)
             {
-                // TODO is there a bug here?
                 if (totalFeePerDay > 0) totalFeePerDay -= tempFee;
                 if (nextFee >= tempFee) tempFee = nextFee;
                 totalFeePerDay += tempFee;
@@ -85,10 +78,10 @@ public class TollCalculator : ITollCalculator
             if (totalFeePerDay > _maxPerDay) totalFeePerDay = _maxPerDay;
         }
 
-        return totalFee + totalFeePerDay;
+        return totalFeePerDay;
     }
 
-
+    
     public decimal GetTollFee(DateTime date, IVehicle vehicle)
     {
         if (_tollFreeDates.IsTollFreeDate(date) || _tollFreeVehicles.IsTollFreeVehicle(vehicle)) return 0;

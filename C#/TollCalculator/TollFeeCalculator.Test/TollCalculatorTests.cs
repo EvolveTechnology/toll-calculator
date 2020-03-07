@@ -65,6 +65,19 @@ namespace TollFeeCalculator.Test
                     _maxPerDay}
             };
 
+        public static IEnumerable<object[]> PassesFromMoreThanOneDate =>
+            new List<object[]>
+            {
+                new object[] { new Vehicle(VehicleType.Car), new DateTime[] {
+                        new DateTime(2020,02,20, 06, 45, 50)
+                        ,new DateTime(2020,02,20, 07, 46, 50)
+                        ,new DateTime(2020,02,21, 08, 47, 10)
+                        ,new DateTime(2020,02,21, 09, 48, 10)
+                        ,new DateTime(2020,02,22, 10, 49, 10)
+                        ,new DateTime(2020,02,22, 17, 30, 10)
+                    }}
+            };
+
         [Theory]
         [MemberData(nameof(NormalDatesNotFreeVehicleSinglePassData))]
         public void WhenASingleNormalDateIsGiven_WithNonFreeVehicle_CalculatesCorrectFee(Vehicle vehicle, DateTime[] passes,
@@ -170,6 +183,18 @@ namespace TollFeeCalculator.Test
             var result = dailyTollCalculator.GetDailyTollFee(vehicle, passes);
 
             Assert.Equal(0m, result);
+        }
+
+        [Theory]
+        [MemberData(nameof(PassesFromMoreThanOneDate))]
+        public void WhenPasseFromMoreThanOneDateIsGiven_ThrowsException(Vehicle vehicle, DateTime[] passes)
+        {
+            ITollCalculator dailyTollCalculator = new TollCalculator();
+
+
+            Action act = () => dailyTollCalculator.GetDailyTollFee(vehicle, passes);
+
+            Assert.Throws<ArgumentException>(act);
         }
 
 
