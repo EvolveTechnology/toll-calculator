@@ -13,7 +13,7 @@ public class TollCalculator : ITollCalculator
     private readonly ITollFreeDates _tollFreeDates;
     private readonly IDailyTollFees _dailyTollFees;
 
-    
+
     public TollCalculator()
     {
         _maxPerDay = 60m;
@@ -22,9 +22,11 @@ public class TollCalculator : ITollCalculator
         _dailyTollFees = new DailyTollFees();
     }
 
-    public TollCalculator(ITollFreeVehicles tollFreeVehicles, 
-        ITollFreeDates tollFreeDates, 
-        IDailyTollFees dailyTollFees, 
+    // Inject any service to alter the default behaviour of the toll calculator.
+    // To use the default service , pass null.
+    public TollCalculator(ITollFreeVehicles tollFreeVehicles,
+        ITollFreeDates tollFreeDates,
+        IDailyTollFees dailyTollFees,
         decimal? maxPerDay)
     {
         _maxPerDay = maxPerDay ?? 60m;
@@ -45,8 +47,9 @@ public class TollCalculator : ITollCalculator
     {
         if (vehicle == null) throw new ArgumentNullException($"No Vehicle type provided for {nameof(vehicle)}");
 
-        if (dates != null && dates.GroupBy(x=>x.Date).Count() > 1 )
-            throw new ArgumentException($"Includes date pass values of two or more days. Only date passes within one day is allowed");
+        if (dates != null && dates.GroupBy(x => x.Date).Count() > 1)
+            throw new ArgumentException(
+                $"Includes date pass values of two or more days. Only date passes within one day is allowed");
 
         // assumption :  when dates parameter is null the fee is zero.
         if ((dates == null || dates.Length == 0) || _tollFreeVehicles.IsTollFreeVehicle((vehicle))) return 0M;
@@ -54,7 +57,7 @@ public class TollCalculator : ITollCalculator
         DateTime intervalStart = dates[0];
 
         decimal totalFeePerDay = 0;
-   
+
         foreach (DateTime date in dates)
         {
             decimal nextFee = GetTollFee(date, vehicle);
@@ -90,6 +93,5 @@ public class TollCalculator : ITollCalculator
             .LastOrDefault(x => x.Key <= date.TimeOfDay).Value;
 
     }
-
-   
+    
 }

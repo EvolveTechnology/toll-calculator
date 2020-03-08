@@ -155,7 +155,7 @@ namespace TollFeeCalculator.Test
         {
             ITollCalculator dailyTollCalculator = new TollCalculator();
             IVehicle vehicle = new Vehicle(vehicleType);
-            DateTime[] passes = new DateTime[]{
+            DateTime[] passes = new[]{
                 new DateTime(2020, 02, 13, 12, 10, 20)
             };
 
