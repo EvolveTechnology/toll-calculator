@@ -54,14 +54,17 @@ public class TollCalculator : ITollCalculator
         // assumption :  when dates parameter is null the fee is zero.
         if ((dates == null || dates.Length == 0) || _tollFreeVehicles.IsTollFreeVehicle((vehicle))) return 0M;
 
+        // Sorting the input array
+        Array.Sort(dates);
+        
         DateTime intervalStart = dates[0];
+        decimal tempFee = GetTollFee(intervalStart, vehicle);
 
         decimal totalFeePerDay = 0;
 
         foreach (DateTime date in dates)
         {
             decimal nextFee = GetTollFee(date, vehicle);
-            decimal tempFee = GetTollFee(intervalStart, vehicle);
 
             TimeSpan span = date - intervalStart;
             double minutes = span.TotalMinutes;
@@ -77,6 +80,7 @@ public class TollCalculator : ITollCalculator
                 totalFeePerDay += nextFee;
                 // setting the interval start to current date since one hour has passed
                 intervalStart = date;
+                tempFee = GetTollFee(intervalStart, vehicle);
             }
 
             if (totalFeePerDay > _maxPerDay) totalFeePerDay = _maxPerDay;
