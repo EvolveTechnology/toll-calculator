@@ -31,34 +31,36 @@ You can make any modifications or suggestions for modifications that you see fit
 ## Help I dont know C# or Java
 No worries! We accept submissions in other languages as well, why not try it in Go or nodejs.
 
-## TollFree Implementation by Cchinthaka
+
+# Toll Free Calculator Implementation by Chinthaka
 Improved version of the toll calculator is done in C# and can be found C#\TollCalculator folder as a solution.
 
-This version supports injecting following servie interfaces to the user of this library (To TollCalculator class)
-	1. ITollFreeVehicles
-	2. ITollFreeDates
-	3. IDailyTollFees
+This version supports injecting following service interfaces (Inject to TollCalculator main class)
+* ITollFreeVehicles
+* ITollFreeDates
+* IDailyTollFees
+pass null value to use the default implementation of any of the above services.
+Eg-
+	ITollCalculator dailyTollCalculator = new TollCalculator(new CustomTollFreeVehicles(), null, null, null);
 	
-	Also you can change the maximum fee per day by injecting maxPerDay value.
-	
-	Using above interfaces you can change the functionality of toll rates, toll free dates , toll free vehicles and maximum fee per day.
+Also you can change the maximum fee per day by injecting maxPerDay value.
+
+Using above interfaces you can change the functionality of toll rates, toll free dates , toll free vehicles and maximum fee per day.
 	
 TollFreeDates class can be initiated with different country codes to use holidays from different countries.
-	Eg :- 
-			ITollFreeDates tollFreeDates = new TollFreeDates(CountryCode.AU);
-            var result = tollFreeDates.IsTollFreeDate(holiday);
+Eg :- 
+	ITollFreeDates tollFreeDates = new TollFreeDates(CountryCode.AU);
+	var result = tollFreeDates.IsTollFreeDate(holiday);
 	
 If the user needs to add new vehicle types you can derive a subclass from VehicleType class and add additional vehicles.
 
-Eg :- public class CustomVehicleType: VehicleType
-    {
-        public static readonly VehicleType Van = new CustomVehicleType("Van");
-        public static readonly VehicleType Bus = new CustomVehicleType("Bus");
+Eg :- 
+	public class CustomVehicleType: VehicleType
+	{
+		public static readonly VehicleType Van = new CustomVehicleType("Van");
+		public static readonly VehicleType Bus = new CustomVehicleType("Bus");
 
-        public CustomVehicleType(string name) : base(name)
-        {
-        }
-    }
-	
-	
-
+		public CustomVehicleType(string name) : base(name)
+		{
+		}
+	}
