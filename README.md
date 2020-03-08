@@ -36,11 +36,13 @@ No worries! We accept submissions in other languages as well, why not try it in 
 Improved version of the toll calculator is done in C# and can be found C#\TollCalculator folder as a solution.
 
 This version supports injecting following service interfaces (Inject to TollCalculator main class)
+
 * ITollFreeVehicles
 * ITollFreeDates
 * IDailyTollFees
+
 pass null value to use the default implementation of any of the above services.
-Eg-
+
 	ITollCalculator dailyTollCalculator = new TollCalculator(new CustomTollFreeVehicles(), null, null, null);
 	
 Also you can change the maximum fee per day by injecting maxPerDay value.
@@ -48,13 +50,12 @@ Also you can change the maximum fee per day by injecting maxPerDay value.
 Using above interfaces you can change the functionality of toll rates, toll free dates , toll free vehicles and maximum fee per day.
 	
 TollFreeDates class can be initiated with different country codes to use holidays from different countries.
-Eg :- 
+
 	ITollFreeDates tollFreeDates = new TollFreeDates(CountryCode.AU);
 	var result = tollFreeDates.IsTollFreeDate(holiday);
 	
 If the user needs to add new vehicle types you can derive a subclass from VehicleType class and add additional vehicles.
 
-Eg :- 
 	public class CustomVehicleType: VehicleType
 	{
 		public static readonly VehicleType Van = new CustomVehicleType("Van");
