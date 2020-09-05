@@ -62,5 +62,47 @@ namespace tests
 
             Assert.Equal(0, tollFee);
         }
+
+        [Fact]
+        public void ShouldReturnHighestFeeInRushHour()
+        {
+            var highestFee = 18;
+            var expectedTotalFee = 2 * highestFee;
+            var dates = new DateTime[] { new DateTime(2020, 9, 1, 7, 30,0 ), new DateTime(2020, 9, 1, 16, 0, 0) };
+
+            var tollFee = tollCalculator.GetTollFee(new Car(), dates);
+
+            Assert.Equal(expectedTotalFee, tollFee);
+        }
+
+        [Fact]
+        public void ShouldReturnMidFeeInModerateTraffic()
+        {
+            var midFee = 13;
+            var expectedTotalFee = 4 * midFee;
+            var dates = new DateTime[] {
+                new DateTime(2020, 9, 1, 6, 40,0 ),
+                new DateTime(2020, 9, 1, 8, 15, 0),
+                new DateTime(2020, 9, 1, 15, 15, 0),
+                new DateTime(2020, 9, 1, 17, 30, 0)};
+
+            var tollFee = tollCalculator.GetTollFee(new Car(), dates);
+
+            Assert.Equal(expectedTotalFee, tollFee);
+        }
+
+        [Fact]
+        public void ShouldReturnLowestFeeInLowTraffic()
+        {
+            var lowFee = 8;
+            var expectedTotalFee = 2 * lowFee;
+            var dates = new DateTime[] {
+                new DateTime(2020, 9, 1, 6, 15, 0 ),
+                new DateTime(2020, 9, 1, 18, 15, 0)};
+
+            var tollFee = tollCalculator.GetTollFee(new Car(), dates);
+
+            Assert.Equal(expectedTotalFee, tollFee);
+        }
     }
 }
