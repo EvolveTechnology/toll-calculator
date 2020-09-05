@@ -1,13 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace TollFeeCalculator
+namespace TollCalculator
 {
-    public interface Vehicle
+    public enum Vehicle
     {
-        String GetVehicleType();
+        Car,
+        Truck,
+
+        [TollFree]
+        Motorbike ,
+        [TollFree]
+        Tractor,
+        [TollFree]
+        Emergency,
+        [TollFree]
+        Diplomat,
+        [TollFree]
+        Foreign,
+        [TollFree]
+        Military
     }
 }
