@@ -6,6 +6,9 @@ namespace tests
 {
     public class TollCalculatorTests
     {
+        const int HighTollFee = 18;
+        const int MidTollFee = 13;
+        const int LowTollFee = 8;
         private readonly TollCalculator tollCalculator = new TollCalculator();
 
         [Fact]
@@ -56,7 +59,10 @@ namespace tests
         [Fact]
         public void ShouldReturnNoFeeOutsideFeeHours()
         {
-            var dates = new DateTime[] { new DateTime(2020, 9, 1, 5, 30,0 ), new DateTime(2020, 9, 1, 19, 0, 0) };
+            var dates = new DateTime[] {
+                new DateTime(2020, 9, 1, 5, 30,0 ),
+                new DateTime(2020, 9, 1, 19, 0, 0)
+            };
 
             var tollFee = tollCalculator.GetTollFee(new Car(), dates);
 
@@ -66,9 +72,11 @@ namespace tests
         [Fact]
         public void ShouldReturnHighestFeeInRushHour()
         {
-            var highestFee = 18;
-            var expectedTotalFee = 2 * highestFee;
-            var dates = new DateTime[] { new DateTime(2020, 9, 1, 7, 30,0 ), new DateTime(2020, 9, 1, 16, 0, 0) };
+            var expectedTotalFee = 2 * HighTollFee;
+            var dates = new DateTime[] {
+                new DateTime(2020, 9, 1, 7, 30,0 ),
+                new DateTime(2020, 9, 1, 16, 0, 0)
+            };
 
             var tollFee = tollCalculator.GetTollFee(new Car(), dates);
 
@@ -78,8 +86,7 @@ namespace tests
         [Fact]
         public void ShouldReturnMidFeeInModerateTraffic()
         {
-            var midFee = 13;
-            var expectedTotalFee = 4 * midFee;
+            var expectedTotalFee = 4 * MidTollFee;
             var dates = new DateTime[] {
                 new DateTime(2020, 9, 1, 6, 40,0 ),
                 new DateTime(2020, 9, 1, 8, 15, 0),
@@ -94,15 +101,51 @@ namespace tests
         [Fact]
         public void ShouldReturnLowestFeeInLowTraffic()
         {
-            var lowFee = 8;
-            var expectedTotalFee = 2 * lowFee;
+            var expectedTotalFee = 2 * LowTollFee;
             var dates = new DateTime[] {
                 new DateTime(2020, 9, 1, 6, 15, 0 ),
-                new DateTime(2020, 9, 1, 18, 15, 0)};
+                new DateTime(2020, 9, 1, 18, 15, 0)
+            };
 
             var tollFee = tollCalculator.GetTollFee(new Car(), dates);
 
             Assert.Equal(expectedTotalFee, tollFee);
+        }
+
+        [Fact]
+        public void ShouldReturnOnlyTheHighestFeeForWithinEveryHour()
+        {
+            var expectedTotalFee = HighTollFee + HighTollFee + LowTollFee;
+            var dates = new DateTime[] {
+                new DateTime(2020, 9, 1, 6, 45, 0 ),
+                new DateTime(2020, 9, 1, 7, 15, 0),
+                new DateTime(2020, 9, 1, 16, 59, 0),
+                new DateTime(2020, 9, 1, 17, 0, 0),
+                new DateTime(2020, 9, 1, 18, 29, 0)
+            };
+
+            var tollFee = tollCalculator.GetTollFee(new Car(), dates);
+
+            Assert.Equal(expectedTotalFee, tollFee);
+        }
+
+        [Fact]
+        public void ShouldReturnMaximumTollFeeWhenOverLimit()
+        {
+            var maximumTollFee = 60;
+
+            var dates = new DateTime[] {
+                new DateTime(2020, 9, 1, 6, 0, 0 ),
+                new DateTime(2020, 9, 1, 7, 15, 0),
+                new DateTime(2020, 9, 1, 8, 29, 0),
+                new DateTime(2020, 9, 1, 15, 0, 0),
+                new DateTime(2020, 9, 1, 16, 30, 0),
+                new DateTime(2020, 9, 1, 18, 15, 0)
+            };
+
+            var tollFee = tollCalculator.GetTollFee(new Car(), dates);
+
+            Assert.Equal(maximumTollFee, tollFee);
         }
     }
 }
