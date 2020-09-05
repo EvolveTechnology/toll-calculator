@@ -1,6 +1,6 @@
 namespace TollFeeCalculator
 {
-    public class Emergency : Vehicle
+    public class Emergency : IVehicle
     {
         public bool IsTollFree()
         {
