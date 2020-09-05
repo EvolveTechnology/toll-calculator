@@ -1,73 +1,51 @@
 ﻿using System;
-using PublicHoliday;
-using TollFeeCalculator;
+using System.Linq;
 
-public class TollCalculator
+namespace TollFeeCalculator
 {
-    private readonly SwedenPublicHoliday swedenPublicHoliday = new SwedenPublicHoliday();
-
-    /**
-     * Calculate the total toll fee for one day
-     *
-     * @param vehicle - the vehicle
-     * @param dates   - date and time of all passes on one day
-     * @return - the total toll fee for that day
-     */
-
-    public int GetTollFee(IVehicle vehicle, DateTime[] dates)
+    public class TollCalculator
     {
-        int i = 0;
-        DateTime intervalStart = dates[i];
-        int totalFee = 0;
-        foreach (DateTime date in dates)
+        private const int MaximumTollFee = 60;
+        private readonly TollFee _tollFee;
+
+        public TollCalculator(TollFee tollFee)
         {
-            int nextFee = GetTollFee(date, vehicle);
-            int tempFee = GetTollFee(intervalStart, vehicle);
-
-            long diffInMillies = (long)(date - intervalStart).TotalMilliseconds;
-            long minutes = diffInMillies/1000/60;
-
-            if (minutes <= 60)
-            {
-                if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee >= tempFee) tempFee = nextFee;
-                totalFee += tempFee;
-            }
-            else
-            {
-                totalFee += nextFee;
-            }
-
-            intervalStart = dates[i++];
+            _tollFee = tollFee;
         }
-        if (totalFee > 60) totalFee = 60;
-        return totalFee;
-    }
 
-    private int GetTollFee(DateTime date, IVehicle vehicle)
-    {
-        if (IsTollFreeDate(date) || vehicle.IsTollFree()) return 0;
+        /**
+        * Calculate the total toll fee for one day
+        *
+        * @param vehicle - the vehicle
+        * @param dates   - date and time of all passes on one day
+        * @return - the total toll fee for that day
+        */
 
-        int hour = date.Hour;
-        int minute = date.Minute;
+        public int GetTollFee(IVehicle vehicle, DateTime[] dates)
+        {
+            if (vehicle.IsTollFree())
+            {
+                return 0;
+            }
 
-        if (hour == 6 && minute >= 0 && minute <= 29) return 8;
-        else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
-        else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
-        else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
-        else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
-        else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
-        else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
-        else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
-        else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
-        else return 0;
-    }
+            var totalFee = 0;
+            var datesLeft = dates.ToList();
+            while (datesLeft.Any())
+            {
+                var initialDate = datesLeft.First();
+                var datesWithinRange = datesLeft.Where(date => date >= initialDate && date < initialDate.AddHours(1));
+                datesLeft = datesLeft.Except(datesWithinRange).ToList();
 
-    private Boolean IsTollFreeDate(DateTime date)
-    {
-        return
-            date.DayOfWeek == DayOfWeek.Saturday ||
-            date.DayOfWeek == DayOfWeek.Sunday ||
-            swedenPublicHoliday.IsPublicHoliday(date);
+                var highestTollFeeInRange = datesWithinRange
+                    .Select(date => _tollFee.GetFeeForDate(date))
+                    .Max();
+                
+                totalFee += highestTollFeeInRange;
+            }
+
+            return totalFee > MaximumTollFee
+                ? MaximumTollFee
+                : totalFee;
+        }
     }
 }

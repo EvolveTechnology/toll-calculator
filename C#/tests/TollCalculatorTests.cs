@@ -9,14 +9,16 @@ namespace tests
         const int HighTollFee = 18;
         const int MidTollFee = 13;
         const int LowTollFee = 8;
-        private readonly TollCalculator tollCalculator = new TollCalculator();
+        private readonly TollCalculator _tollCalculator = new TollCalculator(new TollFee());
 
         [Fact]
-        public void ShouldThrowExceptionOnEmptyDates()
+        public void ShouldReturnNoFeeOnEmptyDates()
         {
             var motorbike = new Motorbike();
 
-            Assert.Throws<IndexOutOfRangeException>(() => tollCalculator.GetTollFee(motorbike, new DateTime[0]));
+            var tollFee = _tollCalculator.GetTollFee(motorbike, new DateTime[0]);
+
+            Assert.Equal(0, tollFee);
         }
 
         [Fact]
@@ -24,12 +26,12 @@ namespace tests
         {
             var dates = new DateTime[] { new DateTime(2020, 1, 1, 6, 35, 0)};
 
-            Assert.Equal(0, tollCalculator.GetTollFee(new Motorbike(), dates));
-            Assert.Equal(0, tollCalculator.GetTollFee(new Tractor(), dates));
-            Assert.Equal(0, tollCalculator.GetTollFee(new Emergency(), dates));
-            Assert.Equal(0, tollCalculator.GetTollFee(new Diplomat(), dates));
-            Assert.Equal(0, tollCalculator.GetTollFee(new Foreign(), dates));
-            Assert.Equal(0, tollCalculator.GetTollFee(new Military(), dates));
+            Assert.Equal(0, _tollCalculator.GetTollFee(new Motorbike(), dates));
+            Assert.Equal(0, _tollCalculator.GetTollFee(new Tractor(), dates));
+            Assert.Equal(0, _tollCalculator.GetTollFee(new Emergency(), dates));
+            Assert.Equal(0, _tollCalculator.GetTollFee(new Diplomat(), dates));
+            Assert.Equal(0, _tollCalculator.GetTollFee(new Foreign(), dates));
+            Assert.Equal(0, _tollCalculator.GetTollFee(new Military(), dates));
         }
 
         [Fact]
@@ -39,7 +41,7 @@ namespace tests
             var sunday = new DateTime(2020, 9, 6, 15, 0, 0);
             var dates = new DateTime[] { saturday, sunday };
 
-            var tollFee = tollCalculator.GetTollFee(new Car(), dates);
+            var tollFee = _tollCalculator.GetTollFee(new Car(), dates);
 
             Assert.Equal(0, tollFee);
         }
@@ -51,7 +53,7 @@ namespace tests
             var christmasDay = new DateTime(2013, 12, 25);
             var dates = new DateTime[] { christmasEve, christmasDay };
 
-            var tollFee = tollCalculator.GetTollFee(new Car(), dates);
+            var tollFee = _tollCalculator.GetTollFee(new Car(), dates);
 
             Assert.Equal(0, tollFee);
         }
@@ -64,7 +66,7 @@ namespace tests
                 new DateTime(2020, 9, 1, 19, 0, 0)
             };
 
-            var tollFee = tollCalculator.GetTollFee(new Car(), dates);
+            var tollFee = _tollCalculator.GetTollFee(new Car(), dates);
 
             Assert.Equal(0, tollFee);
         }
@@ -78,7 +80,7 @@ namespace tests
                 new DateTime(2020, 9, 1, 16, 0, 0)
             };
 
-            var tollFee = tollCalculator.GetTollFee(new Car(), dates);
+            var tollFee = _tollCalculator.GetTollFee(new Car(), dates);
 
             Assert.Equal(expectedTotalFee, tollFee);
         }
@@ -93,7 +95,7 @@ namespace tests
                 new DateTime(2020, 9, 1, 15, 15, 0),
                 new DateTime(2020, 9, 1, 17, 30, 0)};
 
-            var tollFee = tollCalculator.GetTollFee(new Car(), dates);
+            var tollFee = _tollCalculator.GetTollFee(new Car(), dates);
 
             Assert.Equal(expectedTotalFee, tollFee);
         }
@@ -107,7 +109,7 @@ namespace tests
                 new DateTime(2020, 9, 1, 18, 15, 0)
             };
 
-            var tollFee = tollCalculator.GetTollFee(new Car(), dates);
+            var tollFee = _tollCalculator.GetTollFee(new Car(), dates);
 
             Assert.Equal(expectedTotalFee, tollFee);
         }
@@ -124,7 +126,7 @@ namespace tests
                 new DateTime(2020, 9, 1, 18, 29, 0)
             };
 
-            var tollFee = tollCalculator.GetTollFee(new Car(), dates);
+            var tollFee = _tollCalculator.GetTollFee(new Car(), dates);
 
             Assert.Equal(expectedTotalFee, tollFee);
         }
@@ -143,7 +145,7 @@ namespace tests
                 new DateTime(2020, 9, 1, 18, 15, 0)
             };
 
-            var tollFee = tollCalculator.GetTollFee(new Car(), dates);
+            var tollFee = _tollCalculator.GetTollFee(new Car(), dates);
 
             Assert.Equal(maximumTollFee, tollFee);
         }
