@@ -35,8 +35,8 @@ namespace tests
         [Fact]
         public void ShouldReturnNoFeeOnWeekends()
         {
-            var saturday = new DateTime(2020, 9, 5);
-            var sunday = new DateTime(2020, 9, 6);
+            var saturday = new DateTime(2020, 9, 5, 15, 0, 0);
+            var sunday = new DateTime(2020, 9, 6, 15, 0, 0);
             var dates = new DateTime[] { saturday, sunday };
 
             var tollFee = tollCalculator.GetTollFee(new Car(), dates);

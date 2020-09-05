@@ -6,4 +6,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="PublicHoliday" Version="2.2.0" />
+  </ItemGroup>
+
 </Project>
