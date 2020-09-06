@@ -116,7 +116,7 @@ namespace tests
         }
 
         [Fact]
-        public void ShouldReturnOnlyTheHighestFeeForWithinEveryHour()
+        public void ShouldReturnOnlyTheHighestFeeWithinEveryHour()
         {
             var expectedTotalFee = HighTollFee + HighTollFee + LowTollFee;
             var dates = new DateTime[] {
@@ -125,6 +125,23 @@ namespace tests
                 new DateTime(2020, 9, 1, 16, 59, 0),
                 new DateTime(2020, 9, 1, 17, 0, 0),
                 new DateTime(2020, 9, 1, 18, 29, 0)
+            };
+
+            var tollFee = _tollCalculator.GetTollFee(new Car(), dates);
+
+            Assert.Equal(expectedTotalFee, tollFee);
+        }
+
+        [Fact]
+        public void ShouldReturnOnlyTheHighestFeeWithinEveryHourWhenDatesAreUnsorted()
+        {
+            var expectedTotalFee = HighTollFee + HighTollFee + LowTollFee;
+            var dates = new DateTime[] {
+                new DateTime(2020, 9, 1, 17, 0, 0),
+                new DateTime(2020, 9, 1, 7, 15, 0),
+                new DateTime(2020, 9, 1, 6, 45, 0 ),
+                new DateTime(2020, 9, 1, 18, 29, 0),
+                new DateTime(2020, 9, 1, 16, 59, 0)
             };
 
             var tollFee = _tollCalculator.GetTollFee(new Car(), dates);
