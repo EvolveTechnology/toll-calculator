@@ -1,5 +1,6 @@
 using System;
 using TollFeeCalculator;
+using TollFeeCalculator.Vehicles;
 using Xunit;
 
 namespace tests

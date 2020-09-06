@@ -1,4 +1,4 @@
-﻿namespace TollFeeCalculator
+﻿namespace TollFeeCalculator.Vehicles
 {
     public interface IVehicle
     {

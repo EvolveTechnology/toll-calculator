@@ -1,6 +1,6 @@
-namespace TollFeeCalculator
+namespace TollFeeCalculator.Vehicles
 {
-    public class Tractor : IVehicle
+    public class Diplomat : IVehicle
     {
         public bool IsTollFree()
         {

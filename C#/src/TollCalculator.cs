@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using TollFeeCalculator.Vehicles;
 
 namespace TollFeeCalculator
 {
@@ -29,11 +30,11 @@ namespace TollFeeCalculator
             }
 
             var totalFee = 0;
-            var datesLeft = dates.ToList();
+            var datesLeft = dates.OrderBy(d => d).ToList();
             while (datesLeft.Any())
             {
                 var initialDate = datesLeft.First();
-                var datesWithinRange = datesLeft.Where(date => date >= initialDate && date < initialDate.AddHours(1));
+                var datesWithinRange = datesLeft.Where(d => d >= initialDate && d < initialDate.AddHours(1));
                 datesLeft = datesLeft.Except(datesWithinRange).ToList();
 
                 var highestTollFeeInRange = datesWithinRange

@@ -1,4 +1,4 @@
-﻿namespace TollFeeCalculator
+﻿namespace TollFeeCalculator.Vehicles
 {
     public class Car : IVehicle
     {
