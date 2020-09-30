@@ -8,6 +8,7 @@ namespace TollCalculator.Helper
 {
     public static class TollCalculatorHelper
     {
+        // list of the holidays for 2020 and it should be saved in DB for future modification
         private static readonly List<DateTime> FreeFeeDates = new List<DateTime>()
         {
             new DateTime(2020, 1, 1),
@@ -25,7 +26,8 @@ namespace TollCalculator.Helper
             new DateTime(2020, 12, 26)
         };
 
-        // We can replace the list of Tuple class with a list of objects derived from a class (IntervalStart, IntervalEnd, Fee) as properties
+        // We can replace the list of Tuple class with a list of objects derived from a class with these properties (IntervalStart, IntervalEnd, Fee) 
+        // List of the interval / duration fees
         private static readonly List<Tuple<TimeSpan, TimeSpan, decimal>> DurationFee = new List<Tuple<TimeSpan, TimeSpan, decimal>>()
         {
             // Tuple<IntervalStart, IntervalEnd, Fee>
