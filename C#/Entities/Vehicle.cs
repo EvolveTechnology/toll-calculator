@@ -7,6 +7,6 @@ namespace TollCalculator.Data.Entities
 {
     public class Vehicle
     {
-        public VehiclesType Type { get; set; }
+        public VehicleTypes Type { get; set; }
     }
 }

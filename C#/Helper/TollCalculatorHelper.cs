@@ -51,15 +51,15 @@ namespace TollCalculator.Helper
         {
             switch (vehicle.Type)
             {
-                case Data.Enums.VehiclesType.Motorbike:
-                case Data.Enums.VehiclesType.Tractor:
-                case Data.Enums.VehiclesType.Emergency:
-                case Data.Enums.VehiclesType.Diplomat:
-                case Data.Enums.VehiclesType.Foreign:
-                case Data.Enums.VehiclesType.Military:
+                case Data.Enums.VehicleTypes.Motorbike:
+                case Data.Enums.VehicleTypes.Tractor:
+                case Data.Enums.VehicleTypes.Emergency:
+                case Data.Enums.VehicleTypes.Diplomat:
+                case Data.Enums.VehicleTypes.Foreign:
+                case Data.Enums.VehicleTypes.Military:
                     return true;
-                case Data.Enums.VehiclesType.PrivateCar:
-                case Data.Enums.VehiclesType.Truck:
+                case Data.Enums.VehicleTypes.PrivateCar:
+                case Data.Enums.VehicleTypes.Truck:
                     return false;
                 default:
                     return false;

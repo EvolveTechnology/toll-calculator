@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TollCalculator.Data.Enums
 {
-    public enum VehiclesType
+    public enum VehicleTypes
     {
         Motorbike = 1,
         Tractor = 2,
