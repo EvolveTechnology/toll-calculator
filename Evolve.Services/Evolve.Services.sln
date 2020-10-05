@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28902.138
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evolve.TollFeeCalculator", "Evolve.TollFeeCalculator\Evolve.TollFeeCalculator.csproj", "{87A8A23A-1A0C-4409-AB98-97FBB5D2941D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evolve.TollFeeCalculator.Test", "Evolve.TollFeeCalculator.Test\Evolve.TollFeeCalculator.Test.csproj", "{8741F73E-B4B2-43C4-B8CC-266C763969EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{87A8A23A-1A0C-4409-AB98-97FBB5D2941D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87A8A23A-1A0C-4409-AB98-97FBB5D2941D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87A8A23A-1A0C-4409-AB98-97FBB5D2941D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87A8A23A-1A0C-4409-AB98-97FBB5D2941D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8741F73E-B4B2-43C4-B8CC-266C763969EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8741F73E-B4B2-43C4-B8CC-266C763969EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8741F73E-B4B2-43C4-B8CC-266C763969EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8741F73E-B4B2-43C4-B8CC-266C763969EC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0A7713FF-B5C1-46E4-B7CA-C6E7A9E30373}
+	EndGlobalSection
+EndGlobal

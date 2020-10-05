@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Evolve.TollFeeCalculator": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "localhost"
+      }
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

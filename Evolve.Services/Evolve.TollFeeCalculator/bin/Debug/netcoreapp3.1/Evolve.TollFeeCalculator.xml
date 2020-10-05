@@ -1,0 +1,482 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Evolve.TollFeeCalculator</name>
+    </assembly>
+    <members>
+        <member name="T:Evolve.TollFeeCalculator.Config.AppConfiguration">
+            <summary>
+            Application specific configurations
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.AppConfiguration.FeeCostToTime">
+            <summary>
+            Jobbkostnad vid tidpunkten
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.AppConfiguration.LogFilePath">
+            <summary>
+            Filsökväg till loggfilen.
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.AppConfiguration.CostParameters">
+            <summary>
+            parameter för beräkninga
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.AppConfiguration.FreeDays">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Evolve.TollFeeCalculator.Config.AppConfiguration.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+             <summary>
+            Application configuration.
+             </summary>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Config.CostParameters">
+            <summary>
+            parameter för beräkninga
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.CostParameters.MaxDiffInMinutes">
+            <summary>
+            Max Diff I Minuter För Beräkning
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.CostParameters.ExtraCostFactor">
+            <summary>
+            Extrakostnadsfaktor ex  1.1
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.CostParameters.MaxtotalCost">
+            <summary>
+            Max totala kostnad
+            </summary>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Config.FeeCostToTime">
+             <summary>
+            Avgift vid tidpunkten
+             </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FeeCostToTime.ZoneTime6a">
+            <summary>
+            time  06:00–06:29
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FeeCostToTime.ZoneTime6b">
+            <summary>
+            time 06:30–06:59
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FeeCostToTime.ZoneTime7">
+            <summary>
+            time 07:00–07:59
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FeeCostToTime.ZoneTime8a">
+            <summary>
+            time  08:00–08:29
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FeeCostToTime.ZoneTime8b">
+            <summary>
+            time  08:30–14:59
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FeeCostToTime.ZoneTime15a">
+            <summary>
+            time  15:00–15:29
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FeeCostToTime.ZoneTime15b">
+            <summary>
+            time  15:30–16:59
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FeeCostToTime.ZoneTime17">
+            <summary>
+            time  17:00–17:59
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FeeCostToTime.ZoneTime18">
+            <summary>
+            time 18:00–18:29
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FeeCostToTime.ZoneTimefree">
+            <summary>
+            time 18:30–05:59
+            </summary>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Config.FreeDays">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FreeDays.Year">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FreeDays.JANUARY">
+            <summary>
+            Free month of days for JANUARY
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FreeDays.MARCH">
+            <summary>
+            Free month of days for MARCH
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FreeDays.APRIL">
+            <summary>
+            Free month of days for APRIL
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FreeDays.MAY">
+            <summary>
+            Free month of days for MAY
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FreeDays.JUNE">
+            <summary>
+            Free month of days for JUNE
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FreeDays.JULY">
+            <summary>
+            Free month of days for JULY
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FreeDays.NOVEMBER">
+             <summary>
+            Free month of days for NOVEMBER
+             </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Config.FreeDays.DECEMBER">
+            <summary>
+            Free month of days for DECEMBER
+            </summary>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Enums.Months">
+            <summary>
+            Enum for months
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.Months.JANUARY">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.Months.FEBRUARY">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.Months.MARCH">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.Months.APRIL">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.Months.MAY">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.Months.JUNE">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.Months.JULY">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.Months.AUGUST">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.Months.SEPTEMBER">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.Months.OCTOBER">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.Months.NOVEMBER">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.Months.DECEMBER">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Enums.TollFreeVehicles">
+            <summary>
+            Enum for vanligaste freeavgifterna som är kopplade till fordon.
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.TollFreeVehicles.Motorbike">
+            <summary>
+            Motorbike
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.TollFreeVehicles.Tractor">
+            <summary>
+            Tractor
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.TollFreeVehicles.Emergency">
+            <summary>
+            Emergency
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.TollFreeVehicles.Diplomat">
+            <summary>
+            Diplomat
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.TollFreeVehicles.Foreign">
+            <summary>
+            Foreign
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.TollFreeVehicles.Military">
+            <summary>
+            Military
+            </summary>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Enums.VehicleType">
+            <summary>
+            Enum VehicleT type
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.VehicleType.CAR">
+            <summary>
+            CAR
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.VehicleType.Motorbike">
+            <summary>
+            Motorbike
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.VehicleType.Bus">
+            <summary>
+            Bus
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.VehicleType.LorryTruck">
+            <summary>
+            LorryTruck
+            </summary>
+        </member>
+        <member name="F:Evolve.TollFeeCalculator.Enums.VehicleType.Pickup">
+            <summary>
+            Pickup
+            </summary>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Extensions.TollFeeCalculatorExtensions">
+            <summary>
+            Extensions för att kontrollera kostnader specifik dag/bil
+            </summary>
+        </member>
+        <member name="M:Evolve.TollFeeCalculator.Extensions.TollFeeCalculatorExtensions.IsTollFreeDate(System.DateTime)">
+            <summary>
+            kontrollera Kostnader free för specifik dag
+            </summary>
+            <param name="date"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Evolve.TollFeeCalculator.Extensions.TollFeeCalculatorExtensions.IsTollFreeVehicle(Evolve.TollFeeCalculator.Interfaces.IVehicle)">
+            <summary>
+            kontrollera skattefri fordon 
+            </summary>
+            <param name="vehicle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Evolve.TollFeeCalculator.Extensions.TollFeeCalculatorExtensions.GetAmountOfTime(Evolve.TollFeeCalculator.Models.CostTime)">
+            <summary>
+             get Cost amount of time
+            </summary>
+            <param name="o"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Interfaces.IAppConfiguration">
+            <summary>
+            Inläst konfiguration
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Interfaces.IAppConfiguration.FeeCostToTime">
+            <summary>
+            Jobbkostnad vid tidpunkten
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Interfaces.IAppConfiguration.CostParameters">
+            <summary>
+            håller Kostnadsparametrar
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Interfaces.IAppConfiguration.LogFilePath">
+            <summary>
+            Filsökväg till loggfilen.
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Interfaces.IAppConfiguration.FreeDays">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Interfaces.ITollFeeCalculatorService">
+            <summary>
+            interface for Calculate cost Toll
+            </summary>
+        </member>
+        <member name="M:Evolve.TollFeeCalculator.Interfaces.ITollFeeCalculatorService.GetTollFeeForDate(Evolve.TollFeeCalculator.Models.VehicleTollAndDate)">
+            <summary>
+            Calculate the total toll fee for one day for a vehicle
+            </summary>
+            <param name="vehicleTollAndDateDto"></param>      
+            <returns></returns>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Interfaces.IVehicle">
+            <summary>
+            Vehicle Interface
+            </summary>
+        </member>
+        <member name="M:Evolve.TollFeeCalculator.Interfaces.IVehicle.GetVehicleType">
+            <summary>
+            VehicleType 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Interfaces.IVehicle.RegNo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Models.Car">
+            <summary>
+             klass för bil som Vehicle type
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Models.Car.RegNo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Models.CostTime">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Models.CostTime.Hour">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Models.CostTime.Minute">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Evolve.TollFeeCalculator.Models.CostTime.#ctor(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="hour"></param>
+            <param name="minute"></param>
+        </member>
+        <member name="M:Evolve.TollFeeCalculator.Models.CostTime.Deconstruct(System.Int32@,System.Int32@)">
+            <summary>
+            
+            </summary>
+            <param name="hour"></param>
+            <param name="minute"></param>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Models.Globals">
+            <summary>
+            Klass som håller globala variabler.
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Models.Globals.AppConfiguration">
+            <summary>
+            Programinställningar.
+            </summary>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Models.Motorbike">
+            <summary>
+            klass för Motorbike som Vehicle type
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Models.Motorbike.RegNo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Evolve.TollFeeCalculator.Models.Motorbike.GetVehicleType">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Models.VehicleTollAndDate">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Models.VehicleTollAndDate.Vehicle">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Evolve.TollFeeCalculator.Models.VehicleTollAndDate.TollDates">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Services.TollFeeCalculatorService">
+            <summary>
+            Service for Calculate cost Toll
+            </summary>
+        </member>
+        <member name="M:Evolve.TollFeeCalculator.Services.TollFeeCalculatorService.GetTollFeeForDate(Evolve.TollFeeCalculator.Models.VehicleTollAndDate)">
+            <summary>
+            Calculate the total toll fee for one day for a vehicle
+            </summary>
+            <param name="vehicleTollAndDate"></param>
+            <returns>total cost toll fee for one day</returns>       
+        </member>
+        <member name="M:Evolve.TollFeeCalculator.Services.TollFeeCalculatorService.GetTollFee(System.DateTime,Evolve.TollFeeCalculator.Interfaces.IVehicle)">
+            <summary>
+            Get toll fee by time
+            </summary>
+            <param name="date"></param>
+            <param name="vehicle"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Validators.DateRequestValidator">
+            <summary>
+            Validator class
+            </summary>
+        </member>
+        <member name="M:Evolve.TollFeeCalculator.Validators.DateRequestValidator.#ctor">
+            <summary>
+            Contracture 
+            </summary>
+        </member>
+    </members>
+</doc>

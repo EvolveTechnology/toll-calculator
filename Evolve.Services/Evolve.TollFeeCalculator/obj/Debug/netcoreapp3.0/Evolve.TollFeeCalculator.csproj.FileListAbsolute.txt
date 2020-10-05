@@ -1,0 +1,53 @@
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.exe
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\appsettings.json
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\appsettings.localhost.json
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.deps.json
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.runtimeconfig.json
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.runtimeconfig.dev.json
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.dll
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.pdb
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.xml
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\FluentValidation.dll
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Configuration.dll
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Configuration.Abstractions.dll
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Configuration.Json.dll
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.FileProviders.Physical.dll
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.FileSystemGlobbing.dll
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.PlatformAbstractions.dll
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Primitives.dll
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\System.Text.Json.dll
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.AssemblyInfoInputs.cache
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.AssemblyInfo.cs
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.csproj.CopyComplete
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.dll
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.pdb
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.csprojAssemblyReference.cache
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.AssemblyInfoInputs.cache
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.AssemblyInfo.cs
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.dll
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.pdb
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.exe
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\appsettings.json
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\appsettings.localhost.json
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.deps.json
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.runtimeconfig.json
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.runtimeconfig.dev.json
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.dll
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.pdb
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.xml
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\FluentValidation.dll
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Configuration.dll
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Configuration.Json.dll
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.FileProviders.Physical.dll
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.PlatformAbstractions.dll
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Primitives.dll
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\System.Text.Json.dll
+C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.csproj.CopyComplete

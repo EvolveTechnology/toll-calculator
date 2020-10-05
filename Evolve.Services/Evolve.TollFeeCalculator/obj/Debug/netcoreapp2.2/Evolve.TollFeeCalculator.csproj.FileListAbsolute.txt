@@ -1,0 +1,3 @@
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp2.2\Evolve.TollFeeCalculator.csprojAssemblyReference.cache
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp2.2\Evolve.TollFeeCalculator.AssemblyInfoInputs.cache
+D:\mölnlycke\sezzaal\source\repos\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp2.2\Evolve.TollFeeCalculator.AssemblyInfo.cs
