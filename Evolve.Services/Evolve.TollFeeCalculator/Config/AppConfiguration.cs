@@ -16,33 +16,30 @@ namespace Evolve.TollFeeCalculator.Config
     public class AppConfiguration : IAppConfiguration
     {
         /// <summary>
-        /// Jobbkostnad vid tidpunkten
+        /// Job cost at the time
         /// </summary>
         public FeeCostToTime FeeCostToTime { get; set; }
 
         /// <summary>
-        /// Filsökväg till loggfilen.
+        /// File path to the log file.
         /// </summary>
         public string LogFilePath { get; set; }
 
 
         /// <summary>
-        /// parameter för beräkninga
+        /// Parameter for calculation
         /// </summary>
         public CostParameters CostParameters { get; set; }
 
         /// <summary>
-        /// 
+        /// Free days for calculation
         /// </summary>
         public FreeDays FreeDays { get; set; }
         /// <summary>
         ///Application configuration.
         /// </summary>
         public AppConfiguration(IConfiguration configuration)
-        {
-
-           
-
+        {          
 
             FeeCostToTime = new FeeCostToTime
             {
@@ -68,18 +65,14 @@ namespace Evolve.TollFeeCalculator.Config
             FreeDays = new FreeDays
             {
                 Year = int.Parse(configuration.GetSection("FreeDays:Year").Value.ToString()),
-                JANUARY = configuration.GetSection("FreeDays:JANUARY").AsEnumerable().Where(p => p.Value != null).Select(p => p.Value).Select(p => int.Parse(p.ToString())).ToList(),
-                //configuration.GetSection("FreeDays:JANUARY").AsEnumerable().Where(p => p.Value != null).Select(p => p.Value).ToArray(), int.Parse),
+                JANUARY = configuration.GetSection("FreeDays:JANUARY").AsEnumerable().Where(p => p.Value != null).Select(p => p.Value).Select(p => int.Parse(p.ToString())).ToList(),               
                 MARCH = configuration.GetSection("FreeDays:MARCH").AsEnumerable().Where(p => p.Value != null).Select(p => p.Value).Select(p => int.Parse(p.ToString())).ToList(),
                 APRIL = configuration.GetSection("FreeDays:APRIL").AsEnumerable().Where(p => p.Value != null).Select(p => p.Value).Select(p => int.Parse(p.ToString())).ToList(),
                 MAY = configuration.GetSection("FreeDays:MAY").AsEnumerable().Where(p => p.Value != null).Select(p => p.Value).Select(p => int.Parse(p.ToString())).ToList(),
                 JUNE = configuration.GetSection("FreeDays:JUNE").AsEnumerable().Where(p => p.Value != null).Select(p => p.Value).Select(p => int.Parse(p.ToString())).ToList(),
-                //JULY = configuration.GetSection("FreeDays:JULY").AsEnumerable().Where(p => p.Value != null).Select(p => p.Value).Select(p => int.Parse(p.ToString())).ToList(),
                 NOVEMBER = configuration.GetSection("FreeDays:NOVEMBER").AsEnumerable().Where(p => p.Value != null).Select(p => p.Value).Select(p => int.Parse(p.ToString())).ToList(),
                 DECEMBER = configuration.GetSection("FreeDays:DECEMBER").AsEnumerable().Where(p => p.Value != null).Select(p => p.Value).Select(p => int.Parse(p.ToString())).ToList()
 
-
-                //Value.AsEnumerable(),
             };
 
             LogFilePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "log.txt");

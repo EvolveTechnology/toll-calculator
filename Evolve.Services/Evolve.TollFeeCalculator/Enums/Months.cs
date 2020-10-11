@@ -8,54 +8,18 @@ namespace Evolve.TollFeeCalculator.Enums
     /// Enum for months
     /// </summary>
     public enum Months
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        JANUARY = 1,
-        /// <summary>
-        /// 
-        /// </summary>
-        FEBRUARY = 2,
-        /// <summary>
-        /// 
-        /// </summary>
+    {      
+        JANUARY = 1,      
+        FEBRUARY = 2,        
         MARCH = 3,
-        /// <summary>
-        /// 
-        /// </summary>
-        APRIL = 4,
-        /// <summary>
-        /// 
-        /// </summary>
+        APRIL = 4,        
         MAY = 5,
-        /// <summary>
-        /// 
-        /// </summary>
-        JUNE = 6,
-        /// <summary>
-        /// 
-        /// </summary>
-        JULY = 7,
-        /// <summary>
-        /// 
-        /// </summary>
-        AUGUST = 8,
-        /// <summary>
-        /// 
-        /// </summary>
-        SEPTEMBER = 9,
-        /// <summary>
-        /// 
-        /// </summary>
-        OCTOBER = 10,
-        /// <summary>
-        /// 
-        /// </summary>
-        NOVEMBER = 11,
-        /// <summary>
-        /// 
-        /// </summary>
+        JUNE = 6,        
+        JULY = 7,        
+        AUGUST = 8,        
+        SEPTEMBER = 9,        
+        OCTOBER = 10,        
+        NOVEMBER = 11,       
         DECEMBER = 12
     }
 }

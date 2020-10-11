@@ -11,21 +11,21 @@ namespace Evolve.TollFeeCalculator.Interfaces
     public interface IAppConfiguration
     {
         /// <summary>
-        /// Jobbkostnad vid tidpunkten
+        /// Job cost at the time
         /// </summary>
         FeeCostToTime FeeCostToTime { get; }
         /// <summary>
-        /// håller Kostnadsparametrar
+        /// Cost Parameters
         /// </summary>
         CostParameters CostParameters { get; }
 
         /// <summary>
-        /// Filsökväg till loggfilen.
+        /// File path to the log file.
         /// </summary>
         string LogFilePath { get; }
 
         /// <summary>
-        /// 
+        /// free days
         /// </summary>
         FreeDays FreeDays { get; }
     }

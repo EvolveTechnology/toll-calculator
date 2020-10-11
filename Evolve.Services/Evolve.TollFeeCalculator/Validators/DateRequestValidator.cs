@@ -19,7 +19,7 @@ namespace Evolve.TollFeeCalculator.Validators
         {
             RuleFor(x => x.TollDates)
                 .NotNull()
-                .Must(x => x.FindAll(delegate (DateTime today) { return today > DateTime.Now.AddDays(1); }).Count == 0);
+                .Must(x => x.FindAll(delegate (DateTime today) { return today.Day>= DateTime.Now.AddDays(1).Day; }).Count == 0);
                
         }      
     }

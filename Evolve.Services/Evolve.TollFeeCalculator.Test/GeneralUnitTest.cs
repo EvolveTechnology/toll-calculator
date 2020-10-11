@@ -7,40 +7,49 @@ using Moq;
 using System;
 using Xunit;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Autofac;
 
 namespace Evolve.TollFeeCalculator.Test
 {
+
     public class GeneralUnitTest
     {
-        private IConfiguration _configuration { get; set; }
+        private IConfigurationRoot _configuration { get; set; }
+        private IContainer _container { get; set; }
+        private ITollFeeCalculatorService _tollFreeForVehicle { get; set; }
+        private IAppConfiguration _app { get; set; }
+
         public GeneralUnitTest()
         {
             _configuration = new ConfigurationBuilder()
              .AddJsonFile("client-secrets.json")
               .Build();
-            IAppConfiguration appConfiguration = new AppConfiguration(_configuration);
+           // IAppConfiguration _appConfiguration = new AppConfiguration(_configuration);
+
+            _container = ContainerConfig.Configure(_configuration);
+
+            using (var scope = _container.BeginLifetimeScope())
+            {
+                _app = scope.Resolve<IAppConfiguration>();
+                _tollFreeForVehicle = scope.Resolve<ITollFeeCalculatorService>();
+
+            }
         }
 
 
-        /// <summary>
-        ///  Facts are tests which are always true. They test invariant conditions.
-        ///  test Configuration
-        /// </summary>
-        [Fact]
+
+        [Fact(DisplayName = "Test Configuration")]
         public void Test_Configuration()
         {
-            Assert.Equal(4, Add(2, 2));
-            Assert.Equal(1, Globals.AppConfiguration.CostParameters.ExtraCostFactor);
+            Assert.Equal(1, _app.CostParameters.ExtraCostFactor);
         }
 
 
-        [Fact]
-        public async System.Threading.Tasks.Task Test_TollFeeCalculatorService()
+        [Fact(DisplayName = "Get Toll fee for Vehicle as Car and for one day")]
+        [Trait("Vehicle", "Car")]
+        public async Task Test_GetTollFeeCalculatorforCar()
         {
-
-            ITollFeeCalculatorService tollFreeForVehicle = new TollFeeCalculatorService();
-
-            // The Total toll fee for Vehicle 
 
             var vehicleAndDateRequest = new VehicleAndDateRequest
             {
@@ -51,10 +60,15 @@ namespace Evolve.TollFeeCalculator.Test
                                               new DateTime(2019, 05, 9, 10, 56, 0)}
             };
 
-            var CostTollFee = await tollFreeForVehicle.GetTotalTollFeeForDateAsync(vehicleAndDateRequest);
+            var CostTollFee = await _tollFreeForVehicle.GetTotalTollFeeForDateAsync(vehicleAndDateRequest);
             Assert.Equal(24, CostTollFee);
+        }
 
 
+        [Fact(DisplayName = "Get Toll fee for Vehicle as Motorbike and for one day")]
+        [Trait("Vehicle", "Motorbike")]
+        public async Task Test_GetTollFeeCalculatorforMotorbike()
+        {
 
             var vehicleAndDateRequest2 = new VehicleAndDateRequest
             {
@@ -65,45 +79,28 @@ namespace Evolve.TollFeeCalculator.Test
                                               new DateTime(2019, 05, 9, 12, 56, 0,20)}
             };
 
-            CostTollFee = await tollFreeForVehicle.GetTotalTollFeeForDateAsync(vehicleAndDateRequest2);
+            var CostTollFee = await _tollFreeForVehicle.GetTotalTollFeeForDateAsync(vehicleAndDateRequest2);
             Assert.Equal(0, CostTollFee);
+        }
 
-
-            var vehicleAndDateRequest3 = new VehicleAndDateRequest
+        [Fact(DisplayName = "Get Exception by Calculat Toll fee for diff Dates")]
+        [Trait("Calculat", "Exception")]
+        public async Task Test_GetExceptionTollFeeCalculatorforCar()
+        {
+                       
+            var vehicleAndDateRequest = new VehicleAndDateRequest
             {
                 Vehicle = new Car(),
                 TollDates = new List<DateTime>{
                                               new DateTime(2020, 05, 9, 09, 30, 01,01),
                                               new DateTime(2020, 05, 9, 09, 36, 20,10),
-                                              new DateTime(2020, 10, 13, 12, 56, 0,20)}
-            };          
-
-            await Assert.ThrowsAsync<Exception>(() => tollFreeForVehicle.GetTotalTollFeeForDateAsync(vehicleAndDateRequest3));
-           // Assert.That(ex.Message, Is.EqualTo("Actual exception message"));
+                                               DateTime.Now.AddDays(1)
+                                          }
+            };
+            
+            await Assert.ThrowsAsync<Exception>(() => _tollFreeForVehicle.GetTotalTollFeeForDateAsync(vehicleAndDateRequest));
 
         }
 
-        /// <summary>
-        /// Theories are tests which are only true for a particular set of data.
-        /// </summary>
-        /// <param name="value"></param>
-        [Theory]
-        [InlineData(3)]
-        [InlineData(5)]
-        [InlineData(6)]
-        public void MyFirstTheory_test(int value)
-        {
-            Assert.True(IsOdd(value));
-        }
-
-        bool IsOdd(int value)
-        {
-            return value % 2 == 1;
-        }
-
-        int Add(int x, int y)
-        {
-            return x + y;
-        }
     }
 }

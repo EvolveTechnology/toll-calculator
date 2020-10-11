@@ -5,7 +5,7 @@ using System.Text;
 namespace Evolve.TollFeeCalculator.Enums
 {
     /// <summary>
-    /// Enum for vanligaste freeavgifterna som är kopplade till fordon.
+    /// Enum for the most common tolls associated with vehicles.
     /// </summary>
     public enum TollFreeVehicles
     {

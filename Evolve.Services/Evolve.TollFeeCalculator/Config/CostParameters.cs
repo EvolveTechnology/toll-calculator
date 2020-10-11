@@ -5,20 +5,20 @@ using System.Text;
 namespace Evolve.TollFeeCalculator.Config
 {
     /// <summary>
-    /// parameter för beräkninga
+    /// Config class for fee calculations 
     /// </summary>
     public class CostParameters
     {
         /// <summary>
-        /// Max Diff I Minuter För Beräkning
+        /// Max Diff In Minutes For Calculation
         /// </summary>
         public int MaxDiffInMinutes { get; set; }
         /// <summary>
-        /// Extrakostnadsfaktor ex  1.1
+        /// Extra cost factor ex 1.1
         /// </summary>
         public int ExtraCostFactor { get; set; }
         /// <summary>
-        /// Max totala kostnad
+        /// Max total cost
         /// </summary>
         public int MaxtotalCost { get; set; }
     }

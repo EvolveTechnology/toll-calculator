@@ -7,19 +7,10 @@ using System.Text;
 namespace Evolve.TollFeeCalculator.Models
 {
     /// <summary>
-    /// klass för Motorbike som Vehicle type
+    /// Vehicle class of type Motorbike
     /// </summary>
     public class Motorbike : IVehicle
     {
-        /// <summary>
-        /// Vehicle RegNo
-        /// </summary>
-        public string RegNo { get; set ; }
-
-        /// <summary>
-        /// Vehicle type
-        /// </summary>
-        /// <returns></returns>
         public VehicleType GetVehicleType()
         {
             return VehicleType.Motorbike;

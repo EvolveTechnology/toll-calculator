@@ -5,7 +5,7 @@ using System.Text;
 namespace Evolve.TollFeeCalculator.Config
 {
     /// <summary>
-    ///Avgift vid tidpunkten
+    ///Config class, with fee at the specific time
     /// </summary>
     public class FeeCostToTime
     {

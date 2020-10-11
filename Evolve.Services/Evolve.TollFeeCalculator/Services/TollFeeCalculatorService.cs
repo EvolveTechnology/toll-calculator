@@ -4,9 +4,6 @@ using Evolve.TollFeeCalculator.Models;
 using Evolve.TollFeeCalculator.Validators;
 using FluentValidation.Results;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Evolve.TollFeeCalculator.Services
@@ -18,7 +15,7 @@ namespace Evolve.TollFeeCalculator.Services
     {
 
         /// <summary>
-        /// Beräkna den totala avgiften för en dag för ett fordon
+        /// calculat the total charge for one day for a vehicle
         /// </summary>
         /// <param name="vehicleTollAndDate"></param>
         /// <returns>total cost toll fee for one day</returns>       
@@ -65,7 +62,7 @@ namespace Evolve.TollFeeCalculator.Services
             return await Task.FromResult(totalFee);
         }
         /// <summary>
-        /// Räkna vägtullar för en tid.
+        /// Calculat tolls for a specific time
         /// </summary>
         /// <param name="date"></param>
         /// <param name="vehicle"></param>

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\sezzaal\\OneDrive - Molnlycke Health Care AB\\Desktop\\Evolve.Services\\Evolve.TollFeeCalculator\\Evolve.TollFeeCalculator.csproj": {}
+    "C:\\Test-Code\\toll-calculator\\Evolve.Services\\Evolve.TollFeeCalculator\\Evolve.TollFeeCalculator.csproj": {}
   },
   "projects": {
-    "C:\\Users\\sezzaal\\OneDrive - Molnlycke Health Care AB\\Desktop\\Evolve.Services\\Evolve.TollFeeCalculator\\Evolve.TollFeeCalculator.csproj": {
+    "C:\\Test-Code\\toll-calculator\\Evolve.Services\\Evolve.TollFeeCalculator\\Evolve.TollFeeCalculator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sezzaal\\OneDrive - Molnlycke Health Care AB\\Desktop\\Evolve.Services\\Evolve.TollFeeCalculator\\Evolve.TollFeeCalculator.csproj",
+        "projectUniqueName": "C:\\Test-Code\\toll-calculator\\Evolve.Services\\Evolve.TollFeeCalculator\\Evolve.TollFeeCalculator.csproj",
         "projectName": "Evolve.TollFeeCalculator",
-        "projectPath": "C:\\Users\\sezzaal\\OneDrive - Molnlycke Health Care AB\\Desktop\\Evolve.Services\\Evolve.TollFeeCalculator\\Evolve.TollFeeCalculator.csproj",
+        "projectPath": "C:\\Test-Code\\toll-calculator\\Evolve.Services\\Evolve.TollFeeCalculator\\Evolve.TollFeeCalculator.csproj",
         "packagesPath": "C:\\Users\\sezzaal\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sezzaal\\OneDrive - Molnlycke Health Care AB\\Desktop\\Evolve.Services\\Evolve.TollFeeCalculator\\obj\\",
+        "outputPath": "C:\\Test-Code\\toll-calculator\\Evolve.Services\\Evolve.TollFeeCalculator\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -43,6 +43,10 @@
       "frameworks": {
         "netcoreapp3.0": {
           "dependencies": {
+            "Autofac": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
             "FluentValidation": {
               "target": "Package",
               "version": "[9.3.0-preview2, )"

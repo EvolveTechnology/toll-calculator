@@ -7,15 +7,8 @@ namespace Evolve.TollFeeCalculator.Interfaces
     /// Vehicle Interface
     /// </summary>
     public interface IVehicle
-    {
-        /// <summary>
-        /// VehicleType 
-        /// </summary>
-        /// <returns></returns>
-        VehicleType GetVehicleType();
-        /// <summary>
-        /// 
-        /// </summary>
-        string RegNo { get; }
+    {        
+        VehicleType GetVehicleType();        
+        
     }
 }

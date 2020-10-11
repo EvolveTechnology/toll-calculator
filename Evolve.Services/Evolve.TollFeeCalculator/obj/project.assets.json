@@ -2,6 +2,18 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.0": {
+      "Autofac/6.0.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Diagnostics.DiagnosticSource": "4.7.1"
+        },
+        "compile": {
+          "lib/netstandard2.1/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/Autofac.dll": {}
+        }
+      },
       "FluentValidation/9.3.0-preview2": {
         "type": "package",
         "compile": {
@@ -478,17 +490,10 @@
           "ref/netstandard1.3/System.Diagnostics.Debug.dll": {}
         }
       },
-      "System.Diagnostics.DiagnosticSource/4.3.0": {
+      "System.Diagnostics.DiagnosticSource/4.7.1": {
         "type": "package",
-        "dependencies": {
-          "System.Collections": "4.3.0",
-          "System.Diagnostics.Tracing": "4.3.0",
-          "System.Reflection": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Threading": "4.3.0"
-        },
         "compile": {
-          "lib/netstandard1.3/_._": {}
+          "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll": {}
@@ -1345,6 +1350,24 @@
     }
   },
   "libraries": {
+    "Autofac/6.0.0": {
+      "sha512": "tRVRXGxwXbQmPy1ZGso115O55ffVW4mWtufjOy7hduQ1BNVR1j7RQQjxpYuB6tJw5OrgqRWYVJLJ8RwYNz/j+A==",
+      "type": "package",
+      "path": "autofac/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "autofac.6.0.0.nupkg.sha512",
+        "autofac.nuspec",
+        "icon.png",
+        "lib/netstandard2.0/Autofac.dll",
+        "lib/netstandard2.0/Autofac.pdb",
+        "lib/netstandard2.0/Autofac.xml",
+        "lib/netstandard2.1/Autofac.dll",
+        "lib/netstandard2.1/Autofac.pdb",
+        "lib/netstandard2.1/Autofac.xml"
+      ]
+    },
     "FluentValidation/9.3.0-preview2": {
       "sha512": "Aa/ZUDoxVAHd+d7plT+kCrDupi7WaE/nHKDiiyICIvEomXC9Urk/5vIpB0WZYZ9lukxetQw44oS/5S+kbU0M/Q==",
       "type": "package",
@@ -2240,15 +2263,18 @@
         "system.diagnostics.debug.nuspec"
       ]
     },
-    "System.Diagnostics.DiagnosticSource/4.3.0": {
-      "sha512": "tD6kosZnTAGdrEa0tZSuFyunMbt/5KYDnHdndJYGqZoNy00XVXyACd5d6KnE1YgYv3ne2CjtAfNXo/fwEhnKUA==",
+    "System.Diagnostics.DiagnosticSource/4.7.1": {
+      "sha512": "j81Lovt90PDAq8kLpaJfJKV/rWdWuEk6jfV+MBkee33vzYLEUsy4gXK8laa9V2nZlLM9VM9yA/OOQxxPEJKAMw==",
       "type": "package",
-      "path": "system.diagnostics.diagnosticsource/4.3.0",
+      "path": "system.diagnostics.diagnosticsource/4.7.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "ThirdPartyNotices.txt",
-        "dotnet_library_license.txt",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net45/System.Diagnostics.DiagnosticSource.dll",
+        "lib/net45/System.Diagnostics.DiagnosticSource.xml",
         "lib/net46/System.Diagnostics.DiagnosticSource.dll",
         "lib/net46/System.Diagnostics.DiagnosticSource.xml",
         "lib/netstandard1.1/System.Diagnostics.DiagnosticSource.dll",
@@ -2257,8 +2283,10 @@
         "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.xml",
         "lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.dll",
         "lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.xml",
-        "system.diagnostics.diagnosticsource.4.3.0.nupkg.sha512",
-        "system.diagnostics.diagnosticsource.nuspec"
+        "system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512",
+        "system.diagnostics.diagnosticsource.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
       ]
     },
     "System.Diagnostics.Tools/4.3.0": {
@@ -4917,6 +4945,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.0": [
+      "Autofac >= 6.0.0",
       "FluentValidation >= 9.3.0-preview2",
       "Microsoft.Extensions.Configuration >= 5.0.0-rc.1.20451.14",
       "Microsoft.Extensions.Configuration.EnvironmentVariables >= 5.0.0-rc.1.20451.14",
@@ -4933,11 +4962,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sezzaal\\OneDrive - Molnlycke Health Care AB\\Desktop\\Evolve.Services\\Evolve.TollFeeCalculator\\Evolve.TollFeeCalculator.csproj",
+      "projectUniqueName": "C:\\Test-Code\\toll-calculator\\Evolve.Services\\Evolve.TollFeeCalculator\\Evolve.TollFeeCalculator.csproj",
       "projectName": "Evolve.TollFeeCalculator",
-      "projectPath": "C:\\Users\\sezzaal\\OneDrive - Molnlycke Health Care AB\\Desktop\\Evolve.Services\\Evolve.TollFeeCalculator\\Evolve.TollFeeCalculator.csproj",
+      "projectPath": "C:\\Test-Code\\toll-calculator\\Evolve.Services\\Evolve.TollFeeCalculator\\Evolve.TollFeeCalculator.csproj",
       "packagesPath": "C:\\Users\\sezzaal\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sezzaal\\OneDrive - Molnlycke Health Care AB\\Desktop\\Evolve.Services\\Evolve.TollFeeCalculator\\obj\\",
+      "outputPath": "C:\\Test-Code\\toll-calculator\\Evolve.Services\\Evolve.TollFeeCalculator\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -4969,6 +4998,10 @@
     "frameworks": {
       "netcoreapp3.0": {
         "dependencies": {
+          "Autofac": {
+            "target": "Package",
+            "version": "[6.0.0, )"
+          },
           "FluentValidation": {
             "target": "Package",
             "version": "[9.3.0-preview2, )"

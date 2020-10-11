@@ -6,13 +6,10 @@ using System.Text;
 namespace Evolve.TollFeeCalculator.Models
 {
     /// <summary>
-    /// Klass som håller globala variabler.
+    /// Config Class for global variables.
     /// </summary>
     public static class Globals
-    {
-        /// <summary>
-        /// Programinställningar.
-        /// </summary>
+    {        
         public static IAppConfiguration AppConfiguration { get; set; }
     }
 }

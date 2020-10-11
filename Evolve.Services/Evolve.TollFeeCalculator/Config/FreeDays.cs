@@ -5,7 +5,7 @@ using System.Text;
 namespace Evolve.TollFeeCalculator.Config
 {
     /// <summary>
-    /// 
+    /// Config calss for free days in the year-month
     /// </summary>
     public class FreeDays
     {

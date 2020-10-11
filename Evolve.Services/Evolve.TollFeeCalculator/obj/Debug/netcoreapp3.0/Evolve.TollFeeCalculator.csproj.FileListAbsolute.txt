@@ -51,3 +51,32 @@ C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evo
 C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Primitives.dll
 C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\System.Text.Json.dll
 C:\Users\sezzaal\OneDrive - Molnlycke Health Care AB\Desktop\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.csproj.CopyComplete
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.exe
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\appsettings.json
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\appsettings.localhost.json
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.deps.json
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.runtimeconfig.json
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.runtimeconfig.dev.json
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.dll
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.pdb
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.xml
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\FluentValidation.dll
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Configuration.dll
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Configuration.Json.dll
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.FileProviders.Physical.dll
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.PlatformAbstractions.dll
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Primitives.dll
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\System.Text.Json.dll
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.csprojAssemblyReference.cache
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.AssemblyInfoInputs.cache
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.AssemblyInfo.cs
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.csproj.CopyComplete
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.dll
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\obj\Debug\netcoreapp3.0\Evolve.TollFeeCalculator.pdb
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\Autofac.dll
+C:\Test-Code\toll-calculator\Evolve.Services\Evolve.TollFeeCalculator\bin\Debug\netcoreapp3.0\System.Diagnostics.DiagnosticSource.dll
