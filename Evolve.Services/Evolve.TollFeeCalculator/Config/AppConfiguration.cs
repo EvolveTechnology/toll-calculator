@@ -23,7 +23,7 @@ namespace Evolve.TollFeeCalculator.Config
         /// <summary>
         /// File path to the log file.
         /// </summary>
-        public string LogFilePath { get; set; }
+       // public string LogFilePath { get; set; }
 
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Evolve.TollFeeCalculator.Config
 
             };
 
-            LogFilePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "log.txt");
+           // LogFilePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "log.txt");
             Globals.AppConfiguration = this;
 
         }

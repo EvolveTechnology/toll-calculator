@@ -7,10 +7,14 @@ using System.Text;
 
 namespace Evolve.TollFeeCalculator.Validators
 {
+    public class BaseValidator<TEntity> : AbstractValidator<TEntity>
+    {
+    }
+
     /// <summary>
     /// Validator Klass
     /// </summary>
-    public class DateRequestValidator: AbstractValidator<VehicleAndDateRequest>
+    public class DateRequestValidator: BaseValidator<VehicleAndDateRequest>
     {
         /// <summary>
         /// Contracture 

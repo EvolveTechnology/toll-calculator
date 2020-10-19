@@ -2,7 +2,8 @@
 using Evolve.TollFeeCalculator.Interfaces;
 using Evolve.TollFeeCalculator.Models;
 using Evolve.TollFeeCalculator.Validators;
-using FluentValidation.Results;
+using FluentValidation;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -13,7 +14,18 @@ namespace Evolve.TollFeeCalculator.Services
     /// </summary>
     public class TollFeeCalculatorService : ITollFeeCalculatorService
     {
+        IValidator<VehicleAndDateRequest> _valadator;
+        ILogger _logger;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="valadator"></param>
+        public TollFeeCalculatorService(IValidator<VehicleAndDateRequest> valadator, ILogger<TollFeeCalculatorService> logger)
+        {
+            _valadator = valadator;
+            _logger = logger;
+        }
         /// <summary>
         /// calculat the total charge for one day for a vehicle
         /// </summary>
@@ -21,19 +33,19 @@ namespace Evolve.TollFeeCalculator.Services
         /// <returns>total cost toll fee for one day</returns>       
         public async Task<int> GetTotalTollFeeForDateAsync(VehicleAndDateRequest vehicleTollAndDate)
         {
-         
-            var dateRequestValidator = new DateRequestValidator();
-            ValidationResult results = dateRequestValidator.Validate(vehicleTollAndDate);
+            _logger.LogInformation("GetTotalTollFeeForDateAsync");
+            var results= _valadator.Validate(vehicleTollAndDate);
 
-            if (!results.IsValid)
-            {
-                var errorMessage = string.Empty;
-                foreach (var failure in results.Errors)
-                {
-                    errorMessage = string.Join(Environment.NewLine, failure.ErrorMessage);
-                }
+             if (!results.IsValid)
+             {
+                 var errorMessage = string.Empty;
+                 foreach (var failure in results.Errors)
+                 {
+                     errorMessage = string.Join(Environment.NewLine, failure.ErrorMessage);
+                 }
+                _logger.LogDebug(errorMessage);
                 throw new Exception(errorMessage);
-            }
+             }
 
             var intervalStart = vehicleTollAndDate.TollDates[0];
             var totalFee = 0;

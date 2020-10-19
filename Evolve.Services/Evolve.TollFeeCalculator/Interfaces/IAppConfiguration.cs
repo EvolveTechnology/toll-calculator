@@ -22,7 +22,7 @@ namespace Evolve.TollFeeCalculator.Interfaces
         /// <summary>
         /// File path to the log file.
         /// </summary>
-        string LogFilePath { get; }
+        //string LogFilePath { get; }
 
         /// <summary>
         /// free days

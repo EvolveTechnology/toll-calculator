@@ -9,6 +9,9 @@ using Xunit;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Autofac;
+using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace Evolve.TollFeeCalculator.Test
 {
@@ -22,12 +25,25 @@ namespace Evolve.TollFeeCalculator.Test
 
         public GeneralUnitTest()
         {
+            var serilogLogger = new LoggerConfiguration()            
+            .WriteTo.Console()
+            .CreateLogger();
+
+
             _configuration = new ConfigurationBuilder()
              .AddJsonFile("client-secrets.json")
               .Build();
-           // IAppConfiguration _appConfiguration = new AppConfiguration(_configuration);
+            var services = new ServiceCollection()
+            .AddLogging(builder =>
+            {
+                builder.AddDebug();
+                builder.SetMinimumLevel(LogLevel.Debug);
+                builder.AddSerilog(logger: serilogLogger, dispose: true);
+            })
+            .AddOptions();
+            var serviceProvider = services.BuildServiceProvider();
 
-            _container = ContainerConfig.Configure(_configuration);
+            _container = ContainerConfig.Configure(_configuration, services);
 
             using (var scope = _container.BeginLifetimeScope())
             {

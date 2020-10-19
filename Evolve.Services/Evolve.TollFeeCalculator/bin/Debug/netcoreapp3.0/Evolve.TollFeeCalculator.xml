@@ -39,7 +39,7 @@
             Config class for Autofac
             </summary>
         </member>
-        <member name="M:Evolve.TollFeeCalculator.Config.ContainerConfig.Configure(Microsoft.Extensions.Configuration.IConfigurationRoot)">
+        <member name="M:Evolve.TollFeeCalculator.Config.ContainerConfig.Configure(Microsoft.Extensions.Configuration.IConfigurationRoot,Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
             return IContainer as autfac build
             </summary>
@@ -240,30 +240,40 @@
             Pickup
             </summary>
         </member>
-        <member name="T:Evolve.TollFeeCalculator.Extensions.TollFeeCalculatorExtensions">
+        <member name="T:Evolve.TollFeeCalculator.Extensions.CostTimeExtension">
             <summary>
-            Extensions för att kontrollera kostnader specifik dag/bil
+            CostTime Extension
             </summary>
         </member>
-        <member name="M:Evolve.TollFeeCalculator.Extensions.TollFeeCalculatorExtensions.IsTollFreeDateAsync(System.DateTime)">
+        <member name="M:Evolve.TollFeeCalculator.Extensions.CostTimeExtension.GetAmountOfTimeAsync(Evolve.TollFeeCalculator.Models.CostTime)">
             <summary>
-            kontrollera Kostnader free för specifik dag
+            Calculate cost time
+            </summary>
+            <param name="o"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Evolve.TollFeeCalculator.Extensions.DateTimeExtension">
+            <summary>
+            Extensions class to control costs toll date
+            </summary>
+        </member>
+        <member name="M:Evolve.TollFeeCalculator.Extensions.DateTimeExtension.IsTollFreeDateAsync(System.DateTime)">
+            <summary>
+            Control free costs Toll Date
             </summary>
             <param name="date"></param>
             <returns></returns>
         </member>
-        <member name="M:Evolve.TollFeeCalculator.Extensions.TollFeeCalculatorExtensions.IsTollFreeVehicleAsync(Evolve.TollFeeCalculator.Interfaces.IVehicle)">
+        <member name="T:Evolve.TollFeeCalculator.Extensions.VehicleExtensions">
+            <summary>
+            Extensions class to control costs free for Vehicle
+            </summary>
+        </member>
+        <member name="M:Evolve.TollFeeCalculator.Extensions.VehicleExtensions.IsTollFreeVehicleAsync(Evolve.TollFeeCalculator.Interfaces.IVehicle)">
             <summary>
             kontrollera skattefri fordon 
             </summary>
             <param name="vehicle"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Evolve.TollFeeCalculator.Extensions.TollFeeCalculatorExtensions.GetAmountOfTimeAsync(Evolve.TollFeeCalculator.Models.CostTime)">
-            <summary>
-             Räkna kostnad tid
-            </summary>
-            <param name="o"></param>
             <returns></returns>
         </member>
         <member name="T:Evolve.TollFeeCalculator.Interfaces.IAppConfiguration">
@@ -342,6 +352,12 @@
             <summary>
             Service for Calculate cost Toll
             </summary>
+        </member>
+        <member name="M:Evolve.TollFeeCalculator.Services.TollFeeCalculatorService.#ctor(FluentValidation.IValidator{Evolve.TollFeeCalculator.Models.VehicleAndDateRequest},Microsoft.Extensions.Logging.ILogger{Evolve.TollFeeCalculator.Services.TollFeeCalculatorService})">
+            <summary>
+            
+            </summary>
+            <param name="valadator"></param>
         </member>
         <member name="M:Evolve.TollFeeCalculator.Services.TollFeeCalculatorService.GetTotalTollFeeForDateAsync(Evolve.TollFeeCalculator.Models.VehicleAndDateRequest)">
             <summary>
