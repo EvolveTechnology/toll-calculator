@@ -3,3 +3,7 @@
 ################################################################################
 
 /.vs
+/C#/UnitTests/obj
+/C#/IntegrationTests/obj
+/C#/toll-calculator/.vs/toll-calculator
+/C#/toll-calculator/obj

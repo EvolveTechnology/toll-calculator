@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30709.132
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "toll-calculator", "toll-calculator.csproj", "{12032228-C575-4F13-8FE4-D75C93ED0153}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B22A7205-C4D0-413A-AE97-D3C829F897FD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "..\UnitTests\UnitTests.csproj", "{AA410C9B-86F9-4C64-8163-AC44ED59F448}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "..\IntegrationTests\IntegrationTests.csproj", "{A323B04E-AEA8-424D-8C3C-A25042977D5D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12032228-C575-4F13-8FE4-D75C93ED0153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12032228-C575-4F13-8FE4-D75C93ED0153}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12032228-C575-4F13-8FE4-D75C93ED0153}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12032228-C575-4F13-8FE4-D75C93ED0153}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA410C9B-86F9-4C64-8163-AC44ED59F448}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA410C9B-86F9-4C64-8163-AC44ED59F448}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA410C9B-86F9-4C64-8163-AC44ED59F448}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA410C9B-86F9-4C64-8163-AC44ED59F448}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A323B04E-AEA8-424D-8C3C-A25042977D5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A323B04E-AEA8-424D-8C3C-A25042977D5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A323B04E-AEA8-424D-8C3C-A25042977D5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A323B04E-AEA8-424D-8C3C-A25042977D5D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AA410C9B-86F9-4C64-8163-AC44ED59F448} = {B22A7205-C4D0-413A-AE97-D3C829F897FD}
+		{A323B04E-AEA8-424D-8C3C-A25042977D5D} = {B22A7205-C4D0-413A-AE97-D3C829F897FD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5ED24A16-0AEF-426A-9E22-AA009788C45C}
+	EndGlobalSection
+EndGlobal
