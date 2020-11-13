@@ -19,10 +19,4 @@
     <ProjectReference Include="..\toll-calculator\toll-calculator.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="testyear.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
