@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "xwQ9hXRMEvRWMNFPRuaw6pjZd0iav4X/ERC1vEh6EdJZ4P1C5xaHP+xnbZMpF7rVDefkKwZFj5Y/9ZVglmKp1w==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Tomas\\source\\repos\\toll-calculator\\C#\\TollCalculationApp\\TollCalculationApp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Tomas\\.nuget\\packages\\nager.date\\1.26.4\\nager.date.1.26.4.nupkg.sha512"
+  ],
+  "logs": []
+}

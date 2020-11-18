@@ -1,0 +1,41 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "TollCalculationApp/1.0.0": {
+        "dependencies": {
+          "Nager.Date": "1.26.4"
+        },
+        "runtime": {
+          "TollCalculationApp.dll": {}
+        }
+      },
+      "Nager.Date/1.26.4": {
+        "runtime": {
+          "lib/netstandard2.0/Nager.Date.dll": {
+            "assemblyVersion": "1.26.4.0",
+            "fileVersion": "1.26.4.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TollCalculationApp/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Nager.Date/1.26.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JlIkEzZaNac3Y5uT4Ult924zVWbxgGLMlfLN/twSJ48RhyolNV5Znl9vhzheXarv4+luJpbakCgGjupnHe2Qhg==",
+      "path": "nager.date/1.26.4",
+      "hashPath": "nager.date.1.26.4.nupkg.sha512"
+    }
+  }
+}

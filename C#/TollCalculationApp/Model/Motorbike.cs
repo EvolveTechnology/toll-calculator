@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace TollFeeCalculator
 {
-    public class Motorbike : Vehicle
+    public class Motorbike : IVehicle
     {
-        public string GetVehicleType()
+        bool IVehicle.IsTollFree
+        {
+            get { return true; }
+        }
+ 
+        string IVehicle.GetVehicleType()
         {
             return "Motorbike";
         }
