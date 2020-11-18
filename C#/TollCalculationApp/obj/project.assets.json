@@ -1,0 +1,109 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Nager.Date/1.26.4": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Nager.Date.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Nager.Date.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Nager.Date/1.26.4": {
+      "sha512": "JlIkEzZaNac3Y5uT4Ult924zVWbxgGLMlfLN/twSJ48RhyolNV5Znl9vhzheXarv4+luJpbakCgGjupnHe2Qhg==",
+      "type": "package",
+      "path": "nager.date/1.26.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "calendar.png",
+        "lib/net45/Nager.Date.dll",
+        "lib/net45/Nager.Date.xml",
+        "lib/net461/Nager.Date.dll",
+        "lib/net461/Nager.Date.xml",
+        "lib/netstandard2.0/Nager.Date.dll",
+        "lib/netstandard2.0/Nager.Date.xml",
+        "nager.date.1.26.4.nupkg.sha512",
+        "nager.date.nuspec",
+        "readme.txt"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "Nager.Date >= 1.26.4"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Tomas\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Tomas\\source\\repos\\toll-calculator\\C#\\TollCalculationApp\\TollCalculationApp.csproj",
+      "projectName": "TollCalculationApp",
+      "projectPath": "C:\\Users\\Tomas\\source\\repos\\toll-calculator\\C#\\TollCalculationApp\\TollCalculationApp.csproj",
+      "packagesPath": "C:\\Users\\Tomas\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Tomas\\source\\repos\\toll-calculator\\C#\\TollCalculationApp\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet\\"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\Tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "dependencies": {
+          "Nager.Date": {
+            "target": "Package",
+            "version": "[1.26.4, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

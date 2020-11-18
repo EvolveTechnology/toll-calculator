@@ -1,0 +1,15 @@
+C:\Users\Tomas\source\repos\toll-calculator\C#\TollCalculationApp\bin\Debug\netcoreapp3.1\TollCalculationApp.exe
+C:\Users\Tomas\source\repos\toll-calculator\C#\TollCalculationApp\obj\Debug\netcoreapp3.1\TollCalculationApp.csprojAssemblyReference.cache
+C:\Users\Tomas\source\repos\toll-calculator\C#\TollCalculationApp\obj\Debug\netcoreapp3.1\TollCalculationApp.AssemblyInfoInputs.cache
+C:\Users\Tomas\source\repos\toll-calculator\C#\TollCalculationApp\obj\Debug\netcoreapp3.1\TollCalculationApp.AssemblyInfo.cs
+C:\Users\Tomas\source\repos\toll-calculator\C#\TollCalculationApp\bin\Debug\netcoreapp3.1\TollCalculationApp.deps.json
+C:\Users\Tomas\source\repos\toll-calculator\C#\TollCalculationApp\bin\Debug\netcoreapp3.1\TollCalculationApp.runtimeconfig.json
+C:\Users\Tomas\source\repos\toll-calculator\C#\TollCalculationApp\bin\Debug\netcoreapp3.1\TollCalculationApp.runtimeconfig.dev.json
+C:\Users\Tomas\source\repos\toll-calculator\C#\TollCalculationApp\bin\Debug\netcoreapp3.1\TollCalculationApp.dll
+C:\Users\Tomas\source\repos\toll-calculator\C#\TollCalculationApp\bin\Debug\netcoreapp3.1\TollCalculationApp.pdb
+C:\Users\Tomas\source\repos\toll-calculator\C#\TollCalculationApp\bin\Debug\netcoreapp3.1\Nager.Date.dll
+C:\Users\Tomas\source\repos\toll-calculator\C#\TollCalculationApp\obj\Debug\netcoreapp3.1\TollCalculationApp.csproj.CoreCompileInputs.cache
+C:\Users\Tomas\source\repos\toll-calculator\C#\TollCalculationApp\obj\Debug\netcoreapp3.1\TollCalculationApp.csproj.CopyComplete
+C:\Users\Tomas\source\repos\toll-calculator\C#\TollCalculationApp\obj\Debug\netcoreapp3.1\TollCalculationApp.dll
+C:\Users\Tomas\source\repos\toll-calculator\C#\TollCalculationApp\obj\Debug\netcoreapp3.1\TollCalculationApp.pdb
+C:\Users\Tomas\source\repos\toll-calculator\C#\TollCalculationApp\obj\Debug\netcoreapp3.1\TollCalculationApp.genruntimeconfig.cache
