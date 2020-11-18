@@ -1,5 +1,60 @@
 import { config } from "../config";
-import { HOLIDAYS } from ".././constants/constants";
+import { HOLIDAYS, ONE_HOUR, MAX_DAILY_FEE } from ".././constants/constants";
+
+export const getTotalFeeForDate = (vehicle, date) => {
+  if (isTollFreeDate(date) || isTollFreeVehicle(vehicle)) {
+    return 0;
+  }
+
+  let fee = 0;
+  const passages = Object.values(vehicle.passages[date]);
+  const hourSlots = groupTimesByHourSlots(passages, date);
+
+  hourSlots.forEach((slot) => {
+    fee += getHighestFeeForHourSlot(slot);
+  });
+
+  if (fee > MAX_DAILY_FEE) fee = MAX_DAILY_FEE;
+
+  return fee;
+};
+
+export const getHighestFeeForHourSlot = (hourSlot) =>
+  hourSlot
+    .map((time) => getFeeForTime(time))
+    .reduce((fee1, fee2) => Math.max(fee1, fee2));
+
+export const groupTimesByHourSlots = (times, date) => {
+  let groupedHourSlots = [];
+  let hourSlot = [];
+  let firstPassageInSlot = times[0];
+
+  times.forEach((time, index) => {
+    if (isLessThanOneHourAgo(time, firstPassageInSlot, date)) {
+      hourSlot.push(time);
+      if (index === times.length - 1) {
+        groupedHourSlots.push(hourSlot);
+      }
+    } else {
+      groupedHourSlots.push(hourSlot);
+      hourSlot = [time];
+      firstPassageInSlot = time;
+      if (index === times.length - 1) {
+        groupedHourSlots.push(hourSlot);
+      }
+    }
+  });
+
+  return groupedHourSlots;
+};
+
+export const isLessThanOneHourAgo = (time, since, date) => {
+  const timeToCheck = new Date(`${date}T${time}`);
+  const timeToCheckFrom = new Date(`${date}T${since}`);
+  const anHourAgo = timeToCheck - ONE_HOUR;
+
+  return timeToCheckFrom > anHourAgo;
+};
 
 export const getFeeForTime = (time) => {
   const hour = parseInt(time.split(":")[0]);
