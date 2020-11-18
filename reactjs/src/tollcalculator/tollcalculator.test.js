@@ -31,3 +31,14 @@ test("tractor vehicle type is toll free", () => {
   const received = TollCalculator.isTollFreeVehicle(vehicle);
   expect(received).toBe(true);
 });
+
+describe("weekends and holidays are toll free dates", () => {
+  test("saturday is toll free", () => {
+    const received = TollCalculator.isTollFreeDate("2020-11-14");
+    expect(received).toBe(true);
+  });
+  test("national day is toll free", () => {
+    const received = TollCalculator.isTollFreeDate("2020-06-06");
+    expect(received).toBe(true);
+  });
+});

@@ -1,4 +1,5 @@
 import { config } from "../config";
+import { HOLIDAYS } from ".././constants/constants";
 
 export const getFeeForTime = (time) => {
   const hour = parseInt(time.split(":")[0]);
@@ -20,4 +21,10 @@ export const getFeeForTime = (time) => {
 
 export const isTollFreeVehicle = (vehicle) => {
   return config.tollFreeVehicles.includes(vehicle.type);
+};
+
+export const isTollFreeDate = (date) => {
+  const day = new Date(date).getDay();
+  const isWeekend = day === 6 || day === 0;
+  return isWeekend || HOLIDAYS.includes(date);
 };
