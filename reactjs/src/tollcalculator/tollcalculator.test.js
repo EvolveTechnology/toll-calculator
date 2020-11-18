@@ -25,3 +25,9 @@ test("get correct fee for time", () => {
     expect(received).toBe(expected);
   });
 });
+
+test("tractor vehicle type is toll free", () => {
+  const vehicle = { type: "tractor" };
+  const received = TollCalculator.isTollFreeVehicle(vehicle);
+  expect(received).toBe(true);
+});

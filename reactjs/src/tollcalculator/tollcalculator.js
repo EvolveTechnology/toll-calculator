@@ -1,3 +1,5 @@
+import { config } from "../config";
+
 export const getFeeForTime = (time) => {
   const hour = parseInt(time.split(":")[0]);
   const minute = parseInt(time.split(":")[1]);
@@ -14,4 +16,8 @@ export const getFeeForTime = (time) => {
   else if (hour === 17 && minute >= 0 && minute <= 59) return 13;
   else if (hour === 18 && minute >= 0 && minute <= 29) return 8;
   else return 0;
+};
+
+export const isTollFreeVehicle = (vehicle) => {
+  return config.tollFreeVehicles.includes(vehicle.type);
 };
