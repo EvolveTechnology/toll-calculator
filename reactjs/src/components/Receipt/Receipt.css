@@ -1,0 +1,20 @@
+.receipt {
+  padding: 15px 30px;
+  background: #fff;
+  border: 1px solid lightgrey;
+  border-radius: 8px;
+}
+
+.fee {
+  text-align: right;
+}
+
+ul.receipt-passages-rows {
+  padding: 0;
+  overflow-x: hidden;
+  list-style: none;
+}
+
+.receipt-total-fee {
+  text-align: right;
+}

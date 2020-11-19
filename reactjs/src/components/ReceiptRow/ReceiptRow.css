@@ -1,0 +1,19 @@
+li {
+  line-height: 1.5;
+}
+
+li:before {
+  float: left;
+  width: 0;
+  white-space: nowrap;
+  content: " . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ";
+}
+
+span {
+  background: #fff;
+}
+
+span:last-child {
+  float: right;
+  padding-left: 0.35em;
+}
