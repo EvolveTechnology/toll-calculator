@@ -83,3 +83,24 @@ export const isTollFreeDate = (date) => {
   const isWeekend = day === 6 || day === 0;
   return isWeekend || HOLIDAYS.includes(date);
 };
+
+export const notChargedPassagesForDate = (passages, date) => {
+  const hourSlots = groupTimesByHourSlots(passages, date);
+  let notChargedPassages = [];
+
+  hourSlots.forEach((slot) => {
+    const highestFee = getHighestFeeForHourSlot(slot);
+    const slotWithFees = slot.map((time) => {
+      return { time: time, fee: getFeeForTime(time) };
+    });
+    const chargedPassageTime = slotWithFees.find((time) => {
+      return time.fee === highestFee;
+    });
+    const notChargedTimes = slotWithFees
+      .filter((time) => time !== chargedPassageTime)
+      .map((time) => time.time);
+    notChargedPassages = [...notChargedPassages, ...notChargedTimes];
+  });
+
+  return notChargedPassages;
+};

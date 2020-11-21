@@ -17,3 +17,14 @@ span:last-child {
   float: right;
   padding-left: 0.35em;
 }
+
+.greyed-out span {
+  color: #c4c4c4;
+  text-decoration: line-through;
+  padding: 0;
+}
+
+li.greyed-out:before {
+  color: #c4c4c4;
+  text-decoration: line-through;
+}

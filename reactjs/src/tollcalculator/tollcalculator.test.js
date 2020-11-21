@@ -92,3 +92,11 @@ describe("weekends and holidays are toll free dates", () => {
     expect(received).toBe(true);
   });
 });
+
+test("get not charged passages for a date", () => {
+  const received = TollCalculator.notChargedPassagesForDate(
+    ["06:00:00", "07:00:00", "07:30:00", "07:59:59"],
+    "2020-11-19"
+  );
+  expect(received).toEqual(expect.arrayContaining(["07:30:00", "07:59:59"]));
+});
