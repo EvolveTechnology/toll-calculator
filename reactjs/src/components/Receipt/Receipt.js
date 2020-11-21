@@ -6,6 +6,7 @@ import {
   notChargedPassagesForDate,
   isTollFreeDate,
 } from "../../tollcalculator/tollcalculator";
+import { MAX_DAILY_FEE } from "../../constants/constants";
 import "./Receipt.css";
 
 const Receipt = ({ date, vehicle }) => {
@@ -32,6 +33,7 @@ const Receipt = ({ date, vehicle }) => {
       <h3 className="receipt-date">{date}</h3>
       {tollFreeDate && <p>Toll free date</p>}
       <ul className="receipt-passages-rows">{rows}</ul>
+      {totalFee >= MAX_DAILY_FEE && <p>Max daily fee reached</p>}
       <p className="receipt-total-fee">TOTAL: {totalFee} SEK</p>
     </div>
   );
