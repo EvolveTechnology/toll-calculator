@@ -104,3 +104,15 @@ export const notChargedPassagesForDate = (passages, date) => {
 
   return notChargedPassages;
 };
+
+export const totalFeeForDates = (vehicleData) => {
+  return Object.keys(vehicleData.passages)
+    .map((date) => getTotalFeeForDate(vehicleData, date))
+    .reduce((a, b) => a + b);
+};
+
+export const totalPassagesForDates = (vehicleData) => {
+  return Object.keys(vehicleData.passages)
+    .map((date) => vehicleData.passages[date].length)
+    .reduce((a, b) => a + b);
+};

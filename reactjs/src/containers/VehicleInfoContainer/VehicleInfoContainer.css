@@ -1,0 +1,18 @@
+.vehicleinfo-container {
+  margin: 0em 6em;
+  padding: 1em;
+  background: #fff;
+  text-align: left;
+  border: 1px solid lightgrey;
+  border-radius: 8px;
+}
+
+.vehicleinfo-type {
+  text-transform: capitalize;
+}
+
+@media screen and (max-width: 768px) {
+  .vehicleinfo-container {
+    margin: 1em;
+  }
+}

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import ReceiptContainer from "./containers/ReceiptContainer/ReceiptContainer";
+import VehicleInfoContainer from "./containers/VehicleInfoContainer/VehicleInfoContainer";
 import "./App.css";
 
 function App() {
@@ -38,7 +39,12 @@ function App() {
       <div className="App">
         <h1>TollFee Calculator</h1>
         {isLoaded && vehicleData ? (
-          <ReceiptContainer vehicleData={vehicleData}></ReceiptContainer>
+          <Fragment>
+            <VehicleInfoContainer
+              vehicleData={vehicleData}
+            ></VehicleInfoContainer>
+            <ReceiptContainer vehicleData={vehicleData}></ReceiptContainer>
+          </Fragment>
         ) : (
           <div>Loading...</div>
         )}
