@@ -1,13 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace TollFeeCalculator
 {
-    public interface Vehicle
+    public class Vehicle : IVehicle
     {
-        String GetVehicleType();
+
+        String _VehicleType;
+
+        public Vehicle(string vehicleType)
+        {
+            _VehicleType = vehicleType;
+        }
+
+
+        public String GetVehicleType()
+        {
+            return _VehicleType;
+        }
     }
 }
