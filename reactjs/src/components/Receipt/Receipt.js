@@ -5,6 +5,7 @@ import {
   getTotalFeeForDate,
   notChargedPassagesForDate,
   isTollFreeDate,
+  isTollFreeVehicle,
 } from "../../tollcalculator/tollcalculator";
 import { MAX_DAILY_FEE } from "../../constants/constants";
 import "./Receipt.css";
@@ -14,6 +15,7 @@ const Receipt = ({ date, vehicle }) => {
   const totalFee = getTotalFeeForDate(vehicle, date);
   const notChargedTimes = notChargedPassagesForDate(passages, date);
   const tollFreeDate = isTollFreeDate(date);
+  const tollFreeVehicle = isTollFreeVehicle(vehicle);
 
   const rows = passages.map((time, index) => {
     const fee = getFeeForTime(time);
@@ -21,7 +23,7 @@ const Receipt = ({ date, vehicle }) => {
     return (
       <ReceiptRow
         time={time}
-        fee={tollFreeDate ? 0 : fee}
+        fee={tollFreeDate || tollFreeVehicle ? 0 : fee}
         key={index}
         greyOut={tollFreeDate ? false : greyOutRow}
       ></ReceiptRow>
