@@ -12,15 +12,29 @@ const VehicleInfoContainer = ({ vehicleData }) => {
 
   const tollFreeVehicle = isTollFreeVehicle(vehicleData);
 
+  const dates = Object.keys(vehicleData.passages);
+  const lastDate = dates[0];
+  const firstDate = dates[dates.length - 1];
+
   return (
     <div data-testid="vehicleinfo-container" className="vehicleinfo-container">
-      <div className="info">
-        <h3>Data for: {vehicleData.reg}</h3>
+      <div className="vehicleinfo-detail">
+        <h2>{vehicleData.reg}</h2>
         <p className="vehicleinfo-type">
           Type: {vehicleData.type} {tollFreeVehicle ? "(Toll Free)" : ""}
         </p>
-        <p>Total toll fee: {totalFee} SEK</p>
-        <p>Total passages: {totalPassages} </p>
+      </div>
+      <hr></hr>
+      <div className="vehicleinfo-detail summary-data">
+        <h2>{totalFee} SEK</h2>
+        <p>Total toll fee</p>
+      </div>
+      <hr></hr>
+      <div className="vehicleinfo-detail summary-data">
+        <h2>{totalPassages} passages</h2>
+        <p>
+          Between {firstDate} and {lastDate}
+        </p>
       </div>
     </div>
   );

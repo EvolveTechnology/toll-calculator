@@ -17,4 +17,17 @@ ul.receipt-passages-rows {
 
 .receipt-total-fee {
   text-align: right;
+  font-weight: 500;
+}
+
+.max-fee-reached {
+  text-align: right;
+  color: #f24e1e;
+  font-size: 1em;
+}
+
+.toll-free-date {
+  color: #00c371;
+  text-transform: uppercase;
+  font-weight: bold;
 }

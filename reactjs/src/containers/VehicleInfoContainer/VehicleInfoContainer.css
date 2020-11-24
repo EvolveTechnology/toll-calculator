@@ -1,10 +1,30 @@
 .vehicleinfo-container {
   margin: 0em 6em;
-  padding: 1em;
+  padding: 6em 2em;
   background: #fff;
   text-align: left;
   border: 1px solid lightgrey;
   border-radius: 8px;
+  display: flex;
+  /* padding: 2em ; */
+}
+
+.vehicleinfo-container h2 {
+  font-size: 3em;
+  margin: 0;
+}
+
+.vehicleinfo-detail {
+  width: 100%;
+}
+
+.vehicleinfo-detail p {
+  font-size: 1.2em;
+}
+
+hr {
+  border: 0.5px solid rgb(235, 235, 235);
+  margin-right: 2em;
 }
 
 .vehicleinfo-type {
@@ -14,5 +34,18 @@
 @media screen and (max-width: 768px) {
   .vehicleinfo-container {
     margin: 1em;
+    padding: 2em;
+    flex-direction: column;
+  }
+
+  .vehicleinfo-container h2 {
+    font-size: 2em;
+  }
+  .vehicleinfo-detail p {
+    font-size: 1em;
+  }
+  hr {
+    width: 100%;
+    margin-bottom: 1.2em;
   }
 }

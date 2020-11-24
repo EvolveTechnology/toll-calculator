@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import ReceiptContainer from "./containers/ReceiptContainer/ReceiptContainer";
 import VehicleInfoContainer from "./containers/VehicleInfoContainer/VehicleInfoContainer";
+import Header from "./components/Header/Header";
 import "./App.css";
 
 function App() {
@@ -30,14 +31,16 @@ function App() {
   if (error) {
     return (
       <div className="App">
-        <h1>TollFee Calculator</h1>
-        <div>No data found or missing reg number for vehicle</div>
+        <Header></Header>
+        <div className="App-data-error">
+          No data found or missing reg number for vehicle
+        </div>
       </div>
     );
   } else {
     return (
       <div className="App">
-        <h1>TollFee Calculator</h1>
+        <Header></Header>
         {isLoaded && vehicleData ? (
           <Fragment>
             <VehicleInfoContainer
@@ -46,7 +49,7 @@ function App() {
             <ReceiptContainer vehicleData={vehicleData}></ReceiptContainer>
           </Fragment>
         ) : (
-          <div>Loading...</div>
+          <div className="App-loading">Loading...</div>
         )}
       </div>
     );

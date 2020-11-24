@@ -1,3 +1,20 @@
 .App {
   text-align: center;
+  padding-top: 80px;
+}
+
+.App-data-error {
+  padding: 1em;
+  font-size: 1.3em;
+  color: #fff;
+}
+
+.App-loading {
+  font-style: italic;
+}
+
+@media screen and (max-width: 768px) {
+  .App {
+    padding-top: 20px;
+  }
 }

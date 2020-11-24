@@ -33,9 +33,11 @@ const Receipt = ({ date, vehicle }) => {
   return (
     <div data-testid="receipt" className="receipt">
       <h3 className="receipt-date">{date}</h3>
-      {tollFreeDate && <p>Toll free date</p>}
+      {tollFreeDate && <p className="toll-free-date">Toll free date</p>}
       <ul className="receipt-passages-rows">{rows}</ul>
-      {totalFee >= MAX_DAILY_FEE && <p>Max daily fee reached</p>}
+      {totalFee >= MAX_DAILY_FEE && (
+        <p className="max-fee-reached">Max daily fee reached</p>
+      )}
       <p className="receipt-total-fee">TOTAL: {totalFee} SEK</p>
     </div>
   );

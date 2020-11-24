@@ -1,16 +1,20 @@
 li {
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 li:before {
   float: left;
   width: 0;
   white-space: nowrap;
-  content: " . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ";
+  content: ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ";
 }
 
 span {
   background: #fff;
+}
+
+span:first-child {
+  padding-right: 0.2em;
 }
 
 span:last-child {
