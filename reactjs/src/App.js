@@ -30,7 +30,7 @@ function App() {
 
   if (error) {
     return (
-      <div className="App">
+      <div className="App" data-testid="app">
         <Header></Header>
         <div className="App-data-error">
           No data found or missing reg number for vehicle
@@ -39,7 +39,7 @@ function App() {
     );
   } else {
     return (
-      <div className="App">
+      <div className="App" data-testid="app">
         <Header></Header>
         {isLoaded && vehicleData ? (
           <Fragment>

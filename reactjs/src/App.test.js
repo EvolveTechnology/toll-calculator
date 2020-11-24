@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import App from "./App";
 
-test("renders tollfee calculator header", () => {
+test("renders app", () => {
   render(<App />);
-  const header = screen.getByText(/TollFee Calculator/i);
-  expect(header).toBeInTheDocument();
+  const app = screen.getByTestId("app");
+  expect(app).toBeInTheDocument();
 });
