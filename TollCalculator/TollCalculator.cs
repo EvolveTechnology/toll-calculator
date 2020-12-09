@@ -21,17 +21,20 @@ namespace TollFeeCalculator
 
         public TollCalculator(ITollFeeService tollFeeService)
         {
-            _tollFeeService = tollFeeService;
+            _tollFeeService = tollFeeService ?? throw new ArgumentNullException(nameof(tollFeeService));
         }
 
         public decimal GetTollFee(IVehicle vehicle, IList<DateTime> dates)
         {
+            if (vehicle == null) throw new ArgumentNullException(nameof(vehicle));
+            if (dates == null) throw new ArgumentNullException(nameof(dates));
+
             if (!dates.Any())
-                return 0;  // fail fast
+                return 0; // fail fast
 
             var timeTable = _tollFeeService.GetFeeTimeIntervals(vehicle.VehicleType, dates.First());
             if (!timeTable.Any())
-                return 0;  // free ride for this vehicle type and/or date
+                return 0; // free ride for this vehicle type and/or date
 
             decimal sum = 0;
             var pendingFeeAndTime = default(TollFeeByTime); // begin with a bogus free passage a midnight

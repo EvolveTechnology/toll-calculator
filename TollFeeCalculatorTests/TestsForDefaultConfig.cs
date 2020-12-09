@@ -11,6 +11,29 @@ namespace TollFeeCalculatorTests
     public class TestsForDefaultConfig
     {
         [Test]
+        public void TestCannotInstantiateCalculatorWithNullService()
+        {
+            var ex = Assert.Throws<ArgumentNullException>(() => new TollCalculator(null));
+            Assert.AreEqual("Value cannot be null.\r\nParameter name: tollFeeService", ex.Message);
+        }
+
+        [Test]
+        public void TestCannoCallCalculatorWithNullVehicle()
+        {
+            var calc = new TollCalculator(new defaultTollFeeService());
+            var ex = Assert.Throws<ArgumentNullException>(() => calc.GetTollFee(null, new List<DateTime>()));
+            Assert.AreEqual("Value cannot be null.\r\nParameter name: vehicle", ex.Message);
+        }
+
+        [Test]
+        public void TestCannoCallCalculatorWithNullDates()
+        {
+            var calc = new TollCalculator(new defaultTollFeeService());
+            var ex = Assert.Throws<ArgumentNullException>(() => calc.GetTollFee(new Car(), null));
+            Assert.AreEqual("Value cannot be null.\r\nParameter name: dates", ex.Message);
+        }
+
+        [Test]
         public void TestThreeDisjointPassages()
         {
             var calc = new TollCalculator(new defaultTollFeeService());
