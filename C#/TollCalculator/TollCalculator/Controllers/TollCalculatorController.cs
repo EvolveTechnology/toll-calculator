@@ -52,7 +52,7 @@ namespace TollFeeCalculator.Controllers
         }
 
         /// <summary>
-        /// Toll Passes for entire day
+        /// Toll Passes for entire day.
         /// </summary>
         /// <param name="tollFeeViewModel"></param>
         /// <returns></returns>
@@ -63,7 +63,7 @@ namespace TollFeeCalculator.Controllers
             try
             {
                 var tollPasses = _tollPassService.Get(tollFeeViewModel.VehicleId);
-                var dates = tollPasses.Select(t => DateTime.Parse(t.Date)).ToArray();
+                var dates = tollPasses.Select(t => DateTime.Parse(t.Date)).Where(d => d.Date == tollFeeViewModel.Date).ToArray();
                 var fee = _tollCalculator.GetTollFee(tollPasses.First()?.VehicleType, dates);
                 return fee;
             }
@@ -71,7 +71,6 @@ namespace TollFeeCalculator.Controllers
             {
                 return default;
             }
-            
         }
     }
 }

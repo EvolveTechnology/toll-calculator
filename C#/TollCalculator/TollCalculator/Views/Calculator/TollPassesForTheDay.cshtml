@@ -11,7 +11,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Calculate the Toll Fee by entering the vehicle id and date.</h4>
+        <h4>Calculate the Toll Fee for the entire day by entering the vehicle id and date.</h4>
         <hr />
         <div class="form-group">
             @Html.LabelFor(x => Model.VehicleId, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -33,7 +33,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Retrieve" class="btn btn-primary" />
+                <input type="submit" value="Calculate" class="btn btn-primary" />
             </div>
         </div>
     </div>

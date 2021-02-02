@@ -91,7 +91,7 @@ namespace TollFeeCalculator.Controllers
             try
             {
                 var result = _tollPassService.Get(tollFeeViewModel.VehicleId);
-                var dates = result.Select(t => DateTime.Parse(t.Date)).ToArray();
+                var dates = result.Select(t => DateTime.Parse(t.Date)).Where(d => d.Date == tollFeeViewModel.Date.Date).ToArray();
                 var fee = _tollCalculator.GetTollFee(result.First()?.VehicleType, dates);
                 TempData["Fee"] = fee;
                 return RedirectToAction(nameof(Fees), "Calculator");
