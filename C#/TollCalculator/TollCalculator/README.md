@@ -13,9 +13,12 @@ A calculator for vehicle toll fees for a Toll Pass or for all the passes for the
 * Some vehicle types are fee-free
 * Weekends and holidays are fee-free
 
-##Usage and technical details
+##Usage and technical details and suggestions
 Can be used as a MVC app or as an API
+Uses .Net Core 3.1
 Uses MongoDb to store and retrieve the Toll Passes which can be leveraged to be deployed on the cloud
 The TollCalculator class that calculates the Toll Fees could be refactored.
 Partial views can be used instead of a separate view to display the Fees.
+Exception handling and logging should be added
+Controllers need to handle different results, eg, BadRequest, InternalServerError. could be async as well in the API.
 

@@ -66,7 +66,7 @@ namespace TollFeeCalculator.Controllers
             }
             catch
             {
-                return View();
+                return View("Error");
             }
         }
 
@@ -98,7 +98,7 @@ namespace TollFeeCalculator.Controllers
             }
             catch(Exception)
             {
-                return View();
+                return View("Error");
             }
         }
     }
