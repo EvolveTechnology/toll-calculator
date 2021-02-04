@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TollCalculatorBlazorApp", "TollCalculatorBlazorApp\TollCalculatorBlazorApp.csproj", "{69E47E7E-237B-47C4-AA4B-3BC0869ED732}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TollCalculatorBlazorUnitTest", "TollCalculatorBlazorUnitTest\TollCalculatorBlazorUnitTest.csproj", "{F74817BB-0686-4A21-848C-32B5400DF028}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{69E47E7E-237B-47C4-AA4B-3BC0869ED732}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69E47E7E-237B-47C4-AA4B-3BC0869ED732}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69E47E7E-237B-47C4-AA4B-3BC0869ED732}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69E47E7E-237B-47C4-AA4B-3BC0869ED732}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F74817BB-0686-4A21-848C-32B5400DF028}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F74817BB-0686-4A21-848C-32B5400DF028}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F74817BB-0686-4A21-848C-32B5400DF028}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F74817BB-0686-4A21-848C-32B5400DF028}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {83ACB6DD-B8AA-4392-AE06-EF92DE732502}
+	EndGlobalSection
+EndGlobal
