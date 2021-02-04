@@ -1,0 +1,194 @@
+﻿@page "/"
+@using TollCalculatorBlazorApp.Services
+@using TollCalculatorBlazorApp.Models;
+@using System.Collections.Generic; 
+
+
+
+
+<div class="bodyContent">
+    <div class="headerContent">
+        <h3>
+            Toll calculator Service
+        </h3>
+        <p>
+
+            Toll Calculation is based on customaized formula based on the vehcile type and the time of the toll record
+
+        </p>
+    </div>
+
+    <div class="tollContent">
+        <div>
+            <EditForm Model="@enumModel">
+                <table class="table">
+
+                    <tbody>
+
+                        <tr>
+                            <td>
+                                <label class="labelText">
+                                    Vehicle type
+                                </label>
+                            </td>
+                            <td>
+                                <select  @bind="@enumModel" class="textinput" >
+                                    @foreach (var value in Enum.GetValues(typeof(VehicleTypesEnum)))
+                                    {
+                                        <option>@value</option>
+                                    }
+                                </select>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label class="labelText">
+                                    Toll Date
+                                </label>
+                            </td>
+                            <td>
+                                <InputDate @bind-Value="@tollDate" class="textinput" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label class="labelText">
+                                    Toll Time:  @getToll()  
+                                </label>
+                            </td>
+                            <td>
+                                <input type="time" @bind="@tollTime" class="textinput" />  
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button @onclick="appendNewTime" class="button">Register Time</button>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button @onclick="showTotalToll" class="button">Calculate Total Toll</button>
+                            </td>
+                            <td>
+                                <label class="textinput">
+                                    @totalTollFee
+                                </label>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </EditForm>
+        </div>
+        <div class="flex-item ">
+
+
+            <label class="labelText">
+                Rregistered Toll Times
+            </label>
+            <br />
+
+            @foreach (var value in dates)
+            {
+                <label class="textinput"> @value.ToString() </label>
+                <br />
+
+            }
+
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+@code {
+
+
+    private VehicleTypesEnum enumModel;
+
+    private DateTime tollDate = DateTime.Now;
+
+    [Parameter] public DateTime tollTime { get; set; }
+
+    List<DateTime> dates = new List<DateTime>();
+
+    private TollCalculatorService toll = new TollCalculatorService(new Car());
+    private int totalTollFee;
+
+
+    private TollCalculatorService createVehcile()
+    {
+        switch(enumModel)
+        {
+            case VehicleTypesEnum.Car:
+                toll = new TollCalculatorService(new Car());
+                break;
+            case VehicleTypesEnum.Motorbike:
+                toll = new TollCalculatorService(new Motorbike());
+                break;
+            case VehicleTypesEnum.Diplomat:
+                toll = new TollCalculatorService(new Diplomat());
+                break;
+            case VehicleTypesEnum.Emergency:
+                toll = new TollCalculatorService(new Emergency());
+                break;
+            case VehicleTypesEnum.Foreign:
+                toll = new TollCalculatorService(new Foreign());
+                break;
+            case VehicleTypesEnum.Military:
+                toll = new TollCalculatorService(new Military());
+                break;
+            case VehicleTypesEnum.Tractor:
+                toll = new TollCalculatorService(new Tractor());
+                break;;
+
+        }
+
+        return toll;
+
+    }
+    private int getToll()
+    {
+        createVehcile();
+        int tollSum = toll.TollRate(tollTime);//toll.CalculateTollDailyInvoice(dates);
+        return tollSum;
+
+    }
+
+    private int getTotalToll()
+    {
+        createVehcile();
+        int tollSum = toll.CalculateTollDailyInvoice(dates.ToArray());
+        return tollSum;
+
+    }
+    private void showTotalToll()
+    {
+        createVehcile();
+        totalTollFee = getTotalToll();
+
+
+    }
+
+    private void appendNewTime()
+    {
+        
+
+        tollDate = tollDate.Date.AddHours(tollTime.Hour).AddMinutes(tollTime.Minute).AddSeconds(tollTime.Second).AddMilliseconds(tollTime.Millisecond);
+        dates.Add(tollDate);
+
+
+
+    }
+
+}
