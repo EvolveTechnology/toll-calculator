@@ -1,0 +1,21 @@
+{
+    "name": "evolvetechnology/toll-calculator",
+    "description": "A calculator for vehicle toll fees.",
+    "type": "project",
+    "license": "proprietary",
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Emil Johnsson",
+            "email": "emil@kodamera.se"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
