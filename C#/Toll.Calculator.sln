@@ -9,13 +9,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toll.Calculator.Domain", "T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toll.Calculator.Service", "Toll.Calculator.Service\Toll.Calculator.Service.csproj", "{EAE9C347-E09A-4F27-800A-2734E0C9DF94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toll.Calculator.DAL", "Toll.Calculator.DAL\Toll.Calculator.DAL.csproj", "{87306CD2-61F5-42B1-8277-A40907A554F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toll.Calculator.DAL", "Toll.Calculator.DAL\Toll.Calculator.DAL.csproj", "{87306CD2-61F5-42B1-8277-A40907A554F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toll.Calculator.Infrastructure", "Toll.Calculator.Infrastructure\Toll.Calculator.Infrastructure.csproj", "{4C38238F-7081-4C50-B4EA-C3E1E3F57959}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toll.Calculator.Infrastructure", "Toll.Calculator.Infrastructure\Toll.Calculator.Infrastructure.csproj", "{4C38238F-7081-4C50-B4EA-C3E1E3F57959}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{911711EF-A004-46FD-91BE-6C1E67BD0B03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toll.Calculator.UnitTests.Common", "Toll.Calculator.UnitTests.Common\Toll.Calculator.UnitTests.Common.csproj", "{B9C0422D-0D49-40E8-9C5C-69695CA32821}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toll.Calculator.UnitTests.Common", "Toll.Calculator.UnitTests.Common\Toll.Calculator.UnitTests.Common.csproj", "{B9C0422D-0D49-40E8-9C5C-69695CA32821}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toll.Calculator.WebAPI.UnitTests", "Toll.Calculator.WebAPI.UnitTests\Toll.Calculator.WebAPI.UnitTests.csproj", "{90A5127C-4CCB-437F-8D8E-6819652B2A80}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toll.Calculator.Service.UnitTests", "Toll.Calculator.Service.UnitTests\Toll.Calculator.Service.UnitTests.csproj", "{C40DC7F7-3BA2-457B-AEBD-FEE1AD3FBD3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,12 +51,22 @@ Global
 		{B9C0422D-0D49-40E8-9C5C-69695CA32821}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9C0422D-0D49-40E8-9C5C-69695CA32821}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9C0422D-0D49-40E8-9C5C-69695CA32821}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90A5127C-4CCB-437F-8D8E-6819652B2A80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90A5127C-4CCB-437F-8D8E-6819652B2A80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90A5127C-4CCB-437F-8D8E-6819652B2A80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90A5127C-4CCB-437F-8D8E-6819652B2A80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C40DC7F7-3BA2-457B-AEBD-FEE1AD3FBD3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C40DC7F7-3BA2-457B-AEBD-FEE1AD3FBD3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C40DC7F7-3BA2-457B-AEBD-FEE1AD3FBD3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C40DC7F7-3BA2-457B-AEBD-FEE1AD3FBD3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B9C0422D-0D49-40E8-9C5C-69695CA32821} = {911711EF-A004-46FD-91BE-6C1E67BD0B03}
+		{90A5127C-4CCB-437F-8D8E-6819652B2A80} = {911711EF-A004-46FD-91BE-6C1E67BD0B03}
+		{C40DC7F7-3BA2-457B-AEBD-FEE1AD3FBD3C} = {911711EF-A004-46FD-91BE-6C1E67BD0B03}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {68FE6552-53E7-4B2B-8A65-E07A47E90B0E}

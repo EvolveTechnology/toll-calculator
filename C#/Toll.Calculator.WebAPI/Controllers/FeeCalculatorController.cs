@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using Toll.Calculator.Domain;
 using Toll.Calculator.Infrastructure.CustomExceptions;
 using Toll.Calculator.Service;
 using Toll.Calculator.WebAPI.ApiModels;
@@ -23,8 +24,14 @@ namespace Toll.Calculator.WebAPI.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
         [HttpGet("api/total-fee")]
-        public async Task<IActionResult> GetTotalFee([FromQuery] TotalFeeRequestModel requestModel)
+        public async Task<IActionResult> GetTotalFee(Vehicle vehicleType, string passageDates)
         {
+            var requestModel = new TotalFeeRequestModel
+            {
+                VehicleType = vehicleType,
+                PassageDates = passageDates
+            };
+
             try
             {
                 var totalFee =

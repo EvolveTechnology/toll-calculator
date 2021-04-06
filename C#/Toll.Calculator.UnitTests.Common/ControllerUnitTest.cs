@@ -61,6 +61,8 @@ namespace Toll.Calculator.UnitTests.Common
                             new ModestConstructorQuery()),
                         new ControllerFiller()),
                     new ControllerSpecification()));
+
+            fixture.OmitAutoProperties = true;
         }
 
 
