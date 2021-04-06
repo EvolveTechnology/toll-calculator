@@ -1,9 +1,11 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Text.Json.Serialization;
+using Microsoft.OpenApi.Models;
 
 namespace Toll.Calculator.WebAPI
 {
@@ -30,14 +32,19 @@ namespace Toll.Calculator.WebAPI
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
 
-            services.AddSwaggerDocument(config =>
+            services.AddSwaggerGen(c =>
             {
-                config.PostProcess = document =>
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    document.Info.Version = "v1";
-                    document.Info.Title = "Toll Calculator API";
-                    document.Info.Description = "An API to calculate toll fees";
-                };
+                    Title = "Toll Calculator API",
+                    Version = "v1",
+                    Description = "An API to calculate toll fees",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Victor Redler",
+                        Email = "victor.redler@gmail.com",
+                    }
+                });
             });
         }
 
@@ -55,8 +62,14 @@ namespace Toll.Calculator.WebAPI
 
             app.UseAuthorization();
 
-            app.UseOpenApi();
-            app.UseSwaggerUi3();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Toll Calculator v1");
+
+                // To serve SwaggerUI at application's root page, set the RoutePrefix property to an empty string.
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseEndpoints(endpoints =>
             {
