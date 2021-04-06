@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Toll.Calculator.Domain
+﻿namespace Toll.Calculator.Domain
 {
     public enum Vehicle
     {

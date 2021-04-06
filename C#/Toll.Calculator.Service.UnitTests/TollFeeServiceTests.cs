@@ -1,5 +1,6 @@
 using System;
 using Toll.Calculator.DAL;
+using Toll.Calculator.DAL.Interface;
 using Toll.Calculator.UnitTests.Common;
 using Xunit;
 

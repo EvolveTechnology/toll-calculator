@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Toll.Calculator.DAL.Interface;
 using Toll.Calculator.Domain;
 using Toll.Calculator.Infrastructure;
 

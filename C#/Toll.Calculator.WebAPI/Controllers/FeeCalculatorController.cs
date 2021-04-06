@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Toll.Calculator.Domain;
@@ -26,16 +27,10 @@ namespace Toll.Calculator.WebAPI.Controllers
         [HttpGet("api/total-fee")]
         public async Task<IActionResult> GetTotalFee(Vehicle vehicleType, string passageDates)
         {
-            var requestModel = new TotalFeeRequestModel
-            {
-                VehicleType = vehicleType,
-                PassageDates = passageDates
-            };
-
             try
             {
                 var totalFee =
-                    await _tollFeeService.GetTotalFee(requestModel.VehicleType, requestModel.GetPassageDateTimes());
+                    await _tollFeeService.GetTotalFee(vehicleType, GetPassageDateTimes(passageDates));
 
                 return Ok(new TotalFeeResponseModel
                 {
@@ -49,6 +44,20 @@ namespace Toll.Calculator.WebAPI.Controllers
             catch (Exception e)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, e);
+            }
+        }
+
+        private List<DateTime> GetPassageDateTimes(string passageDates)
+        {
+            var stringDates = passageDates.Split(";");
+
+            try
+            {
+                return stringDates.Select(stringDate => DateTime.Parse(stringDate)).ToList();
+            }
+            catch (Exception)
+            {
+                throw new DateFormatException();
             }
         }
     }
