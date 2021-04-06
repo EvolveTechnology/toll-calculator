@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using Toll.Calculator.Infrastructure.CustomExceptions;
 using Toll.Calculator.Service;
 using Toll.Calculator.WebAPI.ApiModels;
 
@@ -21,23 +23,26 @@ namespace Toll.Calculator.WebAPI.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
         [HttpGet("api/total-fee")]
-        public async Task<IActionResult> GetTotalFee([FromBody] TotalFeeRequestModel requestModel)
+        public async Task<IActionResult> GetTotalFee([FromQuery] TotalFeeRequestModel requestModel)
         {
             try
             {
-                var totalFee = await _tollFeeService.GetTotalFee(requestModel.VehicleType, requestModel.PassageDates);
+                var totalFee =
+                    await _tollFeeService.GetTotalFee(requestModel.VehicleType, requestModel.GetPassageDateTimes());
 
                 return Ok(new TotalFeeResponseModel
                 {
                     TotalFee = totalFee
                 });
             }
+            catch (DateFormatException)
+            {
+                return BadRequest("Unable to parse input dates");
+            }
             catch (Exception e)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, e);
             }
-
-            return Ok();
         }
     }
 }
