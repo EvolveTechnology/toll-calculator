@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toll.Calculator.DAL", "Toll
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toll.Calculator.Infrastructure", "Toll.Calculator.Infrastructure\Toll.Calculator.Infrastructure.csproj", "{4C38238F-7081-4C50-B4EA-C3E1E3F57959}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{911711EF-A004-46FD-91BE-6C1E67BD0B03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toll.Calculator.UnitTests.Common", "Toll.Calculator.UnitTests.Common\Toll.Calculator.UnitTests.Common.csproj", "{B9C0422D-0D49-40E8-9C5C-69695CA32821}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +43,16 @@ Global
 		{4C38238F-7081-4C50-B4EA-C3E1E3F57959}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C38238F-7081-4C50-B4EA-C3E1E3F57959}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C38238F-7081-4C50-B4EA-C3E1E3F57959}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9C0422D-0D49-40E8-9C5C-69695CA32821}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9C0422D-0D49-40E8-9C5C-69695CA32821}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9C0422D-0D49-40E8-9C5C-69695CA32821}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9C0422D-0D49-40E8-9C5C-69695CA32821}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B9C0422D-0D49-40E8-9C5C-69695CA32821} = {911711EF-A004-46FD-91BE-6C1E67BD0B03}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {68FE6552-53E7-4B2B-8A65-E07A47E90B0E}
