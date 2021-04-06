@@ -15,7 +15,8 @@ namespace Toll.Calculator.WebAPI
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             return services
-                .AddSingleton<IVehicleRepository, VehicleRepository>();
+                .AddSingleton<IVehicleRepository, VehicleRepository>()
+                .AddSingleton<ITollFeeRepository, TollFeeRepository>();
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services)

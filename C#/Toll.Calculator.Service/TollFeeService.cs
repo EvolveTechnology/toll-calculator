@@ -39,8 +39,9 @@ namespace Toll.Calculator.Service
                 var passageFee = _tollFeeRepository.GetPassageFeeByTime(passageDate).Fee;
                 var intervalFee = _tollFeeRepository.GetPassageFeeByTime(intervalStart).Fee;
 
-                var diffInMillies = passageDate.Millisecond - intervalStart.Millisecond;
-                var minutes = diffInMillies / 1000 / 60;
+                //Fixa en riktig check i diff, denna checkar bara millisekunder under samma timme
+                var diff = passageDate - intervalStart;
+                var minutes = diff.TotalMinutes;
 
                 if (minutes <= 60)
                 {
@@ -51,6 +52,8 @@ namespace Toll.Calculator.Service
                 else
                 {
                     totalFee += passageFee;
+
+                    intervalStart = passageDate;
                 }
             }
 
