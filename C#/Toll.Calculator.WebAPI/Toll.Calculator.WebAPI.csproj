@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>9e313efa-39f9-4890-9b59-3fd0dd664e9d</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +20,5 @@
     <ProjectReference Include="..\Toll.Calculator.Infrastructure\Toll.Calculator.Infrastructure.csproj" />
     <ProjectReference Include="..\Toll.Calculator.Service\Toll.Calculator.Service.csproj" />
   </ItemGroup>
-
 
 </Project>
