@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Nager.Date;
-using Toll.Calculator.DAL.Interface;
+using Toll.Calculator.DAL.Repositories.Interface;
 using Toll.Calculator.Domain;
-using Toll.Calculator.Infrastructure;
+using Toll.Calculator.Infrastructure.Options;
 
-namespace Toll.Calculator.DAL
+namespace Toll.Calculator.DAL.Repositories
 {
     public class TollFeeRepository : ITollFeeRepository
     {

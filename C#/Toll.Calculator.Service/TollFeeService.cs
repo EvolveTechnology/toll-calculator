@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Toll.Calculator.DAL.Interface;
+using Toll.Calculator.DAL.Repositories.Interface;
 using Toll.Calculator.Domain;
+using Toll.Calculator.Service.Interface;
 
 namespace Toll.Calculator.Service
 {

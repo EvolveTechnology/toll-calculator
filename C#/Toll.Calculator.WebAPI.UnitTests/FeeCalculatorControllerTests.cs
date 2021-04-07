@@ -8,6 +8,7 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using Toll.Calculator.Domain;
 using Toll.Calculator.Service;
+using Toll.Calculator.Service.Interface;
 using Toll.Calculator.UnitTests.Common;
 using Toll.Calculator.WebAPI.Controllers;
 using Xunit;

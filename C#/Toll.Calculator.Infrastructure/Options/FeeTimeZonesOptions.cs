@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Toll.Calculator.Infrastructure
+namespace Toll.Calculator.Infrastructure.Options
 {
     public class FeeTimeZonesOptions
     {

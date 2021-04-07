@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Toll.Calculator.DAL.Interface
+namespace Toll.Calculator.DAL.Repositories.Interface
 {
     public interface ITollFeeRepository
     {

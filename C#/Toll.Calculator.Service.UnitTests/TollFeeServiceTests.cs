@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AutoFixture;
 using FluentAssertions;
 using NSubstitute;
-using Toll.Calculator.DAL.Interface;
+using Toll.Calculator.DAL.Repositories.Interface;
 using Toll.Calculator.Domain;
 using Toll.Calculator.UnitTests.Common;
 using Xunit;

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Toll.Calculator.Domain;
 using Toll.Calculator.Infrastructure.CustomExceptions;
 using Toll.Calculator.Service;
+using Toll.Calculator.Service.Interface;
 using Toll.Calculator.WebAPI.ApiModels;
 
 namespace Toll.Calculator.WebAPI.Controllers

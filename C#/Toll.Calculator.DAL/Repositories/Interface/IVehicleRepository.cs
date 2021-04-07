@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Toll.Calculator.Domain;
 
-namespace Toll.Calculator.DAL.Interface
+namespace Toll.Calculator.DAL.Repositories.Interface
 {
     public interface IVehicleRepository
     {

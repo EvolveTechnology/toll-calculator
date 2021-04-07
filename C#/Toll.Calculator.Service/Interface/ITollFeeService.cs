@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Toll.Calculator.Domain;
 
-namespace Toll.Calculator.Service
+namespace Toll.Calculator.Service.Interface
 {
     public interface ITollFeeService
     {

@@ -5,7 +5,9 @@ using AutoFixture;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using NSubstitute;
+using Toll.Calculator.DAL.Repositories;
 using Toll.Calculator.Infrastructure;
+using Toll.Calculator.Infrastructure.Options;
 using Toll.Calculator.UnitTests.Common;
 using Xunit;
 

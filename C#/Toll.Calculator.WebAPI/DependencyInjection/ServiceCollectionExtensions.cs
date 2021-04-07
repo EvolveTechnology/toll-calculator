@@ -1,9 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Toll.Calculator.DAL;
-using Toll.Calculator.DAL.Interface;
+using Toll.Calculator.DAL.Repositories;
+using Toll.Calculator.DAL.Repositories.Interface;
 using Toll.Calculator.Infrastructure;
+using Toll.Calculator.Infrastructure.Options;
 using Toll.Calculator.Service;
+using Toll.Calculator.Service.Interface;
 
 namespace Toll.Calculator.WebAPI.DependencyInjection
 {
