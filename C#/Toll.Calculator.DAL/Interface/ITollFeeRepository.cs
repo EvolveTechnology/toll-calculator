@@ -7,5 +7,7 @@ namespace Toll.Calculator.DAL.Interface
     public interface ITollFeeRepository
     {
         PassageFee GetPassageFeeByTime(DateTime passageTime);
+
+        bool IsTollFreeDate(DateTime passageTime);
     }
 }

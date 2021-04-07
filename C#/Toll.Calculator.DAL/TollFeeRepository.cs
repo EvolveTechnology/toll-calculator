@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
+using Nager.Date;
 using Toll.Calculator.DAL.Interface;
 using Toll.Calculator.Domain;
 using Toll.Calculator.Infrastructure;
@@ -34,6 +35,16 @@ namespace Toll.Calculator.DAL
                 throw new Exception("Error when fetching PassageFees");
 
             return passageFees.First();
+        }
+
+        public bool IsTollFreeDate(DateTime passageTime)
+        {
+            if (DateSystem.IsPublicHoliday(passageTime, CountryCode.SE) ||
+                passageTime.DayOfWeek == DayOfWeek.Saturday ||
+                passageTime.DayOfWeek == DayOfWeek.Sunday)
+                return true;
+
+            return false;
         }
 
         private List<PassageFee> InitializePassageFees(List<string> passageFeeStrings)

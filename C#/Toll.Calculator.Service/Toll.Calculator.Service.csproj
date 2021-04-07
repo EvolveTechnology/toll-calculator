@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nager.Date" Version="1.28.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Toll.Calculator.DAL\Toll.Calculator.DAL.csproj" />
     <ProjectReference Include="..\Toll.Calculator.Domain\Toll.Calculator.Domain.csproj" />
   </ItemGroup>

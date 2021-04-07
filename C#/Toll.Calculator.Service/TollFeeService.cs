@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,7 +33,7 @@ namespace Toll.Calculator.Service
 
             foreach (var passageDate in passageDates)
             {
-                if (IsTollFreeDate(passageDate))
+                if (_tollFeeRepository.IsTollFreeDate(passageDate))
                     continue;
 
                 var passageFee = _tollFeeRepository.GetPassageFeeByTime(passageDate).Fee;
@@ -59,16 +59,6 @@ namespace Toll.Calculator.Service
 
             if (totalFee > 60) totalFee = 60;
             return totalFee;
-        }
-
-        private bool IsTollFreeDate(DateTime passageTime)
-        {
-            if (DateSystem.IsPublicHoliday(passageTime, CountryCode.SE) ||
-                passageTime.DayOfWeek == DayOfWeek.Saturday || 
-                passageTime.DayOfWeek == DayOfWeek.Sunday)
-                return true;
-
-            return false;
         }
     }
 }

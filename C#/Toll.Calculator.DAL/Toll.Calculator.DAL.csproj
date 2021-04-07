@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+    <PackageReference Include="Nager.Date" Version="1.28.2" />
   </ItemGroup>
 
   <ItemGroup>
