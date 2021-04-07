@@ -8,6 +8,6 @@
         Diplomat = 3,
         Foreign = 4,
         Military = 5,
-        Car = 6,
+        Car = 6
     }
 }

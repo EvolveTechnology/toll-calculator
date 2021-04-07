@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Nager.Date;
 using Toll.Calculator.DAL.Interface;
 using Toll.Calculator.Domain;
 
@@ -10,8 +9,8 @@ namespace Toll.Calculator.Service
 {
     public class TollFeeService : ITollFeeService
     {
-        private readonly IVehicleRepository _vehicleRepository;
         private readonly ITollFeeRepository _tollFeeRepository;
+        private readonly IVehicleRepository _vehicleRepository;
 
         public TollFeeService(
             IVehicleRepository vehicleRepository,
@@ -23,7 +22,9 @@ namespace Toll.Calculator.Service
 
         public async Task<decimal> GetTotalFee(Vehicle vehicleType, List<DateTime> passageDates)
         {
-            if (_vehicleRepository.GetTollFreeVehicles().Contains(vehicleType) ||
+            var tollFreeVehicles = await _vehicleRepository.GetTollFreeVehicles();
+
+            if (tollFreeVehicles.Contains(vehicleType) ||
                 !passageDates.Any())
                 return 0;
 
@@ -33,10 +34,11 @@ namespace Toll.Calculator.Service
 
             foreach (var distinctDate in distinctDates)
             {
-                if (_tollFeeRepository.IsTollFreeDate(distinctDate))
+                if (await _tollFeeRepository.IsTollFreeDate(distinctDate))
                     continue;
 
-                totalFee += await GetTotalFeeForDay(vehicleType, passageDates.Where(p => p.Date == distinctDate.Date).ToList());
+                totalFee += await GetTotalFeeForDay(vehicleType,
+                    passageDates.Where(p => p.Date == distinctDate.Date).ToList());
             }
 
             return totalFee;
@@ -47,12 +49,12 @@ namespace Toll.Calculator.Service
             passageDates.Sort((a, b) => a.CompareTo(b));
 
             var intervalStart = passageDates.First();
-            var intervalHighestFee = _tollFeeRepository.GetPassageFeeByTime(intervalStart);
+            var intervalHighestFee = await _tollFeeRepository.GetPassageFeeByTime(intervalStart);
             decimal totalFee = 0;
 
             foreach (var passageDate in passageDates)
             {
-                var passageFee = _tollFeeRepository.GetPassageFeeByTime(passageDate);
+                var passageFee = await _tollFeeRepository.GetPassageFeeByTime(passageDate);
 
                 var diff = passageDate - intervalStart;
                 var minutes = diff.TotalMinutes;

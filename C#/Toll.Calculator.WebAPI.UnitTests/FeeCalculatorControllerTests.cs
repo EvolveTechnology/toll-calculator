@@ -16,12 +16,12 @@ namespace Toll.Calculator.WebAPI.UnitTests
 {
     public class FeeCalculatorControllerTests : ControllerUnitTest<FeeCalculatorController>
     {
-        private readonly ITollFeeService _tollFeeService;
-
         public FeeCalculatorControllerTests()
         {
             _tollFeeService = Fixture.Freeze<ITollFeeService>();
         }
+
+        private readonly ITollFeeService _tollFeeService;
 
         [Fact]
         public async Task WhenPassageDatesAreInvalid_ThenReturnBadRequest()
@@ -35,18 +35,6 @@ namespace Toll.Calculator.WebAPI.UnitTests
         }
 
         [Fact]
-        public async Task WhenServiceThrows_ThenReturnServerError()
-        {
-            var vehicleType = Fixture.Create<Vehicle>();
-            var passageDates = "2021-04-06T17:53:00.146Z";
-            _tollFeeService.GetTotalFee(Arg.Any<Vehicle>(), Arg.Any<List<DateTime>>()).Throws<Exception>();
-
-            var response = await SUT.GetTotalFee(vehicleType, passageDates);
-
-            response.Should().BeOfType<ObjectResult>();
-        }
-
-        [Fact]
         public async Task WhenServiceRunsNormal_ThenReturnOkResult()
         {
             var vehicleType = Fixture.Create<Vehicle>();
@@ -56,6 +44,18 @@ namespace Toll.Calculator.WebAPI.UnitTests
             var response = await SUT.GetTotalFee(vehicleType, passageDates);
 
             response.Should().BeOfType<OkObjectResult>();
+        }
+
+        [Fact]
+        public async Task WhenServiceThrows_ThenReturnServerError()
+        {
+            var vehicleType = Fixture.Create<Vehicle>();
+            var passageDates = "2021-04-06T17:53:00.146Z";
+            _tollFeeService.GetTotalFee(Arg.Any<Vehicle>(), Arg.Any<List<DateTime>>()).Throws<Exception>();
+
+            var response = await SUT.GetTotalFee(vehicleType, passageDates);
+
+            response.Should().BeOfType<ObjectResult>();
         }
     }
 }

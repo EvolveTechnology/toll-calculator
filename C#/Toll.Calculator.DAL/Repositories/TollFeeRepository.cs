@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Nager.Date;
 using Toll.Calculator.DAL.Interface;
@@ -19,8 +20,11 @@ namespace Toll.Calculator.DAL
             _passageFees = InitializePassageFees(feeTimeZoneOptions.Value.FeeTimeZones);
         }
 
-        public decimal GetPassageFeeByTime(DateTime passageTime)
+        public async Task<decimal> GetPassageFeeByTime(DateTime passageTime)
         {
+            //Simulate db access
+            await Task.Delay(TimeSpan.FromMilliseconds(5));
+
             var passageTimeStamp = new TimeStamp(passageTime);
 
             var passageFees = _passageFees
@@ -37,8 +41,11 @@ namespace Toll.Calculator.DAL
             return passageFees.First().Fee;
         }
 
-        public bool IsTollFreeDate(DateTime passageTime)
+        public async Task<bool> IsTollFreeDate(DateTime passageTime)
         {
+            //Simulate db access
+            await Task.Delay(TimeSpan.FromMilliseconds(5));
+
             if (DateSystem.IsPublicHoliday(passageTime, CountryCode.SE) ||
                 passageTime.DayOfWeek == DayOfWeek.Saturday ||
                 passageTime.DayOfWeek == DayOfWeek.Sunday)
@@ -65,8 +72,10 @@ namespace Toll.Calculator.DAL
                 var endStringHour = endString.Split(':')[0];
                 var endStringMinute = endString.Split(':')[1];
 
-                var startTime = new DateTime(1, 1, 1, Convert.ToInt32(startStringHour), Convert.ToInt32(startStringMinute), 0);
-                var endTime = new DateTime(1, 1, 1, Convert.ToInt32(endStringHour), Convert.ToInt32(endStringMinute), 0);
+                var startTime = new DateTime(1, 1, 1, Convert.ToInt32(startStringHour),
+                    Convert.ToInt32(startStringMinute), 0);
+                var endTime = new DateTime(1, 1, 1, Convert.ToInt32(endStringHour), Convert.ToInt32(endStringMinute),
+                    0);
 
                 passageFees.Add(new PassageFee
                 {

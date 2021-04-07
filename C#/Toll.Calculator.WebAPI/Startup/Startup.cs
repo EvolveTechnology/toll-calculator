@@ -1,13 +1,13 @@
-using System;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
+using Toll.Calculator.WebAPI.DependencyInjection;
 
-namespace Toll.Calculator.WebAPI
+namespace Toll.Calculator.WebAPI.Startup
 {
     public class Startup
     {
@@ -42,7 +42,7 @@ namespace Toll.Calculator.WebAPI
                     Contact = new OpenApiContact
                     {
                         Name = "Victor Redler",
-                        Email = "victor.redler@gmail.com",
+                        Email = "victor.redler@gmail.com"
                     }
                 });
             });
@@ -51,10 +51,7 @@ namespace Toll.Calculator.WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
 
@@ -71,10 +68,7 @@ namespace Toll.Calculator.WebAPI
                 c.RoutePrefix = string.Empty;
             });
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

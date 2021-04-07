@@ -30,21 +30,18 @@ namespace Toll.Calculator.UnitTests.Common
 
         private static bool MethodHasAuthorizePolicy(MethodInfo method, string policy = null)
         {
-            if (policy is null)
-            {
-                return method.GetCustomAttributes(typeof(AuthorizeAttribute), false).Any();
-            }
+            if (policy is null) return method.GetCustomAttributes(typeof(AuthorizeAttribute), false).Any();
 
             return method.GetCustomAttributesData()
                 .Where(x => x.AttributeType == typeof(AuthorizeAttribute))
                 .Select(y => y.NamedArguments != null && y.NamedArguments
-                                 .Any(z => (string)z.TypedValue.Value == policy))
+                                 .Any(z => (string) z.TypedValue.Value == policy))
                 .FirstOrDefault();
         }
 
         private static MethodInfo MethodOf(Expression<Action> expression)
         {
-            var body = (MethodCallExpression)expression.Body;
+            var body = (MethodCallExpression) expression.Body;
 
             return body.Method;
         }
@@ -70,22 +67,14 @@ namespace Toll.Calculator.UnitTests.Common
         {
             public void Execute(object specimen, ISpecimenContext context)
             {
-                if (specimen is null)
-                {
-                    throw new ArgumentNullException(nameof(specimen));
-                }
+                if (specimen is null) throw new ArgumentNullException(nameof(specimen));
 
-                if (context is null)
-                {
-                    throw new ArgumentNullException(nameof(context));
-                }
+                if (context is null) throw new ArgumentNullException(nameof(context));
 
                 var target = specimen as Controller;
 
                 if (target is null)
-                {
                     throw new ArgumentException("The specimen must be an instance of Controller.", nameof(specimen));
-                }
 
                 var httpContext = new DefaultHttpContext
                 {

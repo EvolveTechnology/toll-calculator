@@ -5,7 +5,6 @@ using AutoFixture;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using NSubstitute;
-using Toll.Calculator.DAL.Interface;
 using Toll.Calculator.Infrastructure;
 using Toll.Calculator.UnitTests.Common;
 using Xunit;
@@ -51,9 +50,11 @@ namespace Toll.Calculator.DAL.UnitTests
 
         [Theory]
         [MemberData(nameof(TollFreeData))]
-        public void ForIsTollFreeDate_WhenDateIsPassageDate_ReturnExpectedValue(DateTime passageDate, bool expectedValue)
+        public async Task ForIsTollFreeDate_WhenDateIsPassageDate_ReturnExpectedValue(
+            DateTime passageDate,
+            bool expectedValue)
         {
-            var result = SUT.IsTollFreeDate(passageDate);
+            var result = await SUT.IsTollFreeDate(passageDate);
 
             result.Should().Be(expectedValue);
         }
@@ -76,14 +77,16 @@ namespace Toll.Calculator.DAL.UnitTests
             new object[] {new DateTime(2021, 4, 9, 18, 28, 0), 8},
             new object[] {new DateTime(2021, 4, 9, 18, 31, 0), 0},
             new object[] {new DateTime(2021, 4, 9, 23, 59, 59), 0},
-            new object[] {new DateTime(2021, 4, 9, 00, 1, 59), 0},
+            new object[] {new DateTime(2021, 4, 9, 00, 1, 59), 0}
         };
 
         [Theory]
         [MemberData(nameof(PassageFeeData))]
-        public void ForGetPassageFeeByTime_WhenDateIsPassageDate_ReturnExpectedValue(DateTime passageDate, decimal expectedValue)
+        public async Task ForGetPassageFeeByTime_WhenDateIsPassageDate_ReturnExpectedValue(
+            DateTime passageDate,
+            decimal expectedValue)
         {
-            var result = SUT.GetPassageFeeByTime(passageDate);
+            var result = await SUT.GetPassageFeeByTime(passageDate);
 
             result.Should().Be(expectedValue);
         }

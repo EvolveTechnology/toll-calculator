@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Toll.Calculator.Domain;
 using Toll.Calculator.Infrastructure.CustomExceptions;
 using Toll.Calculator.Service;
@@ -22,6 +22,12 @@ namespace Toll.Calculator.WebAPI.Controllers
             _tollFeeService = tollFeeService;
         }
 
+        /// <summary>
+        ///     Get the total fee for all passages with provided vehicle
+        /// </summary>
+        /// <param name="vehicleType"></param>
+        /// <param name="passageDates">DateTimes in a semicolon-separated string, eg. "2021-04-06T15:12:00;2021-04-06T15:35:00"</param>
+        /// <returns></returns>
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
         [HttpGet("api/total-fee")]
@@ -43,7 +49,7 @@ namespace Toll.Calculator.WebAPI.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e);
+                return StatusCode((int) HttpStatusCode.InternalServerError, e);
             }
         }
 

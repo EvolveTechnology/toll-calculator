@@ -7,15 +7,35 @@ namespace Toll.Calculator.Domain.UnitTests
 {
     public class TimeStampTests : UnitTestBase<TimeStamp>
     {
-        #region Smaller Or Equal To
+        [Fact]
+        public void ForGreaterOrEqual_WhenT1Is1MinuteBigger_ThenReturnTrue()
+        {
+            var t1 = new TimeStamp(new DateTime(1, 1, 1, 10, 51, 0));
+            var t2 = new TimeStamp(new DateTime(2, 1, 1, 10, 50, 0));
+
+            var result = t1 >= t2;
+
+            result.Should().BeTrue();
+        }
 
         [Fact]
-        public void ForLesserOrEqual_WhenTimeStampsAreIdentical_ThenReturnTrue()
+        public void ForGreaterOrEqual_WhenT1Is1MinuteSmaller_ThenReturnFalse()
+        {
+            var t1 = new TimeStamp(new DateTime(1, 1, 1, 10, 49, 0));
+            var t2 = new TimeStamp(new DateTime(2, 1, 1, 10, 50, 0));
+
+            var result = t1 >= t2;
+
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void ForGreaterOrEqual_WhenTimeStampsAreIdentical_ThenReturnTrue()
         {
             var t1 = new TimeStamp(new DateTime(1, 1, 1, 10, 50, 0));
             var t2 = new TimeStamp(new DateTime(2, 1, 1, 10, 50, 0));
 
-            var result = t1 <= t2;
+            var result = t1 >= t2;
 
             result.Should().BeTrue();
         }
@@ -42,43 +62,15 @@ namespace Toll.Calculator.Domain.UnitTests
             result.Should().BeTrue();
         }
 
-        #endregion
-
-        #region Greater Or Equal To
-
         [Fact]
-        public void ForGreaterOrEqual_WhenT1Is1MinuteSmaller_ThenReturnFalse()
-        {
-            var t1 = new TimeStamp(new DateTime(1, 1, 1, 10, 49, 0));
-            var t2 = new TimeStamp(new DateTime(2, 1, 1, 10, 50, 0));
-
-            var result = t1 >= t2;
-
-            result.Should().BeFalse();
-        }
-
-        [Fact]
-        public void ForGreaterOrEqual_WhenT1Is1MinuteBigger_ThenReturnTrue()
-        {
-            var t1 = new TimeStamp(new DateTime(1, 1, 1, 10, 51, 0));
-            var t2 = new TimeStamp(new DateTime(2, 1, 1, 10, 50, 0));
-
-            var result = t1 >= t2;
-
-            result.Should().BeTrue();
-        }
-
-        [Fact]
-        public void ForGreaterOrEqual_WhenTimeStampsAreIdentical_ThenReturnTrue()
+        public void ForLesserOrEqual_WhenTimeStampsAreIdentical_ThenReturnTrue()
         {
             var t1 = new TimeStamp(new DateTime(1, 1, 1, 10, 50, 0));
             var t2 = new TimeStamp(new DateTime(2, 1, 1, 10, 50, 0));
 
-            var result = t1 >= t2;
+            var result = t1 <= t2;
 
             result.Should().BeTrue();
         }
-
-        #endregion
     }
 }

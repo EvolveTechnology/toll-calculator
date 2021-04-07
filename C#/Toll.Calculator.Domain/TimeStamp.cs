@@ -4,14 +4,14 @@ namespace Toll.Calculator.Domain
 {
     public class TimeStamp
     {
-        public int Hour { get; set; }
-        public int Minute { get; set; }
-
         public TimeStamp(DateTime dateTime)
         {
             Hour = dateTime.Hour;
             Minute = dateTime.Minute;
         }
+
+        public int Hour { get; set; }
+        public int Minute { get; set; }
 
         public static bool operator <=(TimeStamp t1, TimeStamp t2)
         {
