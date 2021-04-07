@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,37 +23,51 @@ namespace Toll.Calculator.Service
 
         public async Task<decimal> GetTotalFee(Vehicle vehicleType, List<DateTime> passageDates)
         {
-            passageDates.Sort((a, b) => a.CompareTo(b));
-
-            if (_vehicleRepository.GetTollFreeVehicles().Contains(vehicleType))
+            if (_vehicleRepository.GetTollFreeVehicles().Contains(vehicleType) ||
+                !passageDates.Any())
                 return 0;
 
+            decimal totalFee = 0;
+
+            var distinctDates = passageDates.GroupBy(x => x.ToString("yyyyMMdd")).Select(y => y.First()).ToList();
+
+            foreach (var distinctDate in distinctDates)
+            {
+                if (_tollFeeRepository.IsTollFreeDate(distinctDate))
+                    continue;
+
+                totalFee += await GetTotalFeeForDay(vehicleType, passageDates.Where(p => p.Date == distinctDate.Date).ToList());
+            }
+
+            return totalFee;
+        }
+
+        private async Task<decimal> GetTotalFeeForDay(Vehicle vehicleType, List<DateTime> passageDates)
+        {
+            passageDates.Sort((a, b) => a.CompareTo(b));
+
             var intervalStart = passageDates.First();
+            var intervalHighestFee = _tollFeeRepository.GetPassageFeeByTime(intervalStart);
             decimal totalFee = 0;
 
             foreach (var passageDate in passageDates)
             {
-                if (_tollFeeRepository.IsTollFreeDate(passageDate))
-                    continue;
+                var passageFee = _tollFeeRepository.GetPassageFeeByTime(passageDate);
 
-                var passageFee = _tollFeeRepository.GetPassageFeeByTime(passageDate).Fee;
-                var intervalFee = _tollFeeRepository.GetPassageFeeByTime(intervalStart).Fee;
-
-                //Fixa en riktig check i diff, denna checkar bara millisekunder under samma timme
                 var diff = passageDate - intervalStart;
                 var minutes = diff.TotalMinutes;
 
                 if (minutes <= 60)
                 {
-                    if (totalFee > 0) totalFee -= intervalFee;
-                    if (passageFee >= intervalFee) intervalFee = passageFee;
-                    totalFee += intervalFee;
+                    if (totalFee > 0) totalFee -= intervalHighestFee;
+                    if (passageFee >= intervalHighestFee) intervalHighestFee = passageFee;
+                    totalFee += intervalHighestFee;
                 }
                 else
                 {
                     totalFee += passageFee;
-
                     intervalStart = passageDate;
+                    intervalHighestFee = passageFee;
                 }
             }
 

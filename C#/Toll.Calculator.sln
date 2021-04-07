@@ -17,11 +17,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{911711EF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toll.Calculator.UnitTests.Common", "Toll.Calculator.UnitTests.Common\Toll.Calculator.UnitTests.Common.csproj", "{B9C0422D-0D49-40E8-9C5C-69695CA32821}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toll.Calculator.WebAPI.UnitTests", "Toll.Calculator.WebAPI.UnitTests\Toll.Calculator.WebAPI.UnitTests.csproj", "{90A5127C-4CCB-437F-8D8E-6819652B2A80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toll.Calculator.WebAPI.UnitTests", "Toll.Calculator.WebAPI.UnitTests\Toll.Calculator.WebAPI.UnitTests.csproj", "{90A5127C-4CCB-437F-8D8E-6819652B2A80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toll.Calculator.Service.UnitTests", "Toll.Calculator.Service.UnitTests\Toll.Calculator.Service.UnitTests.csproj", "{C40DC7F7-3BA2-457B-AEBD-FEE1AD3FBD3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toll.Calculator.Service.UnitTests", "Toll.Calculator.Service.UnitTests\Toll.Calculator.Service.UnitTests.csproj", "{C40DC7F7-3BA2-457B-AEBD-FEE1AD3FBD3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toll.Calculator.Domain.UnitTests", "Toll.Calculator.Domain.UnitTests\Toll.Calculator.Domain.UnitTests.csproj", "{44A13723-B662-42E9-82F7-8FCCA4FBB994}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toll.Calculator.Domain.UnitTests", "Toll.Calculator.Domain.UnitTests\Toll.Calculator.Domain.UnitTests.csproj", "{44A13723-B662-42E9-82F7-8FCCA4FBB994}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toll.Calculator.DAL.UnitTests", "Toll.Calculator.DAL.UnitTests\Toll.Calculator.DAL.UnitTests.csproj", "{24A89D92-2813-4E76-8635-D6FA831AAF9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,10 @@ Global
 		{44A13723-B662-42E9-82F7-8FCCA4FBB994}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44A13723-B662-42E9-82F7-8FCCA4FBB994}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44A13723-B662-42E9-82F7-8FCCA4FBB994}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24A89D92-2813-4E76-8635-D6FA831AAF9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24A89D92-2813-4E76-8635-D6FA831AAF9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24A89D92-2813-4E76-8635-D6FA831AAF9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24A89D92-2813-4E76-8635-D6FA831AAF9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{90A5127C-4CCB-437F-8D8E-6819652B2A80} = {911711EF-A004-46FD-91BE-6C1E67BD0B03}
 		{C40DC7F7-3BA2-457B-AEBD-FEE1AD3FBD3C} = {911711EF-A004-46FD-91BE-6C1E67BD0B03}
 		{44A13723-B662-42E9-82F7-8FCCA4FBB994} = {911711EF-A004-46FD-91BE-6C1E67BD0B03}
+		{24A89D92-2813-4E76-8635-D6FA831AAF9E} = {911711EF-A004-46FD-91BE-6C1E67BD0B03}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {68FE6552-53E7-4B2B-8A65-E07A47E90B0E}

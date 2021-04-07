@@ -19,7 +19,7 @@ namespace Toll.Calculator.DAL
             _passageFees = InitializePassageFees(feeTimeZoneOptions.Value.FeeTimeZones);
         }
 
-        public PassageFee GetPassageFeeByTime(DateTime passageTime)
+        public decimal GetPassageFeeByTime(DateTime passageTime)
         {
             var passageTimeStamp = new TimeStamp(passageTime);
 
@@ -29,12 +29,12 @@ namespace Toll.Calculator.DAL
                 .ToList();
 
             if (!passageFees.Any())
-                return new PassageFee { Fee = 0 };
+                return 0;
 
             if (passageFees.Count > 1)
                 throw new Exception("Error when fetching PassageFees");
 
-            return passageFees.First();
+            return passageFees.First().Fee;
         }
 
         public bool IsTollFreeDate(DateTime passageTime)
