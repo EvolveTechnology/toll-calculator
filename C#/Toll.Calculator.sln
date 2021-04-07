@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toll.Calculator.Service.Uni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toll.Calculator.Domain.UnitTests", "Toll.Calculator.Domain.UnitTests\Toll.Calculator.Domain.UnitTests.csproj", "{44A13723-B662-42E9-82F7-8FCCA4FBB994}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toll.Calculator.DAL.UnitTests", "Toll.Calculator.DAL.UnitTests\Toll.Calculator.DAL.UnitTests.csproj", "{24A89D92-2813-4E76-8635-D6FA831AAF9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toll.Calculator.DAL.UnitTests", "Toll.Calculator.DAL.UnitTests\Toll.Calculator.DAL.UnitTests.csproj", "{24A89D92-2813-4E76-8635-D6FA831AAF9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
