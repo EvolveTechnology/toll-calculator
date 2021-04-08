@@ -13,6 +13,10 @@ namespace Toll.Calculator.Service.UnitTests
 {
     public class TollFeeServiceTests : UnitTestBase<TollFeeService>
     {
+        private readonly IVehicleRepository _vehicleRepository;
+        private readonly ITollFeeRepository _tollFeeRepository;
+        private const decimal MAXIMUM_DAILY_FEE = 60;
+
         public TollFeeServiceTests()
         {
             _vehicleRepository = Fixture.Freeze<IVehicleRepository>();
@@ -27,15 +31,15 @@ namespace Toll.Calculator.Service.UnitTests
                 Vehicle.Motorbike,
                 Vehicle.Tractor
             });
-        }
 
-        private readonly IVehicleRepository _vehicleRepository;
-        private readonly ITollFeeRepository _tollFeeRepository;
+            _tollFeeRepository.GetMaximumDailyFeeAsync().Returns(MAXIMUM_DAILY_FEE);
+        }
 
         [Fact]
         public async Task ForGetTotalFee_When2PassagesMoreThanAnHourApart_ReturnFeeForBothPassages()
         {
             var vehicleType = Vehicle.Car;
+            var passageFee = MAXIMUM_DAILY_FEE / 8;
             var passage1 = new DateTime(1, 1, 1, 12, 50, 0);
             var passage2 = new DateTime(1, 1, 1, 14, 50, 0);
             var passageDates = new List<DateTime>
@@ -44,19 +48,21 @@ namespace Toll.Calculator.Service.UnitTests
                 passage2
             };
 
-            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1)).Returns(8);
-            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage2)).Returns(12);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1)).Returns(passageFee);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage2)).Returns(passageFee);
             _tollFeeRepository.IsTollFreeDateAsync(Arg.Any<DateTime>()).Returns(false);
 
             var response = await SUT.GetTotalFee(vehicleType, passageDates);
 
-            response.Should().Be(20);
+            response.Should().Be(passageFee * 2);
         }
 
         [Fact]
         public async Task ForGetTotalFee_When3PassagesAnd2LessThanAnHourApart_ReturnCorrectCombinedFee()
         {
             var vehicleType = Vehicle.Car;
+            var cheaperFee = MAXIMUM_DAILY_FEE / 8;
+            var moreExpensiveFee = MAXIMUM_DAILY_FEE / 6;
             var passage1 = new DateTime(1, 1, 1, 12, 50, 0);
             var passage2 = new DateTime(1, 1, 1, 12, 55, 0);
             var passage3 = new DateTime(1, 1, 1, 15, 55, 0);
@@ -67,20 +73,21 @@ namespace Toll.Calculator.Service.UnitTests
                 passage3
             };
 
-            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1)).Returns(8);
-            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage2)).Returns(12);
-            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage3)).Returns(18);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1)).Returns(cheaperFee);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage2)).Returns(moreExpensiveFee);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage3)).Returns(cheaperFee);
             _tollFeeRepository.IsTollFreeDateAsync(Arg.Any<DateTime>()).Returns(false);
 
             var response = await SUT.GetTotalFee(vehicleType, passageDates);
 
-            response.Should().Be(30);
+            response.Should().Be(moreExpensiveFee + cheaperFee);
         }
 
         [Fact]
         public async Task ForGetTotalFee_WhenOneDateIsTollFree_ReturnNoFeeForThatDay()
         {
             var vehicleType = Vehicle.Car;
+            var passageFee = MAXIMUM_DAILY_FEE / 8;
             var passage1 = new DateTime(1, 1, 1, 12, 50, 0);
             var tollFreeDate = new DateTime(2, 2, 2, 12, 50, 0);
             var passageDates = new List<DateTime>
@@ -89,37 +96,39 @@ namespace Toll.Calculator.Service.UnitTests
                 tollFreeDate
             };
 
-            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1)).Returns(8);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1)).Returns(passageFee);
             _tollFeeRepository.IsTollFreeDateAsync(Arg.Is(passage1)).Returns(false);
             _tollFeeRepository.IsTollFreeDateAsync(Arg.Is(tollFreeDate)).Returns(true);
 
             var response = await SUT.GetTotalFee(vehicleType, passageDates);
 
-            response.Should().Be(8);
+            response.Should().Be(passageFee);
         }
 
         [Fact]
         public async Task ForGetTotalFee_WhenOneTimeDuringDay_ReturnFee()
         {
             var vehicleType = Vehicle.Car;
+            var passageFee = MAXIMUM_DAILY_FEE / 8;
             var passage1 = new DateTime(1, 1, 1, 12, 50, 0);
             var passageDates = new List<DateTime>
             {
                 passage1
             };
 
-            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1)).Returns(8);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1)).Returns(passageFee);
             _tollFeeRepository.IsTollFreeDateAsync(Arg.Is(passage1)).Returns(false);
 
             var response = await SUT.GetTotalFee(vehicleType, passageDates);
 
-            response.Should().Be(8);
+            response.Should().Be(passageFee);
         }
 
         [Fact]
         public async Task ForGetTotalFee_WhenTotalDailyFeeExceedsMaximum_ReturnMaximumForThatDay()
         {
             var vehicleType = Vehicle.Car;
+            decimal passageFee = (MAXIMUM_DAILY_FEE / 2) + (MAXIMUM_DAILY_FEE / 4);
             var passage1Day1 = new DateTime(1, 1, 1, 12, 50, 0);
             var passage2Day1 = new DateTime(1, 1, 1, 16, 55, 0);
             var passage1Day2 = new DateTime(1, 1, 2, 15, 55, 0);
@@ -130,14 +139,12 @@ namespace Toll.Calculator.Service.UnitTests
                 passage1Day2
             };
 
-            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1Day1)).Returns(50);
-            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage2Day1)).Returns(40);
-            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1Day2)).Returns(18);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Any<DateTime>()).Returns(passageFee);
             _tollFeeRepository.IsTollFreeDateAsync(Arg.Any<DateTime>()).Returns(false);
 
             var response = await SUT.GetTotalFee(vehicleType, passageDates);
 
-            response.Should().Be(78);
+            response.Should().Be(MAXIMUM_DAILY_FEE + passageFee);
         }
 
         [Fact]

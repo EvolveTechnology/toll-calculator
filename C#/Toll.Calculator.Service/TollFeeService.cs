@@ -74,7 +74,8 @@ namespace Toll.Calculator.Service
                 }
             }
 
-            if (totalFee > 60) totalFee = 60;
+            var maximumDailyFee = await _tollFeeRepository.GetMaximumDailyFeeAsync();
+            if (totalFee > maximumDailyFee) totalFee = maximumDailyFee;
             return totalFee;
         }
     }

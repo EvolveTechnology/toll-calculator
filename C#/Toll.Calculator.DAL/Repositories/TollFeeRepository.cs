@@ -54,6 +54,14 @@ namespace Toll.Calculator.DAL.Repositories
             return false;
         }
 
+        public async Task<decimal> GetMaximumDailyFeeAsync()
+        {
+            //Simulate db access
+            await Task.Delay(TimeSpan.FromMilliseconds(5));
+
+            return 60;
+        }
+
         private List<PassageFee> InitializePassageFees(List<string> passageFeeStrings)
         {
             var passageFees = new List<PassageFee>();
