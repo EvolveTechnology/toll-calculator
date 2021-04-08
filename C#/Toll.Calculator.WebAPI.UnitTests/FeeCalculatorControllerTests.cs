@@ -10,6 +10,7 @@ using Toll.Calculator.Domain;
 using Toll.Calculator.Service;
 using Toll.Calculator.Service.Interface;
 using Toll.Calculator.UnitTests.Common;
+using Toll.Calculator.WebAPI.ApiModels;
 using Toll.Calculator.WebAPI.Controllers;
 using Xunit;
 
@@ -25,24 +26,16 @@ namespace Toll.Calculator.WebAPI.UnitTests
         private readonly ITollFeeService _tollFeeService;
 
         [Fact]
-        public async Task WhenPassageDatesAreInvalid_ThenReturnBadRequest()
-        {
-            var vehicleType = Fixture.Create<Vehicle>();
-            var passageDates = Fixture.Create<string>();
-
-            var response = await SUT.GetTotalFee(vehicleType, passageDates);
-
-            response.Should().BeOfType<BadRequestObjectResult>();
-        }
-
-        [Fact]
         public async Task WhenServiceRunsNormal_ThenReturnOkResult()
         {
-            var vehicleType = Fixture.Create<Vehicle>();
-            var passageDates = "2021-04-06T17:53:00.146Z";
+            var requestModel = new TotalFeeRequestModel()
+            {
+                VehicleType = Fixture.Create<TotalFeeRequestModel.Vehicle>(),
+                PassageDates = new[] { new DateTime(2021, 04, 06, 17, 53, 0) }
+            };
             _tollFeeService.GetTotalFee(Arg.Any<Vehicle>(), Arg.Any<List<DateTime>>()).Returns(1);
 
-            var response = await SUT.GetTotalFee(vehicleType, passageDates);
+            var response = await SUT.GetTotalFee(requestModel);
 
             response.Should().BeOfType<OkObjectResult>();
         }
@@ -50,11 +43,14 @@ namespace Toll.Calculator.WebAPI.UnitTests
         [Fact]
         public async Task WhenServiceThrows_ThenReturnServerError()
         {
-            var vehicleType = Fixture.Create<Vehicle>();
-            var passageDates = "2021-04-06T17:53:00.146Z";
+            var requestModel = new TotalFeeRequestModel()
+            {
+                VehicleType = Fixture.Create<TotalFeeRequestModel.Vehicle>(),
+                PassageDates = new[] { new DateTime(2021, 04, 06, 17, 53, 0) }
+            };
             _tollFeeService.GetTotalFee(Arg.Any<Vehicle>(), Arg.Any<List<DateTime>>()).Throws<Exception>();
 
-            var response = await SUT.GetTotalFee(vehicleType, passageDates);
+            var response = await SUT.GetTotalFee(requestModel);
 
             response.Should().BeOfType<ObjectResult>();
         }

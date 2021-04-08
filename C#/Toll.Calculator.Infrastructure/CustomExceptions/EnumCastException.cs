@@ -2,7 +2,7 @@
 
 namespace Toll.Calculator.Infrastructure.CustomExceptions
 {
-    public class DateFormatException : Exception
+    public class EnumCastException : Exception
     {
     }
 }

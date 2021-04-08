@@ -38,16 +38,16 @@ namespace Toll.Calculator.Service
                 if (await _tollFeeRepository.IsTollFreeDateAsync(distinctDate))
                     continue;
 
-                totalFee += await GetTotalFeeForDay(vehicleType,
-                    passageDates.Where(p => p.Date == distinctDate.Date).ToList());
+                totalFee += await GetTotalFeeForDay(passageDates.Where(p => p.Date == distinctDate.Date).ToList());
             }
 
             return totalFee;
         }
 
-        private async Task<decimal> GetTotalFeeForDay(Vehicle vehicleType, List<DateTime> passageDates)
+        private async Task<decimal> GetTotalFeeForDay(List<DateTime> passageDates)
         {
             passageDates.Sort((a, b) => a.CompareTo(b));
+            var leewayInterval = await _tollFeeRepository.GetPassageLeewayInterval();
 
             var intervalStart = passageDates.First();
             var intervalHighestFee = await _tollFeeRepository.GetPassageFeeByTimeAsync(intervalStart);
@@ -59,7 +59,7 @@ namespace Toll.Calculator.Service
 
                 var diff = passageDate - intervalStart;
 
-                if (diff <= await _tollFeeRepository.GetPassageLeewayInterval())
+                if (diff <= leewayInterval)
                 {
                     if (totalFee > 0) totalFee -= intervalHighestFee;
                     if (passageFee >= intervalHighestFee) intervalHighestFee = passageFee;

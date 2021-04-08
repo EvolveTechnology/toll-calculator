@@ -24,47 +24,31 @@ namespace Toll.Calculator.WebAPI.Controllers
         }
 
         /// <summary>
-        ///     Get the total fee for all passages with provided vehicle
+        /// Get the total fee for all passages with provided vehicle
         /// </summary>
-        /// <param name="vehicleType"></param>
-        /// <param name="passageDates">DateTimes in a semicolon-separated string, eg. "2021-04-06T15:12:00;2021-04-06T15:35:00"</param>
+        /// <param name="requestModel">PassageDates eg. 2021-04-07T14:25:00</param>
         /// <returns></returns>
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
         [HttpGet("api/total-fee")]
-        public async Task<IActionResult> GetTotalFee(Vehicle vehicleType, string passageDates)
+        public async Task<IActionResult> GetTotalFee([FromQuery] TotalFeeRequestModel requestModel)
         {
             try
             {
-                var totalFee =
-                    await _tollFeeService.GetTotalFee(vehicleType, GetPassageDateTimes(passageDates));
+                var totalFee = await _tollFeeService.GetTotalFee(requestModel.VehicleTypeToDomain(), requestModel.PassageDates.ToList());
 
                 return Ok(new TotalFeeResponseModel
                 {
                     TotalFee = totalFee
                 });
             }
-            catch (DateFormatException)
+            catch (EnumCastException)
             {
-                return BadRequest("Unable to parse input dates");
+                return BadRequest("Unable to parse VehicleType input");
             }
             catch (Exception e)
             {
                 return StatusCode((int) HttpStatusCode.InternalServerError, e);
-            }
-        }
-
-        private List<DateTime> GetPassageDateTimes(string passageDates)
-        {
-            var stringDates = passageDates.Split(";");
-
-            try
-            {
-                return stringDates.Select(stringDate => DateTime.Parse(stringDate)).ToList();
-            }
-            catch (Exception)
-            {
-                throw new DateFormatException();
             }
         }
     }
