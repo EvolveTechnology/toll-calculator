@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>9e313efa-39f9-4890-9b59-3fd0dd664e9d</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Toll.Calculator.DAL\Toll.Calculator.DAL.csproj" />
+    <ProjectReference Include="..\Toll.Calculator.Domain\Toll.Calculator.Domain.csproj" />
+    <ProjectReference Include="..\Toll.Calculator.Infrastructure\Toll.Calculator.Infrastructure.csproj" />
+    <ProjectReference Include="..\Toll.Calculator.Service\Toll.Calculator.Service.csproj" />
+  </ItemGroup>
+
+</Project>

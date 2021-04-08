@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Toll.Calculator.DAL\Toll.Calculator.DAL.csproj" />
+    <ProjectReference Include="..\Toll.Calculator.Domain\Toll.Calculator.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
