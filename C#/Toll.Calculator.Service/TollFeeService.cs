@@ -23,7 +23,7 @@ namespace Toll.Calculator.Service
 
         public async Task<decimal> GetTotalFee(Vehicle vehicleType, List<DateTime> passageDates)
         {
-            var tollFreeVehicles = await _vehicleRepository.GetTollFreeVehicles();
+            var tollFreeVehicles = await _vehicleRepository.GetTollFreeVehiclesAsync();
 
             if (tollFreeVehicles.Contains(vehicleType) ||
                 !passageDates.Any())
@@ -35,7 +35,7 @@ namespace Toll.Calculator.Service
 
             foreach (var distinctDate in distinctDates)
             {
-                if (await _tollFeeRepository.IsTollFreeDate(distinctDate))
+                if (await _tollFeeRepository.IsTollFreeDateAsync(distinctDate))
                     continue;
 
                 totalFee += await GetTotalFeeForDay(vehicleType,
@@ -50,12 +50,12 @@ namespace Toll.Calculator.Service
             passageDates.Sort((a, b) => a.CompareTo(b));
 
             var intervalStart = passageDates.First();
-            var intervalHighestFee = await _tollFeeRepository.GetPassageFeeByTime(intervalStart);
+            var intervalHighestFee = await _tollFeeRepository.GetPassageFeeByTimeAsync(intervalStart);
             decimal totalFee = 0;
 
             foreach (var passageDate in passageDates)
             {
-                var passageFee = await _tollFeeRepository.GetPassageFeeByTime(passageDate);
+                var passageFee = await _tollFeeRepository.GetPassageFeeByTimeAsync(passageDate);
 
                 var diff = passageDate - intervalStart;
                 var minutes = diff.TotalMinutes;

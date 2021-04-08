@@ -6,6 +6,6 @@ namespace Toll.Calculator.DAL.Repositories.Interface
 {
     public interface IVehicleRepository
     {
-        Task<List<Vehicle>> GetTollFreeVehicles();
+        Task<List<Vehicle>> GetTollFreeVehiclesAsync();
     }
 }

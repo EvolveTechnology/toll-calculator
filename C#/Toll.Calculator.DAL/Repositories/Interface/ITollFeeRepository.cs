@@ -5,8 +5,8 @@ namespace Toll.Calculator.DAL.Repositories.Interface
 {
     public interface ITollFeeRepository
     {
-        Task<decimal> GetPassageFeeByTime(DateTime passageTime);
+        Task<decimal> GetPassageFeeByTimeAsync(DateTime passageTime);
 
-        Task<bool> IsTollFreeDate(DateTime passageTime);
+        Task<bool> IsTollFreeDateAsync(DateTime passageTime);
     }
 }

@@ -18,7 +18,7 @@ namespace Toll.Calculator.DAL.Repositories
             _tollFreeVehicleOptions = tollFreeVehicleOptions.Value;
         }
 
-        public async Task<List<Vehicle>> GetTollFreeVehicles()
+        public async Task<List<Vehicle>> GetTollFreeVehiclesAsync()
         {
             //Simulate db access
             await Task.Delay(TimeSpan.FromMilliseconds(5));

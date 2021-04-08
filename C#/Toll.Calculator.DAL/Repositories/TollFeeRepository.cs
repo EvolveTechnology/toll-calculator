@@ -20,7 +20,7 @@ namespace Toll.Calculator.DAL.Repositories
             _passageFees = InitializePassageFees(feeTimeZoneOptions.Value.FeeTimeZones);
         }
 
-        public async Task<decimal> GetPassageFeeByTime(DateTime passageTime)
+        public async Task<decimal> GetPassageFeeByTimeAsync(DateTime passageTime)
         {
             //Simulate db access
             await Task.Delay(TimeSpan.FromMilliseconds(5));
@@ -41,7 +41,7 @@ namespace Toll.Calculator.DAL.Repositories
             return passageFees.First().Fee;
         }
 
-        public async Task<bool> IsTollFreeDate(DateTime passageTime)
+        public async Task<bool> IsTollFreeDateAsync(DateTime passageTime)
         {
             //Simulate db access
             await Task.Delay(TimeSpan.FromMilliseconds(5));

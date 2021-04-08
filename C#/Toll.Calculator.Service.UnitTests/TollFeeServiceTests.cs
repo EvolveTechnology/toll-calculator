@@ -18,7 +18,7 @@ namespace Toll.Calculator.Service.UnitTests
             _vehicleRepository = Fixture.Freeze<IVehicleRepository>();
             _tollFeeRepository = Fixture.Freeze<ITollFeeRepository>();
 
-            _vehicleRepository.GetTollFreeVehicles().Returns(new List<Vehicle>
+            _vehicleRepository.GetTollFreeVehiclesAsync().Returns(new List<Vehicle>
             {
                 Vehicle.Diplomat,
                 Vehicle.Emergency,
@@ -44,9 +44,9 @@ namespace Toll.Calculator.Service.UnitTests
                 passage2
             };
 
-            _tollFeeRepository.GetPassageFeeByTime(Arg.Is(passage1)).Returns(8);
-            _tollFeeRepository.GetPassageFeeByTime(Arg.Is(passage2)).Returns(12);
-            _tollFeeRepository.IsTollFreeDate(Arg.Any<DateTime>()).Returns(false);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1)).Returns(8);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage2)).Returns(12);
+            _tollFeeRepository.IsTollFreeDateAsync(Arg.Any<DateTime>()).Returns(false);
 
             var response = await SUT.GetTotalFee(vehicleType, passageDates);
 
@@ -67,10 +67,10 @@ namespace Toll.Calculator.Service.UnitTests
                 passage3
             };
 
-            _tollFeeRepository.GetPassageFeeByTime(Arg.Is(passage1)).Returns(8);
-            _tollFeeRepository.GetPassageFeeByTime(Arg.Is(passage2)).Returns(12);
-            _tollFeeRepository.GetPassageFeeByTime(Arg.Is(passage3)).Returns(18);
-            _tollFeeRepository.IsTollFreeDate(Arg.Any<DateTime>()).Returns(false);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1)).Returns(8);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage2)).Returns(12);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage3)).Returns(18);
+            _tollFeeRepository.IsTollFreeDateAsync(Arg.Any<DateTime>()).Returns(false);
 
             var response = await SUT.GetTotalFee(vehicleType, passageDates);
 
@@ -89,9 +89,9 @@ namespace Toll.Calculator.Service.UnitTests
                 tollFreeDate
             };
 
-            _tollFeeRepository.GetPassageFeeByTime(Arg.Is(passage1)).Returns(8);
-            _tollFeeRepository.IsTollFreeDate(Arg.Is(passage1)).Returns(false);
-            _tollFeeRepository.IsTollFreeDate(Arg.Is(tollFreeDate)).Returns(true);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1)).Returns(8);
+            _tollFeeRepository.IsTollFreeDateAsync(Arg.Is(passage1)).Returns(false);
+            _tollFeeRepository.IsTollFreeDateAsync(Arg.Is(tollFreeDate)).Returns(true);
 
             var response = await SUT.GetTotalFee(vehicleType, passageDates);
 
@@ -108,8 +108,8 @@ namespace Toll.Calculator.Service.UnitTests
                 passage1
             };
 
-            _tollFeeRepository.GetPassageFeeByTime(Arg.Is(passage1)).Returns(8);
-            _tollFeeRepository.IsTollFreeDate(Arg.Is(passage1)).Returns(false);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1)).Returns(8);
+            _tollFeeRepository.IsTollFreeDateAsync(Arg.Is(passage1)).Returns(false);
 
             var response = await SUT.GetTotalFee(vehicleType, passageDates);
 
@@ -130,10 +130,10 @@ namespace Toll.Calculator.Service.UnitTests
                 passage1Day2
             };
 
-            _tollFeeRepository.GetPassageFeeByTime(Arg.Is(passage1Day1)).Returns(50);
-            _tollFeeRepository.GetPassageFeeByTime(Arg.Is(passage2Day1)).Returns(40);
-            _tollFeeRepository.GetPassageFeeByTime(Arg.Is(passage1Day2)).Returns(18);
-            _tollFeeRepository.IsTollFreeDate(Arg.Any<DateTime>()).Returns(false);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1Day1)).Returns(50);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage2Day1)).Returns(40);
+            _tollFeeRepository.GetPassageFeeByTimeAsync(Arg.Is(passage1Day2)).Returns(18);
+            _tollFeeRepository.IsTollFreeDateAsync(Arg.Any<DateTime>()).Returns(false);
 
             var response = await SUT.GetTotalFee(vehicleType, passageDates);
 

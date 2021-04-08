@@ -39,7 +39,7 @@ namespace Toll.Calculator.DAL.UnitTests
             _timeZoneOptions.Value.Returns(optionsObject);
         }
 
-        #region IsTollFreeDate
+        #region IsTollFreeDateAsync
 
         public static IEnumerable<object[]> TollFreeData => new List<object[]>
         {
@@ -56,14 +56,14 @@ namespace Toll.Calculator.DAL.UnitTests
             DateTime passageDate,
             bool expectedValue)
         {
-            var result = await SUT.IsTollFreeDate(passageDate);
+            var result = await SUT.IsTollFreeDateAsync(passageDate);
 
             result.Should().Be(expectedValue);
         }
 
         #endregion
 
-        #region GetPassageFeeByTime
+        #region GetPassageFeeByTimeAsync
 
         public static IEnumerable<object[]> PassageFeeData => new List<object[]>
         {
@@ -88,7 +88,7 @@ namespace Toll.Calculator.DAL.UnitTests
             DateTime passageDate,
             decimal expectedValue)
         {
-            var result = await SUT.GetPassageFeeByTime(passageDate);
+            var result = await SUT.GetPassageFeeByTimeAsync(passageDate);
 
             result.Should().Be(expectedValue);
         }
