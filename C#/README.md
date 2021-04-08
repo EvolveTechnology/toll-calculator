@@ -17,7 +17,7 @@ Since I took over the solution from the last city-developer, some new key featur
 There exists a few shortcomings with this solutions still that could be worked on.
 
 * Calculating the public holidays is being outsourced to a 3rd pary in the form of a nuget [Nager.Date](https://www.nuget.org/packages/Nager.Date/). This was done to be able to focus more time and resources on the core logic and is something that can be developed further. For example we could develop a solution where we read info about public holidays from an external database and a seperate function like an Azure Function that runs once a year and extracts the upcoming years public holidays from a public API like [Nager API](https://date.nager.at/Api) or scrapes them from something like [kalender.se](https://www.kalender.se/helgdagar).
-* Enum conversion from api model to domain model. If the domain enum is modified, the api model enum will have to be modified accordingly. Alternatively use the domain enum in the api requestmodel, although this would expose the domain.
+* Enum conversion from api model to domain model. If the domain enum is modified, the api model enum will have to be modified accordingly. Although I have a test that catches errors due to this, it still requires the developer to modify the code in 2 places.
 * The WebAPI is currently completely unauthenticated.
 * No logging currently exists.
 
