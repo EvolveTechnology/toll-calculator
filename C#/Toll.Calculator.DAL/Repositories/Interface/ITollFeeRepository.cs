@@ -10,5 +10,7 @@ namespace Toll.Calculator.DAL.Repositories.Interface
         Task<bool> IsTollFreeDateAsync(DateTime passageTime);
 
         Task<decimal> GetMaximumDailyFeeAsync();
+
+        Task<TimeSpan> GetPassageLeewayInterval();
     }
 }

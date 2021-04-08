@@ -62,6 +62,14 @@ namespace Toll.Calculator.DAL.Repositories
             return 60;
         }
 
+        public async Task<TimeSpan> GetPassageLeewayInterval()
+        {
+            //Simulate db access
+            await Task.Delay(TimeSpan.FromMilliseconds(5));
+
+            return TimeSpan.FromMinutes(60);
+        }
+
         private List<PassageFee> InitializePassageFees(List<string> passageFeeStrings)
         {
             var passageFees = new List<PassageFee>();

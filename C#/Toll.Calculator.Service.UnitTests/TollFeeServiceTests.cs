@@ -16,6 +16,7 @@ namespace Toll.Calculator.Service.UnitTests
         private readonly IVehicleRepository _vehicleRepository;
         private readonly ITollFeeRepository _tollFeeRepository;
         private const decimal MAXIMUM_DAILY_FEE = 60;
+        private readonly TimeSpan _passageLeewayInterval = TimeSpan.FromMinutes(60);
 
         public TollFeeServiceTests()
         {
@@ -33,6 +34,7 @@ namespace Toll.Calculator.Service.UnitTests
             });
 
             _tollFeeRepository.GetMaximumDailyFeeAsync().Returns(MAXIMUM_DAILY_FEE);
+            _tollFeeRepository.GetPassageLeewayInterval().Returns(_passageLeewayInterval);
         }
 
         [Fact]

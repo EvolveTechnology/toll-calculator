@@ -58,9 +58,8 @@ namespace Toll.Calculator.Service
                 var passageFee = await _tollFeeRepository.GetPassageFeeByTimeAsync(passageDate);
 
                 var diff = passageDate - intervalStart;
-                var minutes = diff.TotalMinutes;
 
-                if (minutes <= 60)
+                if (diff <= await _tollFeeRepository.GetPassageLeewayInterval())
                 {
                     if (totalFee > 0) totalFee -= intervalHighestFee;
                     if (passageFee >= intervalHighestFee) intervalHighestFee = passageFee;
