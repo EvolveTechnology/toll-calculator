@@ -64,5 +64,17 @@ namespace TollFeeCalculatorTest
             Assert.Equal(60*222, result);
         }
 
+        [Fact]
+        public void DriveToAndFromWorkShouldGenerateTwoFees()
+        {
+            var toWork = new DateTime(2013,02,01,08,28,0);
+            var fromWork = new DateTime(2013,02,01,16,58,0);
+
+            var expected = calculator.GetTollFee(toWork,car) + calculator.GetTollFee(fromWork,car);
+            var result = calculator.GetTollFee(car, new DateTime[] {toWork, fromWork});
+
+            Assert.Equal(expected,result);
+
+        }
     }
 }
