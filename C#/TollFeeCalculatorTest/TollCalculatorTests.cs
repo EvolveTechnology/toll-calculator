@@ -123,5 +123,13 @@ namespace TollFeeCalculatorTest
 
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void May13_2021_ShouldBeTollFreeDate()
+        {
+            var passage = new DateTime(2021,05,13,08,0,0);
+            var result = calculator.GetTollFee(passage, car);
+            Assert.Equal(0, result);
+        }
     }
 }
