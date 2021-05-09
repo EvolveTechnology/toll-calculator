@@ -101,5 +101,17 @@ namespace TollFeeCalculatorTest
 
             Assert.Equal(expected, result);
         }
+        
+        [Fact]
+        public void EdgeCaseOptimalTotalFeeShouldBe31()
+        {
+            var passages = new DateTime[] {
+                new DateTime(2013,04,29,06,55,0), //13
+                new DateTime(2013,04,29,07,00,0), //18
+                new DateTime(2013,04,29,07,59,0), //18
+            };
+            var result = calculator.GetTollFee(car, passages);
+            Assert.Equal(13 + 18, result);
+        }
     }
 }
