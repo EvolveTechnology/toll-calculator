@@ -16,7 +16,6 @@ public class TollCalculator
      * @param dates   - date and time of all passes on one day
      * @return - the total toll fee for that day
      */
-
     public int GetTollFee(Vehicle vehicle, DateTime[] dates)
     {
         DateTime intervalStart = dates[0];
@@ -26,12 +25,12 @@ public class TollCalculator
             int nextFee = tollTariff.GetTollFee(date, vehicle);
             int tempFee = tollTariff.GetTollFee(intervalStart, vehicle);
 
-            var minutes = (date-intervalStart).TotalMinutes;
+            var minutes = (date - intervalStart).TotalMinutes;
 
             if (minutes <= 60)
             {
                 if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee > tempFee) 
+                if (nextFee > tempFee)
                 {
                     intervalStart = date;
                     tempFee = nextFee;
