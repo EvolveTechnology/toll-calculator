@@ -17,7 +17,7 @@ public class TollTariff : ITollTariff
 
         if (DateSystem.IsPublicHoliday(date.AddDays(1), se))
         {
-            var holiday = holidays.First(h => h.Date == date.AddDays(1));
+            var holiday = holidays.First(h => h.Date == date.Date.AddDays(1));
             if (holiday.Name == "Ascension Day") return true;
             if (holiday.Name == "All Saints' Day") return true;
             if (holiday.Name == "Good Friday") return true;
