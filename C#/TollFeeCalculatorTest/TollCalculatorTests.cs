@@ -7,9 +7,15 @@ namespace TollFeeCalculatorTest
 {
     public class TollCalculatorTests
     {
-        private readonly TollCalculator calculator = new TollCalculator();
+        private readonly TollCalculator calculator;
         private readonly Vehicle car = new Car();
         private readonly Vehicle motorbike = new Motorbike();
+
+        public TollCalculatorTests()
+        {
+            calculator = new TollCalculator(new TollTariff());
+
+        }
 
         [Theory]
         [InlineData(05,59,0)]

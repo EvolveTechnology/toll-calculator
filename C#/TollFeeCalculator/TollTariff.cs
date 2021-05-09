@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Nager.Date;
 
-public class TollTariff 
+public class TollTariff : ITollTariff
 {
     public Boolean IsTollFreeDate(DateTime date)
     {

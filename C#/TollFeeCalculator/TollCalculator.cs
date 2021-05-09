@@ -4,6 +4,11 @@ using TollFeeCalculator;
 
 public class TollCalculator
 {
+    private readonly ITollTariff tollTariff;
+    public TollCalculator(ITollTariff tariff)
+    {
+        tollTariff = tariff;
+    }
 
     /**
      * Calculate the total toll fee for one day

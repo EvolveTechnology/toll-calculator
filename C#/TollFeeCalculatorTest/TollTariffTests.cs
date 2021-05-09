@@ -7,8 +7,13 @@ namespace TollFeeCalculatorTest
     public class TollTariffTests
     {
         private readonly TollTariff tariff = new TollTariff();
-        private readonly TollCalculator calculator = new TollCalculator();
+        private readonly TollCalculator calculator;
         private readonly Vehicle car = new Car();
+
+        public TollTariffTests()
+        {
+            calculator = new TollCalculator(tariff);
+        }
 
         [Fact]
         public void NewIsTollFreeDateImplShouldGiveSameResultAsOldFor2013()
