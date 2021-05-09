@@ -36,6 +36,7 @@ public class TollCalculator
             }
             else
             {
+                intervalStart = date;
                 totalFee += nextFee;
             }
         }
