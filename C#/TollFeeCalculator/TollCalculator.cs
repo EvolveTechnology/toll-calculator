@@ -27,7 +27,11 @@ public class TollCalculator
             if (minutes <= 60)
             {
                 if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee >= tempFee) tempFee = nextFee;
+                if (nextFee > tempFee) 
+                {
+                    intervalStart = date;
+                    tempFee = nextFee;
+                }
                 totalFee += tempFee;
             }
             else
