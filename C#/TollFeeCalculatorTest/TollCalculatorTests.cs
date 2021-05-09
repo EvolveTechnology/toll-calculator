@@ -76,5 +76,21 @@ namespace TollFeeCalculatorTest
             Assert.Equal(expected,result);
 
         }
+
+        [Fact]
+        public void OnlyOneAndHighestFeePerHour()
+        {
+            var passages = new DateTime[] {
+                new DateTime(2013,04,29,14,59,0),
+                new DateTime(2013,04,29,15,00,0),
+                new DateTime(2013,04,29,15,29,0),
+                new DateTime(2013,04,29,15,30,0),
+            };
+
+            var expected = passages.Max(dt => calculator.GetTollFee(dt, car));
+            var result = calculator.GetTollFee(car, passages);
+
+            Assert.Equal(expected, result);
+        }
     }
 }
