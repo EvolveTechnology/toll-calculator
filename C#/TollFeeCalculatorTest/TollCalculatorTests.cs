@@ -35,12 +35,12 @@ namespace TollFeeCalculatorTest
         }
 
         [Fact]
-        public void MaxFeeFor2013ShouldEqual60times222() //250?
+        public void TotalFeeFor2013ShouldEqual13times222()
         {
             var months = Enumerable.Range(1, 12);
-            var days = months.SelectMany(month => Enumerable.Range(1, DateTime.DaysInMonth(2013, month)).Select(day => new DateTime(2013, month, day, 0, 0, 0)));
-            var result = days.Sum(day => calculator.GetTollFee(car, Enumerable.Range(0, 48).Select(i => day.AddHours(0.5 * i)).ToArray()));
-            Assert.Equal(60 * 222, result);
+            var days = months.SelectMany(month => Enumerable.Range(1, DateTime.DaysInMonth(2013, month)).Select(day => new DateTime(2013, month, day, 15, 0, 0)));
+            var result = days.Sum(day => calculator.GetTollFee(car, new DateTime[]{day}));
+            Assert.Equal(13 * 222, result);
         }
 
         [Fact]
