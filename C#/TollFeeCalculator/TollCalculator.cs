@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using TollFeeCalculator;
 
 public class TollCalculator
@@ -18,32 +20,21 @@ public class TollCalculator
      */
     public int GetTollFee(Vehicle vehicle, DateTime[] dates)
     {
-        DateTime intervalStart = dates[0];
-        int totalFee = 0;
-        foreach (DateTime date in dates)
+        var passages = dates.Where(date => tollTariff.GetTollFee(date,vehicle) > 0);
+        return Math.Min(60, CalculateOptimalTollFee(vehicle, passages));
+    }
+
+    private int CalculateOptimalTollFee(Vehicle vehicle, IEnumerable<DateTime> passages)
+    {
+        var totalFee = 0;
+        foreach (var passage in passages)
         {
-            int nextFee = tollTariff.GetTollFee(date, vehicle);
-            int tempFee = tollTariff.GetTollFee(intervalStart, vehicle);
-
-            var minutes = (date - intervalStart).TotalMinutes;
-
-            if (minutes <= 60)
-            {
-                if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee > tempFee)
-                {
-                    intervalStart = date;
-                    tempFee = nextFee;
-                }
-                totalFee += tempFee;
-            }
-            else
-            {
-                intervalStart = date;
-                totalFee += nextFee;
-            }
+            var tempFee = 
+                tollTariff.GetTollFee(passage, vehicle) + 
+                CalculateOptimalTollFee(vehicle, passages.Where(pass => Math.Abs((passage-pass).TotalHours) > 1));
+            totalFee = Math.Max(totalFee, tempFee);
+            if (totalFee >= 60) return 60;
         }
-        if (totalFee > 60) totalFee = 60;
         return totalFee;
     }
 }
