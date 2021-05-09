@@ -5,6 +5,10 @@ using TollFeeCalculator;
 
 public class TollTariff : ITollTariff
 {
+    public int TollIntervalInMinutes => 60;
+
+    public int MaxFeePerDay => 60;
+
     public int GetTollFee(DateTime date, Vehicle vehicle)
     {
         if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;

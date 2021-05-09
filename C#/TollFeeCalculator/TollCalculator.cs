@@ -21,7 +21,7 @@ public class TollCalculator
     public int GetTollFee(Vehicle vehicle, DateTime[] dates)
     {
         var passages = dates.Where(date => tollTariff.GetTollFee(date,vehicle) > 0);
-        return Math.Min(60, CalculateOptimalTollFee(vehicle, passages));
+        return Math.Min(tollTariff.MaxFeePerDay, CalculateOptimalTollFee(vehicle, passages));
     }
 
     private int CalculateOptimalTollFee(Vehicle vehicle, IEnumerable<DateTime> passages)
@@ -29,11 +29,12 @@ public class TollCalculator
         var totalFee = 0;
         foreach (var passage in passages)
         {
+            var filteredPassages = passages.Where(pass => Math.Abs((passage-pass).TotalMinutes) > tollTariff.TollIntervalInMinutes);
             var tempFee = 
                 tollTariff.GetTollFee(passage, vehicle) + 
-                CalculateOptimalTollFee(vehicle, passages.Where(pass => Math.Abs((passage-pass).TotalHours) > 1));
+                CalculateOptimalTollFee(vehicle, filteredPassages);
             totalFee = Math.Max(totalFee, tempFee);
-            if (totalFee >= 60) return 60;
+            if (totalFee >= tollTariff.MaxFeePerDay) return tollTariff.MaxFeePerDay;
         }
         return totalFee;
     }

@@ -27,11 +27,11 @@ namespace TollFeeCalculatorTest
         }
 
         [Fact]
-        public void MaxFeePerDayShouldEqual60()
+        public void MaxFeePerDayShouldBeCorrect()
         {
             var dates = Enumerable.Range(0, 48).Select(i => new DateTime(2013, 04, 29, 0, 0, 0).AddHours(i * 0.5)).ToArray();
             var result = calculator.GetTollFee(car, dates);
-            Assert.Equal(60, result);
+            Assert.Equal(tariff.MaxFeePerDay, result);
         }
 
         [Fact]
