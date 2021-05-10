@@ -21,6 +21,8 @@ namespace TollFeeCalculator
          */
         public int GetTollFee(Vehicle vehicle, DateTime[] dates)
         {
+            if (dates.Any(dt => dates.First().Date != dt.Date)) throw new ArgumentException("Passages at different dates");
+
             var passages = dates.Where(date => tollTariff.GetTollFee(date, vehicle) > 0);
             return Math.Min(tollTariff.MaxFeePerDay, CalculateOptimalTollFee(vehicle, passages));
         }
