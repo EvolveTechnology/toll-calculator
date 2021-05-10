@@ -29,7 +29,7 @@ namespace TollFeeCalculator
             else return 0;
         }
 
-        private bool IsTollFreeDate(DateTime date)
+        private static bool IsTollFreeDate(DateTime date)
         {
             var se = CountryCode.SE;
             if (date.Month == 7) return true;
@@ -38,15 +38,12 @@ namespace TollFeeCalculator
             if (DateSystem.IsWeekend(date, se)) return true;
             if (DateSystem.IsPublicHoliday(date, se)) return true;
 
-            var holidays = DateSystem.GetPublicHoliday(date.Year, se);
-
             if (DateSystem.IsPublicHoliday(date.AddDays(1), se))
             {
-                var holiday = holidays.First(h => h.Date == date.Date.AddDays(1));
-                if (holiday.Name == "Ascension Day") return true;
-                if (holiday.Name == "All Saints' Day") return true;
-                if (holiday.Name == "Good Friday") return true;
+                var holiday = DateSystem.GetPublicHoliday(date.Year, se).First(h => h.Date == date.Date.AddDays(1));
+                return new[] { "Ascension Day", "All Saints' Day", "Good Friday" }.Any(name => name == holiday.Name);
             }
+
             return false;
         }
 
@@ -54,12 +51,7 @@ namespace TollFeeCalculator
         {
             if (vehicle == null) return false;
             string vehicleType = vehicle.GetVehicleType();
-            return vehicleType.Equals(TollFreeVehicles.Motorbike.ToString()) ||
-                   vehicleType.Equals(TollFreeVehicles.Tractor.ToString()) ||
-                   vehicleType.Equals(TollFreeVehicles.Emergency.ToString()) ||
-                   vehicleType.Equals(TollFreeVehicles.Diplomat.ToString()) ||
-                   vehicleType.Equals(TollFreeVehicles.Foreign.ToString()) ||
-                   vehicleType.Equals(TollFreeVehicles.Military.ToString());
+            return Enum.GetNames(typeof(TollFreeVehicles)).Any(name => name == vehicleType);
         }
 
         private enum TollFreeVehicles
