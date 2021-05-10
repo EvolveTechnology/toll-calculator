@@ -6,14 +6,8 @@ namespace TollFeeCalculatorTest
 {
     public class TollTariffTests
     {
-        private readonly TollTariff tariff = new TollTariff();
-        private readonly TollCalculator calculator;
-        private readonly Vehicle car = new Car();
-
-        public TollTariffTests()
-        {
-            calculator = new TollCalculator(tariff);
-        }
+        private readonly TollTariff tariff = new();
+        private readonly IVehicle car = new Car();
 
         [Theory]
         [InlineData(05, 59, 0)]

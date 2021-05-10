@@ -6,6 +6,6 @@ namespace TollFeeCalculator
     {
         int TollIntervalInMinutes { get; }
         int MaxFeePerDay { get; }
-        int GetTollFee(DateTime date, Vehicle vehicle);
+        int GetTollFee(DateTime date, IVehicle vehicle);
     }
 }

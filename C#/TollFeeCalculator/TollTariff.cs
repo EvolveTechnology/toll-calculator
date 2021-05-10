@@ -10,9 +10,9 @@ namespace TollFeeCalculator
 
         public int MaxFeePerDay => 60;
 
-        public int GetTollFee(DateTime date, Vehicle vehicle)
+        public int GetTollFee(DateTime date, IVehicle vehicle)
         {
-            if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
+            if (IsTollFreeDate(date) || vehicle.IsTollFree) return 0;
 
             int hour = date.Hour;
             int minute = date.Minute;
@@ -45,23 +45,6 @@ namespace TollFeeCalculator
             }
 
             return false;
-        }
-
-        private bool IsTollFreeVehicle(Vehicle vehicle)
-        {
-            if (vehicle == null) return false;
-            string vehicleType = vehicle.GetVehicleType();
-            return Enum.GetNames(typeof(TollFreeVehicles)).Any(name => name == vehicleType);
-        }
-
-        private enum TollFreeVehicles
-        {
-            Motorbike = 0,
-            Tractor = 1,
-            Emergency = 2,
-            Diplomat = 3,
-            Foreign = 4,
-            Military = 5
         }
     }
 }

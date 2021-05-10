@@ -19,7 +19,7 @@ namespace TollFeeCalculator
          * @param dates   - date and time of all passes on one day
          * @return - the total toll fee for that day
          */
-        public int GetTollFee(Vehicle vehicle, DateTime[] dates)
+        public int GetTollFee(IVehicle vehicle, DateTime[] dates)
         {
             if (dates.Any(dt => dates.First().Date != dt.Date)) throw new ArgumentException("Passages at different dates");
 
@@ -27,7 +27,7 @@ namespace TollFeeCalculator
             return Math.Min(tollTariff.MaxFeePerDay, CalculateOptimalTollFee(vehicle, passages));
         }
 
-        private int CalculateOptimalTollFee(Vehicle vehicle, IEnumerable<DateTime> passages)
+        private int CalculateOptimalTollFee(IVehicle vehicle, IEnumerable<DateTime> passages)
         {
             var totalFee = 0;
             foreach (var passage in passages)

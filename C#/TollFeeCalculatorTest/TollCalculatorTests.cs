@@ -8,8 +8,8 @@ namespace TollFeeCalculatorTest
     public class TollCalculatorTests
     {
         private readonly TollCalculator calculator;
-        private readonly Vehicle car = new Car();
-        private readonly Vehicle motorbike = new Motorbike();
+        private readonly IVehicle car = new Car();
+        private readonly IVehicle motorbike = new Motorbike();
         private readonly ITollTariff tariff = new TollTariff();
 
         public TollCalculatorTests()
