@@ -113,5 +113,16 @@ namespace TollFeeCalculatorTest
             var result = calculator.GetTollFee(car, passages);
             Assert.Equal(13 + 18, result);
         }
+
+        [Fact]
+        public void ShouldOnlyAcceptSameDatePassages()
+        {
+            var passages = new DateTime[] {
+                new DateTime(2013,04,29,06,55,0), 
+                new DateTime(2014,04,29,07,00,0), 
+                new DateTime(2015,04,29,07,59,0), 
+            };
+            Assert.Throws<ArgumentException>(() => calculator.GetTollFee(car, passages));
+        }
     }
 }
