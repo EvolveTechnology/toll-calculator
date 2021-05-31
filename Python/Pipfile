@@ -1,0 +1,6 @@
+[packages]
+pendulum = "*"
+holidays = "*"
+
+[dev-packages]
+pytest = "*"
