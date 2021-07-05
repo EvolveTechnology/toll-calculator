@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TollFeeCalculator.Models;
+using TollFeeCalculator.Utils;
 
 // Note that since this is an assignment for a potential job, I have written more elaborate comments than usual in my code.
 // This is just a way to document my thought process for the reviewers since I can't communicate with them any other way. 
@@ -145,8 +146,7 @@ public class TollCalculator
             (12, 31),
         };
                 
-        // (Ordinary Sundays not included)
-        var movingHolidays = GetMovingHolidays(date.Year);
+        var movingHolidays = GetMovingHolidays(date.Year); // (Ordinary Sundays not included)
 
         var holidays = new List<(int Month, int Day)>();
         holidays.AddRange(staticHolidays);
@@ -162,9 +162,9 @@ public class TollCalculator
 
     private List<(int Month, int Day)> GetMovingHolidays(int year)
     {
-        var easterDay = CalculateEasterDay(year);
-        var midsummerDay = CalculateMidsummerDay(year);
-        var allSaintsDay = CalculateAllSaintsDay(year);
+        var easterDay = CalendarUtils.CalculateEasterDay(year);
+        var midsummerDay = CalendarUtils.CalculateMidsummerDay(year);
+        var allSaintsDay = CalendarUtils.CalculateAllSaintsDay(year);
         var ascensionDay = easterDay.AddDays(39); // "Kristi Himmelsfärdsdag", sixth Thursday after Easter Day.
         var pentecostDay = easterDay.AddDays(49); // "Pingstdagen", 7 weeks after Easter Day.
 
@@ -188,106 +188,5 @@ public class TollCalculator
         }
 
         return movingHolidays;
-    }
-
-    private DateTime CalculateEasterDay(int year)
-    {
-        // Gauss Easter formula, code copied and adapted from here: https://www.geeksforgeeks.org/how-to-calculate-the-easter-date-for-a-given-year-using-gauss-algorithm/
-
-        float A, B, C, P, Q,
-            M, N, D, E;
-
-        // All calculations done
-        // on the basis of
-        // Gauss Easter Algorithm
-        A = year % 19;
-        B = year % 4;
-        C = year % 7;
-        P = (float)(year / 100);
-        Q = (float)(
-            (13 + 8 * P) / 25);
-        M = (15 - Q + P - P / 4) % 30;
-        N = (4 + P - P / 4) % 7;
-        D = (19 * A + M) % 30;
-        E = (2 * B + 4 * C + 6 * D + N) % 7;
-        int days = (int)(22 + D + E);
-
-        // A corner case,
-        // when D is 29
-        if ((D == 29) && (E == 6))
-        {
-            return new DateTime(year, 4, 19);
-        }
-
-        // Another corner case,
-        // when D is 28
-        else if ((D == 28) && (E == 6))
-        {
-            return new DateTime(year, 4, 18);
-        }
-        else
-        {
-
-            // If days > 31, move to April
-            // April = 4th Month
-            if (days > 31)
-            {
-                Console.Write(year + "-04-" +
-                             (days - 31));
-                return new DateTime(year, 4, days - 31);
-            }
-            // Otherwise, stay on March
-            // March = 3rd Month
-            else
-            {
-                return new DateTime(year, 3, days);
-            }
-        }
-    }
-
-    private DateTime CalculateMidsummerDay(int year)
-    {
-        var potentialDates = new List<DateTime>()
-        {
-            new DateTime(year, 6, 20),
-            new DateTime(year, 6, 21),
-            new DateTime(year, 6, 22),
-            new DateTime(year, 6, 23),
-            new DateTime(year, 6, 24),
-            new DateTime(year, 6, 25),
-            new DateTime(year, 6, 26),
-        };
-
-        foreach (var date in potentialDates)
-        {
-            if (date.DayOfWeek == DayOfWeek.Saturday)
-                return date;
-        }
-
-        // Logically unreachable code since one of the potential dates must be a Saturday, but the compiler doesn't know that.
-        return potentialDates.First();
-    }
-
-    private DateTime CalculateAllSaintsDay(int year)
-    {
-        var potentialDates = new List<DateTime>()
-        {
-            new DateTime(year, 10, 31),
-            new DateTime(year, 11, 1),
-            new DateTime(year, 11, 2),
-            new DateTime(year, 11, 3),
-            new DateTime(year, 11, 4),
-            new DateTime(year, 11, 5),
-            new DateTime(year, 11, 6),
-        };
-
-        foreach (var date in potentialDates)
-        {
-            if (date.DayOfWeek == DayOfWeek.Saturday)
-                return date;
-        }
-
-        // Logically unreachable code since one of the potential dates must be a Saturday, but the compiler doesn't know that.
-        return potentialDates.First();
     }
 }
