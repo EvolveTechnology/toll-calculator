@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TollFeeCalculator.Models
+﻿namespace TollFeeCalculator.Models
 {
     public enum VehicleType
     {
@@ -15,6 +9,5 @@ namespace TollFeeCalculator.Models
         Foreign = 4,
         Military = 5,
         Car = 6,
-
     }
 }

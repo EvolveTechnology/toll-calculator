@@ -6,6 +6,9 @@ using TollFeeCalculator.Utils;
 
 // Note that since this is an assignment for a potential job, I have written more elaborate comments than usual in my code.
 // This is just a way to document my thought process for the reviewers since I can't communicate with them any other way. 
+
+// Also note that Exceptions thrown by this code are intended to be caught, logged and handled within the code of the calling system.
+
 public class TollCalculator
 {
 
@@ -17,10 +20,21 @@ public class TollCalculator
      * @return - the total toll fee for that day
      */
 
-    public int GetTollFee(IVehicle vehicle, DateTime[] dates)
+    public int GetTotalTollFeeForDay(IVehicle vehicle, DateTime[] dates)
     {
-        DateTime intervalStart = dates[0];
+        if (dates is null || dates.Length == 0)
+            return 0;
+
+        var dayOfYear = dates.First().DayOfYear;
+        
+        if (dates.Any(date => date.DayOfYear != dayOfYear))
+            throw new ArgumentException("Not all dates are from the same day!");
+        
+        dates.OrderBy(date => date.TimeOfDay);
+
         int totalFee = 0;
+        DateTime intervalStart = dates[0];
+                
         foreach (DateTime date in dates)
         {
             int nextFee = GetTollFee(date, vehicle);
@@ -40,14 +54,14 @@ public class TollCalculator
                 totalFee += nextFee;
             }
         }
-        if (totalFee > 60) totalFee = 60;
-        return totalFee;
+
+        return Math.Min(totalFee, 60);
     }
 
     private bool IsTollFreeVehicle(IVehicle vehicle)
     {
         if (vehicle is null)
-            return false; // Throw ArgumentNullException?
+            throw new ArgumentNullException($"Parameter '{nameof(vehicle)}' is null.");
 
         var vehicleType = vehicle.GetVehicleType();
 
@@ -63,7 +77,7 @@ public class TollCalculator
             case VehicleType.Car:
                 return false;
             default:
-                return false; // Throw ArgumentOutOfRangeException?
+                throw new ArgumentOutOfRangeException($"Encountered unknown vehicle type '{vehicleType}'.");
         }
     }
 
@@ -72,19 +86,54 @@ public class TollCalculator
         if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle))
             return 0;
 
-        int hour = date.Hour;
-        int minute = date.Minute;
+        var rushHourType = GetRushHourType(date);
 
-        if (hour == 6 && minute >= 0 && minute <= 29) return 8;
-        else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
-        else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
-        else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
-        else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
-        else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
-        else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
-        else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
-        else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
-        else return 0;
+        switch(rushHourType)
+        {
+            case RushHourType.LowRush:
+                return 8;
+            case RushHourType.MediumRush:
+                return 13;
+            case RushHourType.HighRush:
+                return 18;
+            default: 
+                return 0;
+        }
+    }
+
+    private RushHourType GetRushHourType(DateTime date)
+    {        
+        if (date.IsBetweenTimes("06:00", "06:30")) return RushHourType.LowRush;
+        if (date.IsBetweenTimes("06:30", "07:00")) return RushHourType.MediumRush;
+        if (date.IsBetweenTimes("07:00", "08:00")) return RushHourType.HighRush;
+        if (date.IsBetweenTimes("08:00", "08:30")) return RushHourType.MediumRush;
+        if (date.IsBetweenTimes("08:30", "15:00")) return RushHourType.LowRush;
+        if (date.IsBetweenTimes("15:00", "15:30")) return RushHourType.MediumRush;
+        if (date.IsBetweenTimes("15:30", "17:00")) return RushHourType.HighRush;
+        if (date.IsBetweenTimes("17:00", "18:00")) return RushHourType.MediumRush;
+        if (date.IsBetweenTimes("18:00", "18:30")) return RushHourType.LowRush;
+
+        return RushHourType.NoRush;
+
+        // Logic translated from these conditions:
+
+        //if (hour == 6 && minute >= 0 && minute <= 29) return 8;
+        //else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
+        //else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
+        //else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
+        //else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
+        //else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
+        //else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
+        //else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
+        //else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
+        //else return 0;
+
+        // Note that one of the conditions doesn't really make sense:
+
+        //else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
+
+        // This condition doesn't include times like e.g. 10:00 since the minute is less than 30. 
+        // But it makes no sense to make the first 30 minutes of these hours free, so I assume that this is just an error in the condition.
     }
 
     private bool IsTollFreeDate(DateTime date)
