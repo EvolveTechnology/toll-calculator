@@ -29,33 +29,94 @@ public class TollCalculator
         
         if (dates.Any(date => date.DayOfYear != dayOfYear))
             throw new ArgumentException("Not all dates are from the same day!");
-        
-        dates.OrderBy(date => date.TimeOfDay);
-
-        int totalFee = 0;
-        DateTime intervalStart = dates[0];
                 
-        foreach (DateTime date in dates)
-        {
-            int nextFee = GetTollFee(date, vehicle);
-            int tempFee = GetTollFee(intervalStart, vehicle);
-
-            long diffInMillies = date.Millisecond - intervalStart.Millisecond;
-            long minutes = diffInMillies / 1000 / 60;
-
-            if (minutes <= 60)
-            {
-                if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee >= tempFee) tempFee = nextFee;
-                totalFee += tempFee;
-            }
-            else
-            {
-                totalFee += nextFee;
-            }
-        }
+        var sortedTollFees = GetSortedTollFees(vehicle, dates);
+        var totalFee = GetTotalFee(sortedTollFees);
 
         return Math.Min(totalFee, 60);
+    }
+
+    private int GetTotalFee(Dictionary<DateTime, int> sortedTollFees)
+    {
+        if (sortedTollFees.Count == 0)
+            return 0;
+                
+        // Condition:
+        // A vehicle should only be charged once an hour
+        // In the case of multiple fees in the same hour period, the highest one applies.
+
+        var totalTollFee = 0;
+        var sortedDates = sortedTollFees.Keys.OrderBy(date => date.Ticks).ToArray();
+        var intervalStart = sortedDates[0];
+
+        foreach (var date in sortedDates)
+        {
+            if (date < intervalStart)
+                continue;
+            else
+                intervalStart = date;
+
+            var intervalEnd = intervalStart.AddHours(1);
+
+            var fee = GetHighestFeeInInterval(sortedTollFees, intervalStart, intervalEnd);
+
+            totalTollFee += fee;
+            intervalStart = intervalEnd;
+        }
+        
+        return totalTollFee;
+    }
+
+    private int GetHighestFeeInInterval(Dictionary<DateTime, int> sortedTollFees, DateTime intervalStart, DateTime intervalEnd)
+    {
+        var highestFee = 0;
+        var keysInInterval = sortedTollFees.Keys.Where(key => key.IsInInterval(intervalStart, intervalEnd));
+
+        foreach (var key in keysInInterval)
+        {
+            var fee = sortedTollFees[key];
+
+            if (fee > highestFee)
+                highestFee = fee;
+        }
+
+        return highestFee;
+    }
+
+    private Dictionary<DateTime, int> GetSortedTollFees(IVehicle vehicle, DateTime[] dates)
+    {
+        var tollFees = new Dictionary<DateTime, int>();
+        var sortedDates = dates.OrderBy(date => date.TimeOfDay);
+
+        foreach (var date in sortedDates)
+        {
+            var tollFee = GetTollFee(date, vehicle);
+
+            if (tollFee > 0)
+                tollFees.Add(date, tollFee);
+        }
+
+        return tollFees;
+    }
+
+    public int GetTollFee(DateTime date, IVehicle vehicle)
+    {
+        if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle))
+            return 0;
+
+        var rushHourType = GetRushHourType(date);
+
+        switch(rushHourType)
+        {
+            case RushHourType.LowRush:
+                return 8;
+            case RushHourType.MediumRush:
+                return 13;
+            case RushHourType.HighRush:
+                return 18;
+            default: 
+                return 0;
+        }
     }
 
     private bool IsTollFreeVehicle(IVehicle vehicle)
@@ -79,61 +140,6 @@ public class TollCalculator
             default:
                 throw new ArgumentOutOfRangeException($"Encountered unknown vehicle type '{vehicleType}'.");
         }
-    }
-
-    public int GetTollFee(DateTime date, IVehicle vehicle)
-    {
-        if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle))
-            return 0;
-
-        var rushHourType = GetRushHourType(date);
-
-        switch(rushHourType)
-        {
-            case RushHourType.LowRush:
-                return 8;
-            case RushHourType.MediumRush:
-                return 13;
-            case RushHourType.HighRush:
-                return 18;
-            default: 
-                return 0;
-        }
-    }
-
-    private RushHourType GetRushHourType(DateTime date)
-    {        
-        if (date.IsBetweenTimes("06:00", "06:30")) return RushHourType.LowRush;
-        if (date.IsBetweenTimes("06:30", "07:00")) return RushHourType.MediumRush;
-        if (date.IsBetweenTimes("07:00", "08:00")) return RushHourType.HighRush;
-        if (date.IsBetweenTimes("08:00", "08:30")) return RushHourType.MediumRush;
-        if (date.IsBetweenTimes("08:30", "15:00")) return RushHourType.LowRush;
-        if (date.IsBetweenTimes("15:00", "15:30")) return RushHourType.MediumRush;
-        if (date.IsBetweenTimes("15:30", "17:00")) return RushHourType.HighRush;
-        if (date.IsBetweenTimes("17:00", "18:00")) return RushHourType.MediumRush;
-        if (date.IsBetweenTimes("18:00", "18:30")) return RushHourType.LowRush;
-
-        return RushHourType.NoRush;
-
-        // Logic translated from these conditions:
-
-        //if (hour == 6 && minute >= 0 && minute <= 29) return 8;
-        //else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
-        //else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
-        //else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
-        //else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
-        //else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
-        //else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
-        //else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
-        //else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
-        //else return 0;
-
-        // Note that one of the conditions doesn't really make sense:
-
-        //else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
-
-        // This condition doesn't include times like e.g. 10:00 since the minute is less than 30. 
-        // But it makes no sense to make the first 30 minutes of these hours free, so I assume that this is just an error in the condition.
     }
 
     private bool IsTollFreeDate(DateTime date)
@@ -237,5 +243,40 @@ public class TollCalculator
         }
 
         return movingHolidays;
+    }
+
+    private RushHourType GetRushHourType(DateTime date)
+    {
+        if (date.IsBetweenTimes("06:00", "06:30")) return RushHourType.LowRush;
+        if (date.IsBetweenTimes("06:30", "07:00")) return RushHourType.MediumRush;
+        if (date.IsBetweenTimes("07:00", "08:00")) return RushHourType.HighRush;
+        if (date.IsBetweenTimes("08:00", "08:30")) return RushHourType.MediumRush;
+        if (date.IsBetweenTimes("08:30", "15:00")) return RushHourType.LowRush;
+        if (date.IsBetweenTimes("15:00", "15:30")) return RushHourType.MediumRush;
+        if (date.IsBetweenTimes("15:30", "17:00")) return RushHourType.HighRush;
+        if (date.IsBetweenTimes("17:00", "18:00")) return RushHourType.MediumRush;
+        if (date.IsBetweenTimes("18:00", "18:30")) return RushHourType.LowRush;
+
+        return RushHourType.NoRush;
+
+        // Logic translated from these conditions:
+
+        //if (hour == 6 && minute >= 0 && minute <= 29) return 8;
+        //else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
+        //else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
+        //else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
+        //else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
+        //else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
+        //else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
+        //else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
+        //else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
+        //else return 0;
+
+        // Note that one of the conditions doesn't really make sense:
+
+        //else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
+
+        // This condition doesn't include times like e.g. 10:00 since the minute is less than 30. 
+        // But it makes no sense to make the first 30 minutes of these hours free, so I assume that this is just an error in the condition.
     }
 }

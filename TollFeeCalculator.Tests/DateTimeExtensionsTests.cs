@@ -13,7 +13,7 @@ namespace TollFeeCalculator.Tests
         {
         }
 
-        public static IEnumerable<TestCaseData> TimesInsideInterval
+        private static IEnumerable<TestCaseData> TimesInsideInterval
         {
             get
             {
@@ -23,7 +23,7 @@ namespace TollFeeCalculator.Tests
             }
         }
 
-        public static IEnumerable<TestCaseData> TimesOutsideInterval
+        private static IEnumerable<TestCaseData> TimesOutsideInterval
         {
             get
             {

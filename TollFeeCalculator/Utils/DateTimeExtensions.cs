@@ -14,8 +14,13 @@ namespace TollFeeCalculator.Utils
             var intervalStart = new DateTime(date.Year, date.Month, date.Day, startHour, startMinute, 0);
             var intervalEnd = new DateTime(date.Year, date.Month, date.Day, endHour, endMinute, 0);
 
-            return DateTime.Compare(date, intervalStart) >= 0
-                && DateTime.Compare(date, intervalEnd) < 0;
+            return IsInInterval(date, intervalStart, intervalEnd);
+        }
+
+        public static bool IsInInterval(this DateTime date, DateTime intervalStart, DateTime intervalEnd)
+        {
+            return date >= intervalStart
+                && date < intervalEnd;
         }
     }
 }
