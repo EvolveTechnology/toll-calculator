@@ -19,7 +19,6 @@ public class TollCalculator
      * @param dates   - date and time of all passes on one day
      * @return - the total toll fee for that day
      */
-
     public int GetTotalTollFeeForDay(IVehicle vehicle, DateTime[] dates)
     {
         if (dates is null || dates.Length == 0)
@@ -99,7 +98,7 @@ public class TollCalculator
         return tollFees;
     }
 
-    public int GetTollFee(DateTime date, IVehicle vehicle)
+    private int GetTollFee(DateTime date, IVehicle vehicle)
     {
         if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle))
             return 0;
