@@ -1,0 +1,12 @@
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\bin\Debug\netcoreapp3.1\toll calculator app.exe
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\bin\Debug\netcoreapp3.1\toll calculator app.deps.json
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\bin\Debug\netcoreapp3.1\toll calculator app.runtimeconfig.json
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\bin\Debug\netcoreapp3.1\toll calculator app.runtimeconfig.dev.json
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\bin\Debug\netcoreapp3.1\toll calculator app.dll
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\bin\Debug\netcoreapp3.1\toll calculator app.pdb
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\obj\Debug\netcoreapp3.1\toll calculator app.AssemblyInfoInputs.cache
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\obj\Debug\netcoreapp3.1\toll calculator app.AssemblyInfo.cs
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\obj\Debug\netcoreapp3.1\toll calculator app.csproj.CoreCompileInputs.cache
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\obj\Debug\netcoreapp3.1\toll calculator app.dll
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\obj\Debug\netcoreapp3.1\toll calculator app.pdb
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\obj\Debug\netcoreapp3.1\toll calculator app.genruntimeconfig.cache

@@ -1,0 +1,9 @@
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator logic\obj\Debug\netcoreapp3.1\toll calculator logic.AssemblyInfoInputs.cache
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator logic\obj\Debug\netcoreapp3.1\toll calculator logic.AssemblyInfo.cs
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator logic\obj\Debug\netcoreapp3.1\toll calculator logic.csproj.CoreCompileInputs.cache
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator logic\bin\Debug\netcoreapp3.1\toll calculator logic.deps.json
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator logic\bin\Debug\netcoreapp3.1\toll calculator logic.dll
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator logic\bin\Debug\netcoreapp3.1\toll calculator logic.pdb
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator logic\obj\Debug\netcoreapp3.1\toll calculator logic.dll
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator logic\obj\Debug\netcoreapp3.1\toll calculator logic.pdb
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator logic\obj\Debug\netcoreapp3.1\toll calculator logic.csproj.AssemblyReference.cache
