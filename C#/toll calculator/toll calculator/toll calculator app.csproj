@@ -6,4 +6,8 @@
     <RootNamespace>toll_calculator_app</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\toll calculator logic\toll calculator logic.csproj" />
+  </ItemGroup>
+
 </Project>

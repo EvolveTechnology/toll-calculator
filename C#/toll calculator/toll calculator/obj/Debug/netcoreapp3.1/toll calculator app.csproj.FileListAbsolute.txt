@@ -10,3 +10,7 @@ C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calcula
 C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\obj\Debug\netcoreapp3.1\toll calculator app.dll
 C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\obj\Debug\netcoreapp3.1\toll calculator app.pdb
 C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\obj\Debug\netcoreapp3.1\toll calculator app.genruntimeconfig.cache
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\bin\Debug\netcoreapp3.1\toll calculator logic.dll
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\bin\Debug\netcoreapp3.1\toll calculator logic.pdb
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\obj\Debug\netcoreapp3.1\toll calculator app.csproj.AssemblyReference.cache
+C:\Users\sinan\OneDrive\Dokument\toll-calculator\C#\toll calculator\toll calculator\obj\Debug\netcoreapp3.1\toll calculator app.csproj.CopyComplete

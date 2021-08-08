@@ -10,11 +10,21 @@
         "runtime": {
           "toll calculator app.dll": {}
         }
+      },
+      "toll calculator logic/1.0.0": {
+        "runtime": {
+          "toll calculator logic.dll": {}
+        }
       }
     }
   },
   "libraries": {
     "toll calculator app/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "toll calculator logic/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
