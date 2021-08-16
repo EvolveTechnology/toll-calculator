@@ -16,6 +16,8 @@ from input_config import create_vehicle, unique_vehicles_from_license_plate, all
 
 def main():
 
+    # Added this for some 'live' like scenario.
+
     toll_stamps = [
         {
             'vehicle': 'car',
