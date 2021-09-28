@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/TollFeeCalculator/v16
+/TollFeeCalculator/bin/Debug
+/TollFeeCalculator/obj/Debug
+/TollFeeCalculator/Properties
+/packages
+/UnitTestToll/bin/Debug
+/UnitTestToll/obj/Debug
