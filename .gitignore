@@ -1,0 +1,12 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/C#/TollCalculatorTests/TollCalculatorTests/TollCalculatorTests/obj/Debug/netcoreapp3.1
+/C#/TollCalculator/TollCalculator/obj
+/C#/TollCalculator/.vs/TollCalculator/v16
+/C#/TollCalculator/App/obj
+/C#/TollCalculator/App/bin/Debug/netcoreapp3.1
+/C#/TollCalculator/.vs/TollCalculator/DesignTimeBuild
+/C#/TollCalculator/TollCalculatorTests/bin/Debug/netcoreapp3.1
+/C#/TollCalculator/TollCalculatorTests/obj
