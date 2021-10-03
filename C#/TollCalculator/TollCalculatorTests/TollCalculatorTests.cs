@@ -32,7 +32,6 @@ namespace TollFeeCalculatorTests
                 new DateTime(2021, 10, 6, 17, 0, 0) 
             };
 
-
             //Act
             var tollFee = _tollCalculator.GetTollFee(vehicle, dates);
 

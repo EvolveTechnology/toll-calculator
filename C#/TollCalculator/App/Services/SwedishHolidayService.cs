@@ -57,7 +57,6 @@ namespace TollCalculatorApp.Services
             calculatedHolidays.Add(GetPentecostDay(year));
             calculatedHolidays.Add(GetPentecostDay(year).AddDays(-1));  //Whitsun
 
-
             var swedishHolidays = new List<DateTime>();
             swedishHolidays.AddRange(Holidays);
             swedishHolidays.AddRange(calculatedHolidays);
@@ -98,7 +97,6 @@ namespace TollCalculatorApp.Services
             {
                 date = date.AddDays(1);
             }
-
             return date;
         }
 
