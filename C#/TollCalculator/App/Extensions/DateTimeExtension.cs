@@ -20,12 +20,8 @@ namespace TollCalculatorApp
         }
 
         /// <summary>
-        /// This method calculates the day that easterday occur on using Gauss algorithm
-        /// Code for algorithm used comes from this stack-exchange article https://codereview.stackexchange.com/questions/193847/find-easter-on-any-given-year
+        /// This method returns wether a datetime is a weekend day or not
         /// </summary>
-        /// <param name="year">The year you want to get the date of easter day for</param>
-        /// <returns>DateTime that Easterday occurs on </returns>
-        
         public static bool IsWeekend(this DateTime date)
         {
             if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) 

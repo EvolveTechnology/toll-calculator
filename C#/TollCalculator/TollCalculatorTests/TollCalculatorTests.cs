@@ -22,14 +22,16 @@ namespace TollFeeCalculatorTests
         {
             //Arrange
             var vehicle = new Car();
+
             var dates = new DateTime[] {
-                new DateTime(2021, 10, 6, 7, 0, 0), 
-                new DateTime(2021, 10, 6, 9, 0, 0), 
-                new DateTime(2021, 10, 6, 11, 0, 0), 
-                new DateTime(2021, 10, 6, 13, 0, 0), 
-                new DateTime(2021, 10, 6, 15, 0, 0),
-                new DateTime(2021, 10, 6, 17, 0, 0)
+                new DateTime(2021, 10, 6, 7, 0, 0),
+                new DateTime(2021, 10, 6, 9, 0, 0),
+                new DateTime(2021, 10, 6, 11, 0, 0),
+                new DateTime(2021, 10, 6, 13, 0, 0),
+                new DateTime(2021, 10, 6, 15, 0, 0), 
+                new DateTime(2021, 10, 6, 17, 0, 0) 
             };
+
 
             //Act
             var tollFee = _tollCalculator.GetTollFee(vehicle, dates);
@@ -72,8 +74,8 @@ namespace TollFeeCalculatorTests
             //Arrange
             var vehicle = new Car();
             var dates = new DateTime[] { 
-                new DateTime(2021, 02, 01, 15, 0, 0), //Medium fee - 13
-                new DateTime(2021, 02, 01, 15, 35, 0) //Medium fee - 18
+                new DateTime(2021, 02, 01, 15, 0, 0), 
+                new DateTime(2021, 02, 01, 15, 35, 0)
             };
 
             //Act
@@ -89,7 +91,7 @@ namespace TollFeeCalculatorTests
             //Arrange
             var vehicle = new Car();
             var dates = new DateTime[] {
-                new DateTime(2021, 02, 01, 15, 0, 0) //Medium fee - 13
+                new DateTime(2021, 02, 01, 15, 0, 0)
             };
 
             //Act
@@ -104,10 +106,10 @@ namespace TollFeeCalculatorTests
             //Arrange
             var vehicle = new Car();
             var dates = new DateTime[] {
-                new DateTime(2021, 02, 01, 6, 0, 0), //Medium fee - 8
-                new DateTime(2021, 02, 01, 10, 0, 0), //Medium fee - 8
-                new DateTime(2021, 02, 01, 15, 0, 0), //Medium fee - 13
-                new DateTime(2021, 02, 01, 18, 0, 0), //Small fee - 8
+                new DateTime(2021, 02, 01, 6, 0, 0),
+                new DateTime(2021, 02, 01, 10, 0, 0),
+                new DateTime(2021, 02, 01, 15, 0, 0), 
+                new DateTime(2021, 02, 01, 18, 0, 0),
             };
 
             //Act
