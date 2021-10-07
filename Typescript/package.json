@@ -7,7 +7,8 @@
   "browser": "./dist/esbuild/browser.js",
   "license": "ISC",
   "scripts": {
-    "test": "jest",
+    "test": "TZ=UTC jest",
+    "test:watch": "TZ=UTC jest --watch",
     "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
     "ts-node": "ts-node",
     "clean": "rm -rf dist build",
