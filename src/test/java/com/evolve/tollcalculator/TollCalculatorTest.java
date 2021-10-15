@@ -74,7 +74,7 @@ public class TollCalculatorTest {
         List<Date> dates = new ArrayList<>();
         // non-weekend, not a holiday
         LocalDate date = LocalDate.of(2021, 2, 1);
-        LocalDateTime time = LocalDateTime.of(date, LocalTime.of(6, 00)); // 06:00 fee: 8 (not counted)
+        LocalDateTime time = LocalDateTime.of(date, LocalTime.of(6, 0)); // 06:00 fee: 8 (not counted)
         dates.add(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
         time = time.plusMinutes(40);    // 06:40 fee: 13
         dates.add(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));

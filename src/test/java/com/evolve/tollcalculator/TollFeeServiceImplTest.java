@@ -6,11 +6,10 @@ import com.evolve.services.TollFeeServiceImpl;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 
 import java.time.LocalTime;
 
-@FixMethodOrder(MethodSorters.DEFAULT)
+@FixMethodOrder()
 public class TollFeeServiceImplTest {
     private final TollFeeService tollFeeService;
 
