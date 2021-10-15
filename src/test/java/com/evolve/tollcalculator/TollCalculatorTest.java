@@ -24,63 +24,6 @@ public class TollCalculatorTest {
     }
 
     @Test
-    public void testHolidayService() {
-        HolidayServiceImpl holidays = new HolidayServiceImpl();
-        // Easter Monday
-        Assert.assertTrue(holidays.isHoliday(LocalDate.of(2021, 4, 5)));
-        // Epiphany
-        Assert.assertTrue(holidays.isHoliday(LocalDate.of(2021, 1, 6)));
-        // Midsummer's Eve
-        Assert.assertTrue(holidays.isHoliday(LocalDate.of(2021, 6, 25)));
-        // All Saints' Eve
-        Assert.assertTrue(holidays.isHoliday(LocalDate.of(2021, 11, 5)));
-    }
-
-    @Test
-    public void testTollFeePeriod() {
-        Vehicle car = new Car();
-        // non-weekend, not a holiday
-        LocalDate date = LocalDate.of(2021, 2, 1);
-        LocalDateTime time = LocalDateTime.of(date, LocalTime.of(0, 0, 59));
-
-        int fee = tollCalculator.getTollFee(car, Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-        Assert.assertEquals(0, fee);
-        time = time.plusMinutes(29); // 00:29
-        fee = tollCalculator.getTollFee(car, Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-        Assert.assertEquals(0, fee);
-        time = time.plusHours(6); // 06:29
-        fee = tollCalculator.getTollFee(car, Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-        Assert.assertEquals(8, fee);
-        time = time.plusMinutes(1); // 06:30
-        fee = tollCalculator.getTollFee(car, Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-        Assert.assertEquals(13, fee);
-        time = time.plusHours(1); // 07:30
-        fee = tollCalculator.getTollFee(car, Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-        Assert.assertEquals(18, fee);
-        time = time.plusMinutes(40); // 08:10
-        fee = tollCalculator.getTollFee(car, Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-        Assert.assertEquals(13, fee);
-        time = time.plusHours(3); // 11:10
-        fee = tollCalculator.getTollFee(car, Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-        Assert.assertEquals(8, fee);
-        time = time.plusHours(4); // 15:10
-        fee = tollCalculator.getTollFee(car, Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-        Assert.assertEquals(13, fee);
-        time = time.plusHours(1); // 16:10
-        fee = tollCalculator.getTollFee(car, Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-        Assert.assertEquals(18, fee);
-        time = time.plusHours(1); // 17:10
-        fee = tollCalculator.getTollFee(car, Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-        Assert.assertEquals(13, fee);
-        time = time.plusHours(1); // 18:10
-        fee = tollCalculator.getTollFee(car, Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-        Assert.assertEquals(8, fee);
-        time = time.plusHours(1); // 19:10
-        fee = tollCalculator.getTollFee(car, Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-        Assert.assertEquals(0, fee);
-    }
-
-    @Test
     public void testTollFreeVehicle() {
         // toll-free vehicle
         Vehicle vehicle = new Motorbike();
@@ -99,17 +42,16 @@ public class TollCalculatorTest {
         LocalDate date = LocalDate.of(2021, 2, 6);
         LocalDateTime time = LocalDateTime.of(date, LocalTime.of(8, 0));
         int fee = tollCalculator.getTollFee(vehicle, Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-        Assert.assertEquals(0, fee);
+        Assert.assertEquals(time.toString(), 0, fee);
         // Sunday
         date = date.plusDays(1);
         time = LocalDateTime.of(date, LocalTime.of(8, 0));
         fee = tollCalculator.getTollFee(vehicle, Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-        Assert.assertEquals(0, fee);
+        Assert.assertEquals(time.toString(), 0, fee);
     }
 
     @Test
-    public void testTollCalculator() {
-        // normal vehicle
+    public void testTollFreePeriod() {
         Vehicle vehicle = new Car();
         List<Date> dates = new ArrayList<>();
         // non-weekend, not a holiday
@@ -120,12 +62,22 @@ public class TollCalculatorTest {
         dates.add(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
         time = time.plusMinutes(40);    // 06:40 fee: 13
         dates.add(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-
         Date[] datesArray = new Date[dates.size()];
         int fee = tollCalculator.getTollFee(vehicle, dates.toArray(datesArray));
         // The toll-free shall be dropped. Thus the total fee should be 13.
         Assert.assertEquals(13, fee);
+    }
 
+    @Test
+    public void testTollFeeCalculation() {
+        Vehicle vehicle = new Car();
+        List<Date> dates = new ArrayList<>();
+        // non-weekend, not a holiday
+        LocalDate date = LocalDate.of(2021, 2, 1);
+        LocalDateTime time = LocalDateTime.of(date, LocalTime.of(6, 00)); // 06:00 fee: 8 (not counted)
+        dates.add(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
+        time = time.plusMinutes(40);    // 06:40 fee: 13
+        dates.add(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
         time = time.plusMinutes(40);    // 07:20 fee: 18
         dates.add(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
         time = time.plusMinutes(40);    // 08:00 fee: 13 (not counted)
@@ -136,13 +88,13 @@ public class TollCalculatorTest {
         dates.add(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
         time = time.plusMinutes(40);    // 15:20 fee: 13
         dates.add(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
-        fee = tollCalculator.getTollFee(vehicle, dates.toArray(datesArray));
+        Date[] datesArray = new Date[dates.size()];
+        int fee = tollCalculator.getTollFee(vehicle, dates.toArray(datesArray));
         // 13 + 18 + 8 + 13 = 52
-        Assert.assertEquals(52, fee);
+        Assert.assertEquals("Till " + time.toString(), 52, fee);
         time = time.plusMinutes(40);    // 16:00 fee: 18
         dates.add(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()));
         fee = tollCalculator.getTollFee(vehicle, dates.toArray(datesArray));
-        Assert.assertEquals(60, fee);
+        Assert.assertEquals("Reaches maximum for one day.", TollCalculator.MAX_FEE_IN_ONE_DAY, fee);
     }
 }
-

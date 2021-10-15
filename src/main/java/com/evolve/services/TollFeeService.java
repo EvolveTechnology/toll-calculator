@@ -17,11 +17,11 @@ public interface TollFeeService {
      * Add/update the given toll fee periods.
      * @param tollPeriods   the toll fee periods
      */
-    void updateTollPeriods(List<TollPeriod> tollPeriods);
+    void updateTollPeriods(TollPeriod... tollPeriods);
 
     /**
      * Remove the toll fee periods
      * @param tollPeriods   the toll fee periods.
      */
-    void removeTollPeriods(List<TollPeriod> tollPeriods);
+    void removeTollPeriods(TollPeriod... tollPeriods);
 }

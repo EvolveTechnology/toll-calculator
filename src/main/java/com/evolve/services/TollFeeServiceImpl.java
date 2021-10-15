@@ -11,6 +11,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import java.io.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,12 +30,12 @@ public class TollFeeServiceImpl implements TollFeeService {
     }
 
     @Override
-    public void updateTollPeriods(List<TollPeriod> tollPeriods) {
-        putTollPeriods(tollPeriods);
+    public void updateTollPeriods(TollPeriod... tollPeriods) {
+        putTollPeriods(Arrays.asList(tollPeriods));
     }
 
     @Override
-    public void removeTollPeriods(List<TollPeriod> tollPeriods) {
+    public void removeTollPeriods(TollPeriod... tollPeriods) {
         for(TollPeriod tp : tollPeriods) {
             LocalTime start = LocalTime.of(tp.getStart().getHour(), tp.getStart().getMinute());
             LocalTime end = LocalTime.of(tp.getEnd().getHour(), tp.getEnd().getMinute(), 1);

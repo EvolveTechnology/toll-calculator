@@ -49,7 +49,7 @@ public class TollCalculator {
             logger.error("The input dates are not of the same date: " + Arrays.toString(dates));
             throw new IllegalArgumentException("All dates shall be on the same date.");
         }
-        if (isTollFreeVehicle(vehicle) || isTollFreeDate(entry1))
+        if (vehicle.isTollFree() || isTollFreeDate(entry1))
             return 0;
 
         /*
@@ -113,14 +113,5 @@ public class TollCalculator {
         if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY)
             return true;
         return holidayService.isHoliday(date);
-    }
-
-    /**
-     * Check if a vehicle is toll-free.
-     * @param vehicle   the vehicle
-     * @return  true if the vehicle is toll-free, false otherwise
-     */
-    private boolean isTollFreeVehicle(Vehicle vehicle) {
-        return vehicle.isTollFree();
     }
 }
