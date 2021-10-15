@@ -28,6 +28,11 @@
             <artifactId>log4j-core</artifactId>
             <version>${log4j2.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.21</version>
+        </dependency>
     </dependencies>
 
     <build>

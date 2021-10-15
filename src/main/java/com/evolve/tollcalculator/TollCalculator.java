@@ -17,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 public class TollCalculator {
     private HolidayService holidayService;
     private TollFeeService tollFeeService;
-    private static Set<String> vehicles;
     private static final Logger logger = LogManager.getLogger(TollCalculator.class);
     public static final int MAX_FEE_IN_ONE_DAY = 60;
 
@@ -116,39 +115,12 @@ public class TollCalculator {
         return holidayService.isHoliday(date);
     }
 
-    private enum TollFreeVehicles {
-        MOTORBIKE("Motorbike"),
-        TRACTOR("Tractor"),
-        EMERGENCY("Emergency"),
-        DIPLOMAT("Diplomat"),
-        FOREIGN("Foreign"),
-        MILITARY("Military");
-
-        private final String type;
-        TollFreeVehicles(String type) {
-          this.type = type;
-        }
-        public String getType() {
-          return type;
-        }
-    }
-
-    static {
-        // generate set of toll-free vechicles
-        vehicles = new HashSet<>();
-        for (TollFreeVehicles vechicle : TollFreeVehicles.values()) {
-            vehicles.add(vechicle.getType());
-        }
-    }
-
     /**
      * Check if a vehicle is toll-free.
      * @param vehicle   the vehicle
      * @return  true if the vehicle is toll-free, false otherwise
      */
     private boolean isTollFreeVehicle(Vehicle vehicle) {
-        if (vehicle == null)
-            return false;
-        return vehicles.contains(vehicle.getType());
+        return vehicle.isTollFree();
     }
 }

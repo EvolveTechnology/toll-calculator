@@ -18,6 +18,7 @@ import java.util.List;
 
 public class TollCalculatorTest {
     private final TollCalculator tollCalculator;
+
     public TollCalculatorTest() {
         tollCalculator = new TollCalculator(new HolidayServiceImpl(), new TollFeeServiceImpl());
     }
@@ -144,3 +145,4 @@ public class TollCalculatorTest {
         Assert.assertEquals(60, fee);
     }
 }
+

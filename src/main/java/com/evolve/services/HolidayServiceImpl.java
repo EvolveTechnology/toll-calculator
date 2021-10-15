@@ -3,7 +3,7 @@ package com.evolve.services;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
-
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The holidays are:
@@ -17,70 +17,88 @@ import java.util.*;
  * Boxing Day           Dec. 26th
  * New Year's Eve       Dec. 31st
  * Good Friday
+ * Easter's Eve
+ * Easter Sunday
  * Easter Monday
  * Ascension Day
  * Midsummer's Eve
+ * Midsummer Day
  * All Saints' Eve
+ * All Saints Day
  */
 public class HolidayServiceImpl implements HolidayService {
-    private static Set<LocalDate> holidays;
+    private static Map<LocalDate, Boolean> holidays;
 
     @Override
     public boolean isHoliday(LocalDate date) {
-        return holidays.contains(date);
+        return holidays.containsKey(date);
+    }
+
+    @Override
+    public boolean addHoliday(LocalDate date) {
+        return holidays.put(date, true) == null ;
+    }
+
+    @Override
+    public boolean removeHoliday(LocalDate date) {
+        return holidays.remove(date) != null;
     }
 
     static {
-        holidays = new HashSet<>();
+        holidays = new ConcurrentHashMap<>();
         for (int year = 2020; year < 2022; ++year) {
-            holidays.addAll(getFixedHolidays(year));
-            holidays.add(getMidsummerEve(year));
-            holidays.add(getAllSaintsEve(year));
+            holidays.putAll(getFixedHolidays(year));
+            // add Midsummer's Eve and Midsummer's Day
+            LocalDate d = getMidsummerDay(year);
+            holidays.put(d.minusDays(1), true);
+            holidays.put(d, true);
+            // add All Saints' Eve and All Saints' Day
+            d = getAllSaintsDay(year);
+            holidays.put(d.minusDays(1), true);
+            holidays.put(d, true);
+            // add Easter-related holidays
             LocalDate easterDay = calculateEaster(year);
-            // add Good Friday
-            holidays.add(easterDay.minusDays(2));
-            // add Easter's Eve and Easter Sunday
-            holidays.add(easterDay.minusDays(1));
-            holidays.add(easterDay);
-            // add Easter Monday
-            holidays.add(easterDay.plusDays(1));
+            holidays.put(easterDay.minusDays(2), true);
+            holidays.put(easterDay.minusDays(1), true);
+            holidays.put(easterDay, true);
+            holidays.put(easterDay.plusDays(1), true);
             // 	add Ascension Day
-            holidays.add(easterDay.plusDays(39));
+            holidays.put(easterDay.plusDays(39), true);
         }
     }
 
     /**
-     * Get the Midsummer's Eve of a given year.
+     * Get the Midsummer's Day of a given year.
      * @param year  the specified year
-     * @return  the Midsummer's Eve
+     * @return  the Midsummer's Day
      */
-    private static LocalDate getMidsummerEve(int year) {
-        // Earliest possible date of Midsumer's Eve is Jun. 19th
-        return getFirstFriday(LocalDate.of(year, 6, 19));
+    private static LocalDate getMidsummerDay(int year) {
+        // Earliest possible date of Midsumer's Day is Jun. 20th
+        return getFirstSaturDay(LocalDate.of(year, 6, 20));
     }
 
     /**
-     * Get the All Saints' Eve of a given year.
+     * Get the All Saints' Day of a given year.
      * @param year  the specified year
-     * @return  the All Saints' Eve
+     * @return  the All Saints' Day
      */
-    private static LocalDate getAllSaintsEve(int year) {
-        // Earliest possible date of All Saints' Eve is Oct. 30th
-        return getFirstFriday(LocalDate.of(year, 10, 30));
+    private static LocalDate getAllSaintsDay(int year) {
+        // Earliest possible date of All Saints' Day is Oct. 31th
+        return getFirstSaturDay(LocalDate.of(year, 10, 31));
     }
 
     /**
-     * Get the first Friday after a certain date (inclusive).
+     * Get the first Saturday after a certain date (inclusive).
      *
      * @param date  the specified date
-     * @return  the first Friday
+     * @return  the first Saturday
      */
-    private static LocalDate getFirstFriday(LocalDate date) {
+    private static LocalDate getFirstSaturDay(LocalDate date) {
         List<LocalDate> candidates = new ArrayList<>(7);
         for (int i = 0; i < 7; ++i) {
             candidates.add(date.plusDays(i));
         }
-        return candidates.stream().filter(d -> d.getDayOfWeek() == DayOfWeek.FRIDAY).findFirst().get();
+        return candidates.stream().filter(d -> d.getDayOfWeek() == DayOfWeek.SATURDAY).findFirst().get();
     }
 
     /**
@@ -141,22 +159,22 @@ public class HolidayServiceImpl implements HolidayService {
      * @param year  the year
      * @return  the set of fixed holidays
      */
-    private static Set<LocalDate> getFixedHolidays(int year) {
-        Set<LocalDate> fixedHolidays = new HashSet<>();
+    private static Map<LocalDate, Boolean> getFixedHolidays(int year) {
+        Map<LocalDate, Boolean> fixedHolidays = new HashMap<>();
         // New Year's Eve and New Year's Day
-        fixedHolidays.add(LocalDate.of(year, 1, 1));
-        fixedHolidays.add(LocalDate.of(year, 12, 31));
+        fixedHolidays.put(LocalDate.of(year, 1, 1), true);
+        fixedHolidays.put(LocalDate.of(year, 12, 31), true);
         // Epiphany
-        fixedHolidays.add(LocalDate.of(year, 1, 6));
+        fixedHolidays.put(LocalDate.of(year, 1, 6), true);
         // Walpurgis Night and May 1st
-        fixedHolidays.add(LocalDate.of(year, 4, 30));
-        fixedHolidays.add(LocalDate.of(year, 5, 1));
+        fixedHolidays.put(LocalDate.of(year, 4, 30), true);
+        fixedHolidays.put(LocalDate.of(year, 5, 1), true);
         // National Day
-        fixedHolidays.add(LocalDate.of(year, 6, 6));
+        fixedHolidays.put(LocalDate.of(year, 6, 6), true);
         // Christmas Eve, Christmas Day and Boxing Day
-        fixedHolidays.add(LocalDate.of(year, 12, 24));
-        fixedHolidays.add(LocalDate.of(year, 12, 25));
-        fixedHolidays.add(LocalDate.of(year, 12, 26));
+        fixedHolidays.put(LocalDate.of(year, 12, 24), true);
+        fixedHolidays.put(LocalDate.of(year, 12, 25), true);
+        fixedHolidays.put(LocalDate.of(year, 12, 26), true);
         return fixedHolidays;
     }
 }
