@@ -15,14 +15,6 @@ import java.util.GregorianCalendar;
 public class TollCalculatorTest {
 
   TollCalculator tollCalculator = new TollCalculator();
-  @Before
-  public void setUp() throws Exception {
-  }
-
-  @After
-  public void tearDown() throws Exception {
-  }
-
 
   @Test
   public void testTollFreeVehicle() throws NoSuchMethodException,
@@ -62,5 +54,52 @@ public class TollCalculatorTest {
     //test for Tuesday
     Boolean isMondayTollFreeDay = (Boolean) method.invoke(tollCalculator, monday.getTime());
     Assert.assertFalse("Test failed", isMondayTollFreeDay);
+  }
+
+  @Test
+  public void testMaxTollFeeInADay(){
+    GregorianCalendar dateMorning1 =
+            new GregorianCalendar(2021, Calendar.NOVEMBER, 2, 6, 30);
+
+    GregorianCalendar dateMorning2 =
+            new GregorianCalendar(2021, Calendar.NOVEMBER, 2, 7, 15);
+
+    GregorianCalendar dateAfternoon1 =
+            new GregorianCalendar(2021, Calendar.NOVEMBER, 2, 12, 30);
+
+    GregorianCalendar dateAfternoon2 =
+            new GregorianCalendar(2021, Calendar.NOVEMBER, 2, 12, 30);
+
+    GregorianCalendar dateEvening1 =
+            new GregorianCalendar(2021, Calendar.NOVEMBER, 2, 15, 30);
+
+    GregorianCalendar dateEvening2 =
+            new GregorianCalendar(2021, Calendar.NOVEMBER, 2, 17, 30);
+
+    Date[] dates = {dateMorning1.getTime(), dateAfternoon1.getTime(), dateEvening1.getTime(),
+            dateMorning2.getTime(), dateAfternoon2.getTime(), dateEvening2.getTime()};
+
+    int totalTollFees = tollCalculator.getTollFee((Vehicle) () -> "Car", dates);
+
+    // max toll amount for a vehicle for a day cannot exceed 60
+    Assert.assertEquals(60, totalTollFees);
+  }
+
+  @Test
+  public void testChargeOncePerHour(){
+    GregorianCalendar dateMorning1 =
+            new GregorianCalendar(2021, Calendar.NOVEMBER, 2, 6, 10);
+
+    GregorianCalendar dateMorning2 =
+            new GregorianCalendar(2021, Calendar.NOVEMBER, 2, 6, 45);
+
+    Date[] dates = {dateMorning1.getTime(), dateMorning2.getTime()};
+    int totalTollFees = tollCalculator.getTollFee((Vehicle) () -> "Car", dates);
+
+    // max toll amount for a vehicle within an hour will be charged only once and
+    // will take the highest charged amount
+    // e.g between 6 AM - 7 AM, if a car makes two trips, then the charges are 8 and 13.
+    // only 13 should be charged as its the highest in the span of one hour
+    Assert.assertEquals(13, totalTollFees);
   }
 }
