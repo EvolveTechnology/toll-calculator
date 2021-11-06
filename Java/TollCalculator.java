@@ -1,6 +1,9 @@
+package com.toll.calculator;
 
 import java.util.*;
 import java.util.concurrent.*;
+
+import static com.toll.calculator.Constants.*;
 
 public class TollCalculator {
 
@@ -22,7 +25,7 @@ public class TollCalculator {
       long diffInMillies = date.getTime() - intervalStart.getTime();
       long minutes = timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
 
-      if (minutes <= 60) {
+      if (minutes <= MAXIMUM) {
         if (totalFee > 0) totalFee -= tempFee;
         if (nextFee >= tempFee) tempFee = nextFee;
         totalFee += tempFee;
@@ -30,81 +33,59 @@ public class TollCalculator {
         totalFee += nextFee;
       }
     }
-    if (totalFee > 60) totalFee = 60;
+    if (totalFee > MAXIMUM) totalFee = MAXIMUM;
     return totalFee;
   }
 
   private boolean isTollFreeVehicle(Vehicle vehicle) {
-    if(vehicle == null) return false;
-    String vehicleType = vehicle.getType();
-    return vehicleType.equals(TollFreeVehicles.MOTORBIKE.getType()) ||
-           vehicleType.equals(TollFreeVehicles.TRACTOR.getType()) ||
-           vehicleType.equals(TollFreeVehicles.EMERGENCY.getType()) ||
-           vehicleType.equals(TollFreeVehicles.DIPLOMAT.getType()) ||
-           vehicleType.equals(TollFreeVehicles.FOREIGN.getType()) ||
-           vehicleType.equals(TollFreeVehicles.MILITARY.getType());
+    if(vehicle == null) 
+    	return false;
+    return TollFreeVehicles.contains(vehicle.getType());
   }
 
   public int getTollFee(final Date date, Vehicle vehicle) {
     if(isTollFreeDate(date) || isTollFreeVehicle(vehicle)) return 0;
-    Calendar calendar = GregorianCalendar.getInstance();
+    GregorianCalendar calendar = new GregorianCalendar();
     calendar.setTime(date);
+    return calculateToll(calendar);
+  }
+
+  private static int calculateToll(final Calendar calendar)
+  {
     int hour = calendar.get(Calendar.HOUR_OF_DAY);
     int minute = calendar.get(Calendar.MINUTE);
-
-    if (hour == 6 && minute >= 0 && minute <= 29) return 8;
-    else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
-    else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
-    else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
-    else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
-    else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
-    else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
-    else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
-    else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
-    else return 0;
+    if ((hour == 6 || hour == 18) && minute <= 29) return MINIMUM;
+    else if (hour == 6 || hour == 17 ) return 13;
+    else if (hour == 8 && minute <= 29) return 13;
+    else if (hour >= 8 && hour <= 14 && minute >= 30) return MINIMUM;
+    else if (hour == 15 && minute <= 29) return 13;
+    else if (hour == 7 || hour == 15 || hour == 16) return 18;
+    return 0;
   }
 
-  private Boolean isTollFreeDate(Date date) {
-    Calendar calendar = GregorianCalendar.getInstance();
+  private boolean isTollFreeDate(Date date) {
+    GregorianCalendar calendar = new GregorianCalendar();
     calendar.setTime(date);
-    int year = calendar.get(Calendar.YEAR);
-    int month = calendar.get(Calendar.MONTH);
+    if(isWeekend(calendar)) return true;
+    return isHoliday(calendar);
+  }
+  
+  private static boolean isWeekend(final Calendar cal)
+  {
+      int day = cal.get(Calendar.DAY_OF_WEEK);
+      return day == Calendar.SATURDAY || day == Calendar.SUNDAY;
+  }
+
+  private static boolean isHoliday(final Calendar calendar)
+  {
+    String month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+    if (month.equalsIgnoreCase(JULY)) return true;
+    String holidays = HolidayList.getDays(month);
+    if (null == holidays) return false;
+    List<String> holidayList = new ArrayList<>(Arrays.asList(holidays.split(",")));
     int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-    int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-    if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) return true;
-
-    if (year == 2013) {
-      if (month == Calendar.JANUARY && day == 1 ||
-          month == Calendar.MARCH && (day == 28 || day == 29) ||
-          month == Calendar.APRIL && (day == 1 || day == 30) ||
-          month == Calendar.MAY && (day == 1 || day == 8 || day == 9) ||
-          month == Calendar.JUNE && (day == 5 || day == 6 || day == 21) ||
-          month == Calendar.JULY ||
-          month == Calendar.NOVEMBER && day == 1 ||
-          month == Calendar.DECEMBER && (day == 24 || day == 25 || day == 26 || day == 31)) {
-        return true;
-      }
-    }
-    return false;
+    return holidayList.contains(Integer.toString(day));
   }
-
-  private enum TollFreeVehicles {
-    MOTORBIKE("Motorbike"),
-    TRACTOR("Tractor"),
-    EMERGENCY("Emergency"),
-    DIPLOMAT("Diplomat"),
-    FOREIGN("Foreign"),
-    MILITARY("Military");
-    private final String type;
-
-    TollFreeVehicles(String type) {
-      this.type = type;
-    }
-
-    public String getType() {
-      return type;
-    }
-  }
+  
 }
 
