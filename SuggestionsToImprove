@@ -1,0 +1,9 @@
+Suggestions:
+-Based on Business:
+1. toll should be deducted based on current Day. toll fee deduction should not be allowed before or after today's date.
+- Based on logic:
+1. first check vehicle type. If vehicle is toll free, then no need to proceed further validations(datetime range) 
+   or check free-time/Holiday.
+2. Holiday list and TollFree Vehicle list, both can be externalize(configurable) same as toll Time&Fee.
+3. In code fee should be tracked as double rather than integer.
+
