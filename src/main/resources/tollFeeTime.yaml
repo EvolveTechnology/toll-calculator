@@ -1,0 +1,28 @@
+timeFeeList:
+  - start: 06:00:00
+    end:   06:29:59
+    fee:   8
+  - start: 06:30:00
+    end:   06:59:59
+    fee:   13
+  - start: 07:00:00
+    end:   07:59:59
+    fee:   18
+  - start: 08:00:00
+    end:   08:29:59
+    fee:   13
+  - start: 08:30:00
+    end:   14:59:59
+    fee:   8
+  - start: 15:00:00
+    end:   15:29:59
+    fee:   13
+  - start: 15:30:00
+    end:   16:59:59
+    fee:   18
+  - start: 17:00:00
+    end:   17:59:59
+    fee:   13
+  - start: 18:00:00
+    end:   18:29:59
+    fee:   8
