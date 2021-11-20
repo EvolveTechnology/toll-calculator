@@ -1,0 +1,55 @@
+{
+  "feeTimes": [
+    {
+      "fee": 18,
+      "time": [
+        {
+          "startTime": "07:00:00",
+          "endTime": "07:59:00"
+        },
+        {
+          "startTime": "15:30:00",
+          "endTime": "16:59:00"
+        }
+      ]
+    },
+    {
+      "fee": 13,
+      "time": [
+        {
+          "startTime": "06:30:00",
+          "endTime": "06:59:00"
+        },
+        {
+          "startTime": "08:00:00",
+          "endTime": "08:29:00"
+        },
+        {
+          "startTime": "15:00:00",
+          "endTime": "15:29:00"
+        },
+        {
+          "startTime": "17:00:00",
+          "endTime": "17:59:00"
+        }
+      ]
+    },
+    {
+      "fee": 8,
+      "time": [
+        {
+          "startTime": "06:00:00",
+          "endTime": "06:29:00"
+        },
+        {
+          "startTime": "08:30:00",
+          "endTime": "14:59:00"
+        },
+        {
+          "startTime": "18:00:00",
+          "endTime": "18:29:00"
+        }
+      ]
+    }
+  ]
+}
