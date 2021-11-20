@@ -72,20 +72,25 @@ public class TollCalculator {
 
   private List<TollFeeTime> getFeeAndTimes() throws IOException {
     List<TollFeeTime> tollFeeTimesList = new ArrayList<>();
-    JSONObject jsonObject = new JSONObject(Files.readString(Paths.get("src/main/resources/TollFees.json")));
-    JSONArray feeTimes =  jsonObject.getJSONArray("feeTimes");
-    feeTimes.forEach(feeTime -> {
-      JSONObject jsonFeeTime = (JSONObject) feeTime;
-      JSONArray timeArray = jsonFeeTime.getJSONArray("time");
-      timeArray.forEach(time -> {
-        TollFeeTime tollFeeTime = new TollFeeTime();
-        JSONObject jsonTime = (JSONObject) time;
-        tollFeeTime.setStartTime(LocalTime.parse(jsonTime.getString("startTime")));
-        tollFeeTime.setEndTime(LocalTime.parse(jsonTime.getString("endTime")));
-        tollFeeTime.setFee(jsonFeeTime.getInt("fee"));
-        tollFeeTimesList.add(tollFeeTime);
+    try{
+      JSONObject jsonObject = new JSONObject(Files.readString(Paths.get("src/main/resources/TollFees.json")));
+      JSONArray feeTimes =  jsonObject.getJSONArray("feeTimes");
+      feeTimes.forEach(feeTime -> {
+        JSONObject jsonFeeTime = (JSONObject) feeTime;
+        JSONArray timeArray = jsonFeeTime.getJSONArray("time");
+        timeArray.forEach(time -> {
+          TollFeeTime tollFeeTime = new TollFeeTime();
+          JSONObject jsonTime = (JSONObject) time;
+          tollFeeTime.setStartTime(LocalTime.parse(jsonTime.getString("startTime")));
+          tollFeeTime.setEndTime(LocalTime.parse(jsonTime.getString("endTime")));
+          tollFeeTime.setFee(jsonFeeTime.getInt("fee"));
+          tollFeeTimesList.add(tollFeeTime);
+        });
       });
-    });
+    } catch (Exception e){
+      throw new RuntimeException("Exception occurred in getting fee from json", e);
+    }
+
     return tollFeeTimesList;
   }
 
