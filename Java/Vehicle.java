@@ -1,5 +1,6 @@
+package com.evolve.tollcalculator;
 
 public interface Vehicle {
 
-  public String getType();
+  String getType();
 }
