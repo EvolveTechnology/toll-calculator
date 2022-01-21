@@ -1,10 +1,9 @@
-package com.evolve.tollCalculator.model;
+package com.evolve.tollCalculator.util;
 
 
 import static com.evolve.tollCalculator.util.Constants.*;
 
 public enum TollFreeVehicles {
-
         MOTORBIKE(VEHICLE_TYPE_MOTORBIKE),
         TRACTOR(VEHICLE_TYPE_TRACTOR),
         EMERGENCY(VEHICLE_TYPE_EMERGENCY),

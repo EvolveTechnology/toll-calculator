@@ -2,7 +2,6 @@ package com.evolve.tollCalculator;
 
 import com.evolve.tollCalculator.model.Car;
 import com.evolve.tollCalculator.model.FreeCarTypeFactory;
-import com.evolve.tollCalculator.model.TollFreeVehicles;
 import com.evolve.tollCalculator.util.Constants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
