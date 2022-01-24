@@ -124,12 +124,27 @@ describe("TollCalculator", () => {
     expect(fee).toBe(16);
   });
 
-  test.only("In case there are multiple billings in one hour, it only bills the largest one", () => {
+  test("In case there are multiple billings in one hour, it only bills the largest one", () => {
     const fee = tollCalculator.getTotalTollFee(Vehicle.Car, [
       new Date(Date.UTC(1995, 11, 12, 8, 20)),
       new Date(Date.UTC(1995, 11, 12, 8, 40)),
     ]);
 
     expect(fee).toBe(13);
+  });
+
+  test("Max fee is 60", () => {
+    const fee = tollCalculator.getTotalTollFee(Vehicle.Car, [
+      new Date(Date.UTC(1995, 11, 12, 8, 40)),
+      new Date(Date.UTC(1995, 11, 12, 9, 40)),
+      new Date(Date.UTC(1995, 11, 12, 10, 40)),
+      new Date(Date.UTC(1995, 11, 12, 11, 40)),
+      new Date(Date.UTC(1995, 11, 12, 12, 40)),
+      new Date(Date.UTC(1995, 11, 12, 15, 40)),
+      new Date(Date.UTC(1995, 11, 12, 16, 40)),
+      new Date(Date.UTC(1995, 11, 12, 17, 40)),
+    ]);
+
+    expect(fee).toBe(60);
   });
 });
