@@ -65,13 +65,12 @@ class TollCalculator {
 
     if (freeWeekDays.includes(weekDay)) return true;
 
-    return freeDays.some((it) => {
-      return (
+    return freeDays.some(
+      (it) =>
         it.year === year &&
         it.month === month &&
         (!it.days || it.days.includes(day))
-      );
-    });
+    );
   }
 
   private getTime(date: Date) {
