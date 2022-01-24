@@ -29,9 +29,6 @@ class TollCalculator {
         new Date(date.getTime() - lastBillingDate.getTime())
       );
 
-      console.log({ fee, lastFee });
-      console.log(this.getTime(date));
-
       if (minutesSinceLastBilling <= 60) {
         if (fee >= lastFee) {
           totalFee += fee;
