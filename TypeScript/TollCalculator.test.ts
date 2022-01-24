@@ -118,7 +118,7 @@ describe("TollCalculator", () => {
   test("It handles multiple billings in a day", () => {
     const fee = tollCalculator.getTotalTollFee(Vehicle.Car, [
       new Date(Date.UTC(1995, 11, 12, 8, 40)),
-      new Date(Date.UTC(1995, 11, 12, 9, 40)),
+      new Date(Date.UTC(1995, 11, 12, 9, 45)),
     ]);
 
     expect(fee).toBe(16);
@@ -136,13 +136,14 @@ describe("TollCalculator", () => {
   test("Max fee is 60", () => {
     const fee = tollCalculator.getTotalTollFee(Vehicle.Car, [
       new Date(Date.UTC(1995, 11, 12, 8, 40)),
-      new Date(Date.UTC(1995, 11, 12, 9, 40)),
-      new Date(Date.UTC(1995, 11, 12, 10, 40)),
-      new Date(Date.UTC(1995, 11, 12, 11, 40)),
-      new Date(Date.UTC(1995, 11, 12, 12, 40)),
-      new Date(Date.UTC(1995, 11, 12, 15, 40)),
-      new Date(Date.UTC(1995, 11, 12, 16, 40)),
-      new Date(Date.UTC(1995, 11, 12, 17, 40)),
+      new Date(Date.UTC(1995, 11, 12, 9, 41)),
+      new Date(Date.UTC(1995, 11, 12, 10, 42)),
+      new Date(Date.UTC(1995, 11, 12, 11, 43)),
+      new Date(Date.UTC(1995, 11, 12, 12, 44)),
+      new Date(Date.UTC(1995, 11, 12, 13, 45)),
+      new Date(Date.UTC(1995, 11, 12, 15, 46)),
+      new Date(Date.UTC(1995, 11, 12, 16, 47)),
+      new Date(Date.UTC(1995, 11, 12, 17, 48)),
     ]);
 
     expect(fee).toBe(60);
