@@ -124,6 +124,15 @@ describe("TollCalculator", () => {
     expect(fee).toBe(16);
   });
 
+  test("It handles passing billings in unsorted order", () => {
+    const fee = tollCalculator.getTotalTollFee(Vehicle.Car, [
+      new Date(Date.UTC(1995, 11, 12, 9, 45)),
+      new Date(Date.UTC(1995, 11, 12, 8, 40)),
+    ]);
+
+    expect(fee).toBe(16);
+  });
+
   test("In case there are multiple billings in one hour, it only bills the largest one", () => {
     const fee = tollCalculator.getTotalTollFee(Vehicle.Car, [
       new Date(Date.UTC(1995, 11, 12, 8, 20)),

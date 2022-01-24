@@ -19,7 +19,7 @@ class TollCalculator {
     let tempFee = null;
     let totalFee = 0;
 
-    dates.forEach((date: Date) => {
+    dates.sort().forEach((date: Date) => {
       if (!this.isSameDay(date, startDate)) {
         throw "Billings must be in the same day.";
       }
