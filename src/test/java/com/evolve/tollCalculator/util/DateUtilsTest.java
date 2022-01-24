@@ -54,7 +54,7 @@ class DateUtilsTest {
     void initHolidayList() {
         List<String> holidayList2013 = List.of(
                 "0-1", "0-6", "2-29", "2-31", "3-1", "4-1",
-                "4-9", "4-19", "5-6", "5-21", "5-22",
+                "4-9", "4-19", "5-6", "5-21", "5-22", "6",
                 "10-2", "11-24", "11-25", "11-26", "11-31"
         );
         DateUtils.initHolidayList(2013);
@@ -63,7 +63,7 @@ class DateUtilsTest {
         List<String> holidayList2020 = List.of(
                 "0-1", "0-6", "3-10", "3-12", "3-13",
                 "4-1", "4-21", "4-31", "5-6", "5-19",
-                "5-20", "10-7", "11-24", "11-25", "11-26", "11-31"
+                "5-20", "6", "10-7", "11-24", "11-25", "11-26", "11-31"
         );
         DateUtils.initHolidayList(2020);
         assertEquals(DateUtils.s_holiday_list, holidayList2020);
