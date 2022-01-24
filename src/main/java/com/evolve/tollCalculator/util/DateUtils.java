@@ -144,8 +144,7 @@ public class DateUtils {
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) return true;
 
-        if (s_holiday_list.contains(month) ||
-                s_holiday_list.contains(month + DATE_DELIMITER + day)) {
+        if (s_holiday_list.contains(month + DATE_DELIMITER + day)) {
             logger.info("{} is holiday", date);
             return true;
         }
@@ -179,7 +178,6 @@ public class DateUtils {
                 Calendar.JUNE + "-6",
                 formatHoliday(getMidsummerEveDay(year).getTime()),
                 formatHoliday(getMidsummerDay(year).getTime()),
-                Calendar.JULY + "",
                 formatHoliday(getAllSaintsDay(year).getTime()),
                 Calendar.DECEMBER + "-24",
                 Calendar.DECEMBER + "-25",
