@@ -42,8 +42,9 @@ class TollCalculator {
         lastBillingDate = date;
         tempFee = null;
       }
-      if (totalFee > 60) totalFee = 60;
     });
+
+    if (totalFee > 60) totalFee = 60;
 
     return totalFee;
   }
