@@ -1,0 +1,26 @@
+{
+  "name": "toll-calculator",
+  "version": "1.0.0",
+  "description": "![here we are](https://media.giphy.com/media/FnGJfc18tDDHy/giphy.gif)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-home:pontusk/toll-calculator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "@types/lodash": "^4.14.178",
+    "jest": "^27.4.7",
+    "ts-jest": "^27.1.3",
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}
