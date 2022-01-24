@@ -16,6 +16,7 @@ class TollCalculator {
   getTotalTollFee(vehicle: Vehicle, dates: Date[]) {
     const startDate = dates[0];
     let lastBillingDate = null;
+    let tempFee = null;
     let totalFee = 0;
 
     dates.forEach((date: Date) => {
@@ -26,16 +27,19 @@ class TollCalculator {
       const fee = this.getTollFee(vehicle, date);
 
       if (
-        lastBillingDate &&
+        lastBillingDate !== null &&
         this.getMinutesSinceLastBilling(date, lastBillingDate) <= 60
       ) {
-        const lastFee = this.getTollFee(vehicle, lastBillingDate);
-        if (fee >= lastFee) {
-          totalFee += fee - lastFee;
+        if (tempFee === null)
+          tempFee = this.getTollFee(vehicle, lastBillingDate);
+        if (fee >= tempFee) {
+          totalFee += fee - tempFee;
+          tempFee = fee;
         }
       } else {
         totalFee += fee;
         lastBillingDate = date;
+        tempFee = null;
       }
       if (totalFee > 60) totalFee = 60;
     });
