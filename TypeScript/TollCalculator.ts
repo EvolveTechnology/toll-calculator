@@ -14,12 +14,13 @@ class TollCalculator {
   }
 
   getTotalTollFee(vehicle: Vehicle, dates: Date[]) {
-    const startDate = dates[0];
+    const sortedDates = [...dates].sort();
+    const startDate = sortedDates[0];
     let lastBillingDate = null;
     let tempFee = null;
     let totalFee = 0;
 
-    dates.sort().forEach((date: Date) => {
+    sortedDates.forEach((date: Date) => {
       if (!this.isSameDay(date, startDate)) {
         throw "Billings must be in the same day.";
       }
