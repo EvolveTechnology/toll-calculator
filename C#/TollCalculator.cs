@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Globalization;
 using TollFeeCalculator;
 
 public class TollCalculator
 {
-
+    //Comments explaining why I did certain changes is not something I usually do. So it might look a bit more cluttered than it would normally. 
     /**
      * Calculate the total toll fee for one day
      *
@@ -12,49 +12,72 @@ public class TollCalculator
      * @param dates   - date and time of all passes on one day
      * @return - the total toll fee for that day
      */
-
-    public int GetTollFee(Vehicle vehicle, DateTime[] dates)
+    //I'm assuming the main function calls this at the end of each day when all toll moments(all dates) have been registered. 
+    public int GetTollFee(Vehicle vehicle, DateTime[] timeStamps)
     {
-        DateTime intervalStart = dates[0];
+        DateTime intervalStart = timeStamps[0];
         int totalFee = 0;
-        foreach (DateTime date in dates)
+        
+        //Moved to this state, makes more sense to not make calculations on a toll free vehicle or date at all.
+        if (IsTollFreeDate(intervalStart) || IsTollFreeVehicle(vehicle)) return totalFee;    
+
+        int hour = intervalStart.Hour;
+        int tempFee = GetTollFee(intervalStart);
+        
+        //TimeStamps is more logical than dates since. Will always compare intervalStart to intervalStart the first iteration. 
+        foreach (DateTime time in timeStamps)   
         {
-            int nextFee = GetTollFee(date, vehicle);
-            int tempFee = GetTollFee(intervalStart, vehicle);
-
-            long diffInMillies = date.Millisecond - intervalStart.Millisecond;
-            long minutes = diffInMillies/1000/60;
-
-            if (minutes <= 60)
-            {
-                if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee >= tempFee) tempFee = nextFee;
-                totalFee += tempFee;
+            int nextFee = GetTollFee(time);
+      
+            //long diffInMillies = date.Millisecond - intervalStart.Millisecond;
+            //long minutes = diffInMillies/1000/60;
+            
+            //if multiple date in the same hour.
+            if (hour == time.Hour) 
+            {               
+                if (nextFee >= tempFee)
+                {   
+                    //remove the lower fee from total. Only relevant if fee change for the hour. 
+                    if (totalFee > 0) totalFee -= tempFee;
+                    tempFee = nextFee;
+                } 
+                totalFee += tempFee;    //add the higher fee.
             }
             else
             {
-                totalFee += nextFee;
+                totalFee += nextFee;    //new fee to add.
+                hour = time.Hour;       //update hour
+                tempFee = GetTollFee(time); //update new temp fee for the new hour.
+            }
+
+            if (totalFee > 60) //if exceeding 60SEK, no need to continue checking toll fees.
+            {
+                totalFee = 60;
+                return totalFee;
             }
         }
-        if (totalFee > 60) totalFee = 60;
         return totalFee;
     }
 
     private bool IsTollFreeVehicle(Vehicle vehicle)
     {
-        if (vehicle == null) return false;
-        String vehicleType = vehicle.GetVehicleType();
-        return vehicleType.Equals(TollFreeVehicles.Motorbike.ToString()) ||
+        if (vehicle == null) return false;  //if no vehicle is specified, for some reason. ?
+        
+        string vehicleType = vehicle.GetVehicleType();      
+        return Enum.IsDefined(typeof(TollFreeVehicles), vehicleType); 
+        
+        
+        /*return vehicleType.Equals(TollFreeVehicles.Motorbike.ToString()) ||
                vehicleType.Equals(TollFreeVehicles.Tractor.ToString()) ||
                vehicleType.Equals(TollFreeVehicles.Emergency.ToString()) ||
                vehicleType.Equals(TollFreeVehicles.Diplomat.ToString()) ||
                vehicleType.Equals(TollFreeVehicles.Foreign.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Military.ToString());
+               vehicleType.Equals(TollFreeVehicles.Military.ToString());*/
     }
 
-    public int GetTollFee(DateTime date, Vehicle vehicle)
+    public int GetTollFee(DateTime date)        //Struggled with this one
     {
-        if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
+        //if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0; moved to GetTollFee.
 
         int hour = date.Hour;
         int minute = date.Minute;
@@ -71,6 +94,7 @@ public class TollCalculator
         else return 0;
     }
 
+    //I would change this to support an automated format that reads from a calendar file which can be changed instead of the dates being hard coded into the software. 
     private Boolean IsTollFreeDate(DateTime date)
     {
         int year = date.Year;
@@ -78,21 +102,22 @@ public class TollCalculator
         int day = date.Day;
 
         if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) return true;
-
-        if (year == 2013)
+        //if(year == 2013)      only works the year 2013..
+        
+        if (month == 1 && day == 1 ||
+            month == 3 && (day == 28 || day == 29) ||
+            month == 4 && (day == 1 || day == 30) ||
+            month == 5 && (day == 1 || day == 8 || day == 9) ||
+            month == 6 && (day == 5 || day == 6 || day == 21) ||
+            month == 7 ||
+            month == 11 && day == 1 ||
+            month == 12 && (day == 24 || day == 25 || day == 26 || day == 31))
         {
-            if (month == 1 && day == 1 ||
-                month == 3 && (day == 28 || day == 29) ||
-                month == 4 && (day == 1 || day == 30) ||
-                month == 5 && (day == 1 || day == 8 || day == 9) ||
-                month == 6 && (day == 5 || day == 6 || day == 21) ||
-                month == 7 ||
-                month == 11 && day == 1 ||
-                month == 12 && (day == 24 || day == 25 || day == 26 || day == 31))
-            {
-                return true;
-            }
+            return true;
         }
+        else
+            return false;
+
         return false;
     }
 
@@ -105,4 +130,5 @@ public class TollCalculator
         Foreign = 4,
         Military = 5
     }
+
 }
