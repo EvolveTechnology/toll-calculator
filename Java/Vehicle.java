@@ -1,5 +1,7 @@
 
 public interface Vehicle {
 
-  public String getType();
+  boolean isFree();
+
+  TollVehiclesType getType();
 }
