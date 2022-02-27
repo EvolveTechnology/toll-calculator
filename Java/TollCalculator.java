@@ -24,7 +24,6 @@ public class TollCalculator {
 
     for (int i = 0; i < datesList.size();) {
       int j = i + 1;
-      if (totalFee >= MAX_VALUE) return MAX_VALUE;
       int tempFee = getTollFee(datesList.get(i), vehicle);
       if (tempFee == 0) {i++;continue;}
       while (j < datesList.size() &&
@@ -33,6 +32,7 @@ public class TollCalculator {
         j++;
       }
       totalFee += tempFee;
+      if (totalFee >= MAX_VALUE) return MAX_VALUE;
       i = j;
     }
 
