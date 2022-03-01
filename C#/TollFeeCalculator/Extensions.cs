@@ -1,4 +1,5 @@
-﻿using Nager.Date.Extensions;
+﻿using Nager.Date;
+using Nager.Date.Extensions;
 using System;
 using System.Linq;
 
@@ -13,7 +14,7 @@ namespace TollFeeCalculator
 
         public static bool IsWeekendOrHoliday(this DateTime dateTime)
         {
-            return dateTime.IsWeekend(Nager.Date.CountryCode.SE);
+            return dateTime.IsWeekend(Nager.Date.CountryCode.SE) || DateSystem.IsPublicHoliday(dateTime, CountryCode.SE);
         }
 
         public static bool IsTollFreeVehicle(this Vehicle vehicle)

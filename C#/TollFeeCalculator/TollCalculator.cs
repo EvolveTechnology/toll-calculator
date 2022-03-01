@@ -17,6 +17,8 @@ public partial class TollCalculator
     {
         if (day.IsWeekendOrHoliday() || vehicle.IsTollFreeVehicle()) return 0;
 
+        times = times.OrderBy(x => x).ToArray();
+
         var groups = times.GroupBy(x => (x - times.FirstOrDefault()).Ticks / TimeSpan.FromHours(1).Ticks).ToList(); // grouping per hour (based on the first item)
 
         var totalFee = 0;
