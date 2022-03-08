@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31911.196
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{2F2E23C1-12A9-4404-AE11-9A68660C9096}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{A3477FD0-AD72-484D-AF4E-459227B49DA7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A0F68207-5F18-4632-9494-DA266C5D6803}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evolve.TollCalculator.Application", "Evolve.TollCalculator.Application\Evolve.TollCalculator.Application.csproj", "{5F6D4C5F-CD52-47AA-90A8-BB7B969AF726}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evolve.TollCalculator.Core", "Evolve.TollCalculator.Core\Evolve.TollCalculator.Core.csproj", "{00913884-5E47-4282-8B92-5CD76D600F5C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evolve.TollCalculation.Application.UnitTest", "Evolve.TollCalculation.Application.UnitTest\Evolve.TollCalculation.Application.UnitTest.csproj", "{B5E3522D-F129-478F-B428-A75402C92B9F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evolve.TollCalculator.API", "Evolve.TollCalculator.API\Evolve.TollCalculator.API.csproj", "{BC6D3B85-3470-4A58-9B39-10FB708DE243}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5F6D4C5F-CD52-47AA-90A8-BB7B969AF726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F6D4C5F-CD52-47AA-90A8-BB7B969AF726}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F6D4C5F-CD52-47AA-90A8-BB7B969AF726}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F6D4C5F-CD52-47AA-90A8-BB7B969AF726}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00913884-5E47-4282-8B92-5CD76D600F5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00913884-5E47-4282-8B92-5CD76D600F5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00913884-5E47-4282-8B92-5CD76D600F5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00913884-5E47-4282-8B92-5CD76D600F5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5E3522D-F129-478F-B428-A75402C92B9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5E3522D-F129-478F-B428-A75402C92B9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5E3522D-F129-478F-B428-A75402C92B9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5E3522D-F129-478F-B428-A75402C92B9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC6D3B85-3470-4A58-9B39-10FB708DE243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC6D3B85-3470-4A58-9B39-10FB708DE243}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC6D3B85-3470-4A58-9B39-10FB708DE243}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC6D3B85-3470-4A58-9B39-10FB708DE243}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5F6D4C5F-CD52-47AA-90A8-BB7B969AF726} = {2F2E23C1-12A9-4404-AE11-9A68660C9096}
+		{00913884-5E47-4282-8B92-5CD76D600F5C} = {2F2E23C1-12A9-4404-AE11-9A68660C9096}
+		{B5E3522D-F129-478F-B428-A75402C92B9F} = {A0F68207-5F18-4632-9494-DA266C5D6803}
+		{BC6D3B85-3470-4A58-9B39-10FB708DE243} = {A3477FD0-AD72-484D-AF4E-459227B49DA7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D54B38EC-1CB0-4D2B-82EC-A2CF855BE03E}
+	EndGlobalSection
+EndGlobal
