@@ -2,7 +2,7 @@
 
 ## Background
 
-This codebase will represent micro service implementation of the toll calculation. CQRS design pattern used in the 
+This codebase will represent the microservice implementation of the toll calculation. Mediator pattern and dependency injection are used in the service implementation to achieve simplicity, de-coupling, and testability.
 
 ### Used dependencies
 
