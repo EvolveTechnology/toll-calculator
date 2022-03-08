@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Evolve.TollCalculator.Test": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "395f4f96-9800-4511-a004-2a7fc81dc245",
+		"name": "Misc Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ShouldReturnOnlyHighestFeeEveryHourWhenDatesAreUnsorted",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Vehicle\": \"car\",\n    \"TollDates\" : [\n        \"2020-09-01T06:40:00\",\n        \"2020-09-01T08:15:00\",\n        \"2020-09-01T15:15:00\",\n        \"2020-09-01T17:30:00\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/TollCalculation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"TollCalculation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ShouldReturnMinFeeInOffPeakHoursAsync",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Vehicle\": \"car\",\n    \"TollDates\" : [\n        \"2020-09-01T06:15:00\",\n        \"2020-09-01T18:15:00\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/TollCalculation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"TollCalculation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ShouldReturnOnlyTheHighestFeeWithinEveryHour",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Vehicle\": \"car\",\n    \"TollDates\" : [\n        \"2020-09-01T06:45:00\",\n        \"2020-09-01T07:45:00\",\n        \"2020-09-01T16:59:00\",\n        \"2020-09-01T17:00:00\",\n        \"2020-09-01T18:29:00\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/TollCalculation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"TollCalculation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ShouldReturnOnlyHighestFeeEveryHourWhenDatesAreUnsorted",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Vehicle\": \"car\",\n    \"TollDates\" : [\n        \"2020-09-01T17:00:00\",\n        \"2020-09-01T07:15:00\",\n        \"2020-09-01T06:45:00\",\n        \"2020-09-01T18:29:00\",\n        \"2020-09-01T16:59:00\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/TollCalculation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"TollCalculation"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
