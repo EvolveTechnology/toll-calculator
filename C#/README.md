@@ -24,4 +24,4 @@ Below changes are added to the base code to make sure all the requirements are c
 3. Create extension methods for common functions.
 4. Add unit tests for testability.
 
-Click [here](https://github.com/sajithawattage/toll-calculator/tree/develop/C%23/API-Implementation) to view the **API Implementation** and click [here](https://github.com/sajithawattage/toll-calculator/tree/develop/C%23/Logic-Implementation) to view the **Logic Implementation**.
+There are two implementations in this coding assignment. Fixed logical errors and optimize the coding in **Logic Implementation** which can be find [here](/API-Implementation) and micro service implementation in **API Implementation** which can be find [here](/Logic-Implementation).

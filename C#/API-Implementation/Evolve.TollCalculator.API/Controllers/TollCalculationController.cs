@@ -33,7 +33,7 @@ namespace Evolve.TollCalculator.API.Controllers
             {
                 return await mediator.Send(new TollCalculationByDateRangeCommand
                 {
-                    Vehicle = Test.GetVehicleByName(model.Vehicle),
+                    Vehicle = VehicleInstanceExtenstion.GetVehicleByName(model.Vehicle),
                     TollDate = model.TollDates
                 });
             }

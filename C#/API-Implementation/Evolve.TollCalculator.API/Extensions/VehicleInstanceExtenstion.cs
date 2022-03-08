@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Evolve.TollCalculator.API.Extensions
 {
-    public static class Test
+    public static class VehicleInstanceExtenstion
     {
-        static readonly Dictionary<string, Vehicle> vehicleInstance = new Dictionary<string, Vehicle>
+        static readonly Dictionary<string, Vehicle> vehicleInstances = new Dictionary<string, Vehicle>
         {
             {"Car", new Car() },
             {"Diplomat", new Diplomat() },
@@ -20,9 +20,9 @@ namespace Evolve.TollCalculator.API.Extensions
 
         public static Vehicle GetVehicleByName(string vehicleType)
         {
-            if (vehicleInstance.ContainsKey(vehicleType))
+            if (vehicleInstances.ContainsKey(vehicleType))
             {
-                return vehicleInstance.Single(x => x.Key == vehicleType).Value;
+                return vehicleInstances.Single(x => x.Key == vehicleType).Value;
             }
             return null;
         }

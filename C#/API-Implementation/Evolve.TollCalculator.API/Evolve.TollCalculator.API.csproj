@@ -28,6 +28,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Validators\" />
-    <Folder Include="Extensions\" />
   </ItemGroup>
 </Project>
