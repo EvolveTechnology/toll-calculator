@@ -51,7 +51,7 @@ public class ToolCalculatorTest {
         };
 
         test(tollCalculator, new Car(), dateTimeArrayWeekDayLarge, 60, "Weekday Fees on Car with Cap");
-        test(tollCalculator, new Car(), dateTimeArrayWeekDaySmall, 34, "Weekday Fees on Car without Cap");
+        test(tollCalculator, new Car(), dateTimeArrayWeekDaySmall, 42, "Weekday Fees on Car without Cap");
         test(tollCalculator, new Car(), dateTimeArrayWeekEnd, 0, "Weekend Fees on Car");
         test(tollCalculator, new Motorbike(), dateTimeArrayWeekEnd, 0, "Weekend Fees on Motorbike");
         test(tollCalculator, new Motorbike(), dateTimeArrayWeekDaySmall, 0, "Weekday Fees on Motorbike");

@@ -65,9 +65,11 @@ public class TollCalculator {
     else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
     else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
     else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
-    else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
+    else if (hour == 8 && minute >= 30 && minute <= 59) return 8;
+    else if (hour >= 9 && hour <= 14 && minute >= 0 && minute <= 59) return 8;
     else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
-    else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
+    else if (hour == 15 && minute >= 30 && minute <= 59) return 18;
+    else if (hour == 16 && minute >= 0 && minute <= 59) return 18;
     else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
     else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
     else return 0;
@@ -83,6 +85,7 @@ public class TollCalculator {
     int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
     if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) return true;
 
+    //TODO - consider every year differently or remove the year validation
     if (year == 2013) {
       if (month == Calendar.JANUARY && day == 1 ||
           month == Calendar.MARCH && (day == 28 || day == 29) ||
