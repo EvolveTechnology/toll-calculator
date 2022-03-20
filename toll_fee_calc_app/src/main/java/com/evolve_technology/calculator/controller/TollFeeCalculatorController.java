@@ -27,7 +27,7 @@ public class TollFeeCalculatorController {
 	
 	@GetMapping("tollfee/vehicles/{name}/dates/{date}")
 	public ResponseEntity<TollFeeDTO> getTollFee(@PathVariable("name") String name,@PathVariable("date") 
-	@Pattern(regexp = "^((20)[0-9][0-9])-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])T(00|0[0-9]|1[0-9]|2[0-3]):(0[0-9]|[0-5][0-9]):(0[0-9]|[0-5][0-9])$") 
+	@Pattern(regexp = "^((20)[0-9][0-9])-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T(00|0[0-9]|1[0-9]|2[0-3]):(0[0-9]|[0-5][0-9]):(0[0-9]|[0-5][0-9])$") 
 	String date) {
 		int amount= tollFreeCalculatorService.getTollFee(date, name);
 		TollFeeDTO tollFeeDTO=new TollFeeDTO();
@@ -62,7 +62,7 @@ public class TollFeeCalculatorController {
 	
 	@GetMapping("tollfree/dates/{date}")
 	public ResponseEntity<TollFreeDateDTO> getTollFreeDateStatus(@PathVariable("date") 
-	@Pattern(regexp = "^((20)[0-9][0-9])-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$") String date){
+	@Pattern(regexp = "^((20)[0-9][0-9])-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$") String date){
 			Boolean value=tollFreeCalculatorService.isTollFreeDate(date);
 			TollFreeDateDTO tollFreeDateDTO=new TollFreeDateDTO();
 			tollFreeDateDTO.setDate(date);
