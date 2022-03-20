@@ -30,10 +30,10 @@ Your job is to deliver the code and from now on, you are the responsible go-to-p
 You can make any modifications or suggestions for modifications that you see fit. Fork this repository and deliver your results via a pull-request or send us an e-mail. You could also create a gist, for privacy reasons, and send us the link.
 
 ## Changes
-Radical changes going to introduced based on the maintainability of the code. Each of the changes are are listed in this section.
-1. The solution will be in Java and C# code removed.
+Radical changes introduced based on the maintainability of the code. Each of the changes are listed below.
+1. High level folders of Java and C# code removed.
 2. Maven build tool introduced to project folder structure change accordingly.
-3. Package structure of classes also going to be changed too
+3. Package structure of classes also changed accordint to the Maven folder structure
 4. Unit testing with mocking introduced
 5. With the unit test implementation found few problems in the getTollFee method.
 	- This method double charge user when he use highway even within 60 minutes
@@ -43,7 +43,7 @@ Radical changes going to introduced based on the maintainability of the code. Ea
  
  NOTE: This code can be a part of REST API. But not completed that part since it is not that clear to me. 
  
- ## Run
+ ## To Run
  Install maven3.8.4 to run unit test cases
  mvn clean package 
   
