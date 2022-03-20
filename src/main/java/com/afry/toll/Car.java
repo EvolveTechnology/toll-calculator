@@ -1,3 +1,4 @@
+package com.afry.toll;
 
 public class Car implements Vehicle {
   @Override
