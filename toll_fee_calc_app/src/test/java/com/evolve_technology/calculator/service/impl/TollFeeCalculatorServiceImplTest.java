@@ -76,4 +76,16 @@ public class TollFeeCalculatorServiceImplTest {
 		String feb30=" 2013-02-30";
 		assertThrows(CustomErrorException.class,()->tollFeeCalculatorService.isTollFreeDate(feb30));
 	}
+	
+	@Test
+	public void isTollFreeVehicleTest() {
+		String vehicle="";
+		assertFalse(tollFeeCalculatorService.isTollFreeVehicle(vehicle));
+		
+		vehicle="tractor";
+		assertTrue(tollFeeCalculatorService.isTollFreeVehicle(vehicle));
+		
+		vehicle="Tractor234";
+		assertFalse(tollFeeCalculatorService.isTollFreeVehicle(vehicle));
+	}
 }
