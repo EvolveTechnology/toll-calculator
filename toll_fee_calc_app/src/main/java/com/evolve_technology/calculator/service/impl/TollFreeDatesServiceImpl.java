@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +20,10 @@ import com.evolve_technology.calculator.service.TollFreeDatesService;
 @Service
 public class TollFreeDatesServiceImpl implements TollFreeDatesService {
 
+	private static final Logger logger = LogManager.getLogger(TollFreeDatesServiceImpl.class);
 	@Override
 	public Boolean isTollFreeDate(String date) {
+		logger.info("Inside isTollFreeDate method :: date = {} ",date);
 		try {
 		LocalDate input=LocalDate.parse(date);
 		if(input.getMonth()==Month.JULY || input.getDayOfWeek()==DayOfWeek.SATURDAY || input.getDayOfWeek()==DayOfWeek.SUNDAY)
@@ -41,6 +45,7 @@ public class TollFreeDatesServiceImpl implements TollFreeDatesService {
 
 	@Override
 	public List<String> getTollFreeDates() {
+		logger.info("Inside getTollFreeDates method ");
 		List<String> list=Stream.of(TollFreeDates.values()).map(TollFreeDates::getDate).collect(Collectors.toList());
 		return list;
 	}

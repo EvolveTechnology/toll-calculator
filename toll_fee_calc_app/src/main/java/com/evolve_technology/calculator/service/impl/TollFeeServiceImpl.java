@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import com.evolve_technology.calculator.service.TollFreeVehicleService;
 @Service
 public class TollFeeServiceImpl implements TollFeeService {
 
+	private static final Logger logger = LogManager.getLogger(TollFeeServiceImpl.class);
+	
 	@Autowired
 	TollFreeDatesService tollFreeDatesService;
 	
@@ -23,6 +27,9 @@ public class TollFeeServiceImpl implements TollFeeService {
 	
 	@Override
 	public int getTollFee(String date, String vehicle) {
+		
+		logger.info("Inside getTollFee method :: date = {} and vehicle = {}",date,vehicle);
+		
 		DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 		LocalDateTime inputDate=LocalDateTime.parse(date,formatter);
 		int hour=inputDate.getHour();
