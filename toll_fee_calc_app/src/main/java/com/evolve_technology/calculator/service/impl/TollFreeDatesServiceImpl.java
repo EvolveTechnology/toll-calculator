@@ -31,7 +31,7 @@ public class TollFreeDatesServiceImpl implements TollFreeDatesService {
 			return true;
 		}
 		
-		if(input.getMonth()==Month.JULY) {
+		if(tollConfiguration.getMonths().stream().filter(month-> month.trim().equalsIgnoreCase(input.getMonth().toString())).findAny().isPresent()) {
 			logger.info("date {} lies in JULY month so no toll Enjoy.",date);
 			return true;
 		}
