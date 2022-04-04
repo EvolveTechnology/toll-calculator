@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.evolve_technology.calculator.controller.model.TollFee;
+import com.evolve_technology.calculator.properties.TollConfiguration;
 import com.evolve_technology.calculator.service.TollFeeService;
 import com.evolve_technology.calculator.service.TollFreeDatesService;
 import com.evolve_technology.calculator.service.TollFreeVehicleService;

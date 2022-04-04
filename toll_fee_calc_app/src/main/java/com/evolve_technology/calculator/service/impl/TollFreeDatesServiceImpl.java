@@ -4,50 +4,45 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.evolve_technology.calculator.constant.TollFreeDates;
-import com.evolve_technology.calculator.exception.CustomErrorException;
+import com.evolve_technology.calculator.properties.TollConfiguration;
 import com.evolve_technology.calculator.service.TollFreeDatesService;
 
 
 @Service
 public class TollFreeDatesServiceImpl implements TollFreeDatesService {
-
 	private static final Logger logger = LogManager.getLogger(TollFreeDatesServiceImpl.class);
+	
+	@Autowired
+	TollConfiguration tollConfiguration;
+	
 	@Override
 	public Boolean isTollFreeDate(String date) {
 		logger.info("Inside isTollFreeDate method :: date = {} ",date);
-		try {
+
 		LocalDate input=LocalDate.parse(date);
-		if(input.getMonth()==Month.JULY || input.getDayOfWeek()==DayOfWeek.SATURDAY || input.getDayOfWeek()==DayOfWeek.SUNDAY)
+		if( input.getDayOfWeek()==DayOfWeek.SATURDAY || input.getDayOfWeek()==DayOfWeek.SUNDAY) {
+			logger.info("date {} is actually a weekend so no toll Enjoy.",date);
 			return true;
-		for (TollFreeDates tollFreeDate : TollFreeDates.values()) {
-			 	if(!tollFreeDate.getDate().equals("2013-07")) {
-			 		LocalDate dateEnum=LocalDate.parse(tollFreeDate.getDate());
-			        if (dateEnum.equals(input)) {
-			            return true;
-			        }
-			 	}
-			 	
-		    }
-		}catch(Exception e) {
-			throw new CustomErrorException(HttpStatus.BAD_REQUEST, e.getMessage(), date);
 		}
-		return false;
+		
+		if(input.getMonth()==Month.JULY) {
+			logger.info("date {} lies in JULY month so no toll Enjoy.",date);
+			return true;
+		}
+		
+		return getTollFreeDates().stream().filter(x -> x.trim().equalsIgnoreCase(input.toString())).findAny().isPresent();
 	}
 
 	@Override
 	public List<String> getTollFreeDates() {
 		logger.info("Inside getTollFreeDates method ");
-		List<String> list=Stream.of(TollFreeDates.values()).map(TollFreeDates::getDate).collect(Collectors.toList());
-		return list;
+		return tollConfiguration.getDates();
 	}
 
 
