@@ -1,5 +1,6 @@
 .idea
-/TollCalculator/bin
-/TollCalculator/obj
-/TollCalculatorTest/bin
-/TollCalculatorTest/obj
+TollCalculator/bin
+TollCalculator/obj
+TollCalculatorTest/bin
+TollCalculatorTest/obj
+AbbasAmiriSolution.sln.DotSettings.user
