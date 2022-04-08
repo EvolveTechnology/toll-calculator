@@ -31,9 +31,5 @@ public class DayTimeFeeCollectionBuilder
     public IList<DayTimeFee> ToList() => _dayTimeFees.ToList(); 
 
     public IReadOnlyList<DayTimeFee> ToArray() => _dayTimeFees.ToArray(); 
-
-    public List<IReadOnlyList<(TimeOnly, TimeOnly)>> FindGaps()
-    {
-        throw new NotImplementedException();
-    }
+    
 }
