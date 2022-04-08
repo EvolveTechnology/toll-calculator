@@ -1,11 +1,11 @@
-﻿using TollCalculator.Models;
+﻿using System.Text.Json;
+using TollCalculator.Models;
 
 namespace TollCalculator.Helpers;
 
 public class DayTimeFeeCollectionBuilder
 {
-    private readonly IList<DayTimeFee> _dayTimeFees = new List<DayTimeFee>();
-
+    private readonly List<DayTimeFee> _dayTimeFees = new List<DayTimeFee>();
     public void Add(DayTimeFee dayTimeFee)
     {
         ArgumentNullException.ThrowIfNull(dayTimeFee);
@@ -17,7 +17,7 @@ public class DayTimeFeeCollectionBuilder
 
         _dayTimeFees.Add(dayTimeFee);
     }
-
+    public void Clear() => _dayTimeFees.Clear();
     private static bool HasTimeConflict(DayTimeFee first, DayTimeFee second)
     {
         return first.Start.IsBetween(second.Start, second.End) ||
@@ -25,11 +25,7 @@ public class DayTimeFeeCollectionBuilder
                second.Start.IsBetween(first.Start, first.End) ||
                second.End.IsBetween(first.Start, first.End);
     }
-
     public IReadOnlyList<DayTimeFee> ToReadOnlyList() => _dayTimeFees.ToList().AsReadOnly();
-
-    public IList<DayTimeFee> ToList() => _dayTimeFees.ToList(); 
-
-    public IReadOnlyList<DayTimeFee> ToArray() => _dayTimeFees.ToArray(); 
-    
+    public IList<DayTimeFee> ToList() => _dayTimeFees.ToList();
+    public IReadOnlyList<DayTimeFee> ToArray() => _dayTimeFees.ToArray();
 }
