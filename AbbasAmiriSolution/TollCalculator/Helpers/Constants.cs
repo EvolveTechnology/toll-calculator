@@ -1,8 +1,8 @@
 ﻿namespace TollCalculator.Helpers;
 
-public class Constants
+public static class Constants
 {
-    public static decimal MaximumFeeForOneDay = 60;
-    public static decimal MinimumFeeDependingOnTheTimeOfDay = 8;
-    public static decimal MaximumFeeDependingOnTheTimeOfDay = 18;
+    public const decimal MaximumFeeForOneDay = 60;
+    public const decimal MinimumFeeDependingOnTheTimeOfDay = 8;
+    public const decimal MaximumFeeDependingOnTheTimeOfDay = 18;
 }

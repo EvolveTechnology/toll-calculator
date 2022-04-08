@@ -40,12 +40,12 @@ public class TollFeeCalculator
 
         var totalFee = dateTimesGroupsWithOneHourInterval
             .Aggregate<DateTime[]?, decimal>(0,
-                (current, group) => current + CalculateGroupTollFee(group, vehicleType));
+                (current, group) => current + CalculateGroupTollFee(group));
 
         return totalFee > Constants.MaximumFeeForOneDay ? Constants.MaximumFeeForOneDay : totalFee;
     }
     
-    private decimal CalculateGroupTollFee(DateTime[]? dateTimes, VehicleType vehicleType)
+    private decimal CalculateGroupTollFee(DateTime[]? dateTimes)
     {
         ArgumentNullException.ThrowIfNull(dateTimes);
 

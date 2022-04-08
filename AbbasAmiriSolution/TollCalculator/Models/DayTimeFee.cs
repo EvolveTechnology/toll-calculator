@@ -24,8 +24,7 @@ public class DayTimeFee
             throw new ArgumentException($"The {nameof(start)} is greater than {nameof(end)}.");
         }
 
-        if (fee < Constants.MinimumFeeDependingOnTheTimeOfDay ||
-            fee > Constants.MaximumFeeDependingOnTheTimeOfDay)
+        if (fee is < Constants.MinimumFeeDependingOnTheTimeOfDay or > Constants.MaximumFeeDependingOnTheTimeOfDay)
         {
             throw new ArgumentException(
                 $"The {nameof(fee)} must be between {Constants.MinimumFeeDependingOnTheTimeOfDay} and {Constants.MaximumFeeDependingOnTheTimeOfDay}.");
