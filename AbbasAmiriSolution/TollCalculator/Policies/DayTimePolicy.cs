@@ -2,7 +2,7 @@
 
 namespace TollCalculator.Policies;
 
-public class DayTimePolicy
+public sealed class DayTimePolicy
 {
     private readonly IReadOnlyList<DayTimeFee> _dayTimeFeeTable;
     
