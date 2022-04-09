@@ -1,8 +1,11 @@
-﻿namespace TollCalculator.Helpers;
+﻿using System.Text.Json;
+using TollCalculator.Models;
+
+namespace TollCalculator.Helpers;
 
 public class HolidayCollectionBuilder
 {
-    private readonly IList<DateOnly> _holidays = new List<DateOnly>();
+    private readonly List<DateOnly> _holidays = new List<DateOnly>();
 
     public void Add(DateOnly date)
     {
@@ -16,7 +19,32 @@ public class HolidayCollectionBuilder
 
     public IReadOnlyList<DateOnly> ToReadOnlyList() => _holidays.ToList().AsReadOnly();
 
-    public IList<DateOnly> ToList() => _holidays.ToList(); 
+    public IList<DateOnly> ToList() => _holidays.ToList();
 
-    public IReadOnlyList<DateOnly> ToArray() => _holidays.ToArray(); 
+    public IReadOnlyList<DateOnly> ToArray() => _holidays.ToArray();
+
+    public void ReadJsonFile(string path)
+    {
+        if (string.IsNullOrEmpty(path))
+        {
+            throw new ArgumentException("The file path is not specified.");
+        }
+
+        if (!File.Exists(path))
+        {
+            throw new ArgumentException("The does not exist.");
+        }
+
+        var jsonString = File.ReadAllText(path);
+
+        var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+        options.Converters.Add(new DateOnlyConverter());
+        var jsonData = JsonSerializer.Deserialize<IList<DateOnly>>(jsonString, options);
+        if (jsonData == null)
+        {
+            throw new ArgumentException("There is something wrong in the json file.");
+        }
+
+        _holidays.AddRange(jsonData.ToArray());
+    }
 }
