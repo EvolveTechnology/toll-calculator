@@ -18,6 +18,13 @@ public class TollFeeCalculator
         _holidayPolicy = new HolidayPolicy(holidayTable);
     }
 
+    /// <summary>
+    /// Calculate toll fee.
+    /// </summary>
+    /// <param name="dateTimes">Traffic times.</param>
+    /// <param name="vehicleType">vehicle type.</param>
+    /// <returns>Calculated toll fee.</returns>
+    /// <exception cref="ArgumentException">Throws when traffic times are not in a same day.</exception>
     public decimal? CalculateTollFee(DateTime[] dateTimes, VehicleType vehicleType)
     {
         if (dateTimes.Length == 0)
