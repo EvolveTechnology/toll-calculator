@@ -24,7 +24,7 @@ The idea of the design comes from the idea behind the Strategy design pattern.
 
 The `TollFeeCalculator` is responsible for calculating toll-fee. It applies all policies and also [the maximum fee for one day is 60 SEK] and [in the case of multiple fees in the same hour period, the highest one applies] requirements.
 
-The `TollFeeCalculator` has one public method: `CalculateTollFee`. It takes traffic times and vehicle type to calculate toll fee. After applying some Guard Clauses to ensure that incoming parameters are correct; it applies the policies and goes through traffic times to do its job. The method used Lambda to iterate through traffic times. The complexity in the method is **O(n)** which I believe is acceptable.
+The `TollFeeCalculator` has one public method: `CalculateTollFee`. It takes traffic times and vehicle type to calculate toll fee. After applying some Guard Clauses to ensure that incoming parameters are correct; it applies the policies and goes through traffic times to do its job. The method uses Lambda to iterate through traffic times. The complexity in the method is **O(n)** which I believe is acceptable.
 
 The original implementation used a class for `Vehicle`. I haven't seen any reason to implement `Vehicle` class because the only property we need in the scenario is the vehicle type that is implemented via an `Enum`.
 
