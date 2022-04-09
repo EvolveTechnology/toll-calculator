@@ -24,4 +24,10 @@
       <ProjectReference Include="..\TollCalculator\TollCalculator.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Data\DayTimeFee.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
