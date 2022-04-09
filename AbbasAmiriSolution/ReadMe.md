@@ -12,13 +12,13 @@ The project has six requirements:
 
 Based on the requirements, I decided to implement four policy classes to handle the following requirements:
 
-`HolidayPolicy` for <u>Holidays are fee-free</u>.
+`HolidayPolicy` for [Holidays are fee-free].
 
-`IsWeekend` for <u>Weekends are fee-free.</u>
+`IsWeekend` for [Weekends are fee-free].
 
-`VehicleTypePolicy` for <u>Some vehicle types are fee-free.</u>
+`VehicleTypePolicy` for [Some vehicle types are fee-free].
 
-`DayTimePolicy` for <u>Fees will differ between 8 SEK and 18 SEK, depending on the time of day</u> and <u>Rush-hour traffic will render the highest fee.</u>
+`DayTimePolicy` for [Fees will differ between 8 SEK and 18 SEK, depending on the time of day] and [Rush-hour traffic will render the highest fee].
 
 The idea of the design comes from the idea behind the Strategy design pattern. The design also ensures that [Single-responsibility principle]([Single-responsibility principle - Wikipedia](https://en.wikipedia.org/wiki/Single-responsibility_principle)) is applied.
 
