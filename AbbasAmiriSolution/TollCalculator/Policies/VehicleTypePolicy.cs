@@ -2,7 +2,7 @@
 
 namespace TollCalculator.Policies;
 
-public class VehicleTypePolicy
+public sealed class VehicleTypePolicy
 {
     public bool IsFeeFree(VehicleType vehicleType)
     {
