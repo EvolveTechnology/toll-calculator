@@ -1,6 +1,6 @@
 ﻿namespace TollCalculator.Policies;
 
-public class WeekendPolicy
+public sealed class WeekendPolicy
 {
     public bool IsWeekend(DateOnly date)
     {
