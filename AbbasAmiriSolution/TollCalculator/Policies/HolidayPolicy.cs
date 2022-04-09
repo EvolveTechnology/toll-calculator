@@ -1,6 +1,6 @@
 ﻿namespace TollCalculator.Policies;
 
-public class HolidayPolicy
+public sealed class HolidayPolicy
 {
     private readonly IReadOnlyList<DateOnly> _holidayTable;
 
