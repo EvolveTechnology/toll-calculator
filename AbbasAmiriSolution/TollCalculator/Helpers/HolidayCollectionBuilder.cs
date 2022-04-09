@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using TollCalculator.Models;
 
 namespace TollCalculator.Helpers;
 
