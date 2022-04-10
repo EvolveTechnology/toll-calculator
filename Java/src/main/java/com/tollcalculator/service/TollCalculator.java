@@ -1,6 +1,13 @@
+package com.tollcalculator.service;
+
+import com.tollcalculator.constants.TollCalculatorConstants;
+import com.tollcalculator.enums.TollFreeVehicles;
+import com.tollcalculator.pojo.Vehicle;
 
 import java.util.*;
 import java.util.concurrent.*;
+
+import static com.tollcalculator.constants.TollCalculatorConstants.MAX_FEE;
 
 public class TollCalculator {
 
@@ -12,9 +19,18 @@ public class TollCalculator {
    * @return - the total toll fee for that day
    */
   public int getTollFee(Vehicle vehicle, Date... dates) {
+
+    Arrays.sort(dates);
     Date intervalStart = dates[0];
     int totalFee = 0;
     for (Date date : dates) {
+      /**
+       * Maximum total fee is 60 .So if the total fee is greater than 60 then no need to calculate further
+       */
+      if (totalFee > MAX_FEE) {
+        totalFee = MAX_FEE;
+        return totalFee;
+      }
       int nextFee = getTollFee(date, vehicle);
       int tempFee = getTollFee(intervalStart, vehicle);
 
@@ -28,9 +44,9 @@ public class TollCalculator {
         totalFee += tempFee;
       } else {
         totalFee += nextFee;
+        intervalStart = date;
       }
     }
-    if (totalFee > 60) totalFee = 60;
     return totalFee;
   }
 
@@ -89,22 +105,5 @@ public class TollCalculator {
     return false;
   }
 
-  private enum TollFreeVehicles {
-    MOTORBIKE("Motorbike"),
-    TRACTOR("Tractor"),
-    EMERGENCY("Emergency"),
-    DIPLOMAT("Diplomat"),
-    FOREIGN("Foreign"),
-    MILITARY("Military");
-    private final String type;
-
-    TollFreeVehicles(String type) {
-      this.type = type;
-    }
-
-    public String getType() {
-      return type;
-    }
-  }
 }
 

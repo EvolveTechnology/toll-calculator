@@ -1,3 +1,4 @@
+package com.tollcalculator.pojo;
 
 public interface Vehicle {
 
