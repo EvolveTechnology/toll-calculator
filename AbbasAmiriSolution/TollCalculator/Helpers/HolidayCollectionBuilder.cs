@@ -4,8 +4,12 @@ namespace TollCalculator.Helpers;
 
 public class HolidayCollectionBuilder
 {
-    private readonly List<DateOnly> _holidays = new List<DateOnly>();
+    private readonly List<DateOnly> _holidays = new();
 
+    /// <summary>
+    /// Add an item into list.
+    /// </summary>
+    /// <param name="date">The item.</param>
     public void Add(DateOnly date)
     {
         ArgumentNullException.ThrowIfNull(date);
@@ -16,12 +20,38 @@ public class HolidayCollectionBuilder
         }
     }
 
-    public IReadOnlyList<DateOnly> ToReadOnlyList() => _holidays.ToList().AsReadOnly();
+    /// <summary>
+    /// Returns a read-only list.
+    /// </summary>
+    /// <returns>IReadOnlyList</returns>
+    public IReadOnlyList<DateOnly> ToReadOnlyList()
+    {
+        return _holidays.ToList().AsReadOnly();
+    }
 
-    public IList<DateOnly> ToList() => _holidays.ToList();
+    /// <summary>
+    /// Returns list.
+    /// </summary>
+    /// <returns>IList</returns>
+    public IList<DateOnly> ToList()
+    {
+        return _holidays.ToList();
+    }
 
-    public IReadOnlyList<DateOnly> ToArray() => _holidays.ToArray();
+    /// <summary>
+    /// Returns array.
+    /// </summary>
+    /// <returns>DateOnly[]</returns>
+    public DateOnly[] ToArray()
+    {
+        return _holidays.ToArray();
+    }
 
+    /// <summary>
+    /// Load data from a Json file.
+    /// </summary>
+    /// <param name="path">The Json filename.</param>
+    /// <exception cref="ArgumentException">Throws when file cannot be opened or parsed.</exception>
     public void ReadJsonFile(string path)
     {
         if (string.IsNullOrEmpty(path))

@@ -5,8 +5,13 @@ namespace TollCalculator.Helpers;
 
 public class DayTimeFeeCollectionBuilder
 {
-    private readonly List<DayTimeFee> _dayTimeFees = new List<DayTimeFee>();
+    private readonly List<DayTimeFee> _dayTimeFees = new();
 
+    /// <summary>
+    /// Add an item into list.
+    /// </summary>
+    /// <param name="dayTimeFee">The item.</param>
+    /// <exception cref="ArgumentException">Throws when item is null.</exception>
     public void Add(DayTimeFee dayTimeFee)
     {
         ArgumentNullException.ThrowIfNull(dayTimeFee);
@@ -19,6 +24,9 @@ public class DayTimeFeeCollectionBuilder
         _dayTimeFees.Add(dayTimeFee);
     }
 
+    /// <summary>
+    /// Remove all items from list.
+    /// </summary>
     public void Clear() => _dayTimeFees.Clear();
 
     private static bool HasTimeConflict(DayTimeFee first, DayTimeFee second)
@@ -29,10 +37,35 @@ public class DayTimeFeeCollectionBuilder
                second.End.IsBetween(first.Start, first.End);
     }
 
+    /// <summary>
+    /// Returns a read-only list.
+    /// </summary>
+    /// <returns>IReadOnlyList</returns>
     public IReadOnlyList<DayTimeFee> ToReadOnlyList() => _dayTimeFees.ToList().AsReadOnly();
-    public IList<DayTimeFee> ToList() => _dayTimeFees.ToList();
-    public IReadOnlyList<DayTimeFee> ToArray() => _dayTimeFees.ToArray();
 
+    /// <summary>
+    /// Returns list.
+    /// </summary>
+    /// <returns>IList</returns>
+    public IList<DayTimeFee> ToList()
+    {
+        return _dayTimeFees.ToList();
+    }
+
+    /// <summary>
+    /// Returns array
+    /// </summary>
+    /// <returns>DayTimeFee[]</returns>
+    public DayTimeFee[] ToArray()
+    {
+        return _dayTimeFees.ToArray();
+    }
+
+    /// <summary>
+    /// Load items from a Json file.
+    /// </summary>
+    /// <param name="path">The Json filename.</param>
+    /// <exception cref="ArgumentException">Throws when file cannot be opened or parsed.</exception>
     public void ReadJsonFile(string path)
     {
         if (string.IsNullOrEmpty(path))

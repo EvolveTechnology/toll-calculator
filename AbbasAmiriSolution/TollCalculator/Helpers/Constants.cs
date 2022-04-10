@@ -2,7 +2,7 @@
 
 namespace TollCalculator.Helpers;
 
-public class Constants
+public static class Constants
 {
     public static decimal MaximumFeeForOneDay;
     public static decimal MinimumFeeDependingOnTheTimeOfDay;
@@ -13,6 +13,11 @@ public class Constants
         SetDefaults();
     }
 
+    /// <summary>
+    /// Load data from a Json file.
+    /// </summary>
+    /// <param name="path">The Json filename.</param>
+    /// <exception cref="ArgumentException">Throws when file cannot be opened or parsed.</exception>
     public static void ReadJsonFile(string path)
     {
         if (string.IsNullOrEmpty(path))
@@ -30,6 +35,7 @@ public class Constants
         var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
 
         var jsonData = JsonSerializer.Deserialize<JsonModel>(jsonString, options);
+       
         if (jsonData == null)
         {
             throw new ArgumentException("There is something wrong in the json file.");
@@ -39,7 +45,10 @@ public class Constants
         MinimumFeeDependingOnTheTimeOfDay = jsonData.MinimumFeeDependingOnTheTimeOfDay;
         MaximumFeeDependingOnTheTimeOfDay = jsonData.MaximumFeeDependingOnTheTimeOfDay;
     }
-
+    
+    /// <summary>
+    /// Set values with defaults.
+    /// </summary>
     public static void SetDefaults()
     {
         MaximumFeeForOneDay = 60;

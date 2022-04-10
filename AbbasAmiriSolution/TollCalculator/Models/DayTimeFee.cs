@@ -15,6 +15,14 @@ public class DayTimeFee
         Fee = fee;
     }
 
+    /// <summary>
+    /// Creates a normal DayTimeFee.
+    /// </summary>
+    /// <param name="start">Start time.</param>
+    /// <param name="end">End time</param>
+    /// <param name="fee">Fee.</param>
+    /// <returns>An instance of DayTimeFee.</returns>
+    /// <exception cref="ArgumentException"></exception>
     public static DayTimeFee Create(TimeOnly start, TimeOnly end, decimal fee)
     {
         ArgumentNullException.ThrowIfNull(start, nameof(start));
@@ -33,20 +41,14 @@ public class DayTimeFee
         return new DayTimeFee(start, end, fee);
     }
 
+    /// <summary>
+    /// Creates a rush hour DayTimeFee.
+    /// </summary>
+    /// <param name="start">Start time.</param>
+    /// <param name="end">End time</param>
+    /// <returns>An instance of DayTimeFee.</returns>
     public static DayTimeFee CreateRushHour(TimeOnly start, TimeOnly end)
     {
         return Create(start, end, Constants.MaximumFeeDependingOnTheTimeOfDay);
-    }
-
-    public decimal? GetFee(TimeOnly time)
-    {
-        ArgumentNullException.ThrowIfNull(time, nameof(time));
-
-        if (time >= Start && time <= End)
-        {
-            return Fee;
-        }
-
-        return null;
     }
 }

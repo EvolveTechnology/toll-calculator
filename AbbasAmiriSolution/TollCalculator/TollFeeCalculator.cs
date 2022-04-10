@@ -19,10 +19,10 @@ public class TollFeeCalculator
     }
 
     /// <summary>
-    /// Calculate toll fee.
+    /// Calculates toll fee.
     /// </summary>
     /// <param name="dateTimes">Traffic times.</param>
-    /// <param name="vehicleType">vehicle type.</param>
+    /// <param name="vehicleType">Vehicle type.</param>
     /// <returns>Calculated toll fee.</returns>
     /// <exception cref="ArgumentException">Throws when traffic times are not in a same day.</exception>
     public decimal? CalculateTollFee(DateTime[] dateTimes, VehicleType vehicleType)
