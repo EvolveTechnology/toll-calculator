@@ -8,4 +8,5 @@ public class TollCalculatorConstants {
     public static final String MILITARY="Military";
     public static final String TRACTOR="Tractor";
     public static final String FOREIGN="Foreign";
+    public static final String CAR="Car";
 }
