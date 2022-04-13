@@ -52,6 +52,13 @@ public class TollCalculatorTest {
         assertEquals(0, toll);
     }
 
+    @Test(expected = RuntimeException.class)
+    public void testExceptionFlow(){
+        TollCalculator tollCalculator=new TollCalculator();
+        Vehicle vehicle=null;
+        tollCalculator.getTollFee(vehicle,null);
+    }
+
     @Test
     public void testSameVehicleMultipleEntriesInASameHour(){
         TollCalculator tollCalculator=new TollCalculator();

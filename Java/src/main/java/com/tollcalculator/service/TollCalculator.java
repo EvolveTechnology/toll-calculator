@@ -20,34 +20,38 @@ public class TollCalculator {
    */
   public int getTollFee(Vehicle vehicle, Date... dates) {
 
-    Arrays.sort(dates);
-    Date intervalStart = dates[0];
-    int totalFee = 0;
-    for (Date date : dates) {
-      /**
-       * Maximum total fee is 60 .So if the total fee is greater than 60 then no need to calculate further
-       */
-      if (totalFee > MAX_FEE) {
-        totalFee = MAX_FEE;
-        return totalFee;
-      }
-      int nextFee = getTollFee(date, vehicle);
-      int tempFee = getTollFee(intervalStart, vehicle);
+    if(null!=dates && null!=vehicle){
+      Arrays.sort(dates);
+      Date intervalStart = dates[0];
+      int totalFee = 0;
+      for (Date date : dates) {
+        /**
+         * Maximum total fee is 60 .So if the total fee is greater than 60 then no need to calculate further
+         */
+        if (totalFee > MAX_FEE) {
+          totalFee = MAX_FEE;
+          return totalFee;
+        }
+        int nextFee = getTollFee(date, vehicle);
+        int tempFee = getTollFee(intervalStart, vehicle);
 
-      TimeUnit timeUnit = TimeUnit.MINUTES;
-      long diffInMillies = date.getTime() - intervalStart.getTime();
-      long minutes = timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        TimeUnit timeUnit = TimeUnit.MINUTES;
+        long diffInMillies = date.getTime() - intervalStart.getTime();
+        long minutes = timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
 
-      if (minutes <= 60) {
-        if (totalFee > 0) totalFee -= tempFee;
-        if (nextFee >= tempFee) tempFee = nextFee;
-        totalFee += tempFee;
-      } else {
-        totalFee += nextFee;
-        intervalStart = date;
+        if (minutes <= 60) {
+          if (totalFee > 0) totalFee -= tempFee;
+          if (nextFee >= tempFee) tempFee = nextFee;
+          totalFee += tempFee;
+        } else {
+          totalFee += nextFee;
+          intervalStart = date;
+        }
       }
+      return totalFee;
+    }else{
+      throw new RuntimeException("Vehicle or Dates should not be null");
     }
-    return totalFee;
   }
 
   private boolean isTollFreeVehicle(Vehicle vehicle) {
