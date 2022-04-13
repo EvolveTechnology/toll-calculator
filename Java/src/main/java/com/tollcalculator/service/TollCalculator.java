@@ -1,6 +1,13 @@
+package com.tollcalculator.service;
+
+import com.tollcalculator.constants.TollCalculatorConstants;
+import com.tollcalculator.enums.TollFreeVehicles;
+import com.tollcalculator.pojo.Vehicle;
 
 import java.util.*;
 import java.util.concurrent.*;
+
+import static com.tollcalculator.constants.TollCalculatorConstants.MAX_FEE;
 
 public class TollCalculator {
 
@@ -12,26 +19,39 @@ public class TollCalculator {
    * @return - the total toll fee for that day
    */
   public int getTollFee(Vehicle vehicle, Date... dates) {
-    Date intervalStart = dates[0];
-    int totalFee = 0;
-    for (Date date : dates) {
-      int nextFee = getTollFee(date, vehicle);
-      int tempFee = getTollFee(intervalStart, vehicle);
 
-      TimeUnit timeUnit = TimeUnit.MINUTES;
-      long diffInMillies = date.getTime() - intervalStart.getTime();
-      long minutes = timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
+    if(null!=dates && null!=vehicle){
+      Arrays.sort(dates);
+      Date intervalStart = dates[0];
+      int totalFee = 0;
+      for (Date date : dates) {
+        /**
+         * Maximum total fee is 60 .So if the total fee is greater than 60 then no need to calculate further
+         */
+        if (totalFee > MAX_FEE) {
+          totalFee = MAX_FEE;
+          return totalFee;
+        }
+        int nextFee = getTollFee(date, vehicle);
+        int tempFee = getTollFee(intervalStart, vehicle);
 
-      if (minutes <= 60) {
-        if (totalFee > 0) totalFee -= tempFee;
-        if (nextFee >= tempFee) tempFee = nextFee;
-        totalFee += tempFee;
-      } else {
-        totalFee += nextFee;
+        TimeUnit timeUnit = TimeUnit.MINUTES;
+        long diffInMillies = date.getTime() - intervalStart.getTime();
+        long minutes = timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+        if (minutes <= 60) {
+          if (totalFee > 0) totalFee -= tempFee;
+          if (nextFee >= tempFee) tempFee = nextFee;
+          totalFee += tempFee;
+        } else {
+          totalFee += nextFee;
+          intervalStart = date;
+        }
       }
+      return totalFee;
+    }else{
+      throw new RuntimeException("Vehicle or Dates should not be null");
     }
-    if (totalFee > 60) totalFee = 60;
-    return totalFee;
   }
 
   private boolean isTollFreeVehicle(Vehicle vehicle) {
@@ -89,22 +109,5 @@ public class TollCalculator {
     return false;
   }
 
-  private enum TollFreeVehicles {
-    MOTORBIKE("Motorbike"),
-    TRACTOR("Tractor"),
-    EMERGENCY("Emergency"),
-    DIPLOMAT("Diplomat"),
-    FOREIGN("Foreign"),
-    MILITARY("Military");
-    private final String type;
-
-    TollFreeVehicles(String type) {
-      this.type = type;
-    }
-
-    public String getType() {
-      return type;
-    }
-  }
 }
 
