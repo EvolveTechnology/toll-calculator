@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.evolve_technology.calculator.controller.model.TollFee;
-import com.evolve_technology.calculator.properties.TollConfiguration;
 import com.evolve_technology.calculator.service.TollFeeService;
 import com.evolve_technology.calculator.service.TollFreeDatesService;
 import com.evolve_technology.calculator.service.TollFreeVehicleService;
@@ -90,11 +89,10 @@ public class TollFeeServiceImpl implements TollFeeService {
 					});
 			logger.info("updated value = {} ", aggregateTollMapUpdatedValue);
 		}
-		return buildResult(aggregateTollMap, vehicle, localDate.toString());
+		return buildResult( vehicle, localDate.toString());
 	}
 
-	private TollFee buildResult(Map<String, Map<String, Map<Integer, Integer>>> aggregateTollMap, String vehicle,
-			String date) {
+	private TollFee buildResult( String vehicle,String date) {
 		TollFee tollFee = new TollFee();
 		tollFee.setVehicle(vehicle);
 		tollFee.setDate(date);
