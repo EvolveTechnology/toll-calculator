@@ -1,12 +1,11 @@
 package com.evolve_technology.calculator.service;
 
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import com.evolve_technology.calculator.controller.model.TollFee;
 
 public interface TollFeeService {
 
-	public TollFee getTollFee(final String date, String vehicle);
-	public Map<String,Map<String,Map<Integer,Integer>>> getHistoricalTollRecords();
-
+	public Integer getTollFee(final List<LocalDateTime> list, String vehicle);
 }
