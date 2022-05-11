@@ -69,7 +69,7 @@ public class TollFeeCalculator
 
         while (source.Count != 0)
         {
-            var group = source.FindAll(c => Math.Abs(source.First().Ticks - c.Ticks) <= TimeSpan.FromHours(1).Ticks);
+            var group = source.FindAll(c => Math.Abs(source.First().Ticks - c.Ticks) <= timeSpan.Ticks);
             result.Add(group.ToArray());
             source.RemoveAll(c => group.Contains(c));
         }
