@@ -1,0 +1,5 @@
+﻿{
+  "maximumFeeForOneDay": 10,
+  "minimumFeeDependingOnTheTimeOfDay": 20,
+  "maximumFeeDependingOnTheTimeOfDay": 30
+}

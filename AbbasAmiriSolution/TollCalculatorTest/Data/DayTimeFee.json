@@ -1,0 +1,56 @@
+﻿[
+  {
+    "start": "00:00:00.00",
+    "end": "05:59:59.59",
+    "fee": 8,
+    "rushHour": false
+  },
+  {
+    "start": "06:00:00.00",
+    "end": "07:59:59.59",
+    "fee": 10,
+    "rushHour": false
+  },
+  {
+    "start": "08:00:00.00",
+    "end": "09:59:59.59",
+    "fee": 0,
+    "rushHour": true
+  },
+  {
+    "start": "10:00:00.00",
+    "end": "10:29:59.59",
+    "fee": 16,
+    "rushHour": false
+  },
+  {
+    "start": "10:30:00.00",
+    "end": "10:59:59.59",
+    "fee": 14,
+    "rushHour": false
+  },
+  {
+    "start": "10:00:00.00",
+    "end": "11:29:59.59",
+    "fee": 12,
+    "rushHour": false
+  },
+  {
+    "start": "10:30:00.00",
+    "end": "11:59:59.59",
+    "fee": 10,
+    "rushHour": false
+  },
+  {
+    "start": "12:00:00.00",
+    "end": "16:59:59.59",
+    "fee": 9,
+    "rushHour": false
+  },
+  {
+    "start": "17:00:00.00",
+    "end": "23:59:59.59",
+    "fee": 8,
+    "rushHour": false
+  }
+]
