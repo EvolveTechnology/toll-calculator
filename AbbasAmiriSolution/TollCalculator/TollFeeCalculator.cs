@@ -41,9 +41,12 @@ public class TollFeeCalculator
             return 0;
         }
 
-        var dateTimesGroupsWithOneHourInterval = dateTimes
-            .GroupBy(g => Math.Truncate(TimeOnly.FromDateTime(g).ToTimeSpan() / TimeSpan.FromHours(1)))
-            .Select(grp => grp.ToArray()).ToArray();
+        // var dateTimesGroupsWithOneHourInterval = dateTimes
+        //     .GroupBy(g => Math.Truncate(TimeOnly.FromDateTime(g).ToTimeSpan() / TimeSpan.FromHours(1)))
+        //     .Select(grp => grp.ToArray()).ToArray();
+
+        var dateTimesGroupsWithOneHourInterval = 
+            GroupBy( new List<DateTime>(dateTimes), TimeSpan.FromHours(1));
 
         var totalFee = dateTimesGroupsWithOneHourInterval
             .Aggregate<DateTime[]?, decimal>(0,
@@ -59,4 +62,22 @@ public class TollFeeCalculator
         return dateTimes.Select(dateTime => _dayTimePolicy.Calculate(TimeOnly.FromDateTime(dateTime)))
             .Aggregate<decimal?, decimal>(0, (current, fee) => current < fee ? fee.Value : current);
     }
+    
+    private static IEnumerable<DateTime[]> GroupBy(List<DateTime> source, TimeSpan timeSpan)
+    {
+        var result = new List<DateTime[]>();
+
+        while (source.Count != 0)
+        {
+            var group =  source.FindAll(c => Math.Abs(source.First().Ticks - c.Ticks) <= TimeSpan.FromHours(1).Ticks);
+            result.Add(group.ToArray());
+            source.RemoveAll(c => group.Contains(c));
+        }
+
+        return result.ToArray();
+
+    }
+ 
+    
+    
 }

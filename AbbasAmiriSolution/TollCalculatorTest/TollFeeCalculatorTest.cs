@@ -79,7 +79,7 @@ public class TollFeeCalculatorTest : IClassFixture<TollFeeCalculatorFixture>
         };
 
         var calculator = new TollFeeCalculator(_fixture.DayTimeFeeCollection, _fixture.HolidayCollection);
-        Assert.Equal(54, calculator.CalculateTollFee(traffic.ToArray(), VehicleType.Private));
+        Assert.Equal(42, calculator.CalculateTollFee(traffic.ToArray(), VehicleType.Private));
     }
 
     [Fact]
@@ -92,6 +92,8 @@ public class TollFeeCalculatorTest : IClassFixture<TollFeeCalculatorFixture>
             new DateTime(2022, 4, 8, 11, 25, 5),
             new DateTime(2022, 4, 8, 14, 20, 0),
             new DateTime(2022, 4, 8, 20, 25, 0),
+            new DateTime(2022, 4, 8, 22, 25, 0),
+            new DateTime(2022, 4, 8, 23, 40, 0),
         };
 
         var calculator = new TollFeeCalculator(_fixture.DayTimeFeeCollection, _fixture.HolidayCollection);
