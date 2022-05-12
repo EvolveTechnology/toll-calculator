@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -56,6 +57,9 @@ class TollFeeServiceImplTest {
 				collect(Collectors.toList());
 		
 		assertThrows(CustomErrorException.class,()->tollFeeService.getTollFee(inputDates, null));
+		
+		List<LocalDateTime> inputDatesEmpty=new ArrayList<>();
+		assertThrows(CustomErrorException.class,()->tollFeeService.getTollFee(inputDatesEmpty, ""));
 	}
 	
 	/*

@@ -28,8 +28,8 @@ public class TollFeeServiceImpl implements TollFeeService {
 	private  Map<LocalDate,Map<Integer,Integer>> tollMap=new HashMap<>();
 	
 	public Integer getTollFee(List<LocalDateTime> inputDates,String vehicle) {
-		if(inputDates==null || vehicle==null)
-			throw new CustomErrorException(HttpStatus.BAD_REQUEST, "inputDates and vehicle must not be null ");
+		if(inputDates==null || vehicle==null || inputDates.isEmpty() || vehicle.isBlank())
+			throw new CustomErrorException(HttpStatus.BAD_REQUEST, "inputDates and vehicle must not be null or empty. ");
 		logger.info("Inside getTollFee method :: inputDates = {} and vehicle = {}", inputDates, vehicle);
 		for(LocalDateTime localDateTime : inputDates) {
 			int hour = localDateTime.getHour();
