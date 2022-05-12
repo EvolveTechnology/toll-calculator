@@ -10,8 +10,10 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.evolve_technology.calculator.exception.CustomErrorException;
 import com.evolve_technology.calculator.service.TollFeeService;
 import com.evolve_technology.calculator.util.TollUtil;
 
@@ -26,6 +28,8 @@ public class TollFeeServiceImpl implements TollFeeService {
 	private  Map<LocalDate,Map<Integer,Integer>> tollMap=new HashMap<>();
 	
 	public Integer getTollFee(List<LocalDateTime> inputDates,String vehicle) {
+		if(inputDates==null || vehicle==null)
+			throw new CustomErrorException(HttpStatus.BAD_REQUEST, "inputDates and vehicle must not be null ");
 		logger.info("Inside getTollFee method :: inputDates = {} and vehicle = {}", inputDates, vehicle);
 		for(LocalDateTime localDateTime : inputDates) {
 			int hour = localDateTime.getHour();

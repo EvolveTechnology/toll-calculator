@@ -2,6 +2,7 @@ package com.evolve_technology.calculator.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import com.evolve_technology.calculator.config.AppConfig;
+import com.evolve_technology.calculator.exception.CustomErrorException;
 import com.evolve_technology.calculator.service.TollFeeService;
 
 @ExtendWith(SpringExtension.class)
@@ -38,6 +40,22 @@ class TollFeeServiceImplTest {
 				,LocalDateTime.of(2013, 01, 19, 8, 8),LocalDateTime.of(2013, 01, 26, 8, 8)).
 				collect(Collectors.toList());
 		assertEquals(tollFeeService.getTollFee(inputDates, "car"), 0);
+	}
+	
+	/*
+	 * Null as inputs
+	 */
+	@Test     
+	void testGetTollFeeWithNullInputs() {
+		// Both input null
+		assertThrows(CustomErrorException.class,()->tollFeeService.getTollFee(null, null));
+		
+		//only vehicle null
+		List<LocalDateTime> inputDates=Stream.of(LocalDateTime.of(2013, 01, 05, 8, 8),LocalDateTime.of(2013, 01, 12, 8, 8)
+				,LocalDateTime.of(2013, 01, 19, 8, 8),LocalDateTime.of(2013, 01, 26, 8, 8)).
+				collect(Collectors.toList());
+		
+		assertThrows(CustomErrorException.class,()->tollFeeService.getTollFee(inputDates, null));
 	}
 	
 	/*
