@@ -63,16 +63,6 @@ public class AppConfig {
         return tollUtil;
     }
     
-//    @Bean()
-//    public TollConfiguration tollConfiguration() {
-//    	TollConfiguration tollConfiguration = new TollConfiguration();
-////    	tollConfiguration.setDates(null);
-////    	tollConfiguration.setMonths(null);
-////    	tollConfiguration.setVehicles(null);
-////    	tollConfiguration.setYear(null);
-//        // set properties, etc.
-//        return tollConfiguration;
-//    }
     
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
