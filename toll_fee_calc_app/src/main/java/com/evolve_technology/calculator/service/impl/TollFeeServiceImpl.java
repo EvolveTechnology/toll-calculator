@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 import com.evolve_technology.calculator.service.TollFeeService;
 import com.evolve_technology.calculator.util.TollUtil;
 
-@Service
+@Service()
 public class TollFeeServiceImpl implements TollFeeService {
 
 	private static final Logger logger = LogManager.getLogger(TollFeeServiceImpl.class);
@@ -22,7 +23,7 @@ public class TollFeeServiceImpl implements TollFeeService {
 	@Autowired
 	TollUtil tollUtil;
 
-	private static Map<LocalDate,Map<Integer,Integer>> tollMap=new HashMap<>();
+	private  Map<LocalDate,Map<Integer,Integer>> tollMap=new HashMap<>();
 	
 	public Integer getTollFee(List<LocalDateTime> inputDates,String vehicle) {
 		logger.info("Inside getTollFee method :: inputDates = {} and vehicle = {}", inputDates, vehicle);
@@ -61,12 +62,17 @@ public class TollFeeServiceImpl implements TollFeeService {
 				logger.info("updated value = {} ", innerMapExisting);
 			}
 		}
-		return 0;
+		return process();
 	}
 	
-	public int process(Map<LocalDate,Map<Integer,Integer>> tollMap) {
-		return 0;
+	public int process() {
+		Map<LocalDate,Integer> tollRecords=new HashMap<>();
+		tollMap.keySet().forEach(k->{
+			int sum=tollMap.get(k).values().stream().collect(Collectors.summingInt(Integer::intValue));
+			tollRecords.put(k, sum>60 ? 60 : sum );
+		});
+		logger.info("tollMap {} :: "+tollMap);
+		logger.info("tollRecords {} :: "+tollRecords);
+		return tollRecords.values().stream().collect(Collectors.summingInt(Integer::intValue));
 	}
-
-
 }

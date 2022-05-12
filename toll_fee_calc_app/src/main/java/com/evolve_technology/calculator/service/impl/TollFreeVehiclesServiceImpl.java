@@ -27,7 +27,7 @@ public class TollFreeVehiclesServiceImpl implements TollFreeVehicleService {
 	public boolean isTollFreeVehicle(String vehicle) {
 		logger.info("Inside isTollFreeVehicle method :: vehicle = {} ",vehicle);
 		List<String> vehicles=getTollFreeVehicles();
-		return vehicles.stream().filter(v->v.equalsIgnoreCase(vehicle)).findAny().isPresent();
+		return vehicles.stream().filter(v->v.trim().equalsIgnoreCase(vehicle)).findAny().isPresent();
 	}
 
 
