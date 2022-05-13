@@ -10,26 +10,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import com.evolve_technology.calculator.config.AppConfig;
 import com.evolve_technology.calculator.exception.CustomErrorException;
 import com.evolve_technology.calculator.service.TollFeeService;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(loader=AnnotationConfigContextLoader.class,classes=AppConfig.class)
-@TestPropertySource(locations = "classpath:application.properties")
 class TollFeeServiceImplTest {
 	
-	@Autowired
 	TollFeeService tollFeeService;
 	
+	@BeforeEach
+	public void setup() {
+		tollFeeService=new TollFeeServiceImpl();
+		
+	}
 	/*
 	 * Jan 2013 
 	 * 5,12,19,26 are saturday

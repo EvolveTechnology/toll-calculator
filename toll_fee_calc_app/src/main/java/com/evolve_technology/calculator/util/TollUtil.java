@@ -2,19 +2,20 @@ package com.evolve_technology.calculator.util;
 
 import java.time.LocalDate;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.evolve_technology.calculator.service.TollFreeDatesService;
 import com.evolve_technology.calculator.service.TollFreeVehicleService;
+import com.evolve_technology.calculator.service.impl.TollFreeDatesServiceImpl;
+import com.evolve_technology.calculator.service.impl.TollFreeVehiclesServiceImpl;
 
-@Component
 public class TollUtil {
-	@Autowired
 	TollFreeDatesService tollFreeDatesService;
 
-	@Autowired
 	TollFreeVehicleService tollFreeVehicleService;
+	
+	public TollUtil() {
+		tollFreeDatesService=new TollFreeDatesServiceImpl();
+		tollFreeVehicleService=new TollFreeVehiclesServiceImpl();
+	}
 	
 	
 	public int tollCompute(String vehicle, LocalDate localDate, int hour, int minute) {

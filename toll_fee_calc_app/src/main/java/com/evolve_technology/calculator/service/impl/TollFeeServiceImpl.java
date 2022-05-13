@@ -9,32 +9,31 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 
 import com.evolve_technology.calculator.exception.CustomErrorException;
 import com.evolve_technology.calculator.service.TollFeeService;
 import com.evolve_technology.calculator.util.TollUtil;
 
-@Service()
 public class TollFeeServiceImpl implements TollFeeService {
 
 	private static final Logger logger = LogManager.getLogger(TollFeeServiceImpl.class);
 
-	@Autowired
 	TollUtil tollUtil;
 
 	private  Map<LocalDate,Map<Integer,Integer>> tollMap=new HashMap<>();
 	
+	public TollFeeServiceImpl() {
+		this.tollUtil=new TollUtil();
+	}
+	
 	public Integer getTollFee(List<LocalDateTime> inputDates,String vehicle) {
 		if(inputDates==null || vehicle==null || inputDates.isEmpty() || vehicle.isBlank())
-			throw new CustomErrorException(HttpStatus.BAD_REQUEST, "inputDates and vehicle must not be null or empty. ");
+			throw new CustomErrorException( "inputDates and vehicle must not be null or empty. ");
 		logger.info("Inside getTollFee method :: inputDates = {} and vehicle = {}", inputDates, vehicle);
 		for(LocalDateTime localDateTime : inputDates) {
 			int hour = localDateTime.getHour();
 			int minute = localDateTime.getMinute();
-			LocalDate localDate = LocalDate.of(localDateTime.getYear(), localDateTime.getMonthValue(), localDateTime.getDayOfMonth());
+			LocalDate localDate = localDateTime.toLocalDate();
 			Integer newFee = tollUtil.tollCompute(vehicle, localDate, hour, minute);
 			if(!tollMap.containsKey(localDate)) {
 				Map<Integer,Integer> innerMap=tollMap.computeIfAbsent(localDate, k->{
@@ -70,13 +69,11 @@ public class TollFeeServiceImpl implements TollFeeService {
 	}
 	
 	public int process() {
-		Map<LocalDate,Integer> tollRecords=new HashMap<>();
-		tollMap.keySet().forEach(k->{
-			int sum=tollMap.get(k).values().stream().collect(Collectors.summingInt(Integer::intValue));
-			tollRecords.put(k, sum>60 ? 60 : sum );
-		});
 		logger.info("tollMap {} :: "+tollMap);
-		logger.info("tollRecords {} :: "+tollRecords);
-		return tollRecords.values().stream().collect(Collectors.summingInt(Integer::intValue));
+		return tollMap.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),
+				e->{
+					int sum=e.getValue().values().stream().collect(Collectors.summingInt(Integer::intValue));
+					return sum>60 ? 60 : sum;
+				})).values().stream().collect(Collectors.summingInt(Integer::intValue));
 	}
 }

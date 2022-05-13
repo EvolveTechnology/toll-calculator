@@ -6,19 +6,19 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.evolve_technology.calculator.properties.TollConfiguration;
 import com.evolve_technology.calculator.service.TollFreeDatesService;
 
 
-@Service
 public class TollFreeDatesServiceImpl implements TollFreeDatesService {
 	private static final Logger logger = LogManager.getLogger(TollFreeDatesServiceImpl.class);
 	
-	@Autowired
 	TollConfiguration tollConfiguration;
+	
+	public TollFreeDatesServiceImpl() {
+		tollConfiguration=new TollConfiguration();
+	}
 	
 	@Override
 	public Boolean isTollFreeDate(String date) {
