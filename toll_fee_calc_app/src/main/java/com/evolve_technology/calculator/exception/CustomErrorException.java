@@ -1,6 +1,5 @@
 package com.evolve_technology.calculator.exception;
 
-
 import lombok.Data;
 
 @Data
@@ -16,8 +15,7 @@ public class CustomErrorException extends RuntimeException {
 		super(message);
 	}
 
-
-	public CustomErrorException( String message, Object data) {
+	public CustomErrorException(String message, Object data) {
 		this(message);
 		this.data = data;
 	}

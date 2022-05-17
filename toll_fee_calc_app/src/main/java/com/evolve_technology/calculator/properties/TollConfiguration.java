@@ -9,8 +9,6 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.evolve_technology.calculator.service.impl.TollFeeServiceImpl;
-
 import lombok.Data;
 
 @Data
@@ -20,43 +18,44 @@ public class TollConfiguration {
 	private List<String> dates;
 	private List<String> vehicles;
 	private List<String> months;
-	
-	public TollConfiguration(){
-		try (InputStream input = TollConfiguration.class.getClassLoader().getResourceAsStream("application.properties")) {
 
-            Properties prop = new Properties();
+	public TollConfiguration() {
+		try (InputStream input = TollConfiguration.class.getClassLoader()
+				.getResourceAsStream("application.properties")) {
 
-            if (input == null) {
-                logger.info("Sorry, unable to find application.properties");
-                return;
-            }
+			Properties prop = new Properties();
 
-            //load a properties file from class path, inside static method
-            prop.load(input);
+			if (input == null) {
+				logger.info("Sorry, unable to find application.properties");
+				return;
+			}
 
-            //get the property value and print it out
-            if(prop.getProperty("dates")!=null) {
-            	  setDates(Arrays.asList(prop.getProperty("dates").split(",")));
-            }
-	          
-            if(prop.getProperty("months")!=null) {
-            	setMonths(Arrays.asList(prop.getProperty("months").split(",")));
-            }
-            	
-            if(prop.getProperty("vehicles")!=null) {
-            	setVehicles(Arrays.asList(prop.getProperty("vehicles").split(",")));
-            }
-            	
-            setYear(prop.getProperty("year"));
-            
-            logger.info("dates  :: {} "+getDates());
-            logger.info("months  :: {} "+getMonths());
-            logger.info("vehicles  :: {} "+getVehicles());
-            logger.info("year  :: {} "+getYear());
+			// load a properties file from class path, inside static method
+			prop.load(input);
 
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            logger.error(ex.getMessage());
-        }
+			// get the property value and print it out
+			if (prop.getProperty("dates") != null) {
+				setDates(Arrays.asList(prop.getProperty("dates").split(",")));
+			}
+
+			if (prop.getProperty("months") != null) {
+				setMonths(Arrays.asList(prop.getProperty("months").split(",")));
+			}
+
+			if (prop.getProperty("vehicles") != null) {
+				setVehicles(Arrays.asList(prop.getProperty("vehicles").split(",")));
+			}
+
+			setYear(prop.getProperty("year"));
+
+			logger.info("dates  :: {} " + getDates());
+			logger.info("months  :: {} " + getMonths());
+			logger.info("vehicles  :: {} " + getVehicles());
+			logger.info("year  :: {} " + getYear());
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			logger.error(ex.getMessage());
+		}
 	}
 }

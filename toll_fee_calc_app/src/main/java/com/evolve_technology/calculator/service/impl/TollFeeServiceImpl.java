@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.evolve_technology.calculator.exception.CustomErrorException;
 import com.evolve_technology.calculator.service.TollFeeService;
 import com.evolve_technology.calculator.util.TollUtil;
+import com.evolve_technology.calculator.validation.TollValidation;
 
 public class TollFeeServiceImpl implements TollFeeService {
 
@@ -20,60 +20,43 @@ public class TollFeeServiceImpl implements TollFeeService {
 
 	TollUtil tollUtil;
 
-	private  Map<LocalDate,Map<Integer,Integer>> tollMap=new HashMap<>();
-	
-	public TollFeeServiceImpl() {
-		this.tollUtil=new TollUtil();
+	private Map<String, Integer> tollMap = new HashMap<>();
+
+	public TollFeeServiceImpl(TollUtil tollUtil) {
+		this.tollUtil = tollUtil;
 	}
-	
-	public Integer getTollFee(List<LocalDateTime> inputDates,String vehicle) {
-		if(inputDates==null || vehicle==null || inputDates.isEmpty() || vehicle.isBlank())
-			throw new CustomErrorException( "inputDates and vehicle must not be null or empty. ");
+
+	public Integer getTollFee(List<LocalDateTime> inputDates, String vehicle) {
+		TollValidation.validate(inputDates, vehicle);
 		logger.info("Inside getTollFee method :: inputDates = {} and vehicle = {}", inputDates, vehicle);
-		for(LocalDateTime localDateTime : inputDates) {
+		for (LocalDateTime localDateTime : inputDates) {
 			int hour = localDateTime.getHour();
 			int minute = localDateTime.getMinute();
 			LocalDate localDate = localDateTime.toLocalDate();
 			Integer newFee = tollUtil.tollCompute(vehicle, localDate, hour, minute);
-			if(!tollMap.containsKey(localDate)) {
-				Map<Integer,Integer> innerMap=tollMap.computeIfAbsent(localDate, k->{
-					logger.info("Vehicle {} has crossed the toll first time on date {} ", vehicle ,localDate);
-					Map<Integer, Integer> map = new HashMap<>();
-					map.put(hour, newFee);
-					return map;
-				});
-				logger.info("key = {} , value = {} ", localDate, innerMap);
-			}else {
-				Map<Integer, Integer> innerMapExisting = tollMap.computeIfPresent(localDate,
-						(k, outerMap) -> {
-								logger.info("Vehicle {} has crossed the toll on day {}", vehicle, localDate);
-								Integer existingFee = outerMap.get(hour);
-								if (existingFee == null) {
-									logger.info("Vehicle {} has crossed the toll on day {} but not at hour {}", vehicle,
-											localDate, hour);
-									outerMap.put(hour, newFee);
-								}
-								if (existingFee != null && existingFee < newFee) {
-									logger.info(
-											"Vehicle {} has crossed the toll on day {} at hour {} with oldFee {} and new Fee {}",
-											vehicle, localDate, hour, existingFee, newFee);
-									outerMap.put(hour, newFee);
-								}
-							
-							return outerMap;
-						});
-				logger.info("updated value = {} ", innerMapExisting);
+			String key = localDate.toString() + ":" + hour;
+			if (!tollMap.containsKey(key)) {
+				tollMap.put(key, newFee);
+			} else {
+				if (newFee > tollMap.get(key))
+					tollMap.put(key, newFee);
 			}
 		}
 		return process();
 	}
-	
+
 	public int process() {
-		logger.info("tollMap {} :: "+tollMap);
-		return tollMap.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),
-				e->{
-					int sum=e.getValue().values().stream().collect(Collectors.summingInt(Integer::intValue));
-					return sum>60 ? 60 : sum;
-				})).values().stream().collect(Collectors.summingInt(Integer::intValue));
+		logger.info("tollMap {} :: " + tollMap);
+		Map<LocalDate, Integer> map = new HashMap<>();
+		for (String key : tollMap.keySet()) {
+			LocalDate localDate = LocalDate.parse(key.split(":")[0]);
+			if (!map.containsKey(localDate)) {
+				map.putIfAbsent(localDate, tollMap.get(key));
+			} else {
+				int sum = tollMap.get(key) + map.get(localDate);
+				map.put(localDate, sum > 60 ? 60 : sum);
+			}
+		}
+		return map.values().stream().collect(Collectors.summingInt(Integer::intValue));
 	}
 }

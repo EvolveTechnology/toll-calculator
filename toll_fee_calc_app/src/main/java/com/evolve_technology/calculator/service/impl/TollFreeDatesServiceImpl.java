@@ -10,32 +10,33 @@ import org.apache.logging.log4j.Logger;
 import com.evolve_technology.calculator.properties.TollConfiguration;
 import com.evolve_technology.calculator.service.TollFreeDatesService;
 
-
 public class TollFreeDatesServiceImpl implements TollFreeDatesService {
 	private static final Logger logger = LogManager.getLogger(TollFreeDatesServiceImpl.class);
-	
+
 	TollConfiguration tollConfiguration;
-	
-	public TollFreeDatesServiceImpl() {
-		tollConfiguration=new TollConfiguration();
+
+	public TollFreeDatesServiceImpl(TollConfiguration tollConfiguration) {
+		this.tollConfiguration = tollConfiguration;
 	}
-	
+
 	@Override
 	public Boolean isTollFreeDate(String date) {
-		logger.info("Inside isTollFreeDate method :: date = {} ",date);
+		logger.info("Inside isTollFreeDate method :: date = {} ", date);
 
-		LocalDate input=LocalDate.parse(date);
-		if( input.getDayOfWeek()==DayOfWeek.SATURDAY || input.getDayOfWeek()==DayOfWeek.SUNDAY) {
-			logger.info("date {} is actually a weekend so no toll Enjoy.",date);
+		LocalDate input = LocalDate.parse(date);
+		if (input.getDayOfWeek() == DayOfWeek.SATURDAY || input.getDayOfWeek() == DayOfWeek.SUNDAY) {
+			logger.info("date {} is actually a weekend so no toll Enjoy.", date);
 			return true;
 		}
-		
-		if(tollConfiguration.getMonths().stream().filter(month-> month.trim().equalsIgnoreCase(input.getMonth().toString())).findAny().isPresent()) {
-			logger.info("date {} lies in JULY month so no toll Enjoy.",date);
+
+		if (tollConfiguration.getMonths().stream()
+				.filter(month -> month.trim().equalsIgnoreCase(input.getMonth().toString())).findAny().isPresent()) {
+			logger.info("date {} lies in JULY month so no toll Enjoy.", date);
 			return true;
 		}
-		
-		return getTollFreeDates().stream().filter(x -> x.trim().equalsIgnoreCase(input.toString())).findAny().isPresent();
+
+		return getTollFreeDates().stream().filter(x -> x.trim().equalsIgnoreCase(input.toString())).findAny()
+				.isPresent();
 	}
 
 	@Override
@@ -43,6 +44,5 @@ public class TollFreeDatesServiceImpl implements TollFreeDatesService {
 		logger.info("Inside getTollFreeDates method ");
 		return tollConfiguration.getDates();
 	}
-
 
 }
