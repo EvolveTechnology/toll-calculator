@@ -12,7 +12,8 @@ public class TollFreeVehiclesServiceImpl implements TollFreeVehicleService {
 
 	TollConfiguration tollConfiguration;
 
-	private static final Logger logger = LogManager.getLogger(TollFreeVehiclesServiceImpl.class);
+	private static final Logger logger = LogManager
+			.getLogger(TollFreeVehiclesServiceImpl.class);
 
 	public TollFreeVehiclesServiceImpl(TollConfiguration tollConfiguration) {
 		this.tollConfiguration = tollConfiguration;
@@ -24,9 +25,11 @@ public class TollFreeVehiclesServiceImpl implements TollFreeVehicleService {
 	}
 
 	public boolean isTollFreeVehicle(String vehicle) {
-		logger.info("Inside isTollFreeVehicle method :: vehicle = {} ", vehicle);
+		logger.info("Inside isTollFreeVehicle method :: vehicle = {} ",
+				vehicle);
 		List<String> vehicles = getTollFreeVehicles();
-		return vehicles.stream().filter(v -> v.trim().equalsIgnoreCase(vehicle)).findAny().isPresent();
+		return vehicles.stream().filter(v -> v.trim().equalsIgnoreCase(vehicle))
+				.findAny().isPresent();
 	}
 
 }

@@ -16,7 +16,8 @@ import com.evolve_technology.calculator.validation.TollValidation;
 
 public class TollFeeServiceImpl implements TollFeeService {
 
-	private static final Logger logger = LogManager.getLogger(TollFeeServiceImpl.class);
+	private static final Logger logger = LogManager
+			.getLogger(TollFeeServiceImpl.class);
 
 	TollUtil tollUtil;
 
@@ -28,12 +29,15 @@ public class TollFeeServiceImpl implements TollFeeService {
 
 	public Integer getTollFee(List<LocalDateTime> inputDates, String vehicle) {
 		TollValidation.validate(inputDates, vehicle);
-		logger.info("Inside getTollFee method :: inputDates = {} and vehicle = {}", inputDates, vehicle);
+		logger.info(
+				"Inside getTollFee method :: inputDates = {} and vehicle = {}",
+				inputDates, vehicle);
 		for (LocalDateTime localDateTime : inputDates) {
 			int hour = localDateTime.getHour();
 			int minute = localDateTime.getMinute();
 			LocalDate localDate = localDateTime.toLocalDate();
-			Integer newFee = tollUtil.tollCompute(vehicle, localDate, hour, minute);
+			Integer newFee = tollUtil.tollCompute(vehicle, localDate, hour,
+					minute);
 			String key = localDate.toString() + ":" + hour;
 			if (!tollMap.containsKey(key)) {
 				tollMap.put(key, newFee);
@@ -57,6 +61,7 @@ public class TollFeeServiceImpl implements TollFeeService {
 				map.put(localDate, sum > 60 ? 60 : sum);
 			}
 		}
-		return map.values().stream().collect(Collectors.summingInt(Integer::intValue));
+		return map.values().stream()
+				.collect(Collectors.summingInt(Integer::intValue));
 	}
 }

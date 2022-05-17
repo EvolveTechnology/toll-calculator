@@ -10,12 +10,14 @@ public class TollUtil {
 
 	TollFreeVehicleService tollFreeVehicleService;
 
-	public TollUtil(TollFreeDatesService tollFreeDatesService, TollFreeVehicleService tollFreeVehicleService) {
+	public TollUtil(TollFreeDatesService tollFreeDatesService,
+			TollFreeVehicleService tollFreeVehicleService) {
 		this.tollFreeDatesService = tollFreeDatesService;
 		this.tollFreeVehicleService = tollFreeVehicleService;
 	}
 
-	public int tollCompute(String vehicle, LocalDate localDate, int hour, int minute) {
+	public int tollCompute(String vehicle, LocalDate localDate, int hour,
+			int minute) {
 		if (tollFreeDatesService.isTollFreeDate(localDate.toString())
 				|| tollFreeVehicleService.isTollFreeVehicle(vehicle))
 			return 0;

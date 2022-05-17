@@ -13,7 +13,8 @@ import lombok.Data;
 
 @Data
 public class TollConfiguration {
-	private static final Logger logger = LogManager.getLogger(TollConfiguration.class);
+	private static final Logger logger = LogManager
+			.getLogger(TollConfiguration.class);
 	private String year;
 	private List<String> dates;
 	private List<String> vehicles;
@@ -43,7 +44,8 @@ public class TollConfiguration {
 			}
 
 			if (prop.getProperty("vehicles") != null) {
-				setVehicles(Arrays.asList(prop.getProperty("vehicles").split(",")));
+				setVehicles(
+						Arrays.asList(prop.getProperty("vehicles").split(",")));
 			}
 
 			setYear(prop.getProperty("year"));

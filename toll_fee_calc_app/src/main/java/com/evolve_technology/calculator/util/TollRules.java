@@ -1,6 +1,7 @@
 package com.evolve_technology.calculator.util;
 
 public class TollRules {
+
 	public static int getHourlyRate(int hour, int minute) {
 		if (hour == 6 && minute >= 0 && minute <= 29)
 			return 8;

@@ -4,5 +4,6 @@ import java.util.List;
 
 public interface TollFreeVehicleService {
 	public List<String> getTollFreeVehicles();
+
 	public boolean isTollFreeVehicle(String vehicle);
 }
