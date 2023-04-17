@@ -1,13 +1,22 @@
 package org.example;
 
+import org.example.config.TimeslotFees;
+import org.example.data.Car;
+import org.example.data.Motorbike;
+import org.example.config.TollFeeConfiguration;
 import org.example.exception.ParameterNotFoundException;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 import java.time.MonthDay;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+
+@RunWith(SpringRunner.class)
 
 public class TollCalculatorTest {
 

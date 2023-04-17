@@ -9,6 +9,12 @@
   <artifactId>Java</artifactId>
   <version>1.0-SNAPSHOT</version>
 
+  <parent>
+    <artifactId>spring-boot-parent</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <version>2.2.5.RELEASE</version>
+  </parent>
+
   <name>Java</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
@@ -17,15 +23,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.1</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -41,5 +42,17 @@
       <artifactId>slf4j-simple</artifactId>
       <version>2.0.5</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <version>${spring-boot.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+      <version>${spring-boot.version}</version>
+    </dependency>
   </dependencies>
+
 </project>

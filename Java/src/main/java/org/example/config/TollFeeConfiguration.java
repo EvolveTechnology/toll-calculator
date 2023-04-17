@@ -1,4 +1,4 @@
-package org.example;
+package org.example.config;
 
 import java.time.MonthDay;
 import java.util.List;

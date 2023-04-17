@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.config.TimeslotFees;
+import org.example.config.TollFeeConfiguration;
+import org.example.data.TollFreeVehicles;
+import org.example.data.Vehicle;
 import org.example.exception.ParameterNotFoundException;
 
 import java.time.DayOfWeek;
