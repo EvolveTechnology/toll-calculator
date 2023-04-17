@@ -16,8 +16,6 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@RunWith(SpringRunner.class)
-
 public class TollCalculatorTest {
 
     private final TollCalculator tollCalculator;
