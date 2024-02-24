@@ -1,10 +1,10 @@
 package org.example.data;
 
-public class OtherVehicle implements Vehicle{
+public class DefaultVehicle implements Vehicle{
 
     private final String type;
 
-    public OtherVehicle(String type){
+    public DefaultVehicle(String type){
         this.type = type;
     }
     @Override
