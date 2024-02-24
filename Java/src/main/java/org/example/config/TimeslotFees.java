@@ -1,34 +1,33 @@
 package org.example.config;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import lombok.*;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
-@ConfigurationProperties(prefix = "toll-configuration.timeslot-fees")
+@Component
+@Data
 public class TimeslotFees {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
-    @Getter
-    LocalTime startTime;
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime startTime;
 
-    @Getter
-    LocalTime endTime;
+    @DateTimeFormat(pattern = "HH:mm")
+    private  LocalTime endTime;
 
-    @Getter
-    int fees;
+    private int fees;
 
-    public TimeslotFees(@Value("${startTime}") String startTime, @Value("${endTime}") String endTime, int fees) {
+    public TimeslotFees( String startTime, String endTime, int fees) {
         this.startTime = LocalTime.parse(startTime, formatter);
         this.endTime = LocalTime.parse(endTime, formatter);
         this.fees = fees;

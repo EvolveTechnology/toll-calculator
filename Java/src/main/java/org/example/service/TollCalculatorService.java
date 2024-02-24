@@ -6,18 +6,17 @@ import org.example.data.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class TollCaculatorService {
+public class TollCalculatorService {
 
     @Autowired
     private TollCalculator tollCalculator;
 
-    public TollFeeResponse getTollFees(Vehicle vehicle, List<Date> dateList){
-        Date[] dates = dateList.toArray(new Date[dateList.size()]);
-       int fees =  tollCalculator.getTollFee(vehicle, dates);
+    public TollFeeResponse getTollFees(Vehicle vehicle, List<LocalDateTime> dateTimeList){
+       int fees =  tollCalculator.getTollFee(vehicle, dateTimeList);
        return TollFeeResponse.builder().totalFees(fees).build();
     }
 }

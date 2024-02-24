@@ -14,23 +14,26 @@ import java.time.MonthDay;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 
 @Slf4j
+@Component
 public class TollCalculator {
 
+    @Autowired
     private final TollFeeConfiguration tollFeeConfiguration;
-
 
     public TollCalculator(TollFeeConfiguration tollFeeConfiguration) {
         this.tollFeeConfiguration = tollFeeConfiguration;
+        System.out.println(tollFeeConfiguration);
     }
 
     /**
@@ -40,7 +43,8 @@ public class TollCalculator {
      * @param datesInput - date and time of all passes on one day
      * @return - the total toll fee for that day
      */
-    public int getTollFee(Vehicle vehicle, Date... datesInput) {
+    public int getTollFee(Vehicle vehicle, List<LocalDateTime> datesInput) {
+
         if (vehicle == null) {
             throw new ParameterNotFoundException("vehicle parameter is null.");
         }
@@ -50,43 +54,46 @@ public class TollCalculator {
         }
 
         if (isTollFreeVehicle(vehicle)) {
-            log.info("Vehicle[{}] is free from toll tax, so returning 0 fee.", vehicle.getType());
+            log.info("***** Vehicle[{}] is free from toll tax, so returning 0 fee.", vehicle.getType());
             return 0;
         }
+        log.info("***** Calculating toll-fees for Vehicle[{}] ***** ", vehicle.getType());
 
-        List<Date> dates = Arrays.stream(datesInput).sorted().collect(Collectors.toList());
+        List<LocalDateTime> dates = datesInput.stream().sorted().collect(Collectors.toList());
 
         Map<LocalDate, List<LocalDateTime>> collect = dates.stream()
-                .map(DateUtil::toLocalDateTime)
                 .collect(Collectors.groupingBy(LocalDateTime::toLocalDate));
 
         int totalFees = 0;
         for (Map.Entry<LocalDate, List<LocalDateTime>> entry : collect.entrySet()) {
             totalFees = totalFees + getTollFeesPerDay(vehicle, entry.getValue());
         }
-        log.info("Final toll fees:{}", totalFees);
+        log.info("Vehicle[{}] Final toll fees: {}", vehicle.getType(), totalFees);
+        log.info("***** End processing toll-fees for Vehicle[{}] *****", vehicle.getType());
         return totalFees;
 
     }
 
     public int getTollFeesPerDay(Vehicle vehicle, List<LocalDateTime> localDateTimes) {
 
-        LocalDateTime intervalStarLocal = localDateTimes.get(0);
-        Date intervalStart = DateUtil.toDate(intervalStarLocal);
+        LocalDateTime firstLocalDateTime = localDateTimes.get(0);
+
         int totalFee = 0;
 
-        if (isTollFreeDate(intervalStarLocal)) return 0;
+        if (isTollFreeDate(firstLocalDateTime)) return 0;
 
-        int tempFee = getTollFee(intervalStart, vehicle);
-        LocalDateTime tempDateTime = intervalStarLocal;
+        int tempFee = getTollFee(firstLocalDateTime, vehicle);
+        LocalDateTime tempDateTime = firstLocalDateTime;
+
+
         for (LocalDateTime localDateTime : localDateTimes) {
-            int nextFee = getTollFee(DateUtil.toDate(localDateTime), vehicle);
+            int nextFee = getTollFee(localDateTime, vehicle);
             long minutes = tempDateTime.until(localDateTime, ChronoUnit.MINUTES);
             if (minutes <= 60) {
                 if (totalFee > 0) {
                     totalFee = totalFee - tempFee;
                 }
-                if (nextFee >= tempFee) {
+               if (nextFee >= tempFee) {
                     tempFee = nextFee;
                 }
                 totalFee = totalFee + tempFee;
@@ -94,15 +101,18 @@ public class TollCalculator {
                 tempDateTime = localDateTime;
                 totalFee = totalFee + nextFee;
             }
+
+            int maximumTollFees = tollFeeConfiguration.getMaximumTollFeesPerDay();
+            if (totalFee > maximumTollFees) {
+                log.info("Calculated Total Fee: {} is more than the maximum toll fees, hence returning the maximum toll fees: {}", totalFee, maximumTollFees);
+                totalFee = maximumTollFees;
+                break;
+            }
         }
 
-        int maximumTollFees = tollFeeConfiguration.getMaximumTollFeesPerDay();
-        if (totalFee > maximumTollFees) {
-            log.info("Calculated Total Fee:{} is more than the maximum toll fees, hence returning the maximum toll fees:{}", totalFee, maximumTollFees);
-            totalFee = maximumTollFees;
-        }
 
-        log.info("Total toll fees:{} for Date:{}", totalFee, intervalStarLocal.toLocalDate());
+
+        log.info("Total toll fees: {} for date: {}", totalFee, firstLocalDateTime.toLocalDate());
 
         return totalFee;
     }
@@ -117,8 +127,8 @@ public class TollCalculator {
         return tollFreeVehicle;
     }
 
-    public int getTollFee(final Date date, Vehicle vehicle) {
-        LocalDateTime localDateTime = DateUtil.toLocalDateTime(date);
+    public int getTollFee(final LocalDateTime localDateTime, Vehicle vehicle) {
+
         if (isTollFreeDate(localDateTime) || isTollFreeVehicle(vehicle)) return 0;
 
         LocalTime localTime = localDateTime.toLocalTime();
@@ -128,7 +138,7 @@ public class TollCalculator {
         ).findAny();
 
         int tollFees = any.map(TimeslotFees::getFees).orElse(0);
-        log.debug("Returning toll fees:{} for date:{}", tollFees, date);
+        log.info("Vehicle[{}], toll fees:{} for date:{}",vehicle.getType(), tollFees, localDateTime);
         return tollFees;
     }
 

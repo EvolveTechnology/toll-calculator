@@ -1,23 +1,18 @@
 package org.example.controller;
 
-import org.example.DateUtil;
 import org.example.data.Car;
 import org.example.data.Motorbike;
 import org.example.data.OtherVehicle;
 import org.example.data.TollFeeRequest;
 import org.example.data.TollFeeResponse;
 import org.example.data.Vehicle;
-import org.example.service.TollCaculatorService;
+import org.example.service.TollCalculatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TollCalculatorController {
 
     @Autowired
-    private TollCaculatorService tollCaculatorService;
+    private TollCalculatorService tollCalculatorService;
 
     @PostMapping
     public ResponseEntity<TollFeeResponse> calculateTollFees(@RequestBody TollFeeRequest tollFeeRequest){
@@ -42,7 +37,6 @@ public class TollCalculatorController {
        } else {
            vehicle = new OtherVehicle(vehicleStr);
        }
-       List<Date> dateList = tollFeeRequest.getDates().stream().map(DateUtil::toDate).collect(Collectors.toList());
-       return ResponseEntity.ok(tollCaculatorService.getTollFees(vehicle, dateList));
+       return ResponseEntity.ok(tollCalculatorService.getTollFees(vehicle, tollFeeRequest.getDates()));
     }
 }
