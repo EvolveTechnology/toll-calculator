@@ -1,7 +1,5 @@
 package org.example.controller;
 
-import org.example.data.Car;
-import org.example.data.Motorbike;
 import org.example.data.DefaultVehicle;
 import org.example.data.TollFeeRequest;
 import org.example.data.TollFeeResponse;
@@ -29,14 +27,9 @@ public class TollCalculatorController {
     public ResponseEntity<TollFeeResponse> calculateTollFees(@RequestBody TollFeeRequest tollFeeRequest){
 
        String vehicleStr = tollFeeRequest.getVehicle();
-       Vehicle vehicle = null;
-       if (vehicleStr.equals("Car")) {
-           vehicle = new Car();
-       } else if(vehicleStr.equals("Motorbike")) {
-           vehicle = new Motorbike();
-       } else {
-           vehicle = new DefaultVehicle(vehicleStr);
-       }
+
+       Vehicle vehicle = new DefaultVehicle(vehicleStr);
+
        return ResponseEntity.ok(tollCalculatorService.getTollFees(vehicle, tollFeeRequest.getDates()));
     }
 }

@@ -1,9 +1,8 @@
 package org.example;
 
 import org.example.config.TimeslotFees;
-import org.example.data.Car;
-import org.example.data.Motorbike;
 import org.example.config.TollFeeConfiguration;
+import org.example.data.DefaultVehicle;
 import org.example.exception.ParameterNotFoundException;
 import org.junit.jupiter.api.Test;
 
@@ -74,7 +73,7 @@ public class TollCalculatorTest {
     @Test
     public void testGetTollFeeDatesNull() {
         ParameterNotFoundException parameterNotFoundException = assertThrows(ParameterNotFoundException.class, () -> {
-            this.tollCalculator.getTollFee(new Car(), null);
+            this.tollCalculator.getTollFee(new DefaultVehicle("Car"), null);
         });
 
         assertEquals("dates parameter is null.", parameterNotFoundException.getMessage());
@@ -86,7 +85,7 @@ public class TollCalculatorTest {
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 3, 28, 11, 12, 44);
         List<LocalDateTime> dateTimeList = Arrays.asList(localDateTime1,
                 localDateTime2);
-        int fees = this.tollCalculator.getTollFee(new Car(), dateTimeList);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
         assertEquals(0, fees);
     }
 
@@ -96,7 +95,7 @@ public class TollCalculatorTest {
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 15, 11, 12, 44);
         List<LocalDateTime> dateTimeList = Arrays.asList(localDateTime1,
                 localDateTime2);
-        int fees = this.tollCalculator.getTollFee(new Car(), dateTimeList);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
         assertEquals(0, fees);
     }
 
@@ -114,7 +113,7 @@ public class TollCalculatorTest {
                 localDateTime4,
                 localDateTime5);
 
-        int fees = this.tollCalculator.getTollFee(new Car(), dateTimeList);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
         assertEquals(42, fees);
     }
 
@@ -139,7 +138,7 @@ public class TollCalculatorTest {
                 localDateTime7,
                 localDateTime8);
 
-        int fees = this.tollCalculator.getTollFee(new Car(), dateTimeList);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
         assertEquals(60, fees);
     }
 
@@ -163,7 +162,7 @@ public class TollCalculatorTest {
                 localDateTime7,
                 localDateTime8);
 
-        int fees = this.tollCalculator.getTollFee(new Motorbike(), dateTimeList);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Motorbike"), dateTimeList);
         assertEquals(0, fees);
     }
 
@@ -187,7 +186,7 @@ public class TollCalculatorTest {
                 localDateTime7,
                 localDateTime8);
 
-        int fees = this.tollCalculator.getTollFee(new Car(), dateTimeList);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
         assertEquals(94, fees);
     }
 
@@ -196,7 +195,7 @@ public class TollCalculatorTest {
         LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 14, 5, 11, 11);
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 14, 19, 12, 44);
         List<LocalDateTime> dateTimeList = Arrays.asList(localDateTime1, localDateTime2);
-        int fees = this.tollCalculator.getTollFee(new Car(), dateTimeList);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
         assertEquals(0, fees);
     }
 
@@ -205,7 +204,7 @@ public class TollCalculatorTest {
         LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 14, 6, 50, 11);
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 14, 7, 10, 44);
         List<LocalDateTime> dateTimeList = Arrays.asList(localDateTime1, localDateTime2);
-        int fees = this.tollCalculator.getTollFee(new Car(), dateTimeList);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
         assertEquals(18, fees);
     }
 
@@ -215,7 +214,7 @@ public class TollCalculatorTest {
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 14, 8, 5, 44);
         LocalDateTime localDateTime3 = LocalDateTime.of(2023, 4, 14, 8, 35, 44);
         List<LocalDateTime> dateTimeList = Arrays.asList(localDateTime1, localDateTime2,localDateTime3);
-        int fees = this.tollCalculator.getTollFee(new Car(), dateTimeList);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
         assertEquals(18, fees);
     }
 
@@ -226,7 +225,7 @@ public class TollCalculatorTest {
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 14, 16, 45, 44);
         LocalDateTime localDateTime3 = LocalDateTime.of(2023, 4, 14, 17, 15, 44);
         List<LocalDateTime> dateTimeList = Arrays.asList(localDateTime1, localDateTime2,localDateTime3);
-        int fees = this.tollCalculator.getTollFee(new Car(), dateTimeList);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
         assertEquals(36, fees);
     }
 
@@ -236,7 +235,7 @@ public class TollCalculatorTest {
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 14, 8, 5, 44);
         LocalDateTime localDateTime3 = LocalDateTime.of(2023, 4, 14, 17, 15, 44);
         List<LocalDateTime> dateTimeList = Arrays.asList(localDateTime1, localDateTime2,localDateTime3);
-        int fees = this.tollCalculator.getTollFee(new Car(), dateTimeList);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
         assertEquals(31, fees);
     }
 
@@ -246,7 +245,7 @@ public class TollCalculatorTest {
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 14, 8, 5, 44);
         LocalDateTime localDateTime3 = LocalDateTime.of(2023, 4, 14, 8, 15, 44);
         List<LocalDateTime> dateTimeList = Arrays.asList(localDateTime1, localDateTime2,localDateTime3);
-        int fees = this.tollCalculator.getTollFee(new Car(), dateTimeList);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
         assertEquals(18, fees);
     }
 
@@ -254,7 +253,7 @@ public class TollCalculatorTest {
     public void testGetTollFeeForAmount8() {
         LocalDateTime localDateTime = LocalDateTime.of(2023, 4, 14, 6, 10, 44);
         List<LocalDateTime> dateTimeList = Collections.singletonList(localDateTime);
-        int fees = this.tollCalculator.getTollFee(new Car(), dateTimeList);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
         assertEquals(8, fees);
     }
 
@@ -263,7 +262,7 @@ public class TollCalculatorTest {
     public void testGetTollFeeForAmount13() {
         LocalDateTime localDateTime = LocalDateTime.of(2023, 4, 14, 6, 40, 44);
         List<LocalDateTime> dateTimeList = Collections.singletonList(localDateTime);
-        int fees = this.tollCalculator.getTollFee(new Car(), dateTimeList);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
         assertEquals(13, fees);
     }
 
@@ -271,7 +270,7 @@ public class TollCalculatorTest {
     public void testGetTollFeeForAmount18() {
         LocalDateTime localDateTime = LocalDateTime.of(2023, 4, 14, 7, 10, 44);
         List<LocalDateTime> dateTimeList = Collections.singletonList(localDateTime);
-        int fees = this.tollCalculator.getTollFee(new Car(), dateTimeList);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
         assertEquals(18, fees);
     }
 }
