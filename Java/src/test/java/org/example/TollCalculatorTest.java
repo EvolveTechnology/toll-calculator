@@ -62,6 +62,8 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeVehicleNull() {
+        //if vehicle is not passed, then it should throw parameter not found or missing exception.
+
         LocalDateTime localDateTime1 = LocalDateTime.of(2023, 3, 29, 11, 11, 11);
         ParameterNotFoundException parameterNotFoundException = assertThrows(ParameterNotFoundException.class, () -> {
             this.tollCalculator.getTollFee(null, Collections.singletonList(localDateTime1));
@@ -72,6 +74,8 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeDatesNull() {
+        //if vehicle is present, but dates are not passed,  it should throw parameter not found or missing exception.
+
         ParameterNotFoundException parameterNotFoundException = assertThrows(ParameterNotFoundException.class, () -> {
             this.tollCalculator.getTollFee(new DefaultVehicle("Car"), null);
         });
@@ -81,6 +85,8 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeForHoliday() {
+        //if vehicle is car, and dates are fall on holiday, it should return 0 fees.
+
         LocalDateTime localDateTime1 = LocalDateTime.of(2023, 3, 29, 11, 11, 11);
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 3, 28, 11, 12, 44);
         List<LocalDateTime> dateTimeList = Arrays.asList(localDateTime1,
@@ -91,6 +97,8 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeForWeekend() {
+        //if vehicle is car, and dates are fall on weekend, it should return 0 fees.
+
         LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 15, 11, 11, 11);
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 15, 11, 12, 44);
         List<LocalDateTime> dateTimeList = Arrays.asList(localDateTime1,
@@ -101,6 +109,8 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeForUnsortedDates() {
+        //if vehicle is car, and dates are not in ordered, so it should sort them and return calculated fees per expectation.
+
         LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 11, 11, 10, 11);
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 11, 7, 10, 44);
         LocalDateTime localDateTime3 = LocalDateTime.of(2023, 4, 11, 9, 10, 44);
@@ -113,6 +123,7 @@ public class TollCalculatorTest {
                 localDateTime4,
                 localDateTime5);
 
+
         int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
         assertEquals(42, fees);
     }
@@ -120,6 +131,9 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeForMaximumFees() {
+        // if vehicle is car, and vehicle is passed more times from toll, so that it calculates fees more than maximum fees per day
+        // in this case it should return maximum fees per day, i.e. 60.
+
         LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 11, 11, 10, 11);
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 11, 7, 10, 44);
         LocalDateTime localDateTime3 = LocalDateTime.of(2023, 4, 11, 9, 10, 44);
@@ -144,6 +158,8 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeForTollFreeVehicles() {
+        // if vehicle is Motorbike, and as it is toll-free vehicle, fees should be return as 0.
+
         LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 11, 11, 10, 11);
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 11, 7, 10, 44);
         LocalDateTime localDateTime3 = LocalDateTime.of(2023, 4, 11, 9, 10, 44);
@@ -168,6 +184,8 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeWithDifferentDates() {
+        // if vehicle is Car, and dates are passed for multiple days, it should return total fees return for those days.
+
         LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 11, 11, 10, 11);
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 11, 7, 10, 44);
         LocalDateTime localDateTime3 = LocalDateTime.of(2023, 4, 11, 9, 10, 44);
@@ -192,6 +210,8 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeForOffHours() {
+        // if vehicle is Car, and it is passed at off hours then fees should be calculated 0.
+
         LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 14, 5, 11, 11);
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 14, 19, 12, 44);
         List<LocalDateTime> dateTimeList = Arrays.asList(localDateTime1, localDateTime2);
@@ -201,6 +221,10 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeForHourlyMaxTollTaxCase_DifferentSlot_InHour() {
+        // if vehicle is Car, and it is passed multiple times in a hour then it should consider max fees.
+        // A vehicle should only be charged once an hour
+        // -->  In the case of multiple fees in the same hour period, the highest one applies.
+
         LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 14, 6, 50, 11);
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 14, 7, 10, 44);
         List<LocalDateTime> dateTimeList = Arrays.asList(localDateTime1, localDateTime2);
@@ -210,6 +234,10 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeForHourlyMaxTollTaxCase_ThreeDifferentSlot_InHour() {
+        // if vehicle is Car, and it is passed multiple times in a hour then it should consider max fees.
+        // A vehicle should only be charged once an hour
+        // -->  In the case of multiple fees in the same hour period, the highest one applies.
+
         LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 14, 7, 55, 11);
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 14, 8, 5, 44);
         LocalDateTime localDateTime3 = LocalDateTime.of(2023, 4, 14, 8, 35, 44);
@@ -221,6 +249,10 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeForHourlyMaxTollTaxCase_ThreeDifferentSlot() {
+        // if vehicle is Car, and it is passed multiple times in a hour then it should consider max fees.
+        // A vehicle should only be charged once an hour
+        // -->  In the case of multiple fees in the same hour period, the highest one applies.
+
         LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 14, 7, 55, 11);
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 14, 16, 45, 44);
         LocalDateTime localDateTime3 = LocalDateTime.of(2023, 4, 14, 17, 15, 44);
@@ -231,6 +263,10 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeForHourlyMaxTollTaxCase_ThreeDifferentSlot_2() {
+        // if vehicle is Car, and it is passed multiple times in a hour then it should consider max fees.
+        // A vehicle should only be charged once an hour
+        // -->  In the case of multiple fees in the same hour period, the highest one applies.
+
         LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 14, 7, 55, 11);
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 14, 8, 5, 44);
         LocalDateTime localDateTime3 = LocalDateTime.of(2023, 4, 14, 17, 15, 44);
@@ -241,6 +277,10 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeForHourlyMaxTollTaxCase_InHour() {
+        // if vehicle is Car, and it is passed multiple times in a hour then it should consider max fees.
+        // A vehicle should only be charged once an hour
+        // -->  In the case of multiple fees in the same hour period, the highest one applies.
+
         LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 14, 7, 55, 11);
         LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 14, 8, 5, 44);
         LocalDateTime localDateTime3 = LocalDateTime.of(2023, 4, 14, 8, 15, 44);
@@ -251,6 +291,8 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeForAmount8() {
+        // if vehicle is Car, and it is passed at time when toll fee is 8.
+
         LocalDateTime localDateTime = LocalDateTime.of(2023, 4, 14, 6, 10, 44);
         List<LocalDateTime> dateTimeList = Collections.singletonList(localDateTime);
         int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
@@ -260,6 +302,8 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeForAmount13() {
+        // if vehicle is Car, and it is passed at time when toll fee is 13.
+
         LocalDateTime localDateTime = LocalDateTime.of(2023, 4, 14, 6, 40, 44);
         List<LocalDateTime> dateTimeList = Collections.singletonList(localDateTime);
         int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
@@ -268,6 +312,8 @@ public class TollCalculatorTest {
 
     @Test
     public void testGetTollFeeForAmount18() {
+        // if vehicle is Car, and it is passed at time when toll fee is 18.
+
         LocalDateTime localDateTime = LocalDateTime.of(2023, 4, 14, 7, 10, 44);
         List<LocalDateTime> dateTimeList = Collections.singletonList(localDateTime);
         int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
