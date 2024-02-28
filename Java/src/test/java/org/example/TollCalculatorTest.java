@@ -1,10 +1,13 @@
 package org.example;
 
 import org.example.config.TimeslotFees;
-import org.example.config.TollFeeConfiguration;
+import org.example.config.TollConfiguration;
 import org.example.data.DefaultVehicle;
+import org.example.exception.APIBadRequestException;
 import org.example.exception.ParameterNotFoundException;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestPropertySource;
 
 
 import java.time.LocalDateTime;
@@ -12,19 +15,22 @@ import java.time.MonthDay;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@TestPropertySource(locations = "classpath:application.properties")
 public class TollCalculatorTest {
 
+
+    @Autowired
     private final TollCalculator tollCalculator;
 
     public TollCalculatorTest() {
 
-        TollFeeConfiguration tollFeeConfiguration = new TollFeeConfiguration();
-        tollFeeConfiguration.setMaximumTollFeesPerDay(60);
-        tollFeeConfiguration.setHolidays(Arrays.asList(
+        TollConfiguration tollConfiguration = new TollConfiguration();
+        tollConfiguration.setMaximumTollFeesPerDay(60);
+        tollConfiguration.setHolidays(Arrays.asList(
                 MonthDay.of(1, 1),
                 MonthDay.of(3, 28),
                 MonthDay.of(3, 29),
@@ -43,7 +49,7 @@ public class TollCalculatorTest {
                 MonthDay.of(12, 26),
                 MonthDay.of(12, 31)
         ));
-        tollFeeConfiguration.setTimeslotFees(Arrays.asList(
+        tollConfiguration.setTimeslotFees(Arrays.asList(
                 new TimeslotFees("06:00", "06:29", 8),
                 new TimeslotFees("06:30", "06:59", 13),
                 new TimeslotFees("07:00", "07:59", 18),
@@ -55,8 +61,9 @@ public class TollCalculatorTest {
                 new TimeslotFees("17:00", "17:59", 13),
                 new TimeslotFees("18:00", "18:30", 8)
         ));
-
-        this.tollCalculator = new TollCalculator(tollFeeConfiguration);
+        tollConfiguration.setVehicleTypes(Arrays.stream("Car,Truck,Motorbike,Tractor,Emergency,Diplomat,Foreign,Military".split(",")).collect(Collectors.toList()));
+        tollConfiguration.setTollFreeVehicles(Arrays.stream("Motorbike,Tractor,Emergency,Diplomat,Foreign,Military".split(",")).collect(Collectors.toList()));
+        this.tollCalculator = new TollCalculator(tollConfiguration);
 
     }
 
@@ -84,11 +91,21 @@ public class TollCalculatorTest {
     }
 
     @Test
+    public void testGetTollFeeDatesInvalidVehicles() {
+        //if vehicle is present, but dates are not passed,  it should throw parameter not found or missing exception.
+        LocalDateTime localDateTime1 = LocalDateTime.of(2023, 3, 29, 11, 11, 11);
+        APIBadRequestException apiBadRequestException = assertThrows(APIBadRequestException.class, () -> {
+            this.tollCalculator.getTollFee(new DefaultVehicle("xyz"), Collections.singletonList(localDateTime1));
+        });
+
+        assertTrue(apiBadRequestException.getMessage().startsWith("Vehicle should be a valid. It should be of one of these vehicles:"));
+    }
+
+    @Test
     public void testGetTollFeeForHoliday() {
         //if vehicle is car, and dates are fall on holiday, it should return 0 fees.
-
-        LocalDateTime localDateTime1 = LocalDateTime.of(2023, 3, 29, 11, 11, 11);
-        LocalDateTime localDateTime2 = LocalDateTime.of(2023, 3, 28, 11, 12, 44);
+        LocalDateTime localDateTime1 = LocalDateTime.of(2023, 3, 28, 7, 10, 44);
+        LocalDateTime localDateTime2 = LocalDateTime.of(2023, 3, 28, 9, 10, 44);
         List<LocalDateTime> dateTimeList = Arrays.asList(localDateTime1,
                 localDateTime2);
         int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
@@ -185,27 +202,22 @@ public class TollCalculatorTest {
     @Test
     public void testGetTollFeeWithDifferentDates() {
         // if vehicle is Car, and dates are passed for multiple days, it should return total fees return for those days.
+        LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 11, 9, 10, 44);
+        LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 11, 13, 10, 44);
+        LocalDateTime localDateTime3 = LocalDateTime.of(2023, 4, 12, 8, 10, 44);
+        LocalDateTime localDateTime4 = LocalDateTime.of(2023, 4, 12, 14, 5, 44);
 
-        LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 11, 11, 10, 11);
-        LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 11, 7, 10, 44);
-        LocalDateTime localDateTime3 = LocalDateTime.of(2023, 4, 11, 9, 10, 44);
-        LocalDateTime localDateTime4 = LocalDateTime.of(2023, 4, 11, 13, 10, 44);
-        LocalDateTime localDateTime5 = LocalDateTime.of(2023, 4, 12, 8, 10, 44);
-        LocalDateTime localDateTime6 = LocalDateTime.of(2023, 4, 12, 14, 5, 44);
-        LocalDateTime localDateTime7 = LocalDateTime.of(2023, 4, 12, 16, 15, 44);
-        LocalDateTime localDateTime8 = LocalDateTime.of(2023, 4, 12, 15, 10, 44);
 
         List<LocalDateTime> dateTimeList = Arrays.asList(localDateTime1,
                 localDateTime2,
                 localDateTime3,
-                localDateTime4,
-                localDateTime5,
-                localDateTime6,
-                localDateTime7,
-                localDateTime8);
+                localDateTime4);
 
-        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
-        assertEquals(94, fees);
+        APIBadRequestException apiBadRequestException = assertThrows(APIBadRequestException.class, () -> {
+            this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
+        });
+
+        assertEquals("Input dates are not valid as it includes the different days.", apiBadRequestException.getMessage());
     }
 
     @Test
@@ -289,6 +301,27 @@ public class TollCalculatorTest {
         assertEquals(18, fees);
     }
 
+    @Test
+    public void testGetTollFeeFirstTimeWithZeroFees() {
+        //This is special case we need to handle particular set of times
+        LocalDateTime localDateTime1 = LocalDateTime.of(2023, 4, 11, 5, 45, 16);
+        LocalDateTime localDateTime2 = LocalDateTime.of(2023, 4, 11, 6, 47, 16);
+        LocalDateTime localDateTime3 = LocalDateTime.of(2023, 4, 11, 6, 48, 16);
+        LocalDateTime localDateTime4 = LocalDateTime.of(2023, 4, 11, 6, 49, 16);
+
+        LocalDateTime localDateTime5 = LocalDateTime.of(2023, 4, 11, 7, 55, 16);
+        LocalDateTime localDateTime6 = LocalDateTime.of(2023, 4, 11, 8, 10, 16);
+        LocalDateTime localDateTime7 = LocalDateTime.of(2023, 4, 11, 10, 15, 16);
+        List<LocalDateTime> dateTimeList = Arrays.asList(localDateTime1,
+                localDateTime2,
+                localDateTime3,
+                localDateTime4,
+                localDateTime5,
+                localDateTime6,
+                localDateTime7);
+        int fees = this.tollCalculator.getTollFee(new DefaultVehicle("Car"), dateTimeList);
+        assertEquals(39, fees);
+    }
     @Test
     public void testGetTollFeeForAmount8() {
         // if vehicle is Car, and it is passed at time when toll fee is 8.

@@ -15,10 +15,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 @EnableConfigurationProperties
 @ConfigurationProperties(prefix = "toll-configuration")
 @ToString
-public class TollFeeConfiguration {
+public class TollConfiguration {
     private List<TimeslotFees> timeslotFees;
 
     @DateTimeFormat(pattern = "MM:mm")
     private List<MonthDay> holidays;
+
+    private List<String> vehicleTypes;
+
+    private List<String> tollFreeVehicles;
+
     private int maximumTollFeesPerDay;
+
+
 }

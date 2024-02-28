@@ -47,7 +47,7 @@ public class TollCalculatorControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("totalFees", Matchers.is(36)));
+                .andExpect(jsonPath("totalFees", Matchers.is(39)));
     }
 
 }
